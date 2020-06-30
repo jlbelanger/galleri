@@ -3,9 +3,11 @@
 	"version": "1.0.0",
 	"description": "",
 	"require": {
-		"jlbelanger/robroy": "master",
+		"jlbelanger/robroy": "dev-master",
 		"vlucas/phpdotenv": "^3.4"
 	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"repositories": [
 		{
 			"type": "vcs",
