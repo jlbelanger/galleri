@@ -1,0 +1,47 @@
+{
+	"name": "jlbelanger-robroy",
+	"version": "1.0.0",
+	"description": "Databaseless vanilla JS photo gallery.",
+	"license": "MIT",
+	"author": {
+		"name": "Jenny Belanger",
+		"email": "mail@jennybelanger.com",
+		"url": "https://www.jennybelanger.com/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jlbelanger/robroy.git"
+	},
+	"devDependencies": {
+		"autoprefixer": "^9.8.0",
+		"cssnano": "^4.1.10",
+		"eslint-config-airbnb-base": "^13.2.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint": "^5.16.0",
+		"gulp": "^4.0.2",
+		"gulp-cli": "^2.2.0",
+		"gulp-postcss": "^8.0.0",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^4.1.0",
+		"sass-lint": "^1.13.1",
+		"stylelint-config-standard-scss": "^1.1.0",
+		"stylelint-scss": "^3.9.2",
+		"stylelint": "^10.1.0",
+		"webpack-cli": "^3.3.10",
+		"webpack": "^4.41.2",
+		"normalize.css": "^8.0.1"
+	},
+	"scripts": {
+		"build": "yarn build:css && yarn build:js",
+		"build:css": "node_modules/.bin/gulp css",
+		"build:js": "node_modules/.bin/webpack --config webpack.config.js",
+		"lint": "yarn lint:css && yarn lint:js",
+		"lint:css": "node_modules/.bin/stylelint 'scss/**/*.scss'",
+		"lint:js": "node_modules/.bin/eslint js/**/*.js",
+		"lint:php": "docker exec -it web sh -c 'cd /var/www/robroy; ./vendor/bin/phpcs'",
+		"test:php": "docker exec -it web sh -c 'cd /var/www/robroy; ./vendor/bin/phpunit'",
+		"watch": "yarn watch:css && yarn watch:js",
+		"watch:css": "node_modules/.bin/gulp",
+		"watch:js": "node_modules/.bin/webpack --config webpack-dev.config.js"
+	}
+}

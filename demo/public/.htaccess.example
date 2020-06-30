@@ -1,0 +1,13 @@
+RewriteEngine On
+
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+
+AuthType basic
+AuthName "Enter password"
+AuthUserFile /path/to/robroy/demo/.htpasswd
+<Limit POST PUT DELETE>
+	Require valid-user
+</Limit>
+
+Redirect 301 /favicon.ico /favicon.svg

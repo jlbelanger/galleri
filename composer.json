@@ -1,0 +1,28 @@
+{
+	"name": "jlbelanger/robroy",
+	"version": "1.0.0",
+	"description": "Databaseless vanilla PHP photo gallery.",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Jenny Belanger",
+			"email": "mail@jennybelanger.com",
+			"homepage": "https://www.jennybelanger.com/"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Jlbelanger\\Robroy\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	},
+	"require-dev": {
+		"php-mock/php-mock": "^2.2",
+		"phpunit/phpunit": "^9.1",
+		"squizlabs/php_codesniffer": "^3.5"
+	}
+}

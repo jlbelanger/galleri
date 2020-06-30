@@ -1,0 +1,39 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: $body-background-color;
+	color: $body-text-color;
+	margin: 0;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+#header,
+#footer {
+	background: $header-background-color;
+	color: $header-text-color;
+}
+
+#header-inner,
+#footer-inner {
+	padding: 16px;
+
+	@media screen and (min-width: $breakpoint) {
+		padding: 32px;
+	}
+}
+
+article {
+	flex: 1 1 auto;
+}
+
+.contain {
+	margin: 0 auto;
+	max-width: 1600px;
+}

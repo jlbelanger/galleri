@@ -1,0 +1,40 @@
+.robroy-button {
+	appearance: none;
+	background-color: $button-background-color;
+	border: 0;
+	color: $button-text-color;
+	cursor: pointer;
+	display: block;
+	line-height: 1;
+	margin: 0;
+	padding: 16px;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $button-background-color-hover;
+	}
+}
+
+.robroy-button--danger {
+	background-color: $button-danger-background-color;
+	color: $button-danger-text-color;
+	position: relative;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $button-danger-background-color-hover;
+	}
+}
+
+.robroy-button--secondary {
+	background-color: $button-secondary-background-color;
+	color: $button-secondary-text-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $button-secondary-background-color-hover;
+	}
+}

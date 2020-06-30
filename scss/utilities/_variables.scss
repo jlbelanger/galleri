@@ -1,0 +1,55 @@
+$primary: #00bfff !default;
+$dark-mode: false !default;
+$multiplier: if($dark-mode, 1, -1) !default;
+
+$black: #000 !default;
+$gray: #ddd !default;
+$white: #fff !default;
+$red: if($dark-mode, #900, #c00) !default;
+
+$darkest: scale-color($primary, $lightness: -90% * $multiplier) !default;
+$darker: scale-color($primary, $lightness: -80% * $multiplier) !default;
+$dark: scale-color($primary, $lightness: -50% * $multiplier) !default;
+$light: scale-color($primary, $lightness: 30% * $multiplier) !default;
+$lightest: scale-color($primary, $lightness: 90% * $multiplier) !default;
+
+$breakpoint: 1024px !default;
+
+$minimum-image-width: 300px !default;
+$padding-mobile: 16px !default;
+$padding-desktop: 32px !default;
+
+$body-background-color: $darkest !default;
+$body-text-color: $lightest !default;
+
+$button-background-color: $primary !default;
+$button-text-color: $lightest !default;
+$button-background-color-hover: scale-color($button-background-color, $lightness: -10% * $multiplier) !default;
+
+$button-danger-background-color: $red !default;
+$button-danger-text-color: $white !default;
+$button-danger-background-color-hover: scale-color($button-danger-background-color, $lightness: 10% * $multiplier) !default;
+
+$button-secondary-background-color: $darker !default;
+$button-secondary-text-color: $lightest !default;
+$button-secondary-background-color-hover: scale-color($button-secondary-background-color, $lightness: -20% * $multiplier) !default;
+
+$header-background-color: $darker !default;
+$header-text-color: $lightest !default;
+
+$focus-border-color: $lightest !default;
+
+$image-border-color-hover: $dark !default;
+
+$link-text-color: $lightest !default;
+
+$modal-container-background-color: rgba($black, .2) !default;
+$modal-background-color: $darker !default;
+$modal-text-color: $lightest !default;
+
+$spinner-color: $darker !default;
+$spinner-color-alternate: $primary !default;
+
+$upload-background-color: $darker !default;
+$upload-text-color: $lightest !default;
+$upload-background-color-hover: scale-color($upload-background-color, $lightness: -10% * $multiplier) !default;

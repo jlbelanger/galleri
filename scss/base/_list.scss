@@ -1,0 +1,42 @@
+#robroy-list {
+	display: grid;
+	grid-auto-rows: 1px;
+	grid-gap: $padding-mobile;
+	grid-template-columns: repeat(auto-fill, minmax($minimum-image-width, 1fr));
+	margin: $padding-mobile;
+
+	@media screen and (min-width: $breakpoint) {
+		grid-gap: $padding-desktop;
+		margin: $padding-desktop;
+	}
+}
+
+.robroy-figure {
+	margin: 0;
+	position: relative;
+}
+
+.robroy-link {
+	background-position: center;
+	background-size: cover;
+	bottom: 0;
+	display: block;
+	font-size: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+.robroy-img {
+	height: auto;
+	opacity: 0;
+	width: 100%;
+}
+
+.robroy-button,
+.robroy-link {
+	&:focus {
+		box-shadow: 0 0 0 4px $focus-border-color;
+		outline: none;
+	}
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true"
+		 convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true">
+	<testsuites>
+		<testsuite name="Tests">
+			<directory suffix="Test.php">./tests</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<env name="UPLOADS_FOLDER" value="assets" />
+		<env name="UPLOADS_PATH" value="/var/www/robroy/tests/assets" />
+	</php>
+</phpunit>

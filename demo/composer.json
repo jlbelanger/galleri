@@ -1,0 +1,15 @@
+{
+	"name": "jlbelanger/robroy-demo",
+	"version": "1.0.0",
+	"description": "",
+	"require": {
+		"jlbelanger/robroy": "master",
+		"vlucas/phpdotenv": "^3.4"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:jlbelanger/robroy.git"
+		}
+	]
+}

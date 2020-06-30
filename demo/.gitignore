@@ -1,0 +1,4 @@
+.env
+public/.htaccess
+node_modules
+vendor

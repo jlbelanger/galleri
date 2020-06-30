@@ -1,0 +1,15 @@
+#header-inner {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+#title {
+	font-size: 28px;
+	font-weight: normal;
+	margin: 0;
+
+	@media screen and (min-width: $breakpoint) {
+		font-size: 48px;
+	}
+}

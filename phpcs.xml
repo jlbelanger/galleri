@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<ruleset name="Jlbelanger">
+	<file>src/</file>
+	<file>tests/</file>
+
+	<arg name="colors" />
+	<arg name="extensions" value="php" />
+	<arg value="p" />
+	<arg value="s" />
+
+	<rule ref="PSR1" />
+
+	<rule ref="PSR2">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsed" />
+	</rule>
+
+	<rule ref="Generic">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+		<exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found" />
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition" />
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+		<exclude name="Generic.Commenting.DocComment.NonParamGroup" />
+		<exclude name="Generic.Commenting.Todo.TaskFound" />
+		<exclude name="Generic.Files.EndFileNoNewline.Found" />
+		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
+		<exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound" />
+		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+		<exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
+		<exclude name="Generic.PHP.RequireStrictTypes.MissingDeclaration" />
+		<exclude name="Generic.PHP.UpperCaseConstant.Found" />
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />
+
+	<rule ref="Squiz">
+		<exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned" />
+		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+		<exclude name="Squiz.Commenting.ClosingDeclarationComment.Missing" />
+		<exclude name="Squiz.Commenting.FileComment.Missing" />
+		<exclude name="Squiz.Commenting.FunctionComment.InvalidTypeHint" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
+		<exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing" />
+		<exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
+		<exclude name="Squiz.Commenting.VariableComment.Missing" />
+		<exclude name="Squiz.ControlStructures.ElseIfDeclaration.NotAllowed" />
+		<exclude name="Squiz.ControlStructures.InlineIfDeclaration.NoBrackets" />
+		<exclude name="Squiz.ControlStructures.SwitchDeclaration.BreakIndent" />
+		<exclude name="Squiz.Files.FileExtension.ClassFound" />
+		<exclude name="Squiz.Formatting.OperatorBracket.MissingBrackets" />
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace" />
+		<exclude name="Squiz.Operators.ComparisonOperatorUsage.ImplicitTrue" />
+		<exclude name="Squiz.Operators.ComparisonOperatorUsage.NotAllowed" />
+		<exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedBool" />
+		<exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedComparison" />
+		<exclude name="Squiz.PHP.DisallowInlineIf.Found" />
+		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
+		<exclude name="Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure" />
+		<exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace.SpacingBeforeClose" />
+	</rule>
+
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="150" />
+			<property name="absoluteLineLimit" value="150" />
+		</properties>
+	</rule>
+
+	<rule ref="Generic.Formatting.SpaceAfterNot">
+		<properties>
+			<property name="spacing" value="0" />
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.Strings.ConcatenationSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.WhiteSpace.FunctionSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+			<property name="spacingBeforeFirst" value="0" />
+			<property name="spacingAfterLast" value="0" />
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.WhiteSpace.MemberVarSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+			<property name="spacingBeforeFirst" value="0" />
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
+		<properties>
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+
+	<rule ref="Generic.Arrays.ArrayIndent.CloseBraceNotNewLine">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Arrays.ArrayDeclaration.NoCommaAfterLast">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Arrays.ArrayDeclaration.ValueNoNewline">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Commenting">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+</ruleset>

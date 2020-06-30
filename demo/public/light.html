@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta property="og:title" content="Robroy Photo Gallery Demo - Light Theme">
+		<title>Robroy Photo Gallery Demo - Light Theme</title>
+		<link rel="stylesheet" type="text/css" href="/light.min.css">
+		<link rel="icon" href="/favicon.svg">
+	</head>
+	<body>
+		<main>
+			<header id="header">
+				<div class="contain" id="header-inner">
+					<h1 id="title">Robroy Photo Gallery Demo - Light Theme</h1>
+					<button class="robroy-button robroy-button--secondary" data-action="authenticate" type="button"></button>
+				</div>
+			</header>
+			<article>
+				<div class="contain" id="robroy"></div>
+			</article>
+			<footer id="footer">
+				<div class="contain" id="footer-inner">
+					<p><a href="https://github.com/jlbelanger/robroy/">Robroy Photo Gallery</a></p>
+				</div>
+			</footer>
+		</main>
+		<script src="/robroy.min.js"></script>
+		<script src="https://unpkg.com/fslightbox@3.1.0/index.js" integrity="sha384-HpFPRJTv1hMt/0XGUpq+/fMLpT+t4E8MwBd77nggUDvbEuBGnv5TV+ZIxW0TvHfX" crossorigin="anonymous"></script>
+		<script>
+		Robroy.default.init({
+			// Required. The selector for the element where the images will be loaded.
+			selector: '#robroy',
+
+			// Optional. Specify an alternate path for the API PHP file.
+			apiPath: '/api.php',
+
+			// Optional. Add additional attributes to image elements. (eg. The fslightbox plugin requires an attribute on the link elements.)
+			attributes: {
+				a: {
+					'data-fslightbox': '',
+				},
+				figure: {},
+				img: {},
+			},
+
+			// Optional. If you want something to happen after an image has been added or removed from the grid, use a callback function.
+			callbacks: {
+				afterDeleteImage: () => { refreshFsLightbox(); },
+				afterLoadImage: () => { refreshFsLightbox(); },
+				afterUploadImage: () => { refreshFsLightbox(); },
+			},
+
+			// Optional. The number of images to load each time the user reaches the end of the list.
+			pageSize: 8,
+		});
+		</script>
+	</body>
+</html>

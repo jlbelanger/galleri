@@ -1,0 +1,63 @@
+#robroy-upload-form {
+	display: flex;
+	margin: 16px;
+	padding: 0;
+
+	@media screen and (min-width: $breakpoint) {
+		margin: 32px;
+	}
+}
+
+#robroy-upload-container {
+	align-items: center;
+	color: $upload-text-color;
+	display: flex;
+	flex: 1 1 auto;
+	height: 100px;
+	justify-content: center;
+	overflow: hidden;
+	padding: 0 16px;
+	position: relative;
+	transition: background-color ease-in-out 50ms;
+
+	&:focus-within {
+		box-shadow: 0 0 0 4px $focus-border-color;
+	}
+}
+
+#robroy-upload-input {
+	background-color: $upload-background-color;
+	border: 0;
+	bottom: 0;
+	cursor: pointer;
+	font-size: 0;
+	height: auto;
+	left: 0;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	top: -100%;
+	width: 100%;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $upload-background-color-hover;
+	}
+}
+
+#robroy-upload-text {
+	pointer-events: none;
+	position: relative;
+}
+
+#robroy-upload-button {
+	align-items: center;
+	display: none;
+
+	&:focus-within {
+		position: relative;
+	}
+}
