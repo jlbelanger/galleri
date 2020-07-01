@@ -1,4 +1,6 @@
+.DS_Store
 .env
+.htpasswd
 public/.htaccess
 node_modules
 vendor
