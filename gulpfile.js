@@ -13,6 +13,16 @@ function css() {
 		.pipe(gulp.dest('demo/public'));
 }
 
+function distCss() {
+	return gulp.src(['./demo/public/*.css'])
+		.pipe(gulp.dest('dist/css'));
+}
+
+function distJs() {
+	return gulp.src(['./demo/public/*.js'])
+		.pipe(gulp.dest('dist/js'));
+}
+
 gulp.task('default', function () {
 	css();
 	gulp.watch(['scss/**/*.scss'], css);
@@ -20,4 +30,12 @@ gulp.task('default', function () {
 
 gulp.task('css', function () {
 	return css();
+});
+
+gulp.task('dist:css', function () {
+	return distCss();
+});
+
+gulp.task('dist:js', function () {
+	return distJs();
 });
