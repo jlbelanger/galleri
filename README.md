@@ -58,6 +58,10 @@ rm public/.htaccess.example
 
 Then update the settings in `demo/.env` and `demo/public/.htaccess`.
 
+Update the name in `demo/composer.json`.
+
+Remove `public/.htaccess` from `demo/.gitignore`.
+
 Download the PHP dependencies:
 
 ``` bash
