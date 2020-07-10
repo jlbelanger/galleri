@@ -37,7 +37,7 @@ class Router
 				];
 			}
 		} catch (Exception $e) {
-			$code = $e->getCode() ?: 500;
+			$code = $e->getCode() ? $e->getCode() : 500;
 			$response = [
 				'errors' => [
 					[

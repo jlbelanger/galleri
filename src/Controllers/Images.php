@@ -16,7 +16,7 @@ class Images
 	public static function get()
 	{
 		$images = Image::all();
-		$page = !empty($_GET['page']) ?: null;
+		$page = !empty($_GET['page']) ? $_GET['page'] : null;
 		$number = !empty($page['number']) ? (int) $page['number'] : 1;
 		$size = !empty($page['size']) ? (int) $page['size'] : 10;
 
