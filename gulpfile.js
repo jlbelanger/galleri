@@ -6,7 +6,7 @@ const rename = require('gulp-rename');
 const sass = require('gulp-sass');
 
 function css() {
-	return gulp.src(['./scss/*.scss'])
+	return gulp.src(['./scss/*.scss', './demo/scss/*.scss'])
 		.pipe(sass())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(postcss([autoprefixer(), cssnano()]))
@@ -24,8 +24,10 @@ function distJs() {
 }
 
 gulp.task('default', function () {
-	css();
-	gulp.watch(['scss/**/*.scss'], css);
+	(gulp.parallel('css', 'dist:css', 'dist:js')());
+	gulp.watch(['scss/**/*.scss', 'demo/scss/**/*.scss'], css);
+	gulp.watch(['demo/public/*.css'], distCss);
+	gulp.watch(['demo/public/*.js'], distJs);
 });
 
 gulp.task('css', function () {
