@@ -19,7 +19,6 @@ export default class Robroy {
 
 		var container = document.querySelector(args.selector);
 		if (!container) {
-			RobroyModal.show('Error: Element <code>' + args.selector + '</code> not found.', { html: true });
 			return;
 		}
 
@@ -35,6 +34,9 @@ export default class Robroy {
 	static init(args) {
 		if (!RobroyUtilities.propertyExists(window, 'ROBROY')) {
 			window.ROBROY = new Robroy(args);
+			if (!window.ROBROY.list) {
+				return;
+			}
 			RobroyAuth.init();
 			RobroyList.init();
 			window.ROBROY.grid = new RobroyGrid();
