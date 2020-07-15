@@ -32,7 +32,7 @@ Then, delete everything except the `demo` folder.
 
 You will also eventually want to delete the images in `demo/public/images`, but you can leave them for now to test if the code is working.
 
-Choose one of the HTML to files to keep (either `public/dark.html`, `public/light.html`, or `public/minimal.html`), and then delete all other HTML files in `public`. Rename your chosen HTML file to `index.html`. You should also delete `public/dark.min.css` and `scss/dark.scss` or `public/light.min.css` and `scss/light.scss` if you aren't using their corresponding HTML files.
+Choose one of the HTML to files to keep (either `public/dark.html`, `public/light.html`, or `public/minimal.html`), and then delete all other HTML files in `public` except `403.html` and `404.html`. Rename your chosen HTML file to `index.html`. You should also delete `public/dark.min.css` and `scss/dark.scss` or `public/light.min.css` and `scss/light.scss` if you aren't using their corresponding HTML files.
 
 All the following commands should be run in the `demo` folder.
 
@@ -59,6 +59,8 @@ rm public/.htaccess.example
 Then update the settings in `demo/.env` and `demo/public/.htaccess`.
 
 Update the name in `demo/composer.json`.
+
+Update references to "Robroy Photo Gallery" to your own gallery title in `demo/403.html`, `demo/404.html`, and `demo/index.html`.
 
 Remove `public/.htaccess` from `demo/.gitignore`.
 

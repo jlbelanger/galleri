@@ -22,10 +22,31 @@ main {
 
 #header-inner,
 #footer-inner {
-	padding: 16px;
+	padding: $padding-mobile;
 
 	@media screen and (min-width: $breakpoint) {
-		padding: 32px;
+		padding: $padding-desktop;
+	}
+}
+
+#content-inner {
+	margin: $padding-mobile auto;
+	padding: 0 $padding-mobile;
+
+	h2,
+	p {
+		margin: 20px 0 0;
+	}
+
+	@media screen and (min-width: $breakpoint) {
+		margin: $padding-desktop auto;
+		padding: 0 $padding-desktop;
+	}
+}
+
+#footer {
+	p {
+		margin: 0;
 	}
 }
 
@@ -36,4 +57,5 @@ article {
 .contain {
 	margin: 0 auto;
 	max-width: 1600px;
+	width: 100%;
 }
