@@ -42,7 +42,11 @@ class Image
 				if (strpos($filename, '.') === 0 || is_dir($path)) {
 					continue;
 				}
-				$images[$filename] = new self($filename);
+				$image = new self($filename);
+				if (!$image->thumbnailAbsolutePath()) {
+					continue;
+				}
+				$images[$filename] = $image;
 			}
 
 			closedir($handle);
@@ -124,11 +128,23 @@ class Image
 	}
 
 	/**
+	 * @return string
+	 */
+	public function thumbnailAbsolutePath()
+	{
+		$thumbnailPath = Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
+		if (!file_exists($thumbnailPath)) {
+			return '';
+		}
+		return $thumbnailPath;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function json()
 	{
-		list($width, $height) = getimagesize(Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath);
+		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
 		return [
 			'id' => $this->path,
 			'type' => 'images',
