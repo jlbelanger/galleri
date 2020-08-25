@@ -22,6 +22,13 @@ export default class RobroyAuth {
 	}
 
 	static logout() {
+		if (window.navigator.userAgent.indexOf('Safari') > -1) {
+			// Safari shows the login screen again if we try to make an invalid request.
+			window.localStorage.clear();
+			RobroyAuth.handleLogout();
+			return;
+		}
+
 		var url = [
 			window.location.protocol,
 			'//log:out@',
