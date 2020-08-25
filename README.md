@@ -48,6 +48,8 @@ Optionally, you can run this command for each additional user you want to create
 htpasswd .htpasswd ANOTHER_USERNAME
 ```
 
+Note: To change a password, run the above command again.
+
 Make copies of the example settings files:
 
 ``` bash
