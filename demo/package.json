@@ -8,6 +8,7 @@
 		"gulp-postcss": "^8.0.0",
 		"gulp-rename": "^2.0.0",
 		"gulp-sass": "^4.1.0",
+		"normalize.css": "^8.0.1",
 		"jlbelanger-robroy": "jlbelanger/robroy#master"
 	},
 	"scripts": {
