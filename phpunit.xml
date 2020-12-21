@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true"
-		 convertErrorsToExceptions="true"
-		 convertNoticesToExceptions="true"
-		 convertWarningsToExceptions="true">
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+	colors="true"
+	convertDeprecationsToExceptions="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+>
 	<testsuites>
 		<testsuite name="Tests">
 			<directory suffix="Test.php">./tests</directory>
 		</testsuite>
 	</testsuites>
 	<php>
-		<env name="UPLOADS_FOLDER" value="assets" />
-		<env name="UPLOADS_PATH" value="/var/www/robroy/tests/assets" />
+		<server name="UPLOADS_FOLDER" value="assets"/>
+		<server name="UPLOADS_PATH" value="/var/www/robroy/tests/assets"/>
 	</php>
 </phpunit>

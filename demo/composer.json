@@ -1,7 +1,8 @@
 {
 	"name": "jlbelanger/robroy-demo",
-	"version": "1.0.0",
 	"description": "",
+	"type": "project",
+	"license": "MIT",
 	"require": {
 		"jlbelanger/robroy": "dev-master#31a5521ae2fd1c245647e75639778012cde5b3b3",
 		"vlucas/phpdotenv": "^3.4"
