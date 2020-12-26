@@ -14,7 +14,7 @@
 		</testsuite>
 	</testsuites>
 	<php>
-		<server name="UPLOADS_FOLDER" value="assets"/>
-		<server name="UPLOADS_PATH" value="/var/www/robroy/tests/assets"/>
+		<env name="UPLOADS_FOLDER" value="assets"/>
+		<env name="UPLOADS_PATH" value="/var/www/robroy/tests/assets"/>
 	</php>
 </phpunit>
