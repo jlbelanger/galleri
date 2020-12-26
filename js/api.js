@@ -30,7 +30,7 @@ export default class RobroyApi {
 				}
 
 				if (response.errors) {
-					var errors = response.errors.map(error => error.title);
+					var errors = response.errors.map((error) => error.title);
 					RobroyModal.show('Error: ' + errors);
 					return;
 				}

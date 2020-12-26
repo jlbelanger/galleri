@@ -1,7 +1,6 @@
 import RobroyAuth from './auth';
 import RobroyGrid from './grid';
 import RobroyList from './list';
-import RobroyModal from './modal';
 import RobroyUtilities from './utilities';
 
 export default class Robroy {
@@ -35,7 +34,7 @@ export default class Robroy {
 		if (!RobroyUtilities.propertyExists(window, 'ROBROY')) {
 			window.ROBROY = new Robroy(args);
 			if (!window.ROBROY.list) {
-				return;
+				return null;
 			}
 			RobroyAuth.init();
 			RobroyList.init();

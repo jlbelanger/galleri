@@ -102,7 +102,7 @@ export default class RobroyImage {
 				var figure = document.querySelector('[data-path="' + path + '"]');
 				var nextLink;
 				if (figure.nextSibling) {
-					nextLink = [...figure.nextSibling.children].find(child => child.tagName === 'A');
+					nextLink = [...figure.nextSibling.children].find((child) => child.tagName === 'A');
 				}
 				figure.parentNode.removeChild(figure);
 
@@ -122,7 +122,7 @@ export default class RobroyImage {
 
 	static onChange(e) {
 		var files = [...e.target.files];
-		var filenames = files.map(file => file.name);
+		var filenames = files.map((file) => file.name);
 
 		document.getElementById('robroy-upload-text').innerText = filenames.join(', ');
 		document.getElementById('robroy-upload-button').style.display = 'flex';
