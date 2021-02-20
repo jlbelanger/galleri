@@ -1,5 +1,5 @@
 const autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
+const cssnano = require('cssnano');
 const gulp = require('gulp');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
@@ -13,11 +13,12 @@ function css() {
 		.pipe(gulp.dest('public'));
 }
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	css();
-	gulp.watch(['scss/**/*.scss', 'node_modules/jlbelanger-robroy/scss/**/*.scss'], css);
+	gulp.watch([
+		'scss/**/*.scss',
+		'node_modules/jlbelanger-robroy/scss/**/*.scss',
+	], css);
 });
 
-gulp.task('css', function () {
-	return css();
-});
+gulp.task('css', () => css());

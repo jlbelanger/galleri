@@ -1,5 +1,5 @@
 const autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
+const cssnano = require('cssnano');
 const gulp = require('gulp');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
@@ -23,16 +23,14 @@ function distJs() {
 		.pipe(gulp.dest('dist/js'));
 }
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	(gulp.parallel('css', 'dist:css', 'dist:js')());
 	gulp.watch(['scss/**/*.scss', 'demo/scss/**/*.scss'], css);
 	gulp.watch(['demo/public/*.css'], distCss);
 	gulp.watch(['demo/public/*.js'], distJs);
 });
 
-gulp.task('css', function () {
-	return css();
-});
+gulp.task('css', () => css());
 
 gulp.task('dist:css', function () {
 	return distCss();
