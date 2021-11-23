@@ -5,7 +5,7 @@ namespace Jlbelanger\Robroy\Helpers;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
 
-class File
+class Filesystem
 {
 	/**
 	 * Deletes a file from the file system.
@@ -13,7 +13,7 @@ class File
 	 * @param  string $filename
 	 * @return void
 	 */
-	public static function delete(string $filename)
+	public static function deleteFile(string $filename)
 	{
 		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		if (!file_exists($path)) {

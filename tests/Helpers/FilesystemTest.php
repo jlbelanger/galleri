@@ -3,12 +3,12 @@
 namespace Tests\Helpers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Helpers\File;
+use Jlbelanger\Robroy\Helpers\Filesystem;
 use Tests\TestCase;
 
-class FileTest extends TestCase
+class FilesystemTest extends TestCase
 {
-	public function deleteProvider()
+	public function deleteFileProvider()
 	{
 		return [
 			'when the file does not exist' => [[
@@ -42,9 +42,9 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider deleteProvider
+	 * @dataProvider deleteFileProvider
 	 */
-	public function testDelete($args)
+	public function testDeleteFile($args)
 	{
 		foreach ($args['mocks'] as $function => $value) {
 			$this->addMock('Jlbelanger\Robroy\Helpers', $function, $value);
@@ -55,6 +55,6 @@ class FileTest extends TestCase
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
-		File::delete(...array_values($args['args']));
+		Filesystem::deleteFile(...array_values($args['args']));
 	}
 }

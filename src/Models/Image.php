@@ -5,7 +5,7 @@ namespace Jlbelanger\Robroy\Models;
 use Exception;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\File;
+use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Utilities;
 
 class Image
@@ -108,8 +108,8 @@ class Image
 				Utilities::resizeFile($newFilename, $maxWidth, $originalWidth, $originalHeight, $fileType, true);
 			}
 		} catch (Exception $e) {
-			File::delete($newFilename);
-			File::delete(Constant::get('THUMBNAILS_FOLDER') . '/' . $newFilename);
+			Filesystem::deleteFile($newFilename);
+			Filesystem::deleteFile(Constant::get('THUMBNAILS_FOLDER') . '/' . $newFilename);
 			throw $e;
 		}
 
@@ -123,8 +123,8 @@ class Image
 	 */
 	public function delete()
 	{
-		File::delete($this->path);
-		File::delete($this->thumbnailPath);
+		Filesystem::deleteFile($this->path);
+		Filesystem::deleteFile($this->thumbnailPath);
 	}
 
 	/**
