@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ConstantTest extends TestCase
 {
-	public function getProvider()
+	public function getProvider() : array
 	{
 		return [
 			'when the value is set in the environment' => [[
@@ -35,13 +35,13 @@ class ConstantTest extends TestCase
 	/**
 	 * @dataProvider getProvider
 	 */
-	public function testGet($args)
+	public function testGet(array $args) : void
 	{
 		$output = Constant::get(...array_values($args['args']));
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function verifyProvider()
+	public function verifyProvider() : array
 	{
 		return [
 			'when the value is set in the environment' => [[
@@ -61,7 +61,7 @@ class ConstantTest extends TestCase
 	/**
 	 * @dataProvider verifyProvider
 	 */
-	public function testVerify($args)
+	public function testVerify(array $args) : void
 	{
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);

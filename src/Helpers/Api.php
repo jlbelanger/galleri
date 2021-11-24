@@ -12,7 +12,7 @@ class Api
 	 * @param  integer $perPage
 	 * @return array
 	 */
-	public static function paginate(array $items, int $page, int $perPage)
+	public static function paginate(array $items, int $page, int $perPage) : array
 	{
 		$numItems = count($items);
 		$min = $perPage * ($page - 1);

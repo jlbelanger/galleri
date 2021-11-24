@@ -15,7 +15,7 @@ abstract class TestCase extends BaseTestCase
 		}
 	}
 
-	protected function addMock($namespace, $fn, $value)
+	protected function addMock(string $namespace, string $fn, $value) : void
 	{
 		$builder = new \phpmock\MockBuilder();
 		$valueFn = new \phpmock\functions\FixedValueFunction($value);

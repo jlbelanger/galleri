@@ -12,7 +12,7 @@ class Exif
 	 * @param  string $path
 	 * @return array
 	 */
-	public static function get(string $path)
+	public static function get(string $path) : array
 	{
 		try {
 			return exif_read_data($path);
@@ -27,7 +27,7 @@ class Exif
 	 * @param  integer $fileType
 	 * @return boolean
 	 */
-	public static function exists(int $fileType)
+	public static function exists(int $fileType) : bool
 	{
 		return $fileType === IMAGETYPE_JPEG;
 	}

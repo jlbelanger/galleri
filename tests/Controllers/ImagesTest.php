@@ -6,17 +6,17 @@ use Tests\TestCase;
 
 class ImagesTest extends TestCase
 {
-	public function testGet()
+	public function testGet() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testPost()
+	public function testPost() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testDelete()
+	public function testDelete() : void
 	{
 		$this->markTestIncomplete();
 	}

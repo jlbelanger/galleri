@@ -35,7 +35,7 @@ class Constant
 	 * @param  string $key
 	 * @return void
 	 */
-	public static function verify(string $key)
+	public static function verify(string $key) : void
 	{
 		if (getenv($key) === false) {
 			throw new ApiException('Environment variable "' . $key . '" is not set.');

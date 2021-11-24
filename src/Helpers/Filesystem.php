@@ -13,7 +13,7 @@ class Filesystem
 	 * @param  string $filename
 	 * @return void
 	 */
-	public static function deleteFile(string $filename)
+	public static function deleteFile(string $filename) : void
 	{
 		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		if (!file_exists($path)) {

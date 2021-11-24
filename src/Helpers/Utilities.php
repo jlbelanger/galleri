@@ -14,7 +14,7 @@ class Utilities
 	 * @param  integer $fileType
 	 * @return string
 	 */
-	public static function cleanFilename(string $path, string $filename, int $fileType)
+	public static function cleanFilename(string $path, string $filename, int $fileType) : string
 	{
 		$filename = strtolower($filename);
 		$date = '';
@@ -47,7 +47,7 @@ class Utilities
 	 * @param  integer $fileType
 	 * @return void
 	 */
-	public static function createThumbnailFile(string $filename, int $oldWidth, int $oldHeight, int $fileType)
+	public static function createThumbnailFile(string $filename, int $oldWidth, int $oldHeight, int $fileType) : void
 	{
 		$uploadsPath = Constant::get('UPLOADS_PATH');
 		$path = $uploadsPath . '/' . $filename;
@@ -68,7 +68,14 @@ class Utilities
 	 * @param  boolean $hasWatermark
 	 * @return void
 	 */
-	public static function resizeFile(string $filename, int $newWidth, int $oldWidth, int $oldHeight, int $fileType, bool $hasWatermark = false)
+	public static function resizeFile(
+		string $filename,
+		int $newWidth,
+		int $oldWidth,
+		int $oldHeight,
+		int $fileType,
+		bool $hasWatermark = false
+	) : void
 	{
 		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		self::resizeImage($oldWidth, $oldHeight, $newWidth, $path, $path, $fileType, $hasWatermark);
@@ -92,7 +99,7 @@ class Utilities
 		string $dstPath,
 		int $fileType,
 		bool $hasWatermark = false
-	)
+	) : void
 	{
 		$src = self::getImageSource($srcPath, $fileType);
 		if (empty($src) || empty($src['image'])) {
@@ -133,7 +140,7 @@ class Utilities
 	 * @param  integer  $newHeight
 	 * @return void
 	 */
-	private static function addWatermark($dst, int $newWidth, int $newHeight)
+	private static function addWatermark($dst, int $newWidth, int $newHeight) : void
 	{
 		$watermarkPath = Constant::get('WATERMARK_PATH');
 		list($watermarkWidth, $watermarkHeight, $watermarkFileType) = getimagesize($watermarkPath);
@@ -148,7 +155,7 @@ class Utilities
 	 * @param  integer $fileType
 	 * @return array
 	 */
-	private static function getImageSource(string $path, int $fileType)
+	private static function getImageSource(string $path, int $fileType) : array
 	{
 		$src = null;
 
@@ -178,7 +185,7 @@ class Utilities
 	 * @param  resource $src
 	 * @return array
 	 */
-	private static function fixOrientation(string $path, int $fileType, $src)
+	private static function fixOrientation(string $path, int $fileType, $src) : array
 	{
 		if (empty($src)) {
 			return $src;

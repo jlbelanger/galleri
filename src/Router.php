@@ -12,7 +12,7 @@ class Router
 	 *
 	 * @return void
 	 */
-	public static function load()
+	public static function load() : void
 	{
 		try {
 			Constant::verify('UPLOADS_PATH');
@@ -60,7 +60,7 @@ class Router
 	 *
 	 * @return array
 	 */
-	private static function routes()
+	private static function routes() : array
 	{
 		return [
 			'GET images' => [

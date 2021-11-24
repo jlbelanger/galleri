@@ -6,22 +6,22 @@ use Tests\TestCase;
 
 class ImageTest extends TestCase
 {
-	public function testAll()
+	public function testAll() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testUpload()
+	public function testUpload() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testDelete()
+	public function testDelete() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testJson()
+	public function testJson() : void
 	{
 		$this->markTestIncomplete();
 	}

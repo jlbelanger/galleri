@@ -28,7 +28,7 @@ class Image
 	 *
 	 * @return Image[]
 	 */
-	public static function all()
+	public static function all() : array
 	{
 		$images = [];
 		$uploadsPath = Constant::get('UPLOADS_PATH');
@@ -62,7 +62,7 @@ class Image
 	 * @param  integer $error
 	 * @return Image
 	 */
-	public static function upload(string $name, string $tempPath, int $error)
+	public static function upload(string $name, string $tempPath, int $error) : self
 	{
 		// Check for upload errors.
 		if (empty($tempPath) || !empty($error)) {
@@ -121,7 +121,7 @@ class Image
 	 *
 	 * @return void
 	 */
-	public function delete()
+	public function delete() : void
 	{
 		Filesystem::deleteFile($this->path);
 		Filesystem::deleteFile($this->thumbnailPath);
@@ -130,7 +130,7 @@ class Image
 	/**
 	 * @return string
 	 */
-	public function thumbnailAbsolutePath()
+	public function thumbnailAbsolutePath() : string
 	{
 		$thumbnailPath = Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
 		if (!file_exists($thumbnailPath)) {
@@ -142,7 +142,7 @@ class Image
 	/**
 	 * @return array
 	 */
-	public function json()
+	public function json() : array
 	{
 		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
 		return [

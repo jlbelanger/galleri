@@ -13,7 +13,7 @@ class Images
 	 *
 	 * @return array
 	 */
-	public static function get()
+	public static function get() : array
 	{
 		$images = Image::all();
 		$page = !empty($_GET['page']) ? $_GET['page'] : null;
@@ -28,7 +28,7 @@ class Images
 	 *
 	 * @return array
 	 */
-	public static function post()
+	public static function post() : array
 	{
 		$num = count($_FILES['upload']['name']);
 		$images = [];
@@ -50,7 +50,7 @@ class Images
 	 *
 	 * @return void
 	 */
-	public static function delete()
+	public static function delete() : void
 	{
 		$path = !empty($_GET['path']) ? $_GET['path'] : null;
 		if (!$path) {

@@ -9,7 +9,7 @@ class Sessions
 	 *
 	 * @return void
 	 */
-	public static function post()
+	public static function post() : void
 	{
 		// Nothing actually happens here, because authentication is handled via HTTP basic auth.
 	}
@@ -19,7 +19,7 @@ class Sessions
 	 *
 	 * @return void
 	 */
-	public static function delete()
+	public static function delete() : void
 	{
 		// Nothing actually happens here, because authentication is handled via HTTP basic auth.
 	}

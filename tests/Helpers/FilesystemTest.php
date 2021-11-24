@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class FilesystemTest extends TestCase
 {
-	public function deleteFileProvider()
+	public function deleteFileProvider() : array
 	{
 		return [
 			'when the file does not exist' => [[
@@ -44,7 +44,7 @@ class FilesystemTest extends TestCase
 	/**
 	 * @dataProvider deleteFileProvider
 	 */
-	public function testDeleteFile($args)
+	public function testDeleteFile(array $args) : void
 	{
 		foreach ($args['mocks'] as $function => $value) {
 			$this->addMock('Jlbelanger\Robroy\Helpers', $function, $value);

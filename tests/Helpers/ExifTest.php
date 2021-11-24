@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class ExifTest extends TestCase
 {
-	public function existsProvider()
+	public function existsProvider() : array
 	{
 		return [
 			'with a GIF' => [[
@@ -34,7 +34,7 @@ class ExifTest extends TestCase
 	/**
 	 * @dataProvider existsProvider
 	 */
-	public function testExists($args)
+	public function testExists(array $args) : void
 	{
 		$output = Exif::exists(...array_values($args['args']));
 		$this->assertSame($args['expected'], $output);
