@@ -14,9 +14,8 @@ class Constant
 	 */
 	public static function get(string $key)
 	{
-		$value = $_ENV[$key];
-		if ($value !== false) {
-			return $value;
+		if (array_key_exists($key, $_ENV)) {
+			return $_ENV[$key];
 		}
 
 		$defaults = [
@@ -37,7 +36,7 @@ class Constant
 	 */
 	public static function verify(string $key) : void
 	{
-		if (array_key_exists($key, $_ENV) === false) {
+		if (!array_key_exists($key, $_ENV)) {
 			throw new ApiException('Environment variable "' . $key . '" is not set.');
 		}
 	}

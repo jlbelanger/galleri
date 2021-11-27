@@ -1,14 +1,43 @@
-#robroy-upload-form {
-	display: flex;
+.robroy-form-container {
 	margin: 16px;
-	padding: 0;
 
 	@media screen and (min-width: $breakpoint) {
 		margin: 32px;
 	}
 }
 
-#robroy-upload-container {
+.robroy-form {
+	display: flex;
+}
+
+.robroy-form--folder {
+	align-items: center;
+}
+
+.robroy-form--delete {
+	margin-left: 16px;
+}
+
+.robroy-input,
+.robroy-select {
+	background: $darker;
+	border: 0;
+	border-radius: 0;
+	color: $lightest;
+	margin-right: 20px;
+	padding: 12px;
+}
+
+.robroy-heading {
+	margin: 0 24px 0 0;
+}
+
+.robroy-label {
+	cursor: pointer;
+	margin-right: 8px;
+}
+
+#robroy-create-image-container {
 	align-items: center;
 	color: $upload-text-color;
 	display: flex;
@@ -25,7 +54,7 @@
 	}
 }
 
-#robroy-upload-input {
+#robroy-create-image-input {
 	background-color: $upload-background-color;
 	border: 0;
 	bottom: 0;
@@ -48,12 +77,12 @@
 	}
 }
 
-#robroy-upload-text {
+#robroy-create-image-text {
 	pointer-events: none;
 	position: relative;
 }
 
-#robroy-upload-button {
+#robroy-create-image-button {
 	align-items: center;
 	display: none;
 

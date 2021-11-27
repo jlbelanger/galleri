@@ -64,7 +64,7 @@ Update the name in `demo/composer.json`.
 
 Update references to "Robroy Photo Gallery" to your own gallery title in `demo/public/403.html`, `demo/public/404.html`, and `demo/public/index.html`.
 
-Remove `public/.htaccess` from `demo/.gitignore`.
+Edit `demo/.gitignore` and remove the line `public/.htaccess`.
 
 Download the PHP dependencies:
 
@@ -187,4 +187,4 @@ Note: The deploy script included in this repo depends on other scripts that only
 - Lightbox: https://github.com/banthagroup/fslightbox
 - Masonry grid: https://medium.com/@andybarefoot/a-masonry-style-layout-using-css-grid-8c663d355ebb
 - Normalize: https://github.com/necolas/normalize.css
-- Placeholder images: https://placehold.it/
+- Placeholder images: https://placehold.it

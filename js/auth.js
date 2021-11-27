@@ -1,5 +1,6 @@
 import RobroyApi from './api';
 import RobroyEmpty from './empty';
+import RobroyFolder from './folder';
 import RobroyImage from './image';
 import RobroyModal from './modal';
 import RobroyUtilities from './utilities';
@@ -73,12 +74,34 @@ export default class RobroyAuth {
 	static handleLogin() {
 		window.ROBROY.auth.innerText = 'Log Out';
 
-		var figures = RobroyEmpty.getFigures();
-		figures.forEach((figure) => {
-			RobroyImage.addEditControls(figure);
+		var images = RobroyEmpty.getImages();
+		images.forEach((container) => {
+			RobroyImage.addEditControls(container);
 		});
 
-		RobroyImage.addUploadControl();
+		RobroyImage.addCreateControl();
+		RobroyFolder.addCreateControl();
+
+		if (window.ROBROY.currentFolderId) {
+			RobroyFolder.addEditControls();
+		}
+
+		RobroyApi.request({
+			url: window.ROBROY.args.apiPath + '?type=folders',
+			callback: (response) => {
+				window.ROBROY.folders = response.data;
+
+				var $parentInput = document.getElementById('robroy-create-folder-parent');
+				if ($parentInput) {
+					RobroyFolder.addFolderOptions('create', $parentInput);
+				}
+
+				$parentInput = document.getElementById('robroy-edit-folder-parent');
+				if ($parentInput) {
+					RobroyFolder.addFolderOptions('edit', $parentInput);
+				}
+			},
+		});
 	}
 
 	static handleLogout() {

@@ -16,6 +16,16 @@ class UtilitiesTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testNameToSlug() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testPathToName() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testResizeFile() : void
 	{
 		$this->markTestIncomplete();

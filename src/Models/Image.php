@@ -10,43 +10,52 @@ use Jlbelanger\Robroy\Helpers\Utilities;
 
 class Image
 {
-	private $path;
+	private $id;
 
 	private $thumbnailPath;
 
 	/**
-	 * @param string $path Eg. 'foo.jpg'.
+	 * @param string $id Eg. 'foo/bar.jpg'.
 	 */
-	public function __construct(string $path)
+	public function __construct(string $id)
 	{
-		$this->path = $path;
-		$this->thumbnailPath = Constant::get('THUMBNAILS_FOLDER') . '/' . $path;
+		$this->id = $id;
+
+		$pos = strrpos($id, '/');
+		if ($pos === false) {
+			$this->thumbnailPath = Constant::get('THUMBNAILS_FOLDER') . '/' . $id;
+		} else {
+			$this->thumbnailPath = substr($id, 0, $pos + 1) . Constant::get('THUMBNAILS_FOLDER') . substr($id, $pos);
+		}
 	}
 
 	/**
 	 * Returns all images.
 	 *
+	 * @param  string $parentPath
 	 * @return Image[]
 	 */
-	public static function all() : array
+	public static function all(string $parentPath) : array
 	{
 		$images = [];
-		$uploadsPath = Constant::get('UPLOADS_PATH');
+		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parentPath;
 		if (!is_dir($uploadsPath)) {
-			throw new ApiException('Path "' . $uploadsPath . '" does not exist on the server.');
+			throw new ApiException('This folder does not exist.', 404);
 		}
 
+		// TODO: Move to filesystem helper.
 		if ($handle = opendir($uploadsPath)) {
 			while (($filename = readdir($handle)) !== false) {
 				$path = $uploadsPath . '/' . $filename;
 				if (strpos($filename, '.') === 0 || is_dir($path)) {
 					continue;
 				}
-				$image = new self($filename);
+				$fullFilename = $parentPath ? $parentPath . '/' . $filename : $filename;
+				$image = new self($fullFilename);
 				if (!$image->thumbnailAbsolutePath()) {
 					continue;
 				}
-				$images[$filename] = $image;
+				$images[$fullFilename] = $image;
 			}
 
 			closedir($handle);
@@ -57,12 +66,13 @@ class Image
 	}
 
 	/**
-	 * @param  string  $name     Eg. 'foo.jpg'.
+	 * @param  string  $folder   Eg. 'foo'.
+	 * @param  string  $name     Eg. 'bar.jpg'.
 	 * @param  string  $tempPath Eg. '/tmp/phpHp00pt'.
 	 * @param  integer $error
 	 * @return Image
 	 */
-	public static function upload(string $name, string $tempPath, int $error) : self
+	public static function upload(string $folder, string $name, string $tempPath, int $error) : self
 	{
 		// Check for upload errors.
 		if (empty($tempPath) || !empty($error)) {
@@ -91,7 +101,7 @@ class Image
 		$newFilename = Utilities::cleanFilename($tempPath, $name, $fileType);
 
 		// Move the image.
-		$newPath = Constant::get('UPLOADS_PATH') . '/' . $newFilename;
+		$newPath = Constant::get('UPLOADS_PATH') . '/' . ($folder ? $folder . '/' : '') . $newFilename;
 		if (file_exists($newPath)) {
 			throw new ApiException('File "' . $newFilename . '" already exists.');
 		}
@@ -101,19 +111,19 @@ class Image
 
 		// Create thumbnail and resize original.
 		try {
-			Utilities::createThumbnailFile($newFilename, $originalWidth, $originalHeight, $fileType);
+			Utilities::createThumbnailFile($folder, $newFilename, $originalWidth, $originalHeight, $fileType);
 
 			$maxWidth = Constant::get('FULL_IMAGE_MAX_WIDTH');
 			if ($maxWidth && $originalWidth > $maxWidth) {
-				Utilities::resizeFile($newFilename, $maxWidth, $originalWidth, $originalHeight, $fileType, true);
+				Utilities::resizeFile($folder, $newFilename, $maxWidth, $originalWidth, $originalHeight, $fileType, true);
 			}
 		} catch (Exception $e) {
-			Filesystem::deleteFile($newFilename);
-			Filesystem::deleteFile(Constant::get('THUMBNAILS_FOLDER') . '/' . $newFilename);
+			Filesystem::deleteFile(($folder ? $folder . '/' : '') . $newFilename);
+			Filesystem::deleteFile(($folder ? $folder . '/' : '') . Constant::get('THUMBNAILS_FOLDER') . '/' . $newFilename);
 			throw $e;
 		}
 
-		return new self($newFilename);
+		return new self(($folder ? $folder . '/' : '') . $newFilename);
 	}
 
 	/**
@@ -123,7 +133,7 @@ class Image
 	 */
 	public function delete() : void
 	{
-		Filesystem::deleteFile($this->path);
+		Filesystem::deleteFile($this->id);
 		Filesystem::deleteFile($this->thumbnailPath);
 	}
 
@@ -146,13 +156,13 @@ class Image
 	{
 		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
 		return [
-			'id' => $this->path,
+			'id' => $this->id,
 			'type' => 'images',
 			'attributes' => [
 				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
 				'thumbnailHeight' => $height,
 				'thumbnailWidth'  => $width,
-				'url'             => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->path,
+				'url'             => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->id,
 			],
 		];
 	}

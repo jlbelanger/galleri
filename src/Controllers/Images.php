@@ -15,7 +15,8 @@ class Images
 	 */
 	public static function get() : array
 	{
-		$images = Image::all();
+		$parent = !empty($_GET['parent']) ? $_GET['parent'] : '';
+		$images = Image::all($parent);
 		$page = !empty($_GET['page']) ? $_GET['page'] : null;
 		$number = !empty($page['number']) ? (int) $page['number'] : 1;
 		$size = !empty($page['size']) ? (int) $page['size'] : 10;
@@ -30,6 +31,7 @@ class Images
 	 */
 	public static function post() : array
 	{
+		$folder = !empty($_POST['folder']) ? $_POST['folder'] : '';
 		$num = count($_FILES['upload']['name']);
 		$images = [];
 
@@ -38,7 +40,7 @@ class Images
 			$tempPath = $_FILES['upload']['tmp_name'][$i];
 			$error = $_FILES['upload']['error'][$i];
 
-			$image = Image::upload($name, $tempPath, $error);
+			$image = Image::upload($folder, $name, $tempPath, $error);
 			$images[] = $image->json();
 		}
 

@@ -27,6 +27,7 @@
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
 		<exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound" />
 		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+		<exclude name="Generic.NamingConventions.AbstractClassNamePrefix.Missing" />
 		<exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
 		<exclude name="Generic.PHP.RequireStrictTypes.MissingDeclaration" />
 		<exclude name="Generic.PHP.UpperCaseConstant.Found" />

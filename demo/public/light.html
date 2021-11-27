@@ -46,10 +46,17 @@
 
 			// Optional. If you want something to happen after an image has been added or removed from the grid, use a callback function.
 			callbacks: {
+				afterCreateImage: () => { refreshFsLightbox(); },
+				afterCreateFolder: () => {},
 				afterDeleteImage: () => { refreshFsLightbox(); },
+				afterDeleteFolder: () => {},
+				afterEditFolder: () => {},
 				afterLoadImage: () => { refreshFsLightbox(); },
-				afterUploadImage: () => { refreshFsLightbox(); },
+				afterLoadFolder: () => {},
 			},
+
+			// Optional.
+			metaTitleSeparator: ' | ',
 
 			// Optional. The number of images to load each time the user reaches the end of the list.
 			pageSize: 8,

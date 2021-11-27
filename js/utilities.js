@@ -41,4 +41,9 @@ export default class RobroyUtilities {
 	static propertyExists(object, property) {
 		return Object.prototype.hasOwnProperty.call(object, property);
 	}
+
+	static setMetaTitle(title) {
+		var elem = document.querySelector('title');
+		elem.innerText = title + window.ROBROY.args.metaTitleSeparator + elem.innerText;
+	}
 }

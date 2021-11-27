@@ -8,6 +8,11 @@ use Tests\TestCase;
 
 class FilesystemTest extends TestCase
 {
+	public function testCreateFolder() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function deleteFileProvider() : array
 	{
 		return [
@@ -56,5 +61,25 @@ class FilesystemTest extends TestCase
 			$this->expectNotToPerformAssertions();
 		}
 		Filesystem::deleteFile(...array_values($args['args']));
+	}
+
+	public function testDeleteFolder() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testIsEmpty() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testGetFoldersInFolder() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testRenameFolder() : void
+	{
+		$this->markTestIncomplete();
 	}
 }

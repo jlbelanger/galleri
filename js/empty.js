@@ -9,7 +9,7 @@ export default class RobroyEmpty {
 		}
 		window.ROBROY.container.appendChild(p);
 
-		window.ROBROY.list.style.display = 'none';
+		window.ROBROY.imageList.style.display = 'none';
 	}
 
 	static hide() {
@@ -18,14 +18,26 @@ export default class RobroyEmpty {
 			elem.parentNode.removeChild(elem);
 		}
 
-		window.ROBROY.list.style.display = '';
+		window.ROBROY.imageList.style.display = '';
 	}
 
-	static getFigures() {
-		return document.querySelectorAll('#robroy-list > figure');
+	static isEmpty() {
+		return window.ROBROY.imageList.style.display === 'none' && document.getElementById('robroy-folders').style.display === 'none';
 	}
 
-	static hasFigures() {
-		return RobroyEmpty.getFigures().length > 0;
+	static getImages() {
+		return document.querySelectorAll('#robroy-images > figure');
+	}
+
+	static getFolders() {
+		return document.querySelectorAll('#robroy-folders > li');
+	}
+
+	static hasImages() {
+		return RobroyEmpty.getImages().length > 0;
+	}
+
+	static hasFolders() {
+		return RobroyEmpty.getFolders().length > 0;
 	}
 }

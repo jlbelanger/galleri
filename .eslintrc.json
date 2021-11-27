@@ -1,12 +1,17 @@
 {
 	"env": {
 		"browser": true,
-		"jquery": true
+		"jest": true
 	},
 	"extends": [
 		"airbnb-base"
 	],
-	"globals": {},
+	"globals": {
+		"after": "readonly",
+		"before": "readonly",
+		"cy": "readonly",
+		"Cypress": "readonly"
+	},
 	"rules": {
 		"func-names": 0,
 		"indent": ["error", "tab"],

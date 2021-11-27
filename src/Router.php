@@ -75,6 +75,24 @@ class Router
 				'Jlbelanger\Robroy\Controllers\Images',
 				'delete',
 			],
+
+			'GET folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'get',
+			],
+			'POST folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'post',
+			],
+			'PUT folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'put',
+			],
+			'DELETE folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'delete',
+			],
+
 			'POST sessions' => [
 				'Jlbelanger\Robroy\Controllers\Sessions',
 				'post',

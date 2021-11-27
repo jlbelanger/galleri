@@ -18,14 +18,14 @@ export default class RobroyApi {
 
 			var response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {
-				RobroyModal.show('Error: The sever returned a ' + req.status + ' error.');
+				RobroyModal.show('Error: The server returned a ' + req.status + ' error.');
 				return;
 			}
 			if (response && !args.noParse) {
 				try {
 					response = JSON.parse(response);
 				} catch (e) {
-					RobroyModal.show('Error: The sever returned a non-JSON response.');
+					RobroyModal.show('Error: The server returned a non-JSON response.');
 					return;
 				}
 
@@ -39,6 +39,12 @@ export default class RobroyApi {
 			args.callback(response, req.status);
 		};
 		req.open(args.method, args.url, true);
-		req.send(args.formData);
+
+		if (args.json) {
+			req.setRequestHeader('Content-Type', 'application/json');
+			req.send(args.json);
+		} else {
+			req.send(args.formData);
+		}
 	}
 }
