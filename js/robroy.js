@@ -13,6 +13,7 @@ export default class Robroy {
 		args.metaTitleSeparator = args.metaTitleSeparator || ' | ';
 		args.pageNumber = 0;
 		args.pageSize = args.pageSize || 8;
+		args.rootFolderName = args.rootFolderName || 'Home';
 		args.selector = args.selector || '#robroy';
 		this.args = args;
 

@@ -47,7 +47,8 @@ describe('index', () => {
 				// No meta title.
 				cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: No breadcrumb.
+				// Does not show the breadcrumb.
+				cy.get('.robroy-breadcrumb').should('not.exist');
 
 				// Does not show the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('not.exist');
@@ -84,7 +85,8 @@ describe('index', () => {
 				// No meta title.
 				cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: No breadcrumb.
+				// Does not show the breadcrumb.
+				cy.get('.robroy-breadcrumb').should('not.exist');
 
 				// Does not show the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('not.exist');
@@ -121,7 +123,8 @@ describe('index', () => {
 				// No meta title.
 				cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: No breadcrumb.
+				// Does not show the breadcrumb.
+				cy.get('.robroy-breadcrumb').should('not.exist');
 
 				// Does not show the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('not.exist');
@@ -158,7 +161,8 @@ describe('index', () => {
 				// No meta title.
 				cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: No breadcrumb.
+				// Does not show the breadcrumb.
+				cy.get('.robroy-breadcrumb').should('not.exist');
 
 				// Does not show the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('not.exist');
@@ -205,7 +209,8 @@ describe('index', () => {
 				// Sets the meta title.
 				cy.title().should('eq', 'Folders Only | Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: Shows the breadcrumb.
+				// Shows the breadcrumb. TODO: Check content.
+				cy.get('.robroy-breadcrumb').should('be.visible');
 
 				// Shows the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('be.visible');
@@ -244,7 +249,8 @@ describe('index', () => {
 				// Sets the meta title.
 				cy.title().should('eq', 'Images Only | Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: Shows the breadcrumb.
+				// Shows the breadcrumb. TODO: Check content.
+				cy.get('.robroy-breadcrumb').should('be.visible');
 
 				// Shows the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('be.visible');
@@ -295,7 +301,8 @@ describe('index', () => {
 				// Sets the meta title.
 				cy.title().should('eq', 'Images And Folders | Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: Shows the breadcrumb.
+				// Shows the breadcrumb. TODO: Check content.
+				cy.get('.robroy-breadcrumb').should('be.visible');
 
 				// Shows the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('be.visible');
@@ -348,7 +355,8 @@ describe('index', () => {
 				// Sets the meta title.
 				cy.title().should('eq', 'No Images Or Folders | Robroy Photo Gallery Demo - Dark Theme');
 
-				// TODO: Shows the breadcrumb.
+				// Shows the breadcrumb. TODO: Check content.
+				cy.get('.robroy-breadcrumb').should('be.visible');
 
 				// Shows the edit folder form.
 				cy.get('#robroy-edit-folder-form').should('be.visible');
@@ -419,6 +427,8 @@ describe('index', () => {
 		});
 
 		describe('when it is a subfolder', () => {
+			// it.todo('shows the breadcrumb');
+
 			describe('when deleting the folder', () => {
 				// it.todo('redirects to the parent folder');
 			});

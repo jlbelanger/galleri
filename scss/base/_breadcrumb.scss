@@ -1,0 +1,20 @@
+.robroy-breadcrumb {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	margin: $padding-mobile;
+	padding: 0;
+
+	@media screen and (min-width: $breakpoint) {
+		margin: $padding-desktop;
+	}
+}
+
+.robroy-breadcrumb-item + .robroy-breadcrumb-item {
+	&::before {
+		color: $dark;
+		content: '\203a'; // &rsaquo;
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+}

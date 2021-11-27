@@ -1,5 +1,6 @@
 import RobroyApi from './api';
 import RobroyAuth from './auth';
+import RobroyBreadcrumb from './breadcrumb';
 import RobroyEmpty from './empty';
 import RobroyFolder from './folder';
 import RobroyImage from './image';
@@ -15,6 +16,10 @@ export default class RobroyList {
 			url: window.ROBROY.args.apiPath + '?type=folders&id=' + window.ROBROY.currentFolderId,
 			callback: (response) => {
 				window.ROBROY.currentFolder = response.data;
+
+				if (window.ROBROY.currentFolderId !== '') {
+					RobroyBreadcrumb.init();
+				}
 
 				if (response.data.attributes.name) {
 					RobroyUtilities.setMetaTitle(response.data.attributes.name);
