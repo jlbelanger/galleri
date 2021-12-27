@@ -8,9 +8,9 @@
 		"gulp-postcss": "^9.0.1",
 		"gulp-rename": "^2.0.0",
 		"gulp-sass": "^5.0.0",
+		"jlbelanger-robroy": "jlbelanger/robroy#master",
 		"node-sass": "^7.0.0",
-		"normalize.css": "^8.0.1",
-		"jlbelanger-robroy": "jlbelanger/robroy#master"
+		"normalize.css": "^8.0.1"
 	},
 	"scripts": {
 		"build": "node_modules/.bin/gulp css",
