@@ -23,6 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
 Cypress.Commands.add('setUploadPath', (folder) => {
 	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/${folder}|" demo/.env`);

@@ -179,6 +179,12 @@ export default class RobroyFolder {
 			|| (!response.data.relationships.parent && !window.ROBROY.currentFolderId)
 		) {
 			RobroyFolder.prependItems([response.data]);
+			document.getElementById('robroy-folders').style.display = '';
+
+			var $deleteFolder = document.getElementById('robroy-delete-folder');
+			if ($deleteFolder) {
+				$deleteFolder.style.display = 'none';
+			}
 		}
 
 		document.getElementById('robroy-create-folder-name').value = '';

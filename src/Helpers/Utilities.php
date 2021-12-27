@@ -34,7 +34,7 @@ class Utilities
 		}
 
 		if (empty($date)) {
-			$date = date('Y-m-d-H-i-s');
+			return $filename;
 		}
 
 		return $date . '-' . $filename;
