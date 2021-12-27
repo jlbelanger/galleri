@@ -40,8 +40,6 @@ class Image
 		return Filesystem::getFilesInFolder($parent);
 	}
 
-	// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
-
 	/**
 	 * @param  string  $folder   Eg. 'foo'.
 	 * @param  string  $name     Eg. 'bar.jpg'.
@@ -51,24 +49,7 @@ class Image
 	 */
 	public static function upload(string $folder, string $name, string $tempPath, int $error) : self
 	{
-		// Check for upload errors.
-		if (empty($tempPath) || !empty($error)) {
-			$errors = [
-				UPLOAD_ERR_INI_SIZE => 'the file is too large (max: ' . ini_get('upload_max_filesize') . ').',
-				UPLOAD_ERR_FORM_SIZE => 'the file is too large.',
-				UPLOAD_ERR_PARTIAL => 'the file was only partially uploaded.',
-				UPLOAD_ERR_NO_FILE => 'no file was uploaded.',
-				UPLOAD_ERR_NO_TMP_DIR => 'temporary folder is missing.',
-				UPLOAD_ERR_CANT_WRITE => 'the file could not be written to disk.',
-				UPLOAD_ERR_EXTENSION => 'a PHP extension stopped the file upload.',
-			];
-			if (!empty($errors[$error])) {
-				$error = $errors[$error];
-			} else {
-				$error = 'code ' . $error;
-			}
-			throw new ApiException('File "' . $name . '" could not be uploaded: ' . $error);
-		}
+		self::validateUpload($name, $tempPath, $error);
 
 		// Get the new filename.
 		list($originalWidth, $originalHeight, $fileType) = getimagesize($tempPath);
@@ -103,7 +84,33 @@ class Image
 		return new self(($folder ? $folder . '/' : '') . $newFilename);
 	}
 
-	// phpcs:enable Generic.Metrics.CyclomaticComplexity.TooHigh
+	/**
+	 * @param  string  $name     Eg. 'bar.jpg'.
+	 * @param  string  $tempPath Eg. '/tmp/phpHp00pt'.
+	 * @param  integer $error
+	 * @return void
+	 */
+	protected static function validateUpload(string $name, string $tempPath, int $error) : void
+	{
+		// Check for upload errors.
+		if (empty($tempPath) || !empty($error)) {
+			$errors = [
+				UPLOAD_ERR_INI_SIZE => 'the file is too large (max: ' . ini_get('upload_max_filesize') . ').',
+				UPLOAD_ERR_FORM_SIZE => 'the file is too large.',
+				UPLOAD_ERR_PARTIAL => 'the file was only partially uploaded.',
+				UPLOAD_ERR_NO_FILE => 'no file was uploaded.',
+				UPLOAD_ERR_NO_TMP_DIR => 'temporary folder is missing.',
+				UPLOAD_ERR_CANT_WRITE => 'the file could not be written to disk.',
+				UPLOAD_ERR_EXTENSION => 'a PHP extension stopped the file upload.',
+			];
+			if (!empty($errors[$error])) {
+				$error = $errors[$error];
+			} else {
+				$error = 'code ' . $error;
+			}
+			throw new ApiException('File "' . $name . '" could not be uploaded: ' . $error);
+		}
+	}
 
 	/**
 	 * Deletes an image.
