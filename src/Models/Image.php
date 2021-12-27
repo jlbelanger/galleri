@@ -32,37 +32,12 @@ class Image
 	/**
 	 * Returns all images.
 	 *
-	 * @param  string $parentPath
+	 * @param  string $parent
 	 * @return Image[]
 	 */
-	public static function all(string $parentPath) : array
+	public static function all(string $parent) : array
 	{
-		$images = [];
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parentPath;
-		if (!is_dir($uploadsPath)) {
-			throw new ApiException('This folder does not exist.', 404);
-		}
-
-		// TODO: Move to filesystem helper.
-		if ($handle = opendir($uploadsPath)) {
-			while (($filename = readdir($handle)) !== false) {
-				$path = $uploadsPath . '/' . $filename;
-				if (strpos($filename, '.') === 0 || is_dir($path)) {
-					continue;
-				}
-				$fullFilename = $parentPath ? $parentPath . '/' . $filename : $filename;
-				$image = new self($fullFilename);
-				if (!$image->thumbnailAbsolutePath()) {
-					continue;
-				}
-				$images[$fullFilename] = $image;
-			}
-
-			closedir($handle);
-		}
-
-		ksort($images);
-		return array_reverse(array_values($images));
+		return Filesystem::getFilesInFolder($parent);
 	}
 
 	// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh

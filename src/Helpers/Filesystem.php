@@ -5,6 +5,7 @@ namespace Jlbelanger\Robroy\Helpers;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Models\Folder;
+use Jlbelanger\Robroy\Models\Image;
 
 class Filesystem
 {
@@ -89,31 +90,72 @@ class Filesystem
 	 * @param  string $parent
 	 * @return array
 	 */
-	public static function getFoldersInFolder(string $parent) : array
+	public static function getFilesInFolder(string $parent) : array
 	{
-		$uploadsPath = Constant::get('UPLOADS_PATH');
+		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 		if (!is_dir($uploadsPath)) {
 			throw new ApiException('This folder does not exist.', 404);
 		}
 
 		$output = [];
 
-		if ($handle = opendir($uploadsPath . '/' . $parent)) {
-			while (($folderName = readdir($handle)) !== false) {
-				$fullPath = trim($parent . '/' . $folderName, '/');
-				if (!is_dir($uploadsPath . '/' . $fullPath) || strpos($folderName, '.') === 0 || $folderName === Constant::get('THUMBNAILS_FOLDER')) {
+		if ($handle = opendir($uploadsPath)) {
+			while (($filename = readdir($handle)) !== false) {
+				if (strpos($filename, '.') === 0 || is_dir($uploadsPath . '/' . $filename)) {
 					continue;
 				}
 
-				$folder = new Folder($fullPath);
-				$output[$fullPath] = $folder->json();
-				$output = array_merge($output, self::getFoldersInFolder($fullPath));
+				$fullPath = trim($parent . '/' . $filename, '/');
+				$image = new Image($fullPath);
+				if (!$image->thumbnailAbsolutePath()) {
+					continue;
+				}
+				$output[$fullPath] = $image;
 			}
 
 			closedir($handle);
 		}
 
-		return $output;
+		ksort($output);
+		return array_reverse(array_values($output));
+	}
+
+	/**
+	 * @param  string  $parent
+	 * @param  boolean $isRecursive
+	 * @return array
+	 */
+	public static function getFoldersInFolder(string $parent, bool $isRecursive = false) : array
+	{
+		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
+		if (!is_dir($uploadsPath)) {
+			throw new ApiException('This folder does not exist.', 404);
+		}
+
+		$output = [];
+
+		if ($handle = opendir($uploadsPath)) {
+			while (($folderName = readdir($handle)) !== false) {
+				if (strpos($folderName, '.') === 0
+					|| $folderName === Constant::get('THUMBNAILS_FOLDER')
+					|| !is_dir($uploadsPath . '/' . $folderName)
+				) {
+					continue;
+				}
+
+				$fullPath = trim($parent . '/' . $folderName, '/');
+				$folder = new Folder($fullPath);
+				$output[$fullPath] = $folder->json();
+				if ($isRecursive) {
+					$output = array_merge($output, self::getFoldersInFolder($fullPath, $isRecursive));
+				}
+			}
+
+			closedir($handle);
+		}
+
+		ksort($output);
+		return array_values($output);
 	}
 
 	/**

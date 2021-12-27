@@ -26,7 +26,7 @@ class Folder
 	 */
 	public static function all() : array
 	{
-		$folders = Filesystem::getFoldersInFolder('');
+		$folders = Filesystem::getFoldersInFolder('', true);
 		ksort($folders);
 		return array_values($folders);
 	}
@@ -34,33 +34,12 @@ class Folder
 	/**
 	 * Returns all folders under the parent.
 	 *
-	 * @param  string $parentPath
+	 * @param  string $parent
 	 * @return Folder[]
 	 */
-	public static function allInParent(string $parentPath) : array
+	public static function allInParent(string $parent) : array
 	{
-		$folders = [];
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parentPath;
-		if (!is_dir($uploadsPath)) {
-			throw new ApiException('This folder does not exist.', 404);
-		}
-
-		// TODO: Move to filesystem helper.
-		if ($handle = opendir($uploadsPath)) {
-			while (($folderName = readdir($handle)) !== false) {
-				$path = $uploadsPath . '/' . $folderName;
-				if (!is_dir($path) || strpos($folderName, '.') === 0 || $folderName === Constant::get('THUMBNAILS_FOLDER')) {
-					continue;
-				}
-				$folder = new self($parentPath . '/' . $folderName);
-				$folders[$path] = $folder->json();
-			}
-
-			closedir($handle);
-		}
-
-		ksort($folders);
-		return array_values($folders);
+		return Filesystem::getFoldersInFolder($parent);
 	}
 
 	/**
