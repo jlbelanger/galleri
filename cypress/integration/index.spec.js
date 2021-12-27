@@ -992,7 +992,7 @@ describe('index', () => {
 				// Shows the create folder form.
 				cy.get('#robroy-create-folder-form').should('be.visible');
 				cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Subfolder');
+				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only > Subfolder');
 
 				// Shows the create image form.
 				cy.get('#robroy-create-image-form').should('be.visible');

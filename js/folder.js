@@ -108,7 +108,7 @@ export default class RobroyFolder {
 		window.ROBROY.folders.forEach(function (folder) {
 			option = document.createElement('option');
 			option.setAttribute('value', folder.id);
-			option.innerText = folder.attributes.name;
+			option.innerText = RobroyFolder.getFullName(folder);
 			if (type === 'create') {
 				if (folder.id === window.ROBROY.currentFolderId) {
 					option.setAttribute('selected', 'selected');
@@ -244,5 +244,14 @@ export default class RobroyFolder {
 		items.forEach((item) => {
 			window.ROBROY.folderList.prepend(RobroyFolder.element(item));
 		});
+	}
+
+	static getFullName(folder) {
+		const output = [folder.attributes.name];
+		while (folder.relationships.parent) {
+			folder = folder.relationships.parent;
+			output.push(folder.attributes.name);
+		}
+		return output.reverse().join(' > ');
 	}
 }
