@@ -51,24 +51,80 @@ class FilesystemTest extends TestCase
 	 */
 	public function testDeleteFile(array $args) : void
 	{
-		foreach ($args['mocks'] as $function => $value) {
-			$this->addMock('Jlbelanger\Robroy\Helpers', $function, $value);
-		}
+		self::setupTest($args);
+
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
 			$this->expectExceptionMessage($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
+
 		Filesystem::deleteFile(...array_values($args['args']));
 	}
 
-	public function testDeleteFolder() : void
+	public function deleteFolderProvider() : array
+	{
+		return [
+			'when the folder does not exist' => [[
+				'args' => [
+					'path' => 'does-not-exist',
+				],
+				'mocks' => [
+					'rmdir' => true,
+					'unlink' => true,
+				],
+			]],
+			'when the file exists and rmdir fails' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'rmdir' => false,
+					'unlink' => true,
+				],
+				'expectedMessage' => 'Folder "foo" could not be deleted.',
+			]],
+			'when the file exists and rmdir is successful' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'rmdir' => true,
+					'unlink' => true,
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider deleteFolderProvider
+	 */
+	public function testDeleteFolder(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::deleteFolder(...array_values($args['args']));
+	}
+
+	public function testFolderExists() : void
 	{
 		$this->markTestIncomplete();
 	}
 
 	public function testIsEmpty() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testGetFilesInFolder() : void
 	{
 		$this->markTestIncomplete();
 	}

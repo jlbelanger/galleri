@@ -4,6 +4,8 @@ namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Api;
+use Jlbelanger\Robroy\Helpers\Input;
+use Jlbelanger\Robroy\Models\Folder;
 use Jlbelanger\Robroy\Models\Image;
 
 class Images
@@ -15,11 +17,12 @@ class Images
 	 */
 	public static function get() : array
 	{
-		$parent = !empty($_GET['parent']) ? $_GET['parent'] : '';
+		$parent = Input::get('parent');
+		Folder::validateId($parent, 'Invalid parent.');
 		$images = Image::all($parent);
-		$page = !empty($_GET['page']) ? $_GET['page'] : null;
-		$number = !empty($page['number']) ? (int) $page['number'] : 1;
-		$size = !empty($page['size']) ? (int) $page['size'] : 10;
+		$page = Input::get('page', null);
+		$number = (int) Input::get('number', 1);
+		$size = (int) Input::get('size', 10);
 
 		return Api::paginate($images, $number, $size);
 	}
@@ -31,14 +34,15 @@ class Images
 	 */
 	public static function post() : array
 	{
-		$folder = !empty($_POST['folder']) ? $_POST['folder'] : '';
+		$folder = Input::post('folder');
+		Folder::validateId($folder, 'Invalid folder.');
 		$num = count($_FILES['upload']['name']);
 		$images = [];
 
 		for ($i = 0; $i < $num; $i++) {
-			$name = $_FILES['upload']['name'][$i];
-			$tempPath = $_FILES['upload']['tmp_name'][$i];
-			$error = $_FILES['upload']['error'][$i];
+			$name = Input::file('upload', 'name', $i);
+			$tempPath = Input::file('upload', 'tmp_name', $i);
+			$error = Input::file('upload', 'error', $i, FILTER_SANITIZE_NUMBER_INT);
 
 			$image = Image::upload($folder, $name, $tempPath, $error);
 			$images[] = $image->json();
@@ -54,10 +58,11 @@ class Images
 	 */
 	public static function delete() : void
 	{
-		$path = !empty($_GET['path']) ? $_GET['path'] : null;
+		$path = Input::get('path');
 		if (!$path) {
 			throw new ApiException('No path specified.');
 		}
+		Image::validateId($path);
 
 		$image = new Image($path);
 		$image->delete();

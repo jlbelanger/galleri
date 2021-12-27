@@ -26,4 +26,25 @@ abstract class TestCase extends BaseTestCase
 		$mock->enable();
 		$this->mocks[] = $mock;
 	}
+
+	protected function setupTest(array $args) : void
+	{
+		if (!empty($args['variables']['_GET'])) {
+			$_GET = $args['variables']['_GET'];
+		} else {
+			$_GET = [];
+		}
+
+		if (!empty($args['variables']['_POST'])) {
+			$_POST = $args['variables']['_POST'];
+		} else {
+			$_POST = [];
+		}
+
+		if (!empty($args['mocks'])) {
+			foreach ($args['mocks'] as $function => $value) {
+				$this->addMock('Jlbelanger\Robroy\Helpers', $function, $value);
+			}
+		}
+	}
 }

@@ -2,6 +2,7 @@
 
 namespace Jlbelanger\Robroy\Helpers;
 
+use Jlbelanger\Robroy\Helpers\Input;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 
 class Constant
@@ -14,8 +15,8 @@ class Constant
 	 */
 	public static function get(string $key)
 	{
-		if (array_key_exists($key, $_ENV)) {
-			return $_ENV[$key];
+		if (Input::hasEnv($key)) {
+			return Input::env($key);
 		}
 
 		$defaults = [
@@ -36,7 +37,7 @@ class Constant
 	 */
 	public static function verify(string $key) : void
 	{
-		if (!array_key_exists($key, $_ENV)) {
+		if (!Input::hasEnv($key)) {
 			throw new ApiException('Environment variable "' . $key . '" is not set.');
 		}
 	}

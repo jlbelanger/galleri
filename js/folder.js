@@ -123,24 +123,24 @@ export default class RobroyFolder {
 	}
 
 	static delete() {
-		var path = window.ROBROY.currentFolderId;
+		var id = window.ROBROY.currentFolderId;
 		RobroyModal.show(
-			'Are you sure you want to delete the folder "' + path + '"?',
+			'Are you sure you want to delete the folder "' + id + '"?',
 			{
 				closeButtonText: 'Delete',
 				closeButtonClass: 'robroy-button--danger',
 				showCancel: true,
 				callback: () => {
-					RobroyFolder.deleteCallback(path);
+					RobroyFolder.deleteCallback(id);
 				},
 			},
 		);
 	}
 
-	static deleteCallback(path) {
+	static deleteCallback(id) {
 		RobroyApi.request({
 			method: 'DELETE',
-			url: window.ROBROY.args.apiPath + '?type=folders&path=' + path,
+			url: window.ROBROY.args.apiPath + '?type=folders&id=' + id,
 			callback: () => {
 				RobroyUtilities.callback('afterDeleteFolder');
 

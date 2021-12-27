@@ -4,6 +4,8 @@ namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Models\Folder;
+use Jlbelanger\Robroy\Helpers\Filesystem;
+use Jlbelanger\Robroy\Helpers\Input;
 use Jlbelanger\Robroy\Helpers\Utilities;
 
 class Folders
@@ -15,10 +17,12 @@ class Folders
 	 */
 	public static function get() : array
 	{
-		if (array_key_exists('id', $_GET)) {
-			$folder = new Folder($_GET['id']);
+		if (Input::hasGet('id')) {
+			$id = Input::get('id');
+			Folder::validateId($id);
+			$folder = new Folder($id);
 			$output = ['data' => $folder->json()];
-			$output['data']['relationships']['folders'] = Folder::allInParent($_GET['id']);
+			$output['data']['relationships']['folders'] = Folder::allInParent($id);
 			return $output;
 		}
 
@@ -38,7 +42,10 @@ class Folders
 	 */
 	public static function post() : array
 	{
-		$folder = Folder::create($_POST['name'], $_POST['parent']);
+		$name = Input::post('name');
+		$parent = Input::post('parent');
+		Folder::validateId($parent, 'Invalid parent.');
+		$folder = Folder::create($name, $parent);
 
 		return ['data' => $folder->json()];
 	}
@@ -50,10 +57,31 @@ class Folders
 	 */
 	public static function put() : array
 	{
-		$folder = new Folder($_GET['id']);
+		$id = Input::get('id');
+		if (!$id) {
+			throw new ApiException('No ID specified.');
+		}
+		Folder::validateId($id);
 
-		$body = file_get_contents('php://input');
-		$input = json_decode($body);
+		$input = Input::json();
+		if (empty($input->name)) {
+			throw new ApiException('No name specified.');
+		}
+		if (!isset($input->parent)) {
+			$input->parent = '';
+		}
+		Folder::validateId($input->parent, 'Invalid parent.');
+		if (!Filesystem::folderExists($input->parent)) {
+			throw new ApiException('Invalid parent.');
+		}
+		if ($input->parent === $id) {
+			throw new ApiException('Cannot set parent to itself.');
+		}
+		if (strpos($input->parent, $id) === 0) {
+			throw new ApiException('Cannot set parent to a descendant.');
+		}
+
+		$folder = new Folder($id);
 		$newName = trim($input->parent . '/' . Utilities::nameToSlug($input->name), '/');
 		$folder->rename($newName);
 
@@ -67,12 +95,13 @@ class Folders
 	 */
 	public static function delete() : void
 	{
-		$path = !empty($_GET['path']) ? $_GET['path'] : null;
-		if (!$path) {
-			throw new ApiException('No path specified.');
+		$id = Input::get('id');
+		if (!$id) {
+			throw new ApiException('No ID specified.');
 		}
+		Folder::validateId($id);
 
-		$folder = new Folder($path);
+		$folder = new Folder($id);
 		$folder->delete();
 	}
 }

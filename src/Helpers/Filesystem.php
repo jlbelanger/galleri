@@ -53,7 +53,7 @@ class Filesystem
 	{
 		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
 		if (!file_exists($fullPath)) {
-			throw new ApiException('Folder "' . $path . '" does not exist.');
+			return;
 		}
 		if (!self::isEmpty($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" is not empty, so it could not be deleted.', 500);
@@ -64,6 +64,17 @@ class Filesystem
 		if (!rmdir($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" could not be deleted.', 500);
 		}
+	}
+
+	/**
+	 * Returns true if folder exists.
+	 *
+	 * @param  string $path
+	 * @return boolean
+	 */
+	public static function folderExists(string $path) : bool
+	{
+		return is_dir(Constant::get('UPLOADS_PATH') . '/' . $path);
 	}
 
 	/**

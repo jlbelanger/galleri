@@ -4,6 +4,7 @@ namespace Jlbelanger\Robroy;
 
 use Exception;
 use Jlbelanger\Robroy\Helpers\Constant;
+use Jlbelanger\Robroy\Helpers\Input;
 
 class Router
 {
@@ -18,8 +19,8 @@ class Router
 			Constant::verify('UPLOADS_PATH');
 
 			$routes = self::routes();
-			$method = !empty($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
-			$type = !empty($_GET['type']) ? $_GET['type'] : '';
+			$method = Input::server('REQUEST_METHOD');
+			$type = Input::get('type');
 			$route = $method . ' ' . $type;
 
 			if (!empty($routes[$route])) {

@@ -152,4 +152,19 @@ class Image
 			],
 		];
 	}
+
+	/**
+	 * @param  string $id
+	 * @param  string $message
+	 * @return void
+	 */
+	public static function validateId(string $id, string $message = 'Invalid filename.') : void
+	{
+		if ($id === '') {
+			return;
+		}
+		if (!preg_match('/^[a-z0-9\.\/-]+$/', $id) || trim($id, '/') !== $id) {
+			throw new ApiException($message);
+		}
+	}
 }

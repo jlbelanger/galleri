@@ -40,4 +40,9 @@ class FolderTest extends TestCase
 	{
 		$this->markTestIncomplete();
 	}
+
+	public function testValidateId() : void
+	{
+		$this->markTestIncomplete();
+	}
 }

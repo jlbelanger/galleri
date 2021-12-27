@@ -16,12 +16,27 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testValidateUpload() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testDelete() : void
 	{
 		$this->markTestIncomplete();
 	}
 
+	public function testThumbnailAbsolutePath() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testJson() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testValidateId() : void
 	{
 		$this->markTestIncomplete();
 	}

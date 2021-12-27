@@ -111,4 +111,25 @@ class Folder
 			],
 		];
 	}
+
+	/**
+	 * @param  string $id
+	 * @param  string $message
+	 * @return void
+	 */
+	public static function validateId(string $id, string $message = 'Invalid folder.') : void
+	{
+		if ($id === '') {
+			return;
+		}
+		if (trim($id, '/') !== $id) {
+			throw new ApiException($message);
+		}
+		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
+			throw new ApiException($message);
+		}
+		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
+			throw new ApiException($message);
+		}
+	}
 }
