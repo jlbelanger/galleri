@@ -99,7 +99,8 @@ You'll also need a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
 require_once realpath(__DIR__ . '/../vendor/autoload.php');
 
 // Optional: You can set the environment variables another way if you choose.
-$dotenv = Dotenv\Dotenv::create(realpath(__DIR__ . '/../'));
+// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
+$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
 $dotenv->load();
 
 Jlbelanger\Robroy\Router::load();

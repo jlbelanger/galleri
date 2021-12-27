@@ -3,7 +3,7 @@ const cssnano = require('cssnano');
 const gulp = require('gulp');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('node-sass'));
 
 function css() {
 	return gulp.src(['./scss/*.scss'])
@@ -16,6 +16,7 @@ function css() {
 gulp.task('default', () => {
 	css();
 	gulp.watch([
+		'scss/*.scss',
 		'scss/**/*.scss',
 		'node_modules/jlbelanger-robroy/scss/**/*.scss',
 	], css);

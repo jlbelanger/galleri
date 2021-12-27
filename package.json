@@ -12,30 +12,6 @@
 		"type": "git",
 		"url": "https://github.com/jlbelanger/robroy.git"
 	},
-	"dependencies": {
-		"normalize.css": "^8.0.1"
-	},
-	"devDependencies": {
-		"autoprefixer": "^9.8.0",
-		"cssnano": "^4.1.10",
-		"cypress": "^9.1.0",
-		"eslint": "^7.16.0",
-		"eslint-config-airbnb-base": "^14.2.1",
-		"eslint-plugin-import": "^2.22.1",
-		"gulp": "^4.0.2",
-		"gulp-cli": "^2.3.0",
-		"gulp-livereload": "^4.0.2",
-		"gulp-postcss": "^8.0.0",
-		"gulp-rename": "^2.0.0",
-		"gulp-sass": "^4.1.0",
-		"sass-lint": "^1.13.1",
-		"stylelint": "^13.8.0",
-		"stylelint-config-standard-scss": "^1.1.0",
-		"stylelint-order": "^4.1.0",
-		"stylelint-scss": "^3.18.0",
-		"webpack": "^5.11.0",
-		"webpack-cli": "^4.2.0"
-	},
 	"scripts": {
 		"build": "yarn build:css && yarn build:js && node_modules/.bin/gulp dist:css && node_modules/.bin/gulp dist:js",
 		"build:css": "node_modules/.bin/gulp css",
@@ -49,5 +25,30 @@
 		"watch": "yarn watch:css && yarn watch:js",
 		"watch:css": "node_modules/.bin/gulp",
 		"watch:js": "node_modules/.bin/webpack --config webpack-dev.config.js"
+	},
+	"dependencies": {
+		"normalize.css": "^8.0.1"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.4.0",
+		"cssnano": "^5.0.14",
+		"cypress": "^9.2.0",
+		"eslint": "^8.5.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.3",
+		"gulp": "^4.0.2",
+		"gulp-cli": "^2.3.0",
+		"gulp-livereload": "^4.0.2",
+		"gulp-postcss": "^9.0.1",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^5.0.0",
+		"node-sass": "^7.0.0",
+		"sass-lint": "^1.13.1",
+		"stylelint": "^14.2.0",
+		"stylelint-config-standard-scss": "^3.0.0",
+		"stylelint-order": "^5.0.0",
+		"stylelint-scss": "^4.1.0",
+		"webpack": "^5.65.0",
+		"webpack-cli": "^4.9.1"
 	}
 }
