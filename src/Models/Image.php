@@ -65,6 +65,8 @@ class Image
 		return array_reverse(array_values($images));
 	}
 
+	// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+
 	/**
 	 * @param  string  $folder   Eg. 'foo'.
 	 * @param  string  $name     Eg. 'bar.jpg'.
@@ -125,6 +127,8 @@ class Image
 
 		return new self(($folder ? $folder . '/' : '') . $newFilename);
 	}
+
+	// phpcs:enable Generic.Metrics.CyclomaticComplexity.TooHigh
 
 	/**
 	 * Deletes an image.
