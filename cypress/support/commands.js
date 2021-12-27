@@ -27,3 +27,10 @@
 Cypress.Commands.add('setUploadPath', (folder) => {
 	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/${folder}|" demo/.env`);
 });
+
+Cypress.Commands.add('resetFiles', () => {
+	cy.exec('mkdir -p cypress/fixtures/current');
+	cy.exec('rm -r cypress/fixtures/current');
+	cy.exec('mkdir cypress/fixtures/current');
+	cy.exec('cp -r cypress/fixtures/original/* cypress/fixtures/current');
+});

@@ -90,6 +90,7 @@ export default class RobroyFolder {
 
 		var button = document.createElement('button');
 		button.setAttribute('class', 'robroy-button');
+		button.setAttribute('id', 'robroy-' + type + '-submit');
 		button.setAttribute('type', 'submit');
 		button.innerText = title;
 		form.appendChild(button);
@@ -173,9 +174,10 @@ export default class RobroyFolder {
 	}
 
 	static createCallback(response) {
-		RobroyEmpty.hide();
-
-		if (response.data.relationships.parent && response.data.relationships.parent.id === window.ROBROY.currentFolderId) {
+		if (
+			(response.data.relationships.parent && response.data.relationships.parent.id === window.ROBROY.currentFolderId)
+			|| (!response.data.relationships.parent && !window.ROBROY.currentFolderId)
+		) {
 			RobroyFolder.prependItems([response.data]);
 		}
 
@@ -189,6 +191,19 @@ export default class RobroyFolder {
 		var name = document.getElementById('robroy-edit-folder-name');
 		if (!name.value) {
 			RobroyModal.show('Error: Please enter a name.');
+			return;
+		}
+
+		var parent = document.getElementById('robroy-edit-folder-parent');
+		var hasNameChanged = name.value !== window.ROBROY.currentFolder.attributes.name;
+		var hasParentChanged;
+		if (window.ROBROY.currentFolder.relationships.parent) {
+			hasParentChanged = parent.value !== window.ROBROY.currentFolder.relationships.parent.id;
+		} else {
+			hasParentChanged = !!parent.value;
+		}
+		if (!hasNameChanged && !hasParentChanged) {
+			RobroyModal.show('Nothing to update.');
 			return;
 		}
 
