@@ -81,8 +81,8 @@ class Folders
 			throw new ApiException('Cannot set parent to a descendant.');
 		}
 
-		$folder = new Folder($id);
 		$newName = trim($input->parent . '/' . Utilities::nameToSlug($input->name), '/');
+		$folder = new Folder($id);
 		$folder->rename($newName);
 
 		return ['data' => $folder->json()];

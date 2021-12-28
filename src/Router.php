@@ -72,6 +72,10 @@ class Router
 				'Jlbelanger\Robroy\Controllers\Images',
 				'post',
 			],
+			'PUT images' => [
+				'Jlbelanger\Robroy\Controllers\Images',
+				'put',
+			],
 			'DELETE images' => [
 				'Jlbelanger\Robroy\Controllers\Images',
 				'delete',

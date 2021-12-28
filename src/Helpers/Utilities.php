@@ -4,7 +4,6 @@ namespace Jlbelanger\Robroy\Helpers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
-use imagick;
 
 class Utilities
 {
@@ -234,16 +233,16 @@ class Utilities
 
 			if (!empty($exif['Orientation'])) {
 				switch ($exif['Orientation']) {
-					case imagick::ORIENTATION_BOTTOMRIGHT:
+					case 3:
 						$src = imagerotate($src, 180, 0);
 						break;
 
-					case imagick::ORIENTATION_RIGHTTOP:
+					case 6:
 						$swap = true;
 						$src = imagerotate($src, -90, 0);
 						break;
 
-					case imagick::ORIENTATION_LEFTBOTTOM:
+					case 8:
 						$swap = true;
 						$src = imagerotate($src, 90, 0);
 						break;

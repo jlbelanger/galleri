@@ -39,7 +39,9 @@ class Folder
 	 */
 	public static function allInParent(string $parent) : array
 	{
-		return Filesystem::getFoldersInFolder($parent);
+		$folders = Filesystem::getFoldersInFolder($parent);
+		ksort($folders);
+		return array_values($folders);
 	}
 
 	/**

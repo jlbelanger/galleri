@@ -56,6 +56,10 @@ export default class RobroyList {
 		RobroyApi.request({
 			url: url,
 			callback: (response) => {
+				response.data.forEach((image) => {
+					window.ROBROY.currentImages[image.id] = image;
+				});
+
 				RobroyList.appendImages(response.data);
 				window.ROBROY.grid.resizeAllItems();
 

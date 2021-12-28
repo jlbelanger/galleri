@@ -4,7 +4,9 @@ namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Api;
+use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
+use Jlbelanger\Robroy\Helpers\Utilities;
 use Jlbelanger\Robroy\Models\Folder;
 use Jlbelanger\Robroy\Models\Image;
 
@@ -49,6 +51,42 @@ class Images
 		}
 
 		return ['data' => $images];
+	}
+
+	/**
+	 * Updates an existing folder.
+	 *
+	 * @return array
+	 */
+	public static function put() : array
+	{
+		$id = Input::get('id');
+		if (!$id) {
+			throw new ApiException('No ID specified.');
+		}
+		Image::validateId($id);
+
+		$input = Input::json();
+		if (empty($input->filename)) {
+			throw new ApiException('No filename specified.');
+		}
+		if (strpos($input->filename, '/') !== false) {
+			throw new ApiException('Filename cannot contain slashes.');
+		}
+		Image::validateId($input->filename);
+		if (!isset($input->folder)) {
+			$input->folder = '';
+		}
+		Folder::validateId($input->folder, 'Invalid folder.');
+		if (!Filesystem::folderExists($input->folder)) {
+			throw new ApiException('Invalid folder.');
+		}
+
+		$newName = trim($input->folder . '/' . $input->filename, '/');
+		$image = new Image($id);
+		$image->rename($newName);
+
+		return ['data' => $image->json()];
 	}
 
 	/**

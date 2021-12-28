@@ -8,6 +8,15 @@ export default class RobroyUtilities {
 		});
 	}
 
+	static addError(input, message) {
+		input.classList.add('robroy-has-error');
+
+		const error = document.createElement('span');
+		error.setAttribute('class', 'robroy-error');
+		error.innerText = message;
+		input.after(error);
+	}
+
 	static callback(name) {
 		if (!window.ROBROY.args.callbacks[name]) {
 			return;

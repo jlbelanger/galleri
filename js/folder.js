@@ -132,6 +132,7 @@ export default class RobroyFolder {
 				showCancel: true,
 				callback: () => {
 					RobroyFolder.deleteCallback(id);
+					RobroyModal.hide();
 				},
 			},
 		);

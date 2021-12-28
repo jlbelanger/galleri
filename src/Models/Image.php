@@ -5,6 +5,7 @@ namespace Jlbelanger\Robroy\Models;
 use Exception;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
+use Jlbelanger\Robroy\Helpers\Exif;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Utilities;
 
@@ -20,13 +21,7 @@ class Image
 	public function __construct(string $id)
 	{
 		$this->id = $id;
-
-		$pos = strrpos($id, '/');
-		if ($pos === false) {
-			$this->thumbnailPath = Constant::get('THUMBNAILS_FOLDER') . '/' . $id;
-		} else {
-			$this->thumbnailPath = substr($id, 0, $pos + 1) . Constant::get('THUMBNAILS_FOLDER') . substr($id, $pos);
-		}
+		$this->thumbnailPath = $this->getThumbnailPath($id);
 	}
 
 	/**
@@ -124,6 +119,33 @@ class Image
 	}
 
 	/**
+	 * @param  string $newId Eg. 'foo/bar.jpg'.
+	 * @return void
+	 */
+	public function rename(string $newId) : void
+	{
+		if ($this->id !== $newId) {
+			Filesystem::renameFile($this->id, $newId);
+			Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+			$this->id = $newId;
+			$this->thumbnailPath = $this->getThumbnailPath($newId);
+		}
+	}
+
+	/**
+	 * @param  string $id
+	 * @return string
+	 */
+	protected static function getThumbnailPath(string $id) : string
+	{
+		$pos = strrpos($id, '/');
+		if ($pos === false) {
+			return Constant::get('THUMBNAILS_FOLDER') . '/' . $id;
+		}
+		return substr($id, 0, $pos + 1) . Constant::get('THUMBNAILS_FOLDER') . substr($id, $pos);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function thumbnailAbsolutePath() : string
@@ -141,10 +163,16 @@ class Image
 	public function json() : array
 	{
 		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
+
+		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
+		$pathinfo = pathinfo($this->id);
+
 		return [
 			'id' => $this->id,
 			'type' => 'images',
 			'attributes' => [
+				'filename'        => $pathinfo['basename'],
+				'folder'          => $pathinfo['dirname'],
 				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
 				'thumbnailHeight' => $height,
 				'thumbnailWidth'  => $width,
@@ -163,7 +191,7 @@ class Image
 		if ($id === '') {
 			return;
 		}
-		if (!preg_match('/^[a-z0-9\.\/-]+$/', $id) || trim($id, '/') !== $id) {
+		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id) || trim($id, '/') !== $id) {
 			throw new ApiException($message);
 		}
 	}

@@ -14,12 +14,15 @@
 	&:focus {
 		background-color: $button-background-color-hover;
 	}
+
+	.robroy-figure & {
+		position: relative;
+	}
 }
 
 .robroy-button--danger {
 	background-color: $button-danger-background-color;
 	color: $button-danger-text-color;
-	position: relative;
 
 	&:hover,
 	&:active,

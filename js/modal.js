@@ -20,6 +20,8 @@ export default class RobroyModal {
 		text.setAttribute('class', 'robroy-modal-text');
 		if (args.html) {
 			text.innerHTML = message;
+		} else if (args.append) {
+			text.appendChild(message);
 		} else {
 			text.innerText = message;
 		}
@@ -33,9 +35,10 @@ export default class RobroyModal {
 
 			if (!args.hideClose) {
 				var callback = (e) => {
-					RobroyModal.hide(e);
 					if (RobroyUtilities.propertyExists(args, 'callback')) {
 						args.callback(e);
+					} else {
+						RobroyModal.hide(e);
 					}
 				};
 
@@ -44,6 +47,12 @@ export default class RobroyModal {
 				closeButton.setAttribute('type', 'button');
 				closeButton.setAttribute('class', ('robroy-button ' + args.closeButtonClass).trim());
 				closeButton.setAttribute('data-id', id);
+				closeButton.setAttribute('data-robroy-modal-close', '');
+				if (args.closeButtonAttributes) {
+					Object.keys(args.closeButtonAttributes).forEach((property) => {
+						closeButton.setAttribute(property, args.closeButtonAttributes[property]);
+					});
+				}
 				closeButton.innerText = args.closeButtonText;
 				closeButton.addEventListener('click', callback);
 				optionsParagraph.appendChild(closeButton);
@@ -72,13 +81,20 @@ export default class RobroyModal {
 
 	static keydownListener(e) {
 		if (e.keyCode === 27) { // ESC
-			RobroyModal.hide({ target: document.getElementById('robroy-modal-close') });
+			RobroyModal.hide();
 			document.removeEventListener('keydown', RobroyModal.keydownListener);
 		}
 	}
 
 	static hide(e) {
-		var container = document.getElementById(e.target.getAttribute('data-id'));
+		let target;
+		if (e && e.target) {
+			target = e.target;
+		} else {
+			target = document.querySelector('[data-robroy-modal-close]');
+		}
+
+		const container = document.getElementById(target.getAttribute('data-id'));
 		container.parentNode.removeChild(container);
 
 		if (window.ROBROY.activeElement) {

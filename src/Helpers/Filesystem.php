@@ -165,8 +165,17 @@ class Filesystem
 			closedir($handle);
 		}
 
-		ksort($output);
-		return array_values($output);
+		return $output;
+	}
+
+	/**
+	 * @param  string $oldPath
+	 * @param  string $newPath
+	 * @return void
+	 */
+	public static function renameFile(string $oldPath, string $newPath) : void
+	{
+		self::rename($oldPath, $newPath, 'File');
 	}
 
 	/**
@@ -176,18 +185,29 @@ class Filesystem
 	 */
 	public static function renameFolder(string $oldPath, string $newPath) : void
 	{
+		self::rename($oldPath, $newPath, 'Folder');
+	}
+
+	/**
+	 * @param  string $oldPath
+	 * @param  string $newPath
+	 * @param  string $type
+	 * @return void
+	 */
+	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder') : void
+	{
 		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
 		if (!file_exists($fullOldPath)) {
-			throw new ApiException('Folder "' . $oldPath . '" does not exist.');
+			throw new ApiException($type . ' "' . $oldPath . '" does not exist.');
 		}
 
 		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (file_exists($fullNewPath)) {
-			throw new ApiException('Folder "' . $newPath . '" already exists.');
+			throw new ApiException($type . ' "' . $newPath . '" already exists.');
 		}
 
 		if (!rename($fullOldPath, $fullNewPath)) {
-			throw new ApiException('Folder "' . $oldPath . '" could not be moved to "' . $newPath . '".', 500);
+			throw new ApiException($type . ' "' . $oldPath . '" could not be moved to "' . $newPath . '".', 500);
 		}
 	}
 }

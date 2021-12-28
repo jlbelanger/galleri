@@ -39,6 +39,8 @@ export default class Robroy {
 		this.imageList = imageList;
 		this.currentFolderId = currentFolderId || '';
 		this.currentFolder = null;
+		this.currentImage = null;
+		this.currentImages = {};
 		this.folders = [];
 	}
 
