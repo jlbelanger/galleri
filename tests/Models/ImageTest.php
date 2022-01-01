@@ -26,6 +26,16 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testRename() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testGetThumbnailPath() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testThumbnailAbsolutePath() : void
 	{
 		$this->markTestIncomplete();

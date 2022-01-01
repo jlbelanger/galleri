@@ -134,6 +134,11 @@ class FilesystemTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testRenameFile() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testRenameFolder() : void
 	{
 		$this->markTestIncomplete();

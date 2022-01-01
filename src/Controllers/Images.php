@@ -6,7 +6,6 @@ use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Api;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
-use Jlbelanger\Robroy\Helpers\Utilities;
 use Jlbelanger\Robroy\Models\Folder;
 use Jlbelanger\Robroy\Models\Image;
 

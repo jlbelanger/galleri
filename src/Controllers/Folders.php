@@ -43,8 +43,14 @@ class Folders
 	public static function post() : array
 	{
 		$name = Input::post('name');
+		if (empty($name)) {
+			throw new ApiException('No name specified.');
+		}
 		$parent = Input::post('parent');
 		Folder::validateId($parent, 'Invalid parent.');
+		if (!Filesystem::folderExists($parent)) {
+			throw new ApiException('Invalid parent.');
+		}
 		$folder = Folder::create($name, $parent);
 
 		return ['data' => $folder->json()];

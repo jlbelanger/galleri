@@ -8,14 +8,167 @@ use Tests\TestCase;
 
 class FoldersTest extends TestCase
 {
+	protected function setUp() : void
+	{
+		parent::setUp();
+		self::createDirectory(realpath(__DIR__ . '/../assets/bar'));
+		self::createDirectory(realpath(__DIR__ . '/../assets/foo'));
+		self::createDirectory(realpath(__DIR__ . '/../assets/parent'));
+		self::createDirectory(realpath(__DIR__ . '/../assets/parent/child'));
+	}
+
 	public function testGet() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testPost() : void
+	public function postProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when name is not set' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'expectedMessage' => 'No name specified.',
+			]],
+			'when name is an empty string' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => ['name' => ''],
+				],
+				'expectedMessage' => 'No name specified.',
+			]],
+			'when name is the same as THUMBNAILS_FOLDER' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => ['name' => 'Thumbnails'],
+				],
+				'expectedMessage' => 'Invalid name.',
+			]],
+			'when name is valid, parent is not set' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => ['name' => 'New Folder'],
+				],
+			]],
+			'when name is valid, parent is empty' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => '',
+					],
+				],
+			]],
+			'when name is valid, parent has a leading slash' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => '/foo',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent has a trailing slash' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => '/foo',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent has a invalid characters' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => '..',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => 'thumbnails',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent ends in THUMBNAILS_FOLDER' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => 'foo/thumbnails',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent does not exist' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => 'does-not-exist',
+					],
+				],
+				'expectedMessage' => 'Invalid parent.',
+			]],
+			'when name is valid, parent is valid' => [[
+				'mocks' => [
+					'mkdir' => true,
+				],
+				'variables' => [
+					'_POST' => [
+						'name' => 'New Folder',
+						'parent' => 'foo',
+					],
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider postProvider
+	 */
+	public function testPost(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Folders::post();
 	}
 
 	public function putProvider() : array

@@ -52,6 +52,9 @@ class Folder
 	public static function create(string $name, string $parentPath = '') : self
 	{
 		$slug = Utilities::nameToSlug($name);
+		if ($slug === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException('Invalid name.');
+		}
 		$path = $parentPath ? $parentPath . '/' . $slug : $slug;
 
 		Filesystem::createFolder($path);

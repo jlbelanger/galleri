@@ -15,6 +15,13 @@ abstract class TestCase extends BaseTestCase
 		}
 	}
 
+	protected function createDirectory(string $path) : void
+	{
+		if (!is_dir($path)) {
+			mkdir($path);
+		}
+	}
+
 	protected function addMock(string $namespace, string $fn, $value) : void
 	{
 		$builder = new \phpmock\MockBuilder();
