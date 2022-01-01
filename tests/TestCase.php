@@ -17,6 +17,7 @@ abstract class TestCase extends BaseTestCase
 
 	protected function createDirectory(string $path) : void
 	{
+		$path = __DIR__ . '/' . $path;
 		if (!is_dir($path)) {
 			mkdir($path);
 		}

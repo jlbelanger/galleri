@@ -8,13 +8,13 @@ use Tests\TestCase;
 
 class FoldersTest extends TestCase
 {
-	protected function setUp() : void
+	public static function setUpBeforeClass() : void
 	{
-		parent::setUp();
-		self::createDirectory(realpath(__DIR__ . '/../assets/bar'));
-		self::createDirectory(realpath(__DIR__ . '/../assets/foo'));
-		self::createDirectory(realpath(__DIR__ . '/../assets/parent'));
-		self::createDirectory(realpath(__DIR__ . '/../assets/parent/child'));
+		parent::setUpBeforeClass();
+		self::createDirectory('assets/bar');
+		self::createDirectory('assets/foo');
+		self::createDirectory('assets/parent');
+		self::createDirectory('assets/parent/child');
 	}
 
 	public function testGet() : void
