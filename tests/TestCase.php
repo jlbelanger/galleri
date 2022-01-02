@@ -16,21 +16,19 @@ abstract class TestCase extends BaseTestCase
 		$this->mocks = [];
 	}
 
-	protected function createDirectory(string $path) : void
-	{
-		$path = __DIR__ . '/' . $path;
-		if (!is_dir($path)) {
-			mkdir($path);
-		}
-	}
-
 	protected function addMock(string $namespace, string $fn, $value) : void
 	{
 		$builder = new \phpmock\MockBuilder();
-		$valueFn = new \phpmock\functions\FixedValueFunction($value);
 		$builder->setNamespace($namespace)
-				->setName($fn)
-				->setFunctionProvider($valueFn);
+				->setName($fn);
+
+		if (is_callable($value)) {
+			$builder->setFunction($value);
+		} else {
+			$valueFn = new \phpmock\functions\FixedValueFunction($value);
+			$builder->setFunctionProvider($valueFn);
+		}
+
 		$mock = $builder->build();
 		$mock->enable();
 		$this->mocks[] = $mock;
@@ -50,11 +48,38 @@ abstract class TestCase extends BaseTestCase
 			$_POST = [];
 		}
 
-		if (!empty($args['mocks'])) {
-			foreach ($args['mocks'] as $class => $functions) {
-				foreach ($functions as $function => $value) {
-					$this->addMock($class, $function, $value);
-				}
+		$mocks = [
+			'Jlbelanger\Robroy\Helpers' => [
+				'file_exists' => function ($path) {
+					return strpos($path, 'does-not-exist') === false;
+				},
+				'is_dir' => function ($path) {
+					return strpos($path, 'does-not-exist') === false;
+				},
+				'copy' => true,
+				'mkdir' => true,
+				'move_uploaded_file' => true,
+				'opendir' => false,
+				'rename' => true,
+				'rmdir' => true,
+				'unlink' => true,
+			],
+			'Jlbelanger\Robroy\Models' => [
+				'getimagesize' => [500, 500], // phpcs:disable Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
+				'file_exists' => function ($path) {
+					return strpos($path, 'does-not-exist') === false;
+				},
+			],
+		];
+		if (!empty($args['mocks']['Jlbelanger\Robroy\Helpers'])) {
+			$mocks['Jlbelanger\Robroy\Helpers'] = array_merge($mocks['Jlbelanger\Robroy\Helpers'], $args['mocks']['Jlbelanger\Robroy\Helpers']);
+		}
+		if (!empty($args['mocks']['Jlbelanger\Robroy\Models'])) {
+			$mocks['Jlbelanger\Robroy\Models'] = array_merge($mocks['Jlbelanger\Robroy\Models'], $args['mocks']['Jlbelanger\Robroy\Models']);
+		}
+		foreach ($mocks as $class => $functions) {
+			foreach ($functions as $function => $value) {
+				$this->addMock($class, $function, $value);
 			}
 		}
 

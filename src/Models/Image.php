@@ -54,11 +54,11 @@ class Image
 		$newFilename = Utilities::cleanFilename($tempPath, $name, $fileType);
 
 		// Move the image.
-		$newPath = Constant::get('UPLOADS_PATH') . '/' . ($folder ? $folder . '/' : '') . $newFilename;
-		if (file_exists($newPath)) {
+		$newPath = ($folder ? $folder . '/' : '') . $newFilename;
+		if (Filesystem::fileExists($newPath)) {
 			throw new ApiException('File "' . $newFilename . '" already exists.');
 		}
-		if (!move_uploaded_file($tempPath, $newPath)) {
+		if (!Filesystem::moveFile($tempPath, $newPath)) {
 			throw new ApiException('File "' . $newFilename . '" could not be moved.', 500);
 		}
 
@@ -150,11 +150,10 @@ class Image
 	 */
 	public function thumbnailAbsolutePath() : string
 	{
-		$thumbnailPath = Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
-		if (!file_exists($thumbnailPath)) {
+		if (!Filesystem::fileExists($this->thumbnailPath)) {
 			return '';
 		}
-		return $thumbnailPath;
+		return $this->thumbnailPath;
 	}
 
 	/**

@@ -8,6 +8,11 @@ use Tests\TestCase;
 
 class FilesystemTest extends TestCase
 {
+	public function testCopyFile() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testCreateFolder() : void
 	{
 		$this->markTestIncomplete();
@@ -22,8 +27,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
-						'unlink' => true,
 						'file_exists' => false,
+						'unlink' => true,
 					],
 				],
 				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
@@ -34,8 +39,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
-						'unlink' => false,
 						'file_exists' => true,
+						'unlink' => false,
 					],
 				],
 				'expectedMessage' => 'File "example.png" could not be deleted.',
@@ -46,8 +51,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
-						'unlink' => true,
 						'file_exists' => true,
+						'unlink' => true,
 					],
 				],
 				'expected' => true,
@@ -81,8 +86,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => false,
 						'rmdir' => true,
-						'unlink' => true,
 					],
 				],
 			]],
@@ -92,8 +97,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
 						'rmdir' => false,
-						'unlink' => true,
 					],
 				],
 				'expectedMessage' => 'Folder "foo" could not be deleted.',
@@ -104,8 +109,8 @@ class FilesystemTest extends TestCase
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
 						'rmdir' => true,
-						'unlink' => true,
 					],
 				],
 			]],
@@ -129,6 +134,11 @@ class FilesystemTest extends TestCase
 		Filesystem::deleteFolder(...array_values($args['args']));
 	}
 
+	public function testFileExists() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testFolderExists() : void
 	{
 		$this->markTestIncomplete();
@@ -145,6 +155,11 @@ class FilesystemTest extends TestCase
 	}
 
 	public function testGetFoldersInFolder() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testMoveFile() : void
 	{
 		$this->markTestIncomplete();
 	}

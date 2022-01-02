@@ -78,7 +78,7 @@ class Folders
 		if (isset($input->parent)) {
 			Folder::validateId($input->parent, 'Invalid parent.');
 			if (!Filesystem::folderExists($input->parent)) {
-				throw new ApiException('Invalid parent.');
+				throw new ApiException('Folder "' . $input->parent . '" does not exist.');
 			}
 			if ($input->parent === $id) {
 				throw new ApiException('Cannot set parent to itself.');

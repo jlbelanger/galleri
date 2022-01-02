@@ -10,6 +10,18 @@ use Jlbelanger\Robroy\Models\Image;
 class Filesystem
 {
 	/**
+	 * Returns true if folder exists.
+	 *
+	 * @param  string $oldPath
+	 * @param  string $newPath
+	 * @return boolean
+	 */
+	public static function copyFile(string $oldPath, string $newPath) : bool
+	{
+		return copy($oldPath, $newPath);
+	}
+
+	/**
 	 * Creates a folder in the file system.
 	 *
 	 * @param  string $path
@@ -64,6 +76,17 @@ class Filesystem
 		if (!rmdir($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" could not be deleted.', 500);
 		}
+	}
+
+	/**
+	 * Returns true if file exists.
+	 *
+	 * @param  string $path
+	 * @return boolean
+	 */
+	public static function fileExists(string $path) : bool
+	{
+		return file_exists(Constant::get('UPLOADS_PATH') . '/' . $path);
 	}
 
 	/**
@@ -166,6 +189,16 @@ class Filesystem
 		}
 
 		return $output;
+	}
+
+	/**
+	 * @param  string $oldPath
+	 * @param  string $newPath
+	 * @return boolean
+	 */
+	public static function moveFile(string $oldPath, string $newPath) : bool
+	{
+		return move_uploaded_file($oldPath, Constant::get('UPLOADS_PATH') . '/' . $newPath);
 	}
 
 	/**
