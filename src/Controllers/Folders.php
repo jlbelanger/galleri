@@ -47,9 +47,11 @@ class Folders
 			throw new ApiException('No name specified.');
 		}
 		$parent = Input::post('parent');
-		Folder::validateId($parent, 'Invalid parent.');
-		if (!Filesystem::folderExists($parent)) {
-			throw new ApiException('Invalid parent.');
+		if ($parent) {
+			Folder::validateId($parent, 'Invalid parent.');
+			if (!Filesystem::folderExists($parent)) {
+				throw new ApiException('Invalid parent.');
+			}
 		}
 		$folder = Folder::create($name, $parent);
 
@@ -73,18 +75,19 @@ class Folders
 		if (empty($input->name)) {
 			throw new ApiException('No name specified.');
 		}
-		if (!isset($input->parent)) {
+		if (isset($input->parent)) {
+			Folder::validateId($input->parent, 'Invalid parent.');
+			if (!Filesystem::folderExists($input->parent)) {
+				throw new ApiException('Invalid parent.');
+			}
+			if ($input->parent === $id) {
+				throw new ApiException('Cannot set parent to itself.');
+			}
+			if (strpos($input->parent, $id) === 0) {
+				throw new ApiException('Cannot set parent to a descendant.');
+			}
+		} else {
 			$input->parent = '';
-		}
-		Folder::validateId($input->parent, 'Invalid parent.');
-		if (!Filesystem::folderExists($input->parent)) {
-			throw new ApiException('Invalid parent.');
-		}
-		if ($input->parent === $id) {
-			throw new ApiException('Cannot set parent to itself.');
-		}
-		if (strpos($input->parent, $id) === 0) {
-			throw new ApiException('Cannot set parent to a descendant.');
 		}
 
 		$newName = trim($input->parent . '/' . Utilities::nameToSlug($input->name), '/');

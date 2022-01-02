@@ -15,17 +15,17 @@ class FilesystemTest extends TestCase
 
 	public function deleteFileProvider() : array
 	{
-		$mocks = [
-			'Jlbelanger\Robroy\Helpers' => [
-				'unlink' => true,
-			],
-		];
 		return [
 			'when the file does not exist' => [[
 				'args' => [
 					'filename' => 'does-not-exist.png',
 				],
-				'mocks' => $mocks,
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'unlink' => true,
+						'file_exists' => false,
+					],
+				],
 				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
 			]],
 			'when the file exists and unlink fails' => [[
@@ -35,6 +35,7 @@ class FilesystemTest extends TestCase
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'unlink' => false,
+						'file_exists' => true,
 					],
 				],
 				'expectedMessage' => 'File "example.png" could not be deleted.',
@@ -43,7 +44,12 @@ class FilesystemTest extends TestCase
 				'args' => [
 					'filename' => 'example.png',
 				],
-				'mocks' => $mocks,
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'unlink' => true,
+						'file_exists' => true,
+					],
+				],
 				'expected' => true,
 			]],
 		];
