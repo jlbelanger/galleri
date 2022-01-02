@@ -15,14 +15,17 @@ class FilesystemTest extends TestCase
 
 	public function deleteFileProvider() : array
 	{
+		$mocks = [
+			'Jlbelanger\Robroy\Helpers' => [
+				'unlink' => true,
+			],
+		];
 		return [
 			'when the file does not exist' => [[
 				'args' => [
 					'filename' => 'does-not-exist.png',
 				],
-				'mocks' => [
-					'unlink' => true,
-				],
+				'mocks' => $mocks,
 				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
 			]],
 			'when the file exists and unlink fails' => [[
@@ -30,7 +33,9 @@ class FilesystemTest extends TestCase
 					'filename' => 'example.png',
 				],
 				'mocks' => [
-					'unlink' => false,
+					'Jlbelanger\Robroy\Helpers' => [
+						'unlink' => false,
+					],
 				],
 				'expectedMessage' => 'File "example.png" could not be deleted.',
 			]],
@@ -38,9 +43,7 @@ class FilesystemTest extends TestCase
 				'args' => [
 					'filename' => 'example.png',
 				],
-				'mocks' => [
-					'unlink' => true,
-				],
+				'mocks' => $mocks,
 				'expected' => true,
 			]],
 		];
@@ -71,8 +74,10 @@ class FilesystemTest extends TestCase
 					'path' => 'does-not-exist',
 				],
 				'mocks' => [
-					'rmdir' => true,
-					'unlink' => true,
+					'Jlbelanger\Robroy\Helpers' => [
+						'rmdir' => true,
+						'unlink' => true,
+					],
 				],
 			]],
 			'when the file exists and rmdir fails' => [[
@@ -80,8 +85,10 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'rmdir' => false,
-					'unlink' => true,
+					'Jlbelanger\Robroy\Helpers' => [
+						'rmdir' => false,
+						'unlink' => true,
+					],
 				],
 				'expectedMessage' => 'Folder "foo" could not be deleted.',
 			]],
@@ -90,8 +97,10 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'rmdir' => true,
-					'unlink' => true,
+					'Jlbelanger\Robroy\Helpers' => [
+						'rmdir' => true,
+						'unlink' => true,
+					],
 				],
 			]],
 		];

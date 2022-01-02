@@ -191,7 +191,10 @@ class Image
 		if ($id === '') {
 			return;
 		}
-		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id) || trim($id, '/') !== $id) {
+		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id) || trim($id, '/') !== $id || trim($id, '.') !== $id) {
+			throw new ApiException($message);
+		}
+		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
 			throw new ApiException($message);
 		}
 	}

@@ -10,9 +10,10 @@ abstract class TestCase extends BaseTestCase
 
 	protected function tearDown() : void
 	{
-		foreach ($this->mocks as $mock) {
+		foreach ($this->mocks as $i => $mock) {
 			$mock->disable();
 		}
+		$this->mocks = [];
 	}
 
 	protected function createDirectory(string $path) : void
@@ -50,9 +51,15 @@ abstract class TestCase extends BaseTestCase
 		}
 
 		if (!empty($args['mocks'])) {
-			foreach ($args['mocks'] as $function => $value) {
-				$this->addMock('Jlbelanger\Robroy\Helpers', $function, $value);
+			foreach ($args['mocks'] as $class => $functions) {
+				foreach ($functions as $function => $value) {
+					$this->addMock($class, $function, $value);
+				}
 			}
+		}
+
+		if (array_key_exists('body', $args)) {
+			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', $args['body']);
 		}
 	}
 }

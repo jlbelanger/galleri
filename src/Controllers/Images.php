@@ -63,7 +63,7 @@ class Images
 		if (!$id) {
 			throw new ApiException('No ID specified.');
 		}
-		Image::validateId($id);
+		Image::validateId($id, 'Invalid ID.');
 
 		$input = Input::json();
 		if (empty($input->filename)) {
@@ -99,7 +99,7 @@ class Images
 		if (!$path) {
 			throw new ApiException('No path specified.');
 		}
-		Image::validateId($path);
+		Image::validateId($path, 'Invalid path.');
 
 		$image = new Image($path);
 		$image->delete();

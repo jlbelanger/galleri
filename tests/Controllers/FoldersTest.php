@@ -24,43 +24,38 @@ class FoldersTest extends TestCase
 
 	public function postProvider() : array
 	{
+		$mocks = [
+			'Jlbelanger\Robroy\Helpers' => [
+				'mkdir' => true,
+			],
+		];
 		return [
 			'when name is not set' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when name is an empty string' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => ['name' => ''],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when name is the same as THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => ['name' => 'Thumbnails'],
 				],
 				'expectedMessage' => 'Invalid name.',
 			]],
 			'when name is valid, parent is not set' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => ['name' => 'New Folder'],
 				],
 			]],
 			'when name is valid, parent is empty' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -69,9 +64,7 @@ class FoldersTest extends TestCase
 				],
 			]],
 			'when name is valid, parent has a leading slash' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -81,9 +74,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent has a trailing slash' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -93,9 +84,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent has a invalid characters' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -105,9 +94,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -117,9 +104,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent ends in THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -129,9 +114,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent does not exist' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -141,9 +124,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when name is valid, parent is valid' => [[
-				'mocks' => [
-					'mkdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
@@ -173,220 +154,179 @@ class FoldersTest extends TestCase
 
 	public function putProvider() : array
 	{
+		$mocks = [
+			'Jlbelanger\Robroy\Helpers' => [
+				'rename' => true,
+			],
+		];
 		return [
 			'when id is not set' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'expectedMessage' => 'No ID specified.',
 			]],
 			'when id is an empty string' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
 				'expectedMessage' => 'No ID specified.',
 			]],
 			'when id has a leading slash' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => '/foo'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id has a trailing slash' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'foo/'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id has invalid characters' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => '..'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'thumbnails'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'rename' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id is valid, body is not set' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '',
-				],
+				'mocks' => $mocks,
+				'body' => '',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when id is valid, name is empty, parent is not set' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":""}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when id is valid, name is not set, parent is empty' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"parent":""}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"parent":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when id is valid, name is empty, parent is empty' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"","parent":""}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"","parent":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when id is valid, name is empty, parent is set' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"","parent":"foo"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"","parent":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'No name specified.',
 			]],
 			'when id is valid, name is set, parent has a leading slash' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"/bar"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"/bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent has a trailing slash' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"bar/"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"bar/"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent has invalid characters' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":".."}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent is the same as THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"thumbnails"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent ends in THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"bar/thumbnails"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"bar/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent does not exist' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"does-not-exist"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Invalid parent.',
 			]],
 			'when id is valid, name is set, parent is self' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"foo"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Cannot set parent to itself.',
 			]],
 			'when id is valid, name is set, parent is child' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"parent","parent":"parent/child"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"parent","parent":"parent/child"}',
 				'variables' => [
 					'_GET' => ['id' => 'parent'],
 				],
 				'expectedMessage' => 'Cannot set parent to a descendant.',
 			]],
 			'when id is valid, name is valid, parent is not set' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 			]],
 			'when id is valid, name is valid, parent is empty' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":""}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 			]],
 			'when id is valid, name is valid, parent is valid' => [[
-				'mocks' => [
-					'rename' => true,
-					'file_get_contents' => '{"name":"foo","parent":"bar"}',
-				],
+				'mocks' => $mocks,
+				'body' => '{"name":"foo","parent":"bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
@@ -413,79 +353,61 @@ class FoldersTest extends TestCase
 
 	public function deleteProvider() : array
 	{
+		$mocks = [
+			'Jlbelanger\Robroy\Helpers' => [
+				'unlink' => true,
+				'rmdir' => true,
+			],
+		];
 		return [
 			'when id is not set' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'expectedMessage' => 'No ID specified.',
 			]],
 			'when id is an empty string' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
 				'expectedMessage' => 'No ID specified.',
 			]],
 			'when id has a leading slash' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => '/foo'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id has a trailing slash' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'foo/'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id has invalid characters' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => '..'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'thumbnails'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
 				'expectedMessage' => 'Invalid folder.',
 			]],
 			'when id is valid' => [[
-				'mocks' => [
-					'unlink' => true,
-					'rmdir' => true,
-				],
+				'mocks' => $mocks,
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
