@@ -19,7 +19,7 @@ class Folders
 	{
 		if (Input::hasGet('id')) {
 			$id = Input::get('id');
-			Folder::validateId($id);
+			Folder::validateId($id, 'ID');
 			$folder = new Folder($id);
 			$output = ['data' => $folder->json()];
 			$output['data']['relationships']['folders'] = Folder::allInParent($id);
@@ -44,13 +44,13 @@ class Folders
 	{
 		$name = Input::post('name');
 		if (empty($name)) {
-			throw new ApiException('No name specified.');
+			throw new ApiException('Name is required.');
 		}
 		$parent = Input::post('parent');
 		if ($parent) {
-			Folder::validateId($parent, 'Invalid parent.');
+			Folder::validateId($parent, 'Parent');
 			if (!Filesystem::folderExists($parent)) {
-				throw new ApiException('Invalid parent.');
+				throw new ApiException('Parent "' . $parent . '" does not exist.');
 			}
 		}
 		$folder = Folder::create($name, $parent);
@@ -67,24 +67,24 @@ class Folders
 	{
 		$id = Input::get('id');
 		if (!$id) {
-			throw new ApiException('No ID specified.');
+			throw new ApiException('ID is required.');
 		}
-		Folder::validateId($id);
+		Folder::validateId($id, 'ID');
 
 		$input = Input::json();
 		if (empty($input->name)) {
-			throw new ApiException('No name specified.');
+			throw new ApiException('Name is required.');
 		}
 		if (isset($input->parent)) {
-			Folder::validateId($input->parent, 'Invalid parent.');
+			Folder::validateId($input->parent, 'Parent');
 			if (!Filesystem::folderExists($input->parent)) {
-				throw new ApiException('Folder "' . $input->parent . '" does not exist.');
+				throw new ApiException('Parent "' . $input->parent . '" does not exist.');
 			}
 			if ($input->parent === $id) {
-				throw new ApiException('Cannot set parent to itself.');
+				throw new ApiException('Name and parent cannot be the same.');
 			}
 			if (strpos($input->parent, $id) === 0) {
-				throw new ApiException('Cannot set parent to a descendant.');
+				throw new ApiException('Parent cannot be a descendant of name.');
 			}
 		} else {
 			$input->parent = '';
@@ -106,9 +106,9 @@ class Folders
 	{
 		$id = Input::get('id');
 		if (!$id) {
-			throw new ApiException('No ID specified.');
+			throw new ApiException('ID is required.');
 		}
-		Folder::validateId($id);
+		Folder::validateId($id, 'ID');
 
 		$folder = new Folder($id);
 		$folder->delete();

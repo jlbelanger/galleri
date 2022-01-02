@@ -19,7 +19,7 @@ class Images
 	public static function get() : array
 	{
 		$parent = Input::get('parent');
-		Folder::validateId($parent, 'Invalid parent.');
+		Folder::validateId($parent, 'Parent');
 		$images = Image::all($parent);
 		$page = Input::get('page', null);
 		$number = (int) Input::get('number', 1);
@@ -36,7 +36,7 @@ class Images
 	public static function post() : array
 	{
 		$folder = Input::post('folder');
-		Folder::validateId($folder, 'Invalid folder.');
+		Folder::validateId($folder, 'Folder');
 		$num = count($_FILES['upload']['name']);
 		$images = [];
 
@@ -61,24 +61,24 @@ class Images
 	{
 		$id = Input::get('id');
 		if (!$id) {
-			throw new ApiException('No ID specified.');
+			throw new ApiException('ID is required.');
 		}
-		Image::validateId($id, 'Invalid ID.');
+		Image::validateId($id, 'ID');
 
 		$input = Input::json();
 		if (empty($input->filename)) {
-			throw new ApiException('No filename specified.');
+			throw new ApiException('Filename is required.');
 		}
 		if (strpos($input->filename, '/') !== false) {
 			throw new ApiException('Filename cannot contain slashes.');
 		}
-		Image::validateId($input->filename);
+		Image::validateId($input->filename, 'Filename');
 		if (!isset($input->folder)) {
 			$input->folder = '';
 		}
-		Folder::validateId($input->folder, 'Invalid folder.');
+		Folder::validateId($input->folder, 'Folder');
 		if (!Filesystem::folderExists($input->folder)) {
-			throw new ApiException('Invalid folder.');
+			throw new ApiException('Folder "' . $input->folder . '" does not exist.');
 		}
 
 		$newName = trim($input->folder . '/' . $input->filename, '/');
@@ -97,9 +97,9 @@ class Images
 	{
 		$path = Input::get('path');
 		if (!$path) {
-			throw new ApiException('No path specified.');
+			throw new ApiException('Path is required.');
 		}
-		Image::validateId($path, 'Invalid path.');
+		Image::validateId($path, 'Path');
 
 		$image = new Image($path);
 		$image->delete();

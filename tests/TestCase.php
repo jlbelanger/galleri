@@ -66,9 +66,6 @@ abstract class TestCase extends BaseTestCase
 			],
 			'Jlbelanger\Robroy\Models' => [
 				'getimagesize' => [500, 500], // phpcs:disable Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
-				'file_exists' => function ($path) {
-					return strpos($path, 'does-not-exist') === false;
-				},
 			],
 		];
 		if (!empty($args['mocks']['Jlbelanger\Robroy\Helpers'])) {
@@ -85,6 +82,8 @@ abstract class TestCase extends BaseTestCase
 
 		if (array_key_exists('body', $args)) {
 			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', $args['body']);
+		} else {
+			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', '');
 		}
 	}
 }

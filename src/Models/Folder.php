@@ -53,7 +53,7 @@ class Folder
 	{
 		$slug = Utilities::nameToSlug($name);
 		if ($slug === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException('Invalid name.');
+			throw new ApiException('Name cannot be the same as the thumbnails folder.');
 		}
 		$path = $parentPath ? $parentPath . '/' . $slug : $slug;
 
@@ -119,22 +119,25 @@ class Folder
 
 	/**
 	 * @param  string $id
-	 * @param  string $message
+	 * @param  string $type
 	 * @return void
 	 */
-	public static function validateId(string $id, string $message = 'Invalid folder.') : void
+	public static function validateId(string $id, string $type = 'Folder') : void
 	{
 		if ($id === '') {
 			return;
 		}
 		if (trim($id, '/') !== $id) {
-			throw new ApiException($message);
+			throw new ApiException($type . ' cannot begin or end with slashes.');
+		}
+		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
 		}
 		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
-			throw new ApiException($message);
+			throw new ApiException($type . ' contains invalid characters.');
 		}
 		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
-			throw new ApiException($message);
+			throw new ApiException($type . ' cannot end in the thumbnails folder.');
 		}
 	}
 }

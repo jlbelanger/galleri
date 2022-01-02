@@ -153,7 +153,7 @@ class Image
 		if (!Filesystem::fileExists($this->thumbnailPath)) {
 			return '';
 		}
-		return $this->thumbnailPath;
+		return Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
 	}
 
 	/**
@@ -182,19 +182,28 @@ class Image
 
 	/**
 	 * @param  string $id
-	 * @param  string $message
+	 * @param  string $type
 	 * @return void
 	 */
-	public static function validateId(string $id, string $message = 'Invalid filename.') : void
+	public static function validateId(string $id, string $type = 'Filename') : void
 	{
 		if ($id === '') {
 			return;
 		}
-		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id) || trim($id, '/') !== $id || trim($id, '.') !== $id) {
-			throw new ApiException($message);
+		if (trim($id, '/') !== $id) {
+			throw new ApiException($type . ' cannot begin or end with slashes.');
+		}
+		if (trim($id, '.') !== $id) {
+			throw new ApiException($type . ' cannot begin or end with periods.');
+		}
+		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
+		}
+		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id)) {
+			throw new ApiException($type . ' contains invalid characters.');
 		}
 		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
-			throw new ApiException($message);
+			throw new ApiException($type . ' cannot end in the thumbnails folder.');
 		}
 	}
 }

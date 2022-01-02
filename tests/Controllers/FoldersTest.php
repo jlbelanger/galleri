@@ -17,19 +17,19 @@ class FoldersTest extends TestCase
 	{
 		return [
 			'when name is not set' => [[
-				'expectedMessage' => 'No name specified.',
+				'expectedMessage' => 'Name is required.',
 			]],
 			'when name is an empty string' => [[
 				'variables' => [
 					'_POST' => ['name' => ''],
 				],
-				'expectedMessage' => 'No name specified.',
+				'expectedMessage' => 'Name is required.',
 			]],
 			'when name is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_POST' => ['name' => 'Thumbnails'],
 				],
-				'expectedMessage' => 'Invalid name.',
+				'expectedMessage' => 'Name cannot be the same as the thumbnails folder.',
 			]],
 			'when name is valid, parent has a leading slash' => [[
 				'variables' => [
@@ -38,16 +38,16 @@ class FoldersTest extends TestCase
 						'parent' => '/foo',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when name is valid, parent has a trailing slash' => [[
 				'variables' => [
 					'_POST' => [
 						'name' => 'New Folder',
-						'parent' => '/foo',
+						'parent' => 'foo/',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when name is valid, parent has a invalid characters' => [[
 				'variables' => [
@@ -56,7 +56,7 @@ class FoldersTest extends TestCase
 						'parent' => '..',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent contains invalid characters.',
 			]],
 			'when name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
@@ -65,7 +65,7 @@ class FoldersTest extends TestCase
 						'parent' => 'thumbnails',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot be the same as the thumbnails folder.',
 			]],
 			'when name is valid, parent ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
@@ -74,7 +74,7 @@ class FoldersTest extends TestCase
 						'parent' => 'foo/thumbnails',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot end in the thumbnails folder.',
 			]],
 			'when name is valid, parent does not exist' => [[
 				'variables' => [
@@ -83,7 +83,7 @@ class FoldersTest extends TestCase
 						'parent' => 'does-not-exist',
 					],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent "does-not-exist" does not exist.',
 			]],
 			'when name is valid, parent is not set' => [[
 				'variables' => [
@@ -130,134 +130,119 @@ class FoldersTest extends TestCase
 	{
 		return [
 			'when id is not set' => [[
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id is an empty string' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id has a leading slash' => [[
 				'variables' => [
 					'_GET' => ['id' => '/foo'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has a trailing slash' => [[
 				'variables' => [
 					'_GET' => ['id' => 'foo/'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has invalid characters' => [[
 				'variables' => [
 					'_GET' => ['id' => '..'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID contains invalid characters.',
 			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'thumbnails'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot be the same as the thumbnails folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
 			'when id is valid, body is not set' => [[
-				'body' => '',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'No name specified.',
+				'expectedMessage' => 'Name is required.',
 			]],
-			'when id is valid, name is empty, parent is not set' => [[
+			'when id is valid, name is not set' => [[
+				'body' => '{}',
+				'variables' => [
+					'_GET' => ['id' => 'foo'],
+				],
+				'expectedMessage' => 'Name is required.',
+			]],
+			'when id is valid, name is empty' => [[
 				'body' => '{"name":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'No name specified.',
+				'expectedMessage' => 'Name is required.',
 			]],
-			'when id is valid, name is not set, parent is empty' => [[
-				'body' => '{"parent":""}',
-				'variables' => [
-					'_GET' => ['id' => 'foo'],
-				],
-				'expectedMessage' => 'No name specified.',
-			]],
-			'when id is valid, name is empty, parent is empty' => [[
-				'body' => '{"name":"","parent":""}',
-				'variables' => [
-					'_GET' => ['id' => 'foo'],
-				],
-				'expectedMessage' => 'No name specified.',
-			]],
-			'when id is valid, name is empty, parent is set' => [[
-				'body' => '{"name":"","parent":"foo"}',
-				'variables' => [
-					'_GET' => ['id' => 'foo'],
-				],
-				'expectedMessage' => 'No name specified.',
-			]],
-			'when id is valid, name is set, parent has a leading slash' => [[
+			'when id is valid, name is valid, parent has a leading slash' => [[
 				'body' => '{"name":"foo","parent":"/bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
-			'when id is valid, name is set, parent has a trailing slash' => [[
+			'when id is valid, name is valid, parent has a trailing slash' => [[
 				'body' => '{"name":"foo","parent":"bar/"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
-			'when id is valid, name is set, parent has invalid characters' => [[
+			'when id is valid, name is valid, parent has invalid characters' => [[
 				'body' => '{"name":"foo","parent":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent contains invalid characters.',
 			]],
-			'when id is valid, name is set, parent is the same as THUMBNAILS_FOLDER' => [[
+			'when id is valid, name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
 				'body' => '{"name":"foo","parent":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot be the same as the thumbnails folder.',
 			]],
-			'when id is valid, name is set, parent ends in THUMBNAILS_FOLDER' => [[
+			'when id is valid, name is valid, parent ends in THUMBNAILS_FOLDER' => [[
 				'body' => '{"name":"foo","parent":"bar/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Invalid parent.',
+				'expectedMessage' => 'Parent cannot end in the thumbnails folder.',
 			]],
-			'when id is valid, name is set, parent does not exist' => [[
+			'when id is valid, name is valid, parent does not exist' => [[
 				'body' => '{"name":"foo","parent":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
+				'expectedMessage' => 'Parent "does-not-exist" does not exist.',
 			]],
-			'when id is valid, name is set, parent is self' => [[
+			'when id is valid, name is valid, parent is self' => [[
 				'body' => '{"name":"foo","parent":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => 'Cannot set parent to itself.',
+				'expectedMessage' => 'Name and parent cannot be the same.',
 			]],
-			'when id is valid, name is set, parent is child' => [[
+			'when id is valid, name is valid, parent is child' => [[
 				'body' => '{"name":"parent","parent":"parent/child"}',
 				'variables' => [
 					'_GET' => ['id' => 'parent'],
 				],
-				'expectedMessage' => 'Cannot set parent to a descendant.',
+				'expectedMessage' => 'Parent cannot be a descendant of name.',
 			]],
 			'when id is valid, name is valid, parent is not set' => [[
 				'body' => '{"name":"foo"}',
@@ -311,47 +296,52 @@ class FoldersTest extends TestCase
 	{
 		return [
 			'when id is not set' => [[
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id is an empty string' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id has a leading slash' => [[
 				'variables' => [
 					'_GET' => ['id' => '/foo'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has a trailing slash' => [[
 				'variables' => [
 					'_GET' => ['id' => 'foo/'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has invalid characters' => [[
 				'variables' => [
 					'_GET' => ['id' => '..'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID contains invalid characters.',
 			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'thumbnails'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot be the same as the thumbnails folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
 			'when id is valid' => [[
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
+				],
+			]],
+			'when id is valid with a mid slash' => [[
+				'variables' => [
+					'_GET' => ['id' => 'foo/bar'],
 				],
 			]],
 		];

@@ -22,70 +22,69 @@ class ImagesTest extends TestCase
 	{
 		return [
 			'when id is not set' => [[
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id is an empty string' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
-				'expectedMessage' => 'No ID specified.',
+				'expectedMessage' => 'ID is required.',
 			]],
 			'when id has a leading slash' => [[
 				'variables' => [
 					'_GET' => ['id' => '/example.png'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has a trailing slash' => [[
 				'variables' => [
 					'_GET' => ['id' => 'example.png/'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
 			'when id has a leading period' => [[
 				'variables' => [
 					'_GET' => ['id' => '.example.png'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot begin or end with periods.',
 			]],
 			'when id has a trailing period' => [[
 				'variables' => [
 					'_GET' => ['id' => 'example.png.'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot begin or end with periods.',
 			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'thumbnails'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot be the same as the thumbnails folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
-				'expectedMessage' => 'Invalid ID.',
+				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
 			'when id is valid, body is not set' => [[
-				'body' => '',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'No filename specified.',
+				'expectedMessage' => 'Filename is required.',
 			]],
 			'when id is valid, filename is not set' => [[
 				'body' => '{}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'No filename specified.',
+				'expectedMessage' => 'Filename is required.',
 			]],
 			'when id is valid, filename is empty' => [[
 				'body' => '{"filename":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'No filename specified.',
+				'expectedMessage' => 'Filename is required.',
 			]],
 			'when id is valid, filename has leading slash' => [[
 				'body' => '{"filename":"/example.png"}',
@@ -113,21 +112,21 @@ class ImagesTest extends TestCase
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid filename.',
+				'expectedMessage' => 'Filename cannot begin or end with periods.',
 			]],
 			'when id is valid, filename has trailing period' => [[
 				'body' => '{"filename":"example.png."}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid filename.',
+				'expectedMessage' => 'Filename cannot begin or end with periods.',
 			]],
 			'when id is valid, filename is the same as THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid filename.',
+				'expectedMessage' => 'Filename cannot be the same as the thumbnails folder.',
 			]],
 			'when id is valid, filename ends in THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"foo/thumbnails"}',
@@ -141,42 +140,42 @@ class ImagesTest extends TestCase
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder cannot begin or end with slashes.',
 			]],
 			'when id is valid, filename is valid, folder has a trailing slash' => [[
 				'body' => '{"filename":"example.png","folder":"foo/"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder cannot begin or end with slashes.',
 			]],
 			'when id is valid, filename is valid, folder has invalid characters' => [[
 				'body' => '{"filename":"example.png","folder":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder contains invalid characters.',
 			]],
 			'when id is valid, filename is valid, folder is the same as THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"example.png","folder":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder cannot be the same as the thumbnails folder.',
 			]],
 			'when id is valid, filename is valid, folder ends in THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"example.png","folder":"foo/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder cannot end in the thumbnails folder.',
 			]],
 			'when id is valid, filename is valid, folder does not exist' => [[
 				'body' => '{"filename":"example.png","folder":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Invalid folder.',
+				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
 			]],
 			'when id is valid, filename is valid, folder is not set' => [[
 				'body' => '{"filename":"example.png"}',
@@ -332,59 +331,58 @@ class ImagesTest extends TestCase
 	{
 		return [
 			'when path is not set' => [[
-				'expectedMessage' => 'No path specified.',
+				'expectedMessage' => 'Path is required.',
 			]],
 			'when path is an empty string' => [[
 				'variables' => [
 					'_GET' => ['path' => ''],
 				],
-				'expectedMessage' => 'No path specified.',
+				'expectedMessage' => 'Path is required.',
 			]],
 			'when path has a leading slash' => [[
 				'variables' => [
 					'_GET' => ['path' => '/example.png'],
 				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot begin or end with slashes.',
 			]],
 			'when path has a trailing slash' => [[
 				'variables' => [
 					'_GET' => ['path' => 'example.png/'],
 				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot begin or end with slashes.',
 			]],
 			'when path has a leading period' => [[
 				'variables' => [
 					'_GET' => ['path' => '.example.png'],
 				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot begin or end with periods.',
 			]],
 			'when path has a trailing period' => [[
 				'variables' => [
 					'_GET' => ['path' => 'example.png.'],
 				],
-				'expectedMessage' => 'Invalid path.',
-			]],
-			'when path has invalid characters' => [[
-				'variables' => [
-					'_GET' => ['path' => 'EXAMPLE.PNG'],
-				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot begin or end with periods.',
 			]],
 			'when path is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['path' => 'thumbnails'],
 				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot be the same as the thumbnails folder.',
 			]],
 			'when path ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
 					'_GET' => ['path' => 'folder/thumbnails'],
 				],
-				'expectedMessage' => 'Invalid path.',
+				'expectedMessage' => 'Path cannot end in the thumbnails folder.',
 			]],
 			'when path is valid' => [[
 				'variables' => [
 					'_GET' => ['path' => 'example.png'],
+				],
+			]],
+			'when path is valid with a mid slash' => [[
+				'variables' => [
+					'_GET' => ['path' => 'foo/example.png'],
 				],
 			]],
 		];
