@@ -8,12 +8,13 @@
 		"gulp-postcss": "^9.0.1",
 		"gulp-rename": "^2.0.0",
 		"gulp-sass": "^5.0.0",
-		"jlbelanger-robroy": "jlbelanger/robroy#master",
+		"jlbelanger-robroy": "jlbelanger/robroy#3c37c909a21e6839f264922020e6c58c8f47f791",
 		"node-sass": "^7.0.0",
 		"normalize.css": "^8.0.1"
 	},
 	"scripts": {
 		"build": "node_modules/.bin/gulp css",
 		"watch": "node_modules/.bin/gulp"
-	}
+	},
+	"dependencies": {}
 }

@@ -467,15 +467,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001088:
-  version "1.0.30001090"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001090.tgz#ff7766332f60e80fea4903f30d360622e5551850"
-  integrity sha512-QzPRKDCyp7RhjczTPZaqK3CjPA5Ht2UnXhZhCI4f7QiB5JK6KEuZBxIzyWnB3wO4hgAj4GMRxAhuiacfw0Psjg==
-
-caniuse-lite@^1.0.30001272, caniuse-lite@^1.0.30001286:
-  version "1.0.30001292"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001292.tgz#4a55f61c06abc9595965cfd77897dc7bc1cdc456"
-  integrity sha512-jnT4Tq0Q4ma+6nncYQVe7d73kmDmE9C3OGTx3MvW7lBM/eY1S1DZTMBON7dqV481RhNiS5OxD7k9JQvmDOTirw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001088, caniuse-lite@^1.0.30001272, caniuse-lite@^1.0.30001286:
+  version "1.0.30001295"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001295.tgz"
+  integrity sha512-lSP16vcyC0FEy0R4ECc9duSPoKoZy+YkpGkue9G4D81OfPnliopaZrU10+qtPdT8PbGXad/PNx43TIQrOmJZSQ==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1900,9 +1895,11 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-jlbelanger-robroy@jlbelanger/robroy#master:
-  version "1.0.0"
-  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/6ca9498698a70adc42c658540addb0d543ef1152"
+jlbelanger-robroy@jlbelanger/robroy#3c37c909a21e6839f264922020e6c58c8f47f791:
+  version "1.0.2"
+  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/3c37c909a21e6839f264922020e6c58c8f47f791"
+  dependencies:
+    normalize.css "^8.0.1"
 
 js-base64@^2.1.8:
   version "2.6.2"

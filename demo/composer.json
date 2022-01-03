@@ -4,7 +4,7 @@
 	"type": "project",
 	"license": "MIT",
 	"require": {
-		"jlbelanger/robroy": "dev-master#31a5521ae2fd1c245647e75639778012cde5b3b3",
+		"jlbelanger/robroy": "dev-master#3c37c909a21e6839f264922020e6c58c8f47f791",
 		"vlucas/phpdotenv": "^5.4.1"
 	},
 	"minimum-stability": "dev",

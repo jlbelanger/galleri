@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f0c5cc5263737ed3afd86b8e61c31fe",
+    "content-hash": "3e35c0c35d41e7d2b35ad685a13a0a39",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jlbelanger/robroy.git",
-                "reference": "31a5521ae2fd1c245647e75639778012cde5b3b3"
+                "reference": "3c37c909a21e6839f264922020e6c58c8f47f791"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/31a5521ae2fd1c245647e75639778012cde5b3b3",
-                "reference": "31a5521ae2fd1c245647e75639778012cde5b3b3",
+                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/3c37c909a21e6839f264922020e6c58c8f47f791",
+                "reference": "3c37c909a21e6839f264922020e6c58c8f47f791",
                 "shasum": ""
             },
             "require-dev": {
