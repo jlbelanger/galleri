@@ -5,21 +5,25 @@
 	color: $button-text-color;
 	cursor: pointer;
 	display: block;
+	font-size: $button-font-size;
 	line-height: 1;
 	margin: 0;
-	padding: 16px;
+	padding: $button-padding;
 
 	&:hover,
 	&:active,
 	&:focus {
 		background-color: $button-background-color-hover;
 	}
+
+	.robroy-figure & {
+		position: relative;
+	}
 }
 
 .robroy-button--danger {
 	background-color: $button-danger-background-color;
 	color: $button-danger-text-color;
-	position: relative;
 
 	&:hover,
 	&:active,

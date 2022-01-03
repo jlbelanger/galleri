@@ -4,13 +4,12 @@ namespace Jlbelanger\Robroy\Helpers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
-use imagick;
 
 class Utilities
 {
 	/**
-	 * @param  string  $path
-	 * @param  string  $filename
+	 * @param  string  $path     Eg. '/tmp/phpHp00pt'.
+	 * @param  string  $filename Eg. 'bar.jpg'.
 	 * @param  integer $fileType
 	 * @return string
 	 */
@@ -34,32 +33,67 @@ class Utilities
 		}
 
 		if (empty($date)) {
-			$date = date('Y-m-d-H-i-s');
+			return $filename;
 		}
 
 		return $date . '-' . $filename;
 	}
 
 	/**
+	 * @param  string  $folder
 	 * @param  string  $filename
 	 * @param  integer $oldWidth
 	 * @param  integer $oldHeight
 	 * @param  integer $fileType
 	 * @return void
 	 */
-	public static function createThumbnailFile(string $filename, int $oldWidth, int $oldHeight, int $fileType) : void
+	public static function createThumbnailFile(string $folder, string $filename, int $oldWidth, int $oldHeight, int $fileType) : void
 	{
 		$uploadsPath = Constant::get('UPLOADS_PATH');
-		$path = $uploadsPath . '/' . $filename;
-		$thumbnailPath = $uploadsPath . '/' . Constant::get('THUMBNAILS_FOLDER') . '/' . $filename;
-		if (!copy($path, $thumbnailPath)) {
+		$folder = $folder ? $folder . '/' : '';
+		$path = $uploadsPath . '/' . $folder . $filename;
+		$thumbnailFolderPath = $folder . Constant::get('THUMBNAILS_FOLDER');
+		if (!Filesystem::folderExists($thumbnailFolderPath)) {
+			Filesystem::createFolder($folder . Constant::get('THUMBNAILS_FOLDER'));
+		}
+		$thumbnailPath = $uploadsPath . '/' . $thumbnailFolderPath . '/' . $filename;
+		if (!Filesystem::copyFile($path, $thumbnailPath)) {
 			throw new ApiException('File "' . $filename . '" could not be duplicated.', 500);
 		}
-		$thumbnailFilename = Constant::get('THUMBNAILS_FOLDER') . '/' . $filename;
-		self::resizeFile($thumbnailFilename, Constant::get('THUMBNAIL_IMAGE_WIDTH'), $oldWidth, $oldHeight, $fileType);
+		$thumbnailFilename = $folder . Constant::get('THUMBNAILS_FOLDER') . '/' . $filename;
+		self::resizeFile('', $thumbnailFilename, Constant::get('THUMBNAIL_IMAGE_WIDTH'), $oldWidth, $oldHeight, $fileType);
 	}
 
 	/**
+	 * @param  string $s
+	 * @return string
+	 */
+	public static function nameToSlug(string $s) : string
+	{
+		$s = strtolower($s);
+		$s = str_replace("'", '', $s);
+		$s = preg_replace('/[^a-z0-9]+/', '-', $s);
+		$s = trim($s, '-');
+		return $s;
+	}
+
+	/**
+	 * @param  string $s
+	 * @return string
+	 */
+	public static function pathToName(string $s) : string
+	{
+		$pos = strrpos($s, '/');
+		if ($pos !== false) {
+			$s = substr($s, $pos + 1);
+		}
+		$s = str_replace('-', ' ', $s);
+		$s = ucwords($s);
+		return $s;
+	}
+
+	/**
+	 * @param  string  $folder
 	 * @param  string  $filename
 	 * @param  integer $newWidth
 	 * @param  integer $oldWidth
@@ -69,6 +103,7 @@ class Utilities
 	 * @return void
 	 */
 	public static function resizeFile(
+		string $folder,
 		string $filename,
 		int $newWidth,
 		int $oldWidth,
@@ -77,7 +112,7 @@ class Utilities
 		bool $hasWatermark = false
 	) : void
 	{
-		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
+		$path = Constant::get('UPLOADS_PATH') . '/' . ($folder ? $folder . '/' : '') . $filename;
 		self::resizeImage($oldWidth, $oldHeight, $newWidth, $path, $path, $fileType, $hasWatermark);
 	}
 
@@ -198,16 +233,16 @@ class Utilities
 
 			if (!empty($exif['Orientation'])) {
 				switch ($exif['Orientation']) {
-					case imagick::ORIENTATION_BOTTOMRIGHT:
+					case 3:
 						$src = imagerotate($src, 180, 0);
 						break;
 
-					case imagick::ORIENTATION_RIGHTTOP:
+					case 6:
 						$swap = true;
 						$src = imagerotate($src, -90, 0);
 						break;
 
-					case imagick::ORIENTATION_LEFTBOTTOM:
+					case 8:
 						$swap = true;
 						$src = imagerotate($src, 90, 0);
 						break;

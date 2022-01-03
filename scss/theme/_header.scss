@@ -2,6 +2,11 @@
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
+	min-height: #{$button-height + ($padding-mobile * 2)};
+
+	@media screen and (min-width: $breakpoint) {
+		min-height: #{$button-height + ($padding-desktop * 2)};
+	}
 }
 
 #title {

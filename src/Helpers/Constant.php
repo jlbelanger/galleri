@@ -2,6 +2,7 @@
 
 namespace Jlbelanger\Robroy\Helpers;
 
+use Jlbelanger\Robroy\Helpers\Input;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 
 class Constant
@@ -10,13 +11,12 @@ class Constant
 	 * Returns an environment variable's value or a default value.
 	 *
 	 * @param  string $key
-	 * @return any
+	 * @return mixed
 	 */
 	public static function get(string $key)
 	{
-		$value = $_ENV[$key];
-		if ($value !== false) {
-			return $value;
+		if (Input::hasEnv($key)) {
+			return Input::env($key);
 		}
 
 		$defaults = [
@@ -37,7 +37,7 @@ class Constant
 	 */
 	public static function verify(string $key) : void
 	{
-		if (array_key_exists($key, $_ENV) === false) {
+		if (!Input::hasEnv($key)) {
 			throw new ApiException('Environment variable "' . $key . '" is not set.');
 		}
 	}

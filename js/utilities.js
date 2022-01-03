@@ -8,6 +8,16 @@ export default class RobroyUtilities {
 		});
 	}
 
+	static addError(input, message) {
+		input.classList.add('robroy-has-error');
+
+		const error = document.createElement('span');
+		error.setAttribute('class', 'robroy-error');
+		error.setAttribute('id', 'robroy-error-' + input.getAttribute('id'));
+		error.innerText = message;
+		input.after(error);
+	}
+
 	static callback(name) {
 		if (!window.ROBROY.args.callbacks[name]) {
 			return;
@@ -40,5 +50,15 @@ export default class RobroyUtilities {
 
 	static propertyExists(object, property) {
 		return Object.prototype.hasOwnProperty.call(object, property);
+	}
+
+	static setMetaTitle(title) {
+		var elem = document.querySelector('title');
+		elem.innerText = title + window.ROBROY.args.metaTitleSeparator + elem.innerText;
+	}
+
+	static setNumImages() {
+		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.args.singularImageText : window.ROBROY.args.pluralImageText;
+		window.ROBROY.elements.numImages.innerText = window.ROBROY.currentNumImages.toLocaleString() + ' ' + label;
 	}
 }

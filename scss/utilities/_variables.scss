@@ -23,8 +23,11 @@ $body-background-color: $darkest !default;
 $body-text-color: $lightest !default;
 
 $button-background-color: $primary !default;
-$button-text-color: $lightest !default;
+$button-text-color: if($dark-mode, $darkest, $lightest) !default;
 $button-background-color-hover: scale-color($button-background-color, $lightness: -10% * $multiplier) !default;
+$button-padding: 16px;
+$button-font-size: 18px;
+$button-height: ($button-padding * 2) + $button-font-size;
 
 $button-danger-background-color: $red !default;
 $button-danger-text-color: $white !default;
@@ -43,7 +46,7 @@ $image-border-color-hover: $dark !default;
 
 $link-text-color: $lightest !default;
 
-$modal-container-background-color: rgba($black, .2) !default;
+$modal-container-background-color: rgba($black, .4) !default;
 $modal-background-color: $darker !default;
 $modal-text-color: $lightest !default;
 

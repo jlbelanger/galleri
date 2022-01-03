@@ -6,8 +6,15 @@
 	"rules": {
 		"declaration-no-important": true,
 		"indentation": "tab",
+		"max-line-length": 150,
 		"no-descending-specificity": null,
 		"number-leading-zero": "never",
-		"order/properties-alphabetical-order": true
+		"order/properties-alphabetical-order": true,
+		"scss/dollar-variable-empty-line-before": null,
+		"scss/dollar-variable-pattern": null,
+		"scss/no-global-function-names": null,
+		"selector-class-pattern": "[a-z0-9_-]+",
+		"selector-id-pattern": "[a-z0-9_-]+",
+		"string-quotes": "single"
 	}
 }

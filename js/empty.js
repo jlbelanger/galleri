@@ -1,31 +1,23 @@
 export default class RobroyEmpty {
-	static show() {
-		var id = 'robroy-empty';
-		var p = document.getElementById(id);
-		if (!p) {
-			p = document.createElement('p');
-			p.setAttribute('id', id);
-			p.innerText = 'No images found.';
-		}
-		window.ROBROY.container.appendChild(p);
-
-		window.ROBROY.list.style.display = 'none';
+	static isEmpty() {
+		const imageListStyle = window.getComputedStyle(window.ROBROY.elements.imageList);
+		const folderListStyle = window.getComputedStyle(window.ROBROY.elements.folderList);
+		return imageListStyle.display === 'none' && folderListStyle.display === 'none';
 	}
 
-	static hide() {
-		var elem = document.getElementById('robroy-empty');
-		if (elem) {
-			elem.parentNode.removeChild(elem);
-		}
-
-		window.ROBROY.list.style.display = '';
+	static getImages() {
+		return document.querySelectorAll('#robroy-images > figure');
 	}
 
-	static getFigures() {
-		return document.querySelectorAll('#robroy-list > figure');
+	static getFolders() {
+		return document.querySelectorAll('#robroy-folders > li');
 	}
 
-	static hasFigures() {
-		return RobroyEmpty.getFigures().length > 0;
+	static hasImages() {
+		return RobroyEmpty.getImages().length > 0;
+	}
+
+	static hasFolders() {
+		return RobroyEmpty.getFolders().length > 0;
 	}
 }

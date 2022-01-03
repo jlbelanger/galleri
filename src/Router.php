@@ -4,6 +4,7 @@ namespace Jlbelanger\Robroy;
 
 use Exception;
 use Jlbelanger\Robroy\Helpers\Constant;
+use Jlbelanger\Robroy\Helpers\Input;
 
 class Router
 {
@@ -18,8 +19,8 @@ class Router
 			Constant::verify('UPLOADS_PATH');
 
 			$routes = self::routes();
-			$method = !empty($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
-			$type = !empty($_GET['type']) ? $_GET['type'] : '';
+			$method = Input::server('REQUEST_METHOD');
+			$type = Input::get('type');
 			$route = $method . ' ' . $type;
 
 			if (!empty($routes[$route])) {
@@ -71,10 +72,32 @@ class Router
 				'Jlbelanger\Robroy\Controllers\Images',
 				'post',
 			],
+			'PUT images' => [
+				'Jlbelanger\Robroy\Controllers\Images',
+				'put',
+			],
 			'DELETE images' => [
 				'Jlbelanger\Robroy\Controllers\Images',
 				'delete',
 			],
+
+			'GET folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'get',
+			],
+			'POST folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'post',
+			],
+			'PUT folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'put',
+			],
+			'DELETE folders' => [
+				'Jlbelanger\Robroy\Controllers\Folders',
+				'delete',
+			],
+
 			'POST sessions' => [
 				'Jlbelanger\Robroy\Controllers\Sessions',
 				'post',

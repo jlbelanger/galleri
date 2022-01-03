@@ -11,7 +11,7 @@ export default class RobroyGrid {
 	}
 
 	calculate() {
-		var gridStyle = window.getComputedStyle(window.ROBROY.list);
+		var gridStyle = window.getComputedStyle(window.ROBROY.elements.imageList);
 		this.gridRowHeight = parseInt(gridStyle.getPropertyValue('grid-auto-rows'), 10);
 		this.gridRowGap = parseInt(gridStyle.getPropertyValue('grid-row-gap'), 10);
 	}

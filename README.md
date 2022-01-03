@@ -64,7 +64,7 @@ Update the name in `demo/composer.json`.
 
 Update references to "Robroy Photo Gallery" to your own gallery title in `demo/public/403.html`, `demo/public/404.html`, and `demo/public/index.html`.
 
-Remove `public/.htaccess` from `demo/.gitignore`.
+Edit `demo/.gitignore` and remove the line `public/.htaccess`.
 
 Download the PHP dependencies:
 
@@ -99,7 +99,8 @@ You'll also need a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
 require_once realpath(__DIR__ . '/../vendor/autoload.php');
 
 // Optional: You can set the environment variables another way if you choose.
-$dotenv = Dotenv\Dotenv::create(realpath(__DIR__ . '/../'));
+// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
+$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
 $dotenv->load();
 
 Jlbelanger\Robroy\Router::load();
@@ -187,4 +188,4 @@ Note: The deploy script included in this repo depends on other scripts that only
 - Lightbox: https://github.com/banthagroup/fslightbox
 - Masonry grid: https://medium.com/@andybarefoot/a-masonry-style-layout-using-css-grid-8c663d355ebb
 - Normalize: https://github.com/necolas/normalize.css
-- Placeholder images: https://placehold.it/
+- Placeholder images: https://placehold.it

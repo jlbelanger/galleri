@@ -1,0 +1,17 @@
+name: CI
+on: [push]
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+    - run: php -v
+    - run: composer --version
+    - uses: actions/checkout@v1
+    - run: composer install
+    - run: ./vendor/bin/phpcs
+    - run: ./vendor/bin/phpunit --coverage-text
