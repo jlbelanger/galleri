@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e35c0c35d41e7d2b35ad685a13a0a39",
+    "content-hash": "e795b768468c4c11d2228591b548cc13",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -74,18 +74,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jlbelanger/robroy.git",
-                "reference": "3c37c909a21e6839f264922020e6c58c8f47f791"
+                "reference": "8808e89849ffbff7d686b244eb53b73c70dec12b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/3c37c909a21e6839f264922020e6c58c8f47f791",
-                "reference": "3c37c909a21e6839f264922020e6c58c8f47f791",
+                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/8808e89849ffbff7d686b244eb53b73c70dec12b",
+                "reference": "8808e89849ffbff7d686b244eb53b73c70dec12b",
                 "shasum": ""
             },
             "require-dev": {
-                "php-mock/php-mock": "^2.3",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.5"
+                "php-mock/php-mock": "^2.3.0",
+                "phpunit/phpunit": "^9.5.11",
+                "squizlabs/php_codesniffer": "^3.6.2"
             },
             "default-branch": true,
             "type": "project",
@@ -114,7 +114,7 @@
                 "source": "https://github.com/jlbelanger/robroy/tree/master",
                 "issues": "https://github.com/jlbelanger/robroy/issues"
             },
-            "time": "2021-11-24T00:27:44+00:00"
+            "time": "2022-01-03T15:43:16+00:00"
         },
         {
             "name": "phpoption/phpoption",
