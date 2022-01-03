@@ -190,7 +190,7 @@ describe('index', () => {
 				it('adds the image to the list', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 					cy.intercept('POST', '/api.php?type=images').as('uploadImage');
 					cy.setUploadPath('cypress/fixtures/current');
 					cy.visit('/dark.html');
@@ -236,7 +236,7 @@ describe('index', () => {
 				it('shows an error', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 					cy.setUploadPath('cypress/fixtures/current');
 					cy.visit('/dark.html');
 					cy.wait('@getFolder');
@@ -252,7 +252,7 @@ describe('index', () => {
 				it('shows an error', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 					cy.intercept('POST', '/api.php?type=folders').as('createFolder');
 					cy.setUploadPath('cypress/fixtures/current');
 					cy.visit('/dark.html');
@@ -272,7 +272,7 @@ describe('index', () => {
 					it('creates the folder', () => {
 						cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 						cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 						cy.intercept('POST', '/api.php?type=folders').as('createFolder');
 						cy.setUploadPath('cypress/fixtures/current');
 						cy.visit('/dark.html');
@@ -307,7 +307,7 @@ describe('index', () => {
 					it('creates the folder', () => {
 						cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 						cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 						cy.intercept('POST', '/api.php?type=folders').as('createFolder');
 						cy.setUploadPath('cypress/fixtures/current');
 						cy.visit('/dark.html');
@@ -1332,7 +1332,7 @@ describe('index', () => {
 
 					// Adds the image to the root folder.
 					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder2');
-					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages2');
 					cy.visit('/dark.html');
 					cy.wait('@getFolder2');
 					cy.wait('@getImages2');
@@ -1346,7 +1346,7 @@ describe('index', () => {
 				it('removes the image', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=').as('getImages');
 					cy.intercept('POST', '/api.php?type=images').as('uploadImage');
 					cy.setUploadPath('cypress/fixtures/current');
 					cy.visit('/dark.html');

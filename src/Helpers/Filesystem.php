@@ -126,10 +126,11 @@ class Filesystem
 	}
 
 	/**
-	 * @param  string $parent
+	 * @param  string  $parent
+	 * @param  boolean $isRecursive
 	 * @return array
 	 */
-	public static function getFilesInFolder(string $parent) : array
+	public static function getFilesInFolder(string $parent, bool $isRecursive = false) : array
 	{
 		if (!self::folderExists($parent)) {
 			throw new ApiException('This folder does not exist.', 404);
@@ -140,8 +141,15 @@ class Filesystem
 
 		if ($handle = opendir($uploadsPath)) {
 			while (($filename = readdir($handle)) !== false) {
-				if (strpos($filename, '.') === 0 || self::folderExists($parent . '/' . $filename)) {
+				if (strpos($filename, '.') === 0) {
 					continue;
+				}
+				if (self::folderExists($parent . '/' . $filename)) {
+					if ($isRecursive) {
+						$output = array_merge($output, self::getFilesInFolder($parent . '/' . $filename, $isRecursive));
+					} else {
+						continue;
+					}
 				}
 
 				$fullPath = trim($parent . '/' . $filename, '/');

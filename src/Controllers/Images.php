@@ -18,9 +18,13 @@ class Images
 	 */
 	public static function get() : array
 	{
-		$parent = Input::get('parent');
-		Folder::validateId($parent, 'Parent');
-		$images = Image::all($parent);
+		$parent = Input::get('parent', null);
+		if ($parent === null) {
+			$images = Image::all();
+		} else {
+			Folder::validateId($parent, 'Parent');
+			$images = Image::allInFolder($parent);
+		}
 		$number = (int) Input::get(['page', 'number'], 1);
 		$size = (int) Input::get(['page', 'size'], 10);
 

@@ -27,10 +27,20 @@ class Image
 	/**
 	 * Returns all images.
 	 *
+	 * @return Image[]
+	 */
+	public static function all() : array
+	{
+		return Filesystem::getFilesInFolder('', true);
+	}
+
+	/**
+	 * Returns all images in a folder.
+	 *
 	 * @param  string $parent
 	 * @return Image[]
 	 */
-	public static function all(string $parent) : array
+	public static function allInFolder(string $parent) : array
 	{
 		return Filesystem::getFilesInFolder($parent);
 	}

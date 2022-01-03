@@ -12,6 +12,14 @@ export default class RobroyList {
 	}
 
 	static loadCurrentFolder() {
+		if (window.ROBROY.args.showAllImages) {
+			RobroyAuth.init();
+
+			RobroyList.loadImages(() => { RobroyList.onScroll(); });
+			window.addEventListener('scroll', RobroyUtilities.debounce(() => { RobroyList.onScroll(); }, 100));
+			return;
+		}
+
 		RobroyApi.request({
 			url: window.ROBROY.args.apiPath + '?type=folders&id=' + window.ROBROY.currentFolderId,
 			callback: (response) => {
@@ -47,7 +55,7 @@ export default class RobroyList {
 			'?type=images&page[number]=' + (++window.ROBROY.args.pageNumber),
 			'&page[size]=' + window.ROBROY.args.pageSize,
 		].join('');
-		if (window.ROBROY.currentFolderId) {
+		if (!window.ROBROY.args.showAllImages) {
 			url += '&parent=' + window.ROBROY.currentFolderId;
 		}
 

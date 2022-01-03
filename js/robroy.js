@@ -15,6 +15,7 @@ export default class Robroy {
 		args.pageSize = args.pageSize || 8;
 		args.rootFolderName = args.rootFolderName || 'Home';
 		args.selector = args.selector || '#robroy';
+		args.showAllImages = args.showAllImages || false;
 		args.singularImageText = args.singularImageText || 'image';
 		args.pluralImageText = args.pluralImageText || 'images';
 		this.args = args;
