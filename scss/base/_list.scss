@@ -5,6 +5,10 @@
 	grid-template-columns: repeat(auto-fill, minmax($minimum-image-width, 1fr));
 	margin: $padding-mobile;
 
+	&:empty {
+		display: none;
+	}
+
 	@media screen and (min-width: $breakpoint) {
 		grid-gap: $padding-desktop;
 		margin: $padding-desktop;
@@ -43,15 +47,34 @@
 	}
 }
 
+#robroy-folder-header {
+	display: flex;
+	justify-content: space-between;
+	margin: $padding-mobile;
+
+	@media screen and (min-width: $breakpoint) {
+		margin: $padding-desktop;
+	}
+}
+
+#robroy-num {
+	margin: 0;
+	text-align: right;
+
+	&:empty {
+		display: none;
+	}
+}
+
 #robroy-folders {
 	display: flex;
 	flex-wrap: wrap;
 	list-style: none;
-	margin: $padding-mobile;
+	margin: 0;
 	padding: 0;
 
-	@media screen and (min-width: $breakpoint) {
-		margin: $padding-desktop;
+	&:empty {
+		display: none;
 	}
 }
 

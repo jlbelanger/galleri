@@ -32,6 +32,7 @@ class Api
 		return [
 			'data' => $items,
 			'meta' => [
+				'num_items' => $numItems,
 				'page_number' => (int) $page,
 				'total_pages' => ceil($numItems / $perPage),
 			],

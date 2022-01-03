@@ -56,4 +56,9 @@ export default class RobroyUtilities {
 		var elem = document.querySelector('title');
 		elem.innerText = title + window.ROBROY.args.metaTitleSeparator + elem.innerText;
 	}
+
+	static setNumImages() {
+		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.args.singularImageText : window.ROBROY.args.pluralImageText;
+		window.ROBROY.elements.numImages.innerText = window.ROBROY.currentNumImages.toLocaleString() + ' ' + label;
+	}
 }

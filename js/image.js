@@ -128,19 +128,18 @@ export default class RobroyImage {
 		}
 		container.parentNode.removeChild(container);
 
+		window.ROBROY.currentNumImages -= 1;
+		RobroyUtilities.setNumImages();
+
 		if (RobroyEmpty.hasImages()) {
 			window.ROBROY.grid.resizeAllItems();
 			if (nextLink) {
 				nextLink.focus();
 			}
-		} else {
-			RobroyEmpty.show();
-
-			if (!RobroyEmpty.hasFolders()) {
-				var $deleteFolder = document.getElementById('robroy-delete-folder');
-				if ($deleteFolder) {
-					$deleteFolder.style.display = '';
-				}
+		} else if (!RobroyEmpty.hasFolders()) {
+			var $deleteFolder = document.getElementById('robroy-delete-folder');
+			if ($deleteFolder) {
+				$deleteFolder.style.display = '';
 			}
 		}
 	}
@@ -175,10 +174,15 @@ export default class RobroyImage {
 	}
 
 	static createCallback(response) {
-		RobroyEmpty.hide();
 		RobroyImage.prependItems(response.data);
 		window.ROBROY.grid.resizeAllItems();
-		window.ROBROY.currentImages[response.data[0].id] = response.data[0];
+
+		response.data.forEach((image) => {
+			window.ROBROY.currentImages[image.id] = image;
+		});
+
+		window.ROBROY.currentNumImages += response.data.length;
+		RobroyUtilities.setNumImages();
 
 		document.getElementById('robroy-create-image-input').value = '';
 		document.getElementById('robroy-create-image-text').innerText = 'Drag files or click here to upload.';
@@ -338,7 +342,7 @@ export default class RobroyImage {
 
 	static prependItems(items) {
 		items.forEach((item) => {
-			window.ROBROY.imageList.prepend(RobroyImage.element(item));
+			window.ROBROY.elements.imageList.prepend(RobroyImage.element(item));
 		});
 	}
 }

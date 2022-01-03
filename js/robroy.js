@@ -15,6 +15,8 @@ export default class Robroy {
 		args.pageSize = args.pageSize || 8;
 		args.rootFolderName = args.rootFolderName || 'Home';
 		args.selector = args.selector || '#robroy';
+		args.singularImageText = args.singularImageText || 'image';
+		args.pluralImageText = args.pluralImageText || 'images';
 		this.args = args;
 
 		var container = document.querySelector(args.selector);
@@ -22,9 +24,17 @@ export default class Robroy {
 			return;
 		}
 
+		var header = document.createElement('div');
+		header.setAttribute('id', 'robroy-folder-header');
+		container.appendChild(header);
+
 		var folderList = document.createElement('ul');
 		folderList.setAttribute('id', 'robroy-folders');
-		container.appendChild(folderList);
+		header.appendChild(folderList);
+
+		var numImages = document.createElement('p');
+		numImages.setAttribute('id', 'robroy-num');
+		header.appendChild(numImages);
 
 		var imageList = document.createElement('div');
 		imageList.setAttribute('id', 'robroy-images');
@@ -35,19 +45,23 @@ export default class Robroy {
 
 		this.auth = document.querySelector('[data-action="authenticate"]');
 		this.container = container;
-		this.folderList = folderList;
-		this.imageList = imageList;
+		this.elements = {
+			folderList,
+			imageList,
+			numImages,
+		};
 		this.currentFolderId = currentFolderId || '';
 		this.currentFolder = null;
 		this.currentImage = null;
 		this.currentImages = {};
+		this.currentNumImages = null;
 		this.folders = [];
 	}
 
 	static init(args) {
 		if (!RobroyUtilities.propertyExists(window, 'ROBROY')) {
 			window.ROBROY = new Robroy(args);
-			if (!window.ROBROY.imageList) {
+			if (!window.ROBROY.elements.imageList) {
 				return null;
 			}
 			RobroyList.init();

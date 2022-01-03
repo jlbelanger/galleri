@@ -25,9 +25,7 @@ export default class RobroyList {
 					RobroyUtilities.setMetaTitle(response.data.attributes.name);
 				}
 
-				if (response.data.relationships.folders.length <= 0) {
-					window.ROBROY.folderList.style.display = 'none';
-				} else {
+				if (response.data.relationships.folders.length > 0) {
 					RobroyList.appendFolders(response.data.relationships.folders);
 				}
 
@@ -68,8 +66,12 @@ export default class RobroyList {
 					window.ROBROY.args.allPagesLoaded = true;
 				}
 
+				if (response.meta.num_items !== window.ROBROY.currentNumImages) {
+					window.ROBROY.currentNumImages = response.meta.num_items;
+					RobroyUtilities.setNumImages();
+				}
+
 				if (response.meta.total_pages <= 0) {
-					RobroyEmpty.show();
 					if (!RobroyEmpty.hasFolders()) {
 						var $deleteFolder = document.getElementById('robroy-delete-folder');
 						if ($deleteFolder) {
@@ -107,13 +109,13 @@ export default class RobroyList {
 
 	static appendImages(images) {
 		images.forEach((image) => {
-			window.ROBROY.imageList.appendChild(RobroyImage.element(image));
+			window.ROBROY.elements.imageList.appendChild(RobroyImage.element(image));
 		});
 	}
 
 	static appendFolders(folders) {
 		folders.forEach((folder) => {
-			window.ROBROY.folderList.appendChild(RobroyFolder.element(folder));
+			window.ROBROY.elements.folderList.appendChild(RobroyFolder.element(folder));
 		});
 	}
 }

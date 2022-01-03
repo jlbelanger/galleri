@@ -67,7 +67,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-empty').should('be.visible');
+				cy.get('#robroy-num').should('have.text', '0 images');
 			});
 		});
 
@@ -105,7 +105,7 @@ describe('index', () => {
 
 				// Shows the image list.
 				cy.get('#robroy-images').should('be.visible');
-				cy.get('#robroy-empty').should('not.exist');
+				cy.get('#robroy-num').should('have.text', '2 images');
 			});
 		});
 
@@ -143,7 +143,7 @@ describe('index', () => {
 
 				// Shows the image list.
 				cy.get('#robroy-images').should('be.visible');
-				cy.get('#robroy-empty').should('not.exist');
+				cy.get('#robroy-num').should('have.text', '2 images');
 			});
 		});
 
@@ -181,7 +181,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-empty').should('be.visible');
+				cy.get('#robroy-num').should('have.text', '0 images');
 			});
 		});
 
@@ -207,7 +207,7 @@ describe('index', () => {
 
 					// Shows the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-empty').should('not.exist');
+					cy.get('#robroy-num').should('have.text', '1 image');
 
 					// Adds the image to the list.
 					cy.get('[data-path="500x500.png"]').should('be.visible');
@@ -385,7 +385,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-empty').should('be.visible');
+				cy.get('#robroy-num').should('have.text', '0 images');
 			});
 		});
 
@@ -429,7 +429,7 @@ describe('index', () => {
 
 				// Shows the image list.
 				cy.get('#robroy-images').should('be.visible');
-				cy.get('#robroy-empty').should('not.exist');
+				cy.get('#robroy-num').should('have.text', '2 images');
 			});
 
 			describe('when deleting images', () => {
@@ -454,7 +454,7 @@ describe('index', () => {
 
 					// Does not hide the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-empty').should('not.exist');
+					cy.get('#robroy-num').should('have.text', '2 images');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -472,7 +472,7 @@ describe('index', () => {
 
 					// Does not hide the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-empty').should('not.exist');
+					cy.get('#robroy-num').should('have.text', '1 image');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -487,7 +487,7 @@ describe('index', () => {
 
 					// Hides the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-empty').should('be.visible');
+					cy.get('#robroy-num').should('have.text', '0 images');
 
 					// Shows the delete folder button.
 					cy.get('#robroy-delete-folder').should('be.visible');
@@ -542,7 +542,7 @@ describe('index', () => {
 
 				// Shows the image list.
 				cy.get('#robroy-images').should('be.visible');
-				cy.get('#robroy-empty').should('not.exist');
+				cy.get('#robroy-num').should('have.text', '2 images');
 			});
 
 			describe('when deleting images', () => {
@@ -568,7 +568,7 @@ describe('index', () => {
 
 					// Does not hide the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-empty').should('not.exist');
+					cy.get('#robroy-num').should('have.text', '2 images');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -586,7 +586,7 @@ describe('index', () => {
 
 					// Does not hide the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-empty').should('not.exist');
+					cy.get('#robroy-num').should('have.text', '1 image');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -601,7 +601,7 @@ describe('index', () => {
 
 					// Hides the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-empty').should('be.visible');
+					cy.get('#robroy-num').should('have.text', '0 images');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -659,7 +659,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-empty').should('be.visible');
+				cy.get('#robroy-num').should('have.text', '0 images');
 			});
 
 			describe('when uploading an image', () => {
@@ -684,7 +684,7 @@ describe('index', () => {
 
 						// Shows the image list.
 						cy.get('#robroy-images').should('be.visible');
-						cy.get('#robroy-empty').should('not.exist');
+						cy.get('#robroy-num').should('have.text', '1 image');
 
 						// Adds the image to the list.
 						cy.get('[data-path="no-images-or-folders/500x500.png"]').should('be.visible');
@@ -1074,7 +1074,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-empty').should('be.visible');
+				cy.get('#robroy-num').should('have.text', '0 images');
 			});
 
 			describe('when deleting the folder', () => {
