@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jlbelanger/robroy.git",
-                "reference": "8808e89849ffbff7d686b244eb53b73c70dec12b"
+                "reference": "1caac0805e01969d73d0ba3f2e7afe84b58dc494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/8808e89849ffbff7d686b244eb53b73c70dec12b",
-                "reference": "8808e89849ffbff7d686b244eb53b73c70dec12b",
+                "url": "https://api.github.com/repos/jlbelanger/robroy/zipball/1caac0805e01969d73d0ba3f2e7afe84b58dc494",
+                "reference": "1caac0805e01969d73d0ba3f2e7afe84b58dc494",
                 "shasum": ""
             },
             "require-dev": {
@@ -114,7 +114,7 @@
                 "source": "https://github.com/jlbelanger/robroy/tree/master",
                 "issues": "https://github.com/jlbelanger/robroy/issues"
             },
-            "time": "2022-01-03T15:43:16+00:00"
+            "time": "2022-01-03T18:14:01+00:00"
         },
         {
             "name": "phpoption/phpoption",
