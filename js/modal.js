@@ -80,7 +80,7 @@ export default class RobroyModal {
 	}
 
 	static keydownListener(e) {
-		if (e.keyCode === 27) { // ESC
+		if (e.key === 'Escape') {
 			RobroyModal.hide();
 			document.removeEventListener('keydown', RobroyModal.keydownListener);
 		}
