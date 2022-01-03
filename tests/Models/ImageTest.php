@@ -31,6 +31,11 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testGetFolder() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testGetThumbnailPath() : void
 	{
 		$this->markTestIncomplete();

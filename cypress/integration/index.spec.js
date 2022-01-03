@@ -293,6 +293,12 @@ describe('index', () => {
 						// Adds the folder to the folder list.
 						cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 
+						// Shows the new folder after a refresh.
+						cy.reload();
+						cy.wait('@getFolder');
+						cy.wait('@getImages');
+						cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+
 						cy.resetFiles();
 					});
 				});
@@ -322,6 +328,14 @@ describe('index', () => {
 
 						// Does not add the folder to the folder list.
 						cy.get('.robroy-folder-link').contains('New Folder').should('not.exist');
+
+						// Adds the folder to the subfolder.
+						cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
+						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=folders-only').as('getImages2');
+						cy.visit('/dark.html?folder=folders-only');
+						cy.wait('@getFolder2');
+						cy.wait('@getImages2');
+						cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 
 						cy.resetFiles();
 					});
@@ -478,6 +492,11 @@ describe('index', () => {
 					// Shows the delete folder button.
 					cy.get('#robroy-delete-folder').should('be.visible');
 
+					// Does not show the image after a refresh.
+					cy.reload();
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="images-only/400x400.png"]').should('not.exist');
+
 					cy.resetFiles();
 				});
 			});
@@ -528,6 +547,7 @@ describe('index', () => {
 
 			describe('when deleting images', () => {
 				it('works', () => {
+					cy.intercept('GET', '/api.php?type=images&*').as('getImages');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
 					cy.intercept('DELETE', '/api.php?type=images&path=images-and-folders/400x500.png').as('deleteImage1');
 					cy.intercept('DELETE', '/api.php?type=images&path=images-and-folders/400x500.png').as('deleteImage2');
@@ -585,6 +605,12 @@ describe('index', () => {
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
+
+					// Does not show the image after a refresh.
+					cy.reload();
+					cy.wait('@getImages');
+					cy.get('[data-path="images-and-folders/400x500.png"]').should('not.exist');
+					cy.get('[data-path="images-and-folders/400x400.png"]').should('not.exist');
 
 					cy.resetFiles();
 				});
@@ -686,36 +712,81 @@ describe('index', () => {
 			});
 
 			describe('when creating a folder in this folder', () => {
-				describe('when creating a folder in another folder', () => {
-					it('creates the folder', () => {
-						cy.intercept('GET', '/api.php?type=folders&id=no-images-or-folders').as('getFolder');
-						cy.intercept('GET', '/api.php?type=folders').as('getFolders');
-						cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=no-images-or-folders').as('getImages');
-						cy.intercept('POST', '/api.php?type=folders').as('createFolder');
-						cy.setUploadPath('cypress/fixtures/current');
-						cy.visit('/dark.html?folder=no-images-or-folders');
-						cy.wait('@getFolder');
-						cy.wait('@getImages');
-						cy.contains('Log In').click();
-						cy.wait('@getFolders');
-						cy.get('#robroy-create-folder-name').clear().type('New Folder');
-						cy.get('#robroy-create-submit').click();
-						cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
+				it('creates the folder', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=no-images-or-folders').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=no-images-or-folders').as('getImages');
+					cy.intercept('POST', '/api.php?type=folders').as('createFolder');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=no-images-or-folders');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('#robroy-create-folder-name').clear().type('New Folder');
+					cy.get('#robroy-create-submit').click();
+					cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
 
-						// Clears the name field.
-						cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+					// Clears the name field.
+					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
 
-						// Does not clear the parent field.
-						cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'No Images Or Folders');
+					// Does not clear the parent field.
+					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'No Images Or Folders');
 
-						// Adds the folder to the folder list.
-						cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+					// Adds the folder to the folder list.
+					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 
-						// Hides the delete folder button.
-						cy.get('#robroy-delete-folder').should('not.be.visible');
+					// Hides the delete folder button.
+					cy.get('#robroy-delete-folder').should('not.be.visible');
 
-						cy.resetFiles();
-					});
+					// Shows the new folder after a refresh.
+					cy.reload();
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+
+					cy.resetFiles();
+				});
+			});
+
+			describe('when creating a folder in another folder', () => {
+				it('creates the folder', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=no-images-or-folders').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=no-images-or-folders').as('getImages');
+					cy.intercept('POST', '/api.php?type=folders').as('createFolder');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=no-images-or-folders');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('#robroy-create-folder-name').clear().type('New Folder');
+					cy.get('#robroy-create-folder-parent').select('Folders Only');
+					cy.get('#robroy-create-submit').click();
+					cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
+
+					// Clears the name field.
+					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+
+					// Does not clear the parent field.
+					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only');
+
+					// Does not add the folder to the folder list.
+					cy.get('.robroy-folder-link').should('not.exist');
+
+					// Does not hide the delete folder button.
+					cy.get('#robroy-delete-folder').should('be.visible');
+
+					// Adds the folder to the subfolder.
+					cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=folders-only').as('getImages2');
+					cy.visit('/dark.html?folder=folders-only');
+					cy.wait('@getFolder2');
+					cy.wait('@getImages2');
+					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+
+					cy.resetFiles();
 				});
 			});
 
@@ -791,7 +862,7 @@ describe('index', () => {
 				});
 			});
 
-			describe('when not changing the name or parent', () => {
+			describe('when not making any changes', () => {
 				it('shows an error', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=folders-only/subfolder').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
@@ -824,7 +895,7 @@ describe('index', () => {
 				});
 			});
 
-			describe('when changing the parent when another folder with that name already exists', () => {
+			describe('when changing the parent to one where the folder already exists', () => {
 				it('shows an error', () => {
 					cy.intercept('GET', '/api.php?type=folders&id=folders-only/subfolder').as('getFolder');
 					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
@@ -1023,6 +1094,326 @@ describe('index', () => {
 					cy.get('.robroy-folder-link').each((item, index) => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
+
+					cy.resetFiles();
+				});
+			});
+		});
+	});
+
+	describe('when editing an image', () => {
+		describe('when clicking the cancel button', () => {
+			it('closes the popup', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-modal-cancel').click();
+				cy.get('.robroy-modal').should('not.exist');
+			});
+		});
+
+		describe('when removing the filename', () => {
+			it('shows an error', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-filename').clear();
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: Please enter a filename.');
+			});
+		});
+
+		describe('when removing the filename and folder', () => {
+			it('shows an error', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-filename').clear();
+				cy.get('#robroy-edit-image-folder').select('');
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: Please enter a filename.');
+				cy.get('#robroy-error-robroy-edit-image-folder').should('not.exist');
+			});
+		});
+
+		describe('when not making any changes', () => {
+			it('closes the popup', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('.robroy-modal').should('not.exist');
+			});
+		});
+
+		describe('when changing the filename to one that already exists', () => {
+			it('shows an error', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-filename').clear().type('400x400.png');
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('.robroy-modal + .robroy-modal .robroy-modal-text').should(
+					'have.text',
+					'Error: File "images-only/400x400.png" already exists.',
+				);
+			});
+		});
+
+		describe('when changing the folder to one where the filename already exists', () => {
+			it('shows an error', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-folder').select('Images And Folders');
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('.robroy-modal + .robroy-modal .robroy-modal-text').should(
+					'have.text',
+					'Error: File "images-and-folders/400x500.png" already exists.',
+				);
+				cy.get('#robroy-error-robroy-edit-image-folder').should('not.exist');
+			});
+		});
+
+		describe('when setting the folder to one where the filename already exists', () => {
+			it('shows an error', () => {
+				cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+				cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+				cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+				cy.setUploadPath('cypress/fixtures/current');
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolder');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.wait('@getFolders');
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-edit-image-filename').clear().type('400x400.png');
+				cy.get('#robroy-edit-image-folder').select('Images And Folders');
+				cy.get('#robroy-edit-image-submit').click();
+				cy.get('.robroy-modal + .robroy-modal .robroy-modal-text').should(
+					'have.text',
+					'Error: File "images-and-folders/400x400.png" already exists.',
+				);
+				cy.get('#robroy-error-robroy-edit-image-folder').should('not.exist');
+			});
+		});
+
+		describe('when the input is valid', () => {
+			describe('when changing the filename', () => {
+				it('updates the image', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=images-only');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+					cy.get('#robroy-edit-image-filename').clear().type('new-filename.png');
+					cy.get('#robroy-edit-image-submit').click();
+
+					// Hides the modal.
+					cy.get('.robroy-modal').should('not.exist');
+
+					// Updates the path.
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="images-only/new-filename.png"]').should('exist');
+
+					// Shows the new filename after a refresh.
+					cy.reload();
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="images-only/new-filename.png"]').should('exist');
+
+					cy.resetFiles();
+				});
+			});
+
+			describe('when changing the folder', () => {
+				it('removes the image', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=images-only');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+					cy.get('#robroy-edit-image-folder').select('Folders Only');
+					cy.get('#robroy-edit-image-submit').click();
+
+					// Hides the modal.
+					cy.get('.robroy-modal').should('not.exist');
+
+					// Removes the image.
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="folders-only/400x500.png"]').should('not.exist');
+
+					// Adds the image to the other folder.
+					cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=folders-only').as('getImages2');
+					cy.visit('/dark.html?folder=folders-only');
+					cy.wait('@getFolder2');
+					cy.wait('@getImages2');
+					cy.get('[data-path="folders-only/400x500.png"]').should('exist');
+
+					cy.resetFiles();
+				});
+			});
+
+			describe('when removing the folder', () => {
+				it('removes the image', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=images-only');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+					cy.get('#robroy-edit-image-folder').select('');
+					cy.get('#robroy-edit-image-submit').click();
+
+					// Hides the modal.
+					cy.get('.robroy-modal').should('not.exist');
+
+					// Removes the image.
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="400x500.png"]').should('not.exist');
+
+					// Adds the image to the root folder.
+					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages2');
+					cy.visit('/dark.html');
+					cy.wait('@getFolder2');
+					cy.wait('@getImages2');
+					cy.get('[data-path="400x500.png"]').should('exist');
+
+					cy.resetFiles();
+				});
+			});
+
+			describe('when adding a folder', () => {
+				it('removes the image', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8').as('getImages');
+					cy.intercept('POST', '/api.php?type=images').as('uploadImage');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('#robroy-create-image-input').attachFile('500x500.png');
+					cy.get('#robroy-create-image-button').click();
+					cy.wait('@uploadImage');
+					cy.get('[data-path="500x500.png"] .robroy-button--secondary').click();
+					cy.get('#robroy-edit-image-folder').select('Folders Only');
+					cy.get('#robroy-edit-image-submit').click();
+
+					// Hides the modal.
+					cy.get('.robroy-modal').should('not.exist');
+
+					// Removes the image.
+					cy.get('[data-path="500x500.png"]').should('not.exist');
+					cy.get('[data-path="folders-only/500x500.png"]').should('not.exist');
+
+					// Adds the image to the other folder.
+					cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=folders-only').as('getImages2');
+					cy.visit('/dark.html?folder=folders-only');
+					cy.wait('@getFolder2');
+					cy.wait('@getImages2');
+					cy.get('[data-path="folders-only/500x500.png"]').should('exist');
+
+					cy.resetFiles();
+				});
+			});
+
+			describe('when changing the filename and folder', () => {
+				it('removes the image', () => {
+					cy.intercept('GET', '/api.php?type=folders&id=images-only').as('getFolder');
+					cy.intercept('GET', '/api.php?type=folders').as('getFolders');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=images-only').as('getImages');
+					cy.setUploadPath('cypress/fixtures/current');
+					cy.visit('/dark.html?folder=images-only');
+					cy.wait('@getFolder');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.wait('@getFolders');
+					cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+					cy.get('#robroy-edit-image-filename').clear().type('new-filename.png');
+					cy.get('#robroy-edit-image-folder').select('Folders Only');
+					cy.get('#robroy-edit-image-submit').click();
+
+					// Hides the modal.
+					cy.get('.robroy-modal').should('not.exist');
+
+					// Removes the image.
+					cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="images-only/new-filename.png"]').should('not.exist');
+					cy.get('[data-path="400x500.png"]').should('not.exist');
+					cy.get('[data-path="new-filename.png"]').should('not.exist');
+					cy.get('[data-path="folders-only/400x500.png"]').should('not.exist');
+					cy.get('[data-path="folders-only/new-filename.png"]').should('not.exist');
+
+					// Adds the image to the other folder.
+					cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
+					cy.intercept('GET', '/api.php?type=images&page[number]=1&page[size]=8&parent=folders-only').as('getImages2');
+					cy.visit('/dark.html?folder=folders-only');
+					cy.wait('@getFolder2');
+					cy.wait('@getImages2');
+					cy.get('[data-path="folders-only/new-filename.png"]').should('exist');
 
 					cy.resetFiles();
 				});

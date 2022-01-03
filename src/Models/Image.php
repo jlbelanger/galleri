@@ -124,12 +124,32 @@ class Image
 	 */
 	public function rename(string $newId) : void
 	{
-		if ($this->id !== $newId) {
-			Filesystem::renameFile($this->id, $newId);
-			Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
-			$this->id = $newId;
-			$this->thumbnailPath = $this->getThumbnailPath($newId);
+		if ($this->id === $newId) {
+			return;
 		}
+
+		Filesystem::renameFile($this->id, $newId);
+
+		$folder = self::getFolder($newId);
+		$folder = $folder ? $folder . '/' : '';
+		$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
+		if (!Filesystem::folderExists($thumbnailFolder)) {
+			Filesystem::createFolder($thumbnailFolder);
+		}
+		Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+
+		$this->id = $newId;
+		$this->thumbnailPath = $this->getThumbnailPath($newId);
+	}
+
+	/**
+	 * @param  string $id
+	 * @return string
+	 */
+	protected static function getFolder(string $id) : string
+	{
+		$pathinfo = pathinfo($id);
+		return $pathinfo['dirname'];
 	}
 
 	/**

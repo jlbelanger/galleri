@@ -13,6 +13,7 @@ export default class RobroyUtilities {
 
 		const error = document.createElement('span');
 		error.setAttribute('class', 'robroy-error');
+		error.setAttribute('id', 'robroy-error-' + input.getAttribute('id'));
 		error.innerText = message;
 		input.after(error);
 	}
