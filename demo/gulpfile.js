@@ -18,6 +18,7 @@ gulp.task('default', () => {
 	gulp.watch([
 		'scss/*.scss',
 		'scss/**/*.scss',
+		'node_modules/jlbelanger-robroy/scss/*.scss',
 		'node_modules/jlbelanger-robroy/scss/**/*.scss',
 	], css);
 });
