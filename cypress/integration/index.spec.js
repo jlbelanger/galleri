@@ -200,8 +200,8 @@ describe('index', () => {
 					cy.wait('@getFolders');
 
 					// When the image does not exist.
-					cy.get('#robroy-create-image-input').attachFile('500x500.png');
-					cy.get('#robroy-create-image-text').should('have.text', '500x500.png');
+					cy.get('#robroy-create-image-input').attachFile('500x500.jpg');
+					cy.get('#robroy-create-image-text').should('have.text', '500x500.jpg');
 					cy.get('#robroy-create-image-button').click();
 					cy.wait('@uploadImage');
 
@@ -210,7 +210,7 @@ describe('index', () => {
 					cy.get('#robroy-num').should('have.text', '1 image');
 
 					// Adds the image to the list.
-					cy.get('[data-path="500x500.png"]').should('be.visible');
+					cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"]').should('be.visible');
 
 					// Resets the upload form.
 					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
@@ -218,13 +218,13 @@ describe('index', () => {
 					cy.get('#robroy-create-image-button').should('not.be.visible');
 
 					// When the image already exists.
-					cy.get('#robroy-create-image-input').attachFile('500x500.png');
-					cy.get('#robroy-create-image-text').should('have.text', '500x500.png');
+					cy.get('#robroy-create-image-input').attachFile('500x500.jpg');
+					cy.get('#robroy-create-image-text').should('have.text', '500x500.jpg');
 					cy.get('#robroy-create-image-button').click();
 					cy.wait('@uploadImage');
 
 					// Shows an error.
-					cy.get('.robroy-modal-text').should('have.text', 'Error: File "500x500.png" already exists.');
+					cy.get('.robroy-modal-text').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
 
 					cy.resetFiles();
 				});
@@ -677,8 +677,8 @@ describe('index', () => {
 						cy.wait('@getFolders');
 
 						// When the image does not exist.
-						cy.get('#robroy-create-image-input').attachFile('500x500.png');
-						cy.get('#robroy-create-image-text').should('have.text', '500x500.png');
+						cy.get('#robroy-create-image-input').attachFile('500x500.jpg');
+						cy.get('#robroy-create-image-text').should('have.text', '500x500.jpg');
 						cy.get('#robroy-create-image-button').click();
 						cy.wait('@uploadImage');
 
@@ -687,7 +687,7 @@ describe('index', () => {
 						cy.get('#robroy-num').should('have.text', '1 image');
 
 						// Adds the image to the list.
-						cy.get('[data-path="no-images-or-folders/500x500.png"]').should('be.visible');
+						cy.get('[data-path="no-images-or-folders/2020-01-01-12-00-00-500x500.jpg"]').should('be.visible');
 
 						// Resets the upload form.
 						cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
@@ -698,13 +698,13 @@ describe('index', () => {
 						cy.get('#robroy-delete-folder').should('not.be.visible');
 
 						// When the image already exists.
-						cy.get('#robroy-create-image-input').attachFile('500x500.png');
-						cy.get('#robroy-create-image-text').should('have.text', '500x500.png');
+						cy.get('#robroy-create-image-input').attachFile('500x500.jpg');
+						cy.get('#robroy-create-image-text').should('have.text', '500x500.jpg');
 						cy.get('#robroy-create-image-button').click();
 						cy.wait('@uploadImage');
 
 						// Shows an error.
-						cy.get('.robroy-modal-text').should('have.text', 'Error: File "500x500.png" already exists.');
+						cy.get('.robroy-modal-text').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
 
 						cy.resetFiles();
 					});
@@ -1354,10 +1354,10 @@ describe('index', () => {
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
 					cy.wait('@getFolders');
-					cy.get('#robroy-create-image-input').attachFile('500x500.png');
+					cy.get('#robroy-create-image-input').attachFile('500x500.jpg');
 					cy.get('#robroy-create-image-button').click();
 					cy.wait('@uploadImage');
-					cy.get('[data-path="500x500.png"] .robroy-button--secondary').click();
+					cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"] .robroy-button--secondary').click();
 					cy.get('#robroy-edit-image-folder').select('Folders Only');
 					cy.get('#robroy-edit-image-submit').click();
 
@@ -1365,8 +1365,8 @@ describe('index', () => {
 					cy.get('.robroy-modal').should('not.exist');
 
 					// Removes the image.
-					cy.get('[data-path="500x500.png"]').should('not.exist');
-					cy.get('[data-path="folders-only/500x500.png"]').should('not.exist');
+					cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"]').should('not.exist');
+					cy.get('[data-path="folders-only/2020-01-01-12-00-00-500x500.jpg"]').should('not.exist');
 
 					// Adds the image to the other folder.
 					cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
@@ -1374,7 +1374,7 @@ describe('index', () => {
 					cy.visit('/dark.html?folder=folders-only');
 					cy.wait('@getFolder2');
 					cy.wait('@getImages2');
-					cy.get('[data-path="folders-only/500x500.png"]').should('exist');
+					cy.get('[data-path="folders-only/2020-01-01-12-00-00-500x500.jpg"]').should('exist');
 
 					cy.resetFiles();
 				});

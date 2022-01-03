@@ -16,6 +16,11 @@ class Utilities
 	public static function cleanFilename(string $path, string $filename, int $fileType) : string
 	{
 		$filename = strtolower($filename);
+		$filename = preg_replace('/[^a-z0-9_\.]+/', '-', $filename);
+		$filename = trim($filename, '-');
+		$filename = str_replace('-.', '.', $filename);
+		$filename = str_replace('.jpeg', '.jpg', $filename);
+
 		$date = '';
 
 		if (Exif::exists($fileType)) {
@@ -33,7 +38,7 @@ class Utilities
 		}
 
 		if (empty($date)) {
-			return $filename;
+			$date = date('Y-m-d-H-i-s');
 		}
 
 		return $date . '-' . $filename;
