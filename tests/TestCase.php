@@ -8,8 +8,17 @@ abstract class TestCase extends BaseTestCase
 {
 	private $mocks = [];
 
+	private $originalEnv = [];
+
+	protected function setUp() : void
+	{
+		parent::setUp();
+		$this->originalEnv = $_ENV;
+	}
+
 	protected function tearDown() : void
 	{
+		$_ENV = $this->originalEnv;
 		foreach ($this->mocks as $i => $mock) {
 			$mock->disable();
 		}
@@ -34,8 +43,20 @@ abstract class TestCase extends BaseTestCase
 		$this->mocks[] = $mock;
 	}
 
-	protected function setupTest(array $args) : void
+	protected function setupTest(array $args) : void // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 	{
+		if (!empty($args['variables']['_ENV'])) {
+			$_ENV = $args['variables']['_ENV'];
+		} else {
+			$_ENV = $this->originalEnv;
+		}
+
+		if (!empty($args['variables']['_FILES'])) {
+			$_FILES = $args['variables']['_FILES'];
+		} else {
+			$_FILES = [];
+		}
+
 		if (!empty($args['variables']['_GET'])) {
 			$_GET = $args['variables']['_GET'];
 		} else {
@@ -46,6 +67,12 @@ abstract class TestCase extends BaseTestCase
 			$_POST = $args['variables']['_POST'];
 		} else {
 			$_POST = [];
+		}
+
+		if (!empty($args['variables']['_SERVER'])) {
+			$_SERVER = $args['variables']['_SERVER'];
+		} else {
+			$_SERVER = [];
 		}
 
 		$mocks = [
@@ -65,7 +92,7 @@ abstract class TestCase extends BaseTestCase
 				'unlink' => true,
 			],
 			'Jlbelanger\Robroy\Models' => [
-				'getimagesize' => [500, 500], // phpcs:disable Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed
+				'getimagesize' => [500, 500],
 			],
 		];
 		if (!empty($args['mocks']['Jlbelanger\Robroy\Helpers'])) {

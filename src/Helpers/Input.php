@@ -7,69 +7,82 @@ class Input
 	/**
 	 * Returns an ENV value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $defaultValue
-	 * @param  integer $filter
+	 * @param  string|array $key
+	 * @param  mixed        $defaultValue
+	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	public static function env(string $key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function env($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
 	{
 		if (!self::hasEnv($key)) {
 			return $defaultValue;
 		}
-		return filter_var($_ENV[$key], $filter);
+		return self::filter($key, $_ENV, $filter);
 	}
 
 	/**
 	 * Returns true if the ENV value is specified.
 	 *
-	 * @param  string $key
+	 * @param  string|array $key
 	 * @return boolean
 	 */
-	public static function hasEnv(string $key) : bool
+	public static function hasEnv($key) : bool
 	{
-		return array_key_exists($key, $_ENV);
+		return self::has($key, $_ENV);
 	}
 
 	/**
 	 * Returns a FILES value.
 	 *
-	 * @param  string  $a
-	 * @param  string  $b
-	 * @param  integer $c
-	 * @param  integer $filter
+	 * @param  string|array $key
+	 * @param  mixed        $defaultValue
+	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	public static function file(string $a, string $b, int $c, int $filter = FILTER_SANITIZE_STRING)
+	public static function file($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
 	{
-		return filter_var($_FILES[$a][$b][$c], $filter);
+		if (!self::hasFile($key)) {
+			return $defaultValue;
+		}
+		return self::filter($key, $_FILES, $filter);
+	}
+
+	/**
+	 * Returns true if the FILES value is specified.
+	 *
+	 * @param  string|array $key
+	 * @return boolean
+	 */
+	public static function hasFile($key) : bool
+	{
+		return self::has($key, $_FILES);
 	}
 
 	/**
 	 * Returns a GET parameter value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $defaultValue
-	 * @param  integer $filter
+	 * @param  string|array $key
+	 * @param  mixed        $defaultValue
+	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	public static function get(string $key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function get($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
 	{
 		if (!self::hasGet($key)) {
 			return $defaultValue;
 		}
-		return filter_var($_GET[$key], $filter);
+		return self::filter($key, $_GET, $filter);
 	}
 
 	/**
 	 * Returns true if the GET parameter is specified.
 	 *
-	 * @param  string $key
+	 * @param  string|array $key
 	 * @return boolean
 	 */
-	public static function hasGet(string $key) : bool
+	public static function hasGet($key) : bool
 	{
-		return array_key_exists($key, $_GET);
+		return self::has($key, $_GET);
 	}
 
 	/**
@@ -86,54 +99,96 @@ class Input
 	/**
 	 * Returns a POST value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $defaultValue
-	 * @param  integer $filter
+	 * @param  string|array $key
+	 * @param  mixed        $defaultValue
+	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	public static function post(string $key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function post($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
 	{
 		if (!self::hasPost($key)) {
 			return $defaultValue;
 		}
-		return filter_var($_POST[$key], $filter);
+		return self::filter($key, $_POST, $filter);
 	}
 
 	/**
 	 * Returns true if the POST parameter is specified.
 	 *
-	 * @param  string $key
+	 * @param  string|array $key
 	 * @return boolean
 	 */
-	public static function hasPost(string $key) : bool
+	public static function hasPost($key) : bool
 	{
-		return array_key_exists($key, $_POST);
+		return self::has($key, $_POST);
 	}
 
 	/**
 	 * Returns a SERVER value.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $defaultValue
-	 * @param  integer $filter
+	 * @param  string|array $key
+	 * @param  mixed        $defaultValue
+	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	public static function server(string $key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function server($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
 	{
 		if (!self::hasServer($key)) {
 			return $defaultValue;
 		}
-		return filter_var($_SERVER[$key], $filter);
+		return self::filter($key, $_SERVER, $filter);
 	}
 
 	/**
 	 * Returns true if the SERVER parameter is specified.
 	 *
-	 * @param  string $key
+	 * @param  string|array $key
 	 * @return boolean
 	 */
-	public static function hasServer(string $key) : bool
+	public static function hasServer($key) : bool
 	{
-		return array_key_exists($key, $_SERVER);
+		return self::has($key, $_SERVER);
+	}
+
+	/**
+	 * Returns a parameter value.
+	 *
+	 * @param  string|array $key
+	 * @param  array        $value
+	 * @param  integer      $filter
+	 * @return mixed
+	 */
+	protected static function filter($key, array $value, int $filter = FILTER_SANITIZE_STRING)
+	{
+		if (is_array($key)) {
+			$pointer = $value;
+			foreach ($key as $k) {
+				$pointer = $pointer[$k];
+			}
+			return $pointer;
+		}
+		return filter_var($value[$key], $filter);
+	}
+
+	/**
+	 * Returns true if the parameter is specified.
+	 *
+	 * @param  string|array $key
+	 * @param  array        $value
+	 * @return boolean
+	 */
+	protected static function has($key, array $value) : bool
+	{
+		if (is_array($key)) {
+			$pointer = $value;
+			foreach ($key as $k) {
+				if (!array_key_exists($k, $pointer)) {
+					return false;
+				}
+				$pointer = $pointer[$k];
+			}
+			return true;
+		}
+		return array_key_exists($key, $value);
 	}
 }

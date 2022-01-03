@@ -113,6 +113,10 @@
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 
+	<rule ref="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
 	<rule ref="Squiz.Arrays.ArrayDeclaration.ValueNoNewline">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>

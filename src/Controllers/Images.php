@@ -21,9 +21,8 @@ class Images
 		$parent = Input::get('parent');
 		Folder::validateId($parent, 'Parent');
 		$images = Image::all($parent);
-		$page = Input::get('page', null);
-		$number = (int) Input::get('number', 1);
-		$size = (int) Input::get('size', 10);
+		$number = (int) Input::get(['page', 'number'], 1);
+		$size = (int) Input::get(['page', 'size'], 10);
 
 		return Api::paginate($images, $number, $size);
 	}
@@ -41,9 +40,9 @@ class Images
 		$images = [];
 
 		for ($i = 0; $i < $num; $i++) {
-			$name = Input::file('upload', 'name', $i);
-			$tempPath = Input::file('upload', 'tmp_name', $i);
-			$error = Input::file('upload', 'error', $i, FILTER_SANITIZE_NUMBER_INT);
+			$name = Input::file(['upload', 'name', $i]);
+			$tempPath = Input::file(['upload', 'tmp_name', $i]);
+			$error = Input::file(['upload', 'error', $i], 0, FILTER_SANITIZE_NUMBER_INT);
 
 			$image = Image::upload($folder, $name, $tempPath, $error);
 			$images[] = $image->json();

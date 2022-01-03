@@ -7,7 +7,13 @@
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
+	executionOrder="random"
 >
+	<coverage processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">./src</directory>
+		</include>
+	</coverage>
 	<testsuites>
 		<testsuite name="Tests">
 			<directory suffix="Test.php">./tests</directory>
