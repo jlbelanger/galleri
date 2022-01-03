@@ -34,7 +34,7 @@ class Api
 			'meta' => [
 				'num_items' => $numItems,
 				'page_number' => (int) $page,
-				'total_pages' => ceil($numItems / $perPage),
+				'total_pages' => (int) ceil($numItems / $perPage),
 			],
 		];
 	}

@@ -69,6 +69,6 @@ class ConstantTest extends TestCase
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
-		$output = Constant::verify(...array_values($args['args']));
+		Constant::verify(...array_values($args['args']));
 	}
 }

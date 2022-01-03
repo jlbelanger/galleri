@@ -283,9 +283,31 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function testJson() : void
+	public function jsonProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when body is not set' => [[
+				'expected' => '{}',
+			]],
+			'when body is empty' => [[
+				'body' => '',
+				'expected' => '{}',
+			]],
+			'when body is set' => [[
+				'body' => '{"foo":"bar"}',
+				'expected' => '{"foo":"bar"}',
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider jsonProvider
+	 */
+	public function testJson(array $args) : void
+	{
+		self::setupTest($args);
+		$output = json_encode(Input::json());
+		$this->assertSame($args['expected'], $output);
 	}
 
 	public function postProvider() : array

@@ -11,7 +11,7 @@ class Constant
 	 * Returns an environment variable's value or a default value.
 	 *
 	 * @param  string $key
-	 * @return any
+	 * @return mixed
 	 */
 	public static function get(string $key)
 	{

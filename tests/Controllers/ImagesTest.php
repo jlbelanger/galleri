@@ -8,9 +8,99 @@ use Tests\TestCase;
 
 class ImagesTest extends TestCase
 {
-	public function testGet() : void
+	public function getProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when parent is not set' => [[
+				'expected' => [
+					'data' => [],
+					'meta' => [
+						'num_items' => 0,
+						'page_number' => 1,
+						'total_pages' => 0,
+					],
+				],
+			]],
+			'when parent is empty' => [[
+				'variables' => [
+					'_GET' => ['parent' => ''],
+				],
+				'expected' => [
+					'data' => [],
+					'meta' => [
+						'num_items' => 0,
+						'page_number' => 1,
+						'total_pages' => 0,
+					],
+				],
+			]],
+			'when parent has a leading slash' => [[
+				'variables' => [
+					'_GET' => ['parent' => '/foo'],
+				],
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
+			]],
+			'when parent has a leading slash' => [[
+				'variables' => [
+					'_GET' => ['parent' => 'foo/'],
+				],
+				'expectedMessage' => 'Parent cannot begin or end with slashes.',
+			]],
+			'when parent has invalid characters' => [[
+				'variables' => [
+					'_GET' => ['parent' => '..'],
+				],
+				'expectedMessage' => 'Parent contains invalid characters.',
+			]],
+			'when parent does not exist' => [[
+				'variables' => [
+					'_GET' => ['parent' => 'does-not-exist'],
+				],
+				'expectedMessage' => 'This folder does not exist.',
+			]],
+			'when parent is valid' => [[
+				'variables' => [
+					'_GET' => ['parent' => 'foo'],
+				],
+				'expected' => [
+					'data' => [],
+					'meta' => [
+						'num_items' => 0,
+						'page_number' => 1,
+						'total_pages' => 0,
+					],
+				],
+			]],
+			'when parent is valid with a mid slash' => [[
+				'variables' => [
+					'_GET' => ['parent' => 'foo/bar'],
+				],
+				'expected' => [
+					'data' => [],
+					'meta' => [
+						'num_items' => 0,
+						'page_number' => 1,
+						'total_pages' => 0,
+					],
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider getProvider
+	 */
+	public function testGet(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		}
+
+		$output = Images::get();
+		$this->assertSame($args['expected'], $output);
 	}
 
 	public function testPost() : void

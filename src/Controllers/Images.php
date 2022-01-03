@@ -36,7 +36,7 @@ class Images
 	{
 		$folder = Input::post('folder');
 		Folder::validateId($folder, 'Folder');
-		$num = count($_FILES['upload']['name']);
+		$num = count(Input::file(['upload', 'name']));
 		$images = [];
 
 		for ($i = 0; $i < $num; $i++) {

@@ -2,6 +2,7 @@
 
 namespace Tests\Helpers;
 
+use Jlbelanger\Robroy\Helpers\Utilities;
 use Tests\TestCase;
 
 class UtilitiesTest extends TestCase
@@ -16,14 +17,58 @@ class UtilitiesTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testNameToSlug() : void
+	public function nameToSlugProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			[[
+				'args' => [
+					's' => 'Foo Bar 1',
+				],
+				'expected' => 'foo-bar-1',
+			]],
+			'with an apostrophe' => [[
+				'args' => [
+					's' => "Foo's Bar 1",
+				],
+				'expected' => 'foos-bar-1',
+			]],
+			'with special characters' => [[
+				'args' => [
+					's' => '"Foo/Bar"',
+				],
+				'expected' => 'foo-bar',
+			]],
+		];
 	}
 
-	public function testPathToName() : void
+	/**
+	 * @dataProvider nameToSlugProvider
+	 */
+	public function testNameToSlug(array $args) : void
 	{
-		$this->markTestIncomplete();
+		$output = Utilities::nameToSlug(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function pathToNameProvider() : array
+	{
+		return [
+			[[
+				'args' => [
+					's' => 'foo-bar',
+				],
+				'expected' => 'Foo Bar',
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider pathToNameProvider
+	 */
+	public function testPathToName(array $args) : void
+	{
+		$output = Utilities::pathToName(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
 	}
 
 	public function testResizeFile() : void

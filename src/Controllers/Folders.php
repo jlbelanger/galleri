@@ -26,13 +26,7 @@ class Folders
 			return $output;
 		}
 
-		$folders = Folder::all();
-		return [
-			'data' => $folders,
-			'meta' => [
-				'num' => count($folders),
-			],
-		];
+		return ['data' => Folder::all()];
 	}
 
 	/**

@@ -8,14 +8,101 @@ use Tests\TestCase;
 
 class FilesystemTest extends TestCase
 {
-	public function testCopyFile() : void
+	public function copyFileProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when copy fails' => [[
+				'args' => [
+					'oldPath' => 'foo',
+					'newPath' => 'bar',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'copy' => false,
+					],
+				],
+				'expected' => false,
+			]],
+			'when copy succeeds' => [[
+				'args' => [
+					'oldPath' => 'foo',
+					'newPath' => 'bar',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'copy' => true,
+					],
+				],
+				'expected' => true,
+			]],
+		];
 	}
 
-	public function testCreateFolder() : void
+	/**
+	 * @dataProvider copyFileProvider
+	 */
+	public function testCopyFile(array $args) : void
 	{
-		$this->markTestIncomplete();
+		self::setupTest($args);
+		$output = Filesystem::copyFile(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function createFolderProvider() : array
+	{
+		return [
+			'when the folder exists' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
+					],
+				],
+				'expectedMessage' => 'Folder "foo" already exists.',
+			]],
+			'when the folder does not exist and mkdir fails' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => false,
+						'mkdir' => false,
+					],
+				],
+				'expectedMessage' => 'Folder "foo" could not be created.',
+			]],
+			'when the folder does not exist and succeeds' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => false,
+						'mkdir' => true,
+					],
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider createFolderProvider
+	 */
+	public function testCreateFolder(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::createFolder(...array_values($args['args']));
 	}
 
 	public function deleteFileProvider() : array
@@ -28,7 +115,6 @@ class FilesystemTest extends TestCase
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => false,
-						'unlink' => true,
 					],
 				],
 				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
@@ -45,7 +131,7 @@ class FilesystemTest extends TestCase
 				],
 				'expectedMessage' => 'File "example.png" could not be deleted.',
 			]],
-			'when the file exists and unlink is successful' => [[
+			'when the file exists and unlink succeeds' => [[
 				'args' => [
 					'filename' => 'example.png',
 				],
@@ -55,7 +141,6 @@ class FilesystemTest extends TestCase
 						'unlink' => true,
 					],
 				],
-				'expected' => true,
 			]],
 		];
 	}
@@ -87,11 +172,25 @@ class FilesystemTest extends TestCase
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => false,
-						'rmdir' => true,
 					],
 				],
 			]],
-			'when the file exists and rmdir fails' => [[
+			'when the folder exists but is not empty' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
+						'opendir' => true,
+						'closedir' => true,
+						'readdir' => ['foo.png'],
+						'rmdir' => true,
+					],
+				],
+				'expectedMessage' => 'Folder "foo" is not empty, so it could not be deleted.',
+			]],
+			'when the folder exists and rmdir fails' => [[
 				'args' => [
 					'path' => 'foo',
 				],
@@ -103,7 +202,7 @@ class FilesystemTest extends TestCase
 				],
 				'expectedMessage' => 'Folder "foo" could not be deleted.',
 			]],
-			'when the file exists and rmdir is successful' => [[
+			'when the folder exists and rmdir succeeds' => [[
 				'args' => [
 					'path' => 'foo',
 				],
@@ -134,14 +233,80 @@ class FilesystemTest extends TestCase
 		Filesystem::deleteFolder(...array_values($args['args']));
 	}
 
-	public function testFileExists() : void
+	public function fileExistsProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when the file does not' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => false,
+					],
+				],
+				'expected' => false,
+			]],
+			'when the file exists' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
+					],
+				],
+				'expected' => true,
+			]],
+		];
 	}
 
-	public function testFolderExists() : void
+	/**
+	 * @dataProvider fileExistsProvider
+	 */
+	public function testFileExists(array $args) : void
 	{
-		$this->markTestIncomplete();
+		self::setupTest($args);
+		$output = Filesystem::fileExists(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function folderExistsProvider() : array
+	{
+		return [
+			'when the folder does not' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'is_dir' => false,
+					],
+				],
+				'expected' => false,
+			]],
+			'when the folder exists' => [[
+				'args' => [
+					'path' => 'foo',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'is_dir' => true,
+					],
+				],
+				'expected' => true,
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider folderExistsProvider
+	 */
+	public function testFolderExists(array $args) : void
+	{
+		self::setupTest($args);
+		$output = Filesystem::folderExists(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
 	}
 
 	public function testIsEmpty() : void
@@ -164,12 +329,7 @@ class FilesystemTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testRenameFile() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testRenameFolder() : void
+	public function testRename() : void
 	{
 		$this->markTestIncomplete();
 	}

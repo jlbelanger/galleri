@@ -29,10 +29,11 @@ class Filesystem
 	 */
 	public static function createFolder(string $path) : void
 	{
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
-		if (file_exists($fullPath)) {
+		if (self::fileExists($path)) {
 			throw new ApiException('Folder "' . $path . '" already exists.');
 		}
+
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
 		if (!mkdir($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" could not be created.', 500);
 		}
@@ -46,10 +47,11 @@ class Filesystem
 	 */
 	public static function deleteFile(string $filename) : void
 	{
-		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
-		if (!file_exists($path)) {
+		if (!self::fileExists($filename)) {
 			throw new ApiException('File "' . $filename . '" does not exist.');
 		}
+
+		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		if (!unlink($path)) {
 			throw new ApiException('File "' . $filename . '" could not be deleted.', 500);
 		}
@@ -63,16 +65,19 @@ class Filesystem
 	 */
 	public static function deleteFolder(string $path) : void
 	{
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
-		if (!file_exists($fullPath)) {
+		if (!self::fileExists($path)) {
 			return;
 		}
+
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
 		if (!self::isEmpty($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" is not empty, so it could not be deleted.', 500);
 		}
-		if (file_exists($fullPath . '/.DS_Store')) {
+
+		if (self::fileExists($path . '/.DS_Store')) {
 			self::deleteFile($path . '/.DS_Store');
 		}
+
 		if (!rmdir($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" could not be deleted.', 500);
 		}
@@ -126,16 +131,16 @@ class Filesystem
 	 */
 	public static function getFilesInFolder(string $parent) : array
 	{
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
-		if (!is_dir($uploadsPath)) {
+		if (!self::folderExists($parent)) {
 			throw new ApiException('This folder does not exist.', 404);
 		}
 
 		$output = [];
+		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 
 		if ($handle = opendir($uploadsPath)) {
 			while (($filename = readdir($handle)) !== false) {
-				if (strpos($filename, '.') === 0 || is_dir($uploadsPath . '/' . $filename)) {
+				if (strpos($filename, '.') === 0 || self::folderExists($parent . '/' . $filename)) {
 					continue;
 				}
 
@@ -161,18 +166,18 @@ class Filesystem
 	 */
 	public static function getFoldersInFolder(string $parent, bool $isRecursive = false) : array
 	{
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
-		if (!is_dir($uploadsPath)) {
+		if (!self::folderExists($parent)) {
 			throw new ApiException('This folder does not exist.', 404);
 		}
 
 		$output = [];
+		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 
 		if ($handle = opendir($uploadsPath)) {
 			while (($folderName = readdir($handle)) !== false) {
 				if (strpos($folderName, '.') === 0
 					|| $folderName === Constant::get('THUMBNAILS_FOLDER')
-					|| !is_dir($uploadsPath . '/' . $folderName)
+					|| !self::folderExists($parent . '/' . $folderName)
 				) {
 					continue;
 				}
@@ -229,16 +234,16 @@ class Filesystem
 	 */
 	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder') : void
 	{
-		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
-		if (!file_exists($fullOldPath)) {
+		if (!self::fileExists($oldPath)) {
 			throw new ApiException($type . ' "' . $oldPath . '" does not exist.');
 		}
 
-		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
-		if (file_exists($fullNewPath)) {
+		if (self::fileExists($newPath)) {
 			throw new ApiException($type . ' "' . $newPath . '" already exists.');
 		}
 
+		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
+		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (!rename($fullOldPath, $fullNewPath)) {
 			throw new ApiException($type . ' "' . $oldPath . '" could not be moved to "' . $newPath . '".', 500);
 		}
