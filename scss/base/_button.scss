@@ -5,9 +5,10 @@
 	color: $button-text-color;
 	cursor: pointer;
 	display: block;
+	font-size: $button-font-size;
 	line-height: 1;
 	margin: 0;
-	padding: 16px;
+	padding: $button-padding;
 
 	&:hover,
 	&:active,
