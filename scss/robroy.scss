@@ -16,7 +16,7 @@
 
 	.robroy-select,
 	.robroy-input {
-		background: $darkest;
+		background: $modal-input-background-color;
 		display: block;
 		margin-right: 0;
 		margin-top: 8px;
@@ -33,4 +33,10 @@
 
 .robroy-has-error {
 	box-shadow: 0 0 0 2px $red;
+}
+
+#robroy-create-folder-name,
+#robroy-edit-folder-name,
+#robroy-edit-folder-form {
+	width: 100%;
 }

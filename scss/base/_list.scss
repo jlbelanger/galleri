@@ -48,6 +48,7 @@
 }
 
 #robroy-folder-header {
+	align-items: center;
 	display: flex;
 	justify-content: space-between;
 	margin: $padding-mobile;
@@ -60,6 +61,7 @@
 #robroy-num {
 	margin: 0;
 	text-align: right;
+	white-space: nowrap;
 
 	&:empty {
 		display: none;
@@ -78,11 +80,16 @@
 	}
 }
 
-.robroy-folder + .robroy-folder {
-	&::before {
-		color: $dark;
+.robroy-folder {
+	margin: $folder-item-margin 0;
+
+	&::after {
+		color: $folder-item-dot-color;
 		content: '\00b7'; // &middot;
-		margin-left: 8px;
-		margin-right: 8px;
+		margin: 0 $folder-item-margin;
+	}
+
+	&:last-of-type::after {
+		content: '';
 	}
 }

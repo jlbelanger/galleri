@@ -8,33 +8,60 @@
 
 .robroy-form {
 	display: flex;
+	flex-direction: column;
+
+	@media screen and (min-width: $breakpoint) {
+		flex-direction: row;
+	}
 }
 
 .robroy-form--folder {
-	align-items: center;
+	@media screen and (min-width: $breakpoint) {
+		align-items: center;
+	}
 }
 
 .robroy-form--delete {
-	margin-left: 16px;
+	@media screen and (min-width: $breakpoint) {
+		margin-left: 16px;
+	}
 }
 
 .robroy-input,
 .robroy-select {
-	background: $darker;
+	background: $input-background-color;
 	border: 0;
 	border-radius: 0;
-	color: $lightest;
-	margin-right: 20px;
+	color: $input-color;
 	padding: 12px;
+
+	@media screen and (min-width: $breakpoint) {
+		margin-right: 20px;
+	}
 }
 
 .robroy-heading {
 	margin: 0 24px 0 0;
+	white-space: nowrap;
 }
 
 .robroy-label {
 	cursor: pointer;
-	margin-right: 8px;
+	margin-top: $padding-mobile;
+
+	@media screen and (min-width: $breakpoint) {
+		margin-right: 8px;
+		margin-top: 0;
+	}
+}
+
+#robroy-edit-submit,
+#robroy-create-submit {
+	margin-top: $padding-mobile;
+
+	@media screen and (min-width: $breakpoint) {
+		margin-top: 0;
+	}
 }
 
 #robroy-create-image-container {

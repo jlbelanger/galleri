@@ -22,6 +22,8 @@ $padding-desktop: 32px !default;
 $body-background-color: $darkest !default;
 $body-text-color: $lightest !default;
 
+$breadcrumb-item-arrow-color: $dark !default;
+
 $button-background-color: $primary !default;
 $button-text-color: if($dark-mode, $darkest, $lightest) !default;
 $button-background-color-hover: scale-color($button-background-color, $lightness: -10% * $multiplier) !default;
@@ -42,17 +44,24 @@ $header-text-color: $lightest !default;
 
 $focus-border-color: $lightest !default;
 
+$folder-item-dot-color: $dark !default;
+$folder-item-margin: 12px !default;
+
 $image-border-color-hover: $dark !default;
+
+$input-background-color: $darker !default;
+$input-color: $lightest !default;
 
 $link-text-color: $lightest !default;
 
 $modal-container-background-color: rgba($black, .4) !default;
 $modal-background-color: $darker !default;
+$modal-input-background-color: $darkest !default;
 $modal-text-color: $lightest !default;
 
 $spinner-color: $darker !default;
 $spinner-color-alternate: $primary !default;
 
-$upload-background-color: $darker !default;
+$upload-background-color: $input-background-color !default;
 $upload-text-color: $lightest !default;
 $upload-background-color-hover: scale-color($upload-background-color, $lightness: -10% * $multiplier) !default;

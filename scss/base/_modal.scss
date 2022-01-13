@@ -13,7 +13,10 @@
 .robroy-modal-box {
 	background: $modal-background-color;
 	color: $modal-text-color;
+	margin: 32px;
+	max-width: 800px;
 	padding: 32px;
+	width: 100%;
 }
 
 .robroy-modal-text {
