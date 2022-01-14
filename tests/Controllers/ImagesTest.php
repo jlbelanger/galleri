@@ -144,15 +144,23 @@ class ImagesTest extends TestCase
 				],
 				'expectedMessage' => 'ID cannot begin or end with periods.',
 			]],
+			'when id has no extension' => [[
+				'variables' => [
+					'_GET' => ['id' => 'example'],
+				],
+				'expectedMessage' => 'ID is missing a file extension (eg. JPG, PNG).',
+			]],
 			'when id is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['id' => 'thumbnails'],
+					'_GET' => ['id' => 'thumbnails.jpg'],
+					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
 				'expectedMessage' => 'ID cannot be the same as the thumbnails folder.',
 			]],
 			'when id ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['id' => 'folder/thumbnails'],
+					'_GET' => ['id' => 'folder/thumbnails.jpg'],
+					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
 				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
@@ -211,10 +219,18 @@ class ImagesTest extends TestCase
 				],
 				'expectedMessage' => 'Filename cannot begin or end with periods.',
 			]],
-			'when id is valid, filename is the same as THUMBNAILS_FOLDER' => [[
-				'body' => '{"filename":"thumbnails"}',
+			'when id is valid, filename has no extension' => [[
+				'body' => '{"filename":"example"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
+				],
+				'expectedMessage' => 'Filename is missing a file extension (eg. JPG, PNG).',
+			]],
+			'when id is valid, filename is the same as THUMBNAILS_FOLDER' => [[
+				'body' => '{"filename":"thumbnails.jpg"}',
+				'variables' => [
+					'_GET' => ['id' => 'example.png'],
+					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
 				'expectedMessage' => 'Filename cannot be the same as the thumbnails folder.',
 			]],
@@ -326,6 +342,22 @@ class ImagesTest extends TestCase
 					],
 				],
 				'body' => '{"filename":"new-filename.png","folder":""}',
+				'variables' => [
+					'_GET' => ['id' => 'example.png'],
+				],
+			]],
+			'when changing filename with invalid characters' => [[
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => function ($path) {
+							if (strpos($path, 'new-filename.png') !== false) {
+								return false;
+							}
+							return true;
+						},
+					],
+				],
+				'body' => '{"filename":"New Filename.png","folder":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
@@ -453,15 +485,23 @@ class ImagesTest extends TestCase
 				],
 				'expectedMessage' => 'Path cannot begin or end with periods.',
 			]],
+			'when path has no extension' => [[
+				'variables' => [
+					'_GET' => ['path' => 'example'],
+				],
+				'expectedMessage' => 'Path is missing a file extension (eg. JPG, PNG).',
+			]],
 			'when path is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['path' => 'thumbnails'],
+					'_GET' => ['path' => 'thumbnails.jpg'],
+					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
 				'expectedMessage' => 'Path cannot be the same as the thumbnails folder.',
 			]],
 			'when path ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['path' => 'folder/thumbnails'],
+					'_GET' => ['path' => 'folder/thumbnails.jpg'],
+					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
 				'expectedMessage' => 'Path cannot end in the thumbnails folder.',
 			]],

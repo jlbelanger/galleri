@@ -226,6 +226,9 @@ class Image
 		if (trim($id, '.') !== $id) {
 			throw new ApiException($type . ' cannot begin or end with periods.');
 		}
+		if (strpos($id, '.') === false) {
+			throw new ApiException($type . ' is missing a file extension (eg. JPG, PNG).');
+		}
 		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
 			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
 		}

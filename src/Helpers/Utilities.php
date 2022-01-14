@@ -71,15 +71,27 @@ class Utilities
 
 	/**
 	 * @param  string $s
+	 * @param  string $allowed
 	 * @return string
 	 */
-	public static function nameToSlug(string $s) : string
+	public static function nameToSlug(string $s, string $allowed = 'a-z0-9') : string
 	{
 		$s = strtolower($s);
+		$s = str_replace(' & ', ' and ', $s);
 		$s = str_replace("'", '', $s);
-		$s = preg_replace('/[^a-z0-9]+/', '-', $s);
+		$s = preg_replace('/[^' . $allowed . ']+/', '-', $s);
+		$s = preg_replace('/-+/', '-', $s);
 		$s = trim($s, '-');
 		return $s;
+	}
+
+	/**
+	 * @param  string $s
+	 * @return string
+	 */
+	public static function normalizeFilename(string $s) : string
+	{
+		return self::nameToSlug($s, 'a-z0-9\._-');
 	}
 
 	/**
