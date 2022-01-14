@@ -43,3 +43,12 @@
 		background-color: $button-secondary-background-color-hover;
 	}
 }
+
+.robroy-button-container {
+	bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	left: 0;
+	position: absolute;
+	right: 0;
+}

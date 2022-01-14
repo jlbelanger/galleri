@@ -34,19 +34,32 @@ export default class RobroyImage {
 	}
 
 	static addEditControls(container) {
+		var buttonContainer = document.createElement('div');
+		buttonContainer.setAttribute('class', 'robroy-button-container');
+		container.appendChild(buttonContainer);
+
+		var viewButton = document.createElement('button');
+		viewButton.setAttribute('class', 'robroy-admin robroy-button');
+		viewButton.setAttribute('href', 'button');
+		viewButton.innerText = 'View';
+		viewButton.addEventListener('click', RobroyImage.view);
+		buttonContainer.appendChild(viewButton);
+
 		var button = document.createElement('button');
 		button.setAttribute('class', 'robroy-admin robroy-button robroy-button--danger');
 		button.setAttribute('type', 'button');
 		button.innerText = 'Delete';
 		button.addEventListener('click', RobroyImage.delete);
-		container.appendChild(button);
+		buttonContainer.appendChild(button);
 
 		var editButton = document.createElement('button');
 		editButton.setAttribute('class', 'robroy-admin robroy-button robroy-button--secondary');
 		editButton.setAttribute('type', 'button');
 		editButton.innerText = 'Edit';
 		editButton.addEventListener('click', RobroyImage.edit);
-		container.appendChild(editButton);
+		buttonContainer.appendChild(editButton);
+
+		container.querySelector('.robroy-link').style.pointerEvents = 'none';
 	}
 
 	static addCreateControl() {
@@ -94,7 +107,7 @@ export default class RobroyImage {
 	}
 
 	static delete(e) {
-		var path = e.target.parentNode.getAttribute('data-path');
+		var path = e.target.closest('[data-path]').getAttribute('data-path');
 		RobroyModal.show(
 			'Are you sure you want to delete "' + path + '"?',
 			{
@@ -197,7 +210,7 @@ export default class RobroyImage {
 	}
 
 	static edit(e) {
-		var path = e.target.parentNode.getAttribute('data-path');
+		var path = e.target.closest('[data-path]').getAttribute('data-path');
 		window.ROBROY.currentImage = window.ROBROY.currentImages[path];
 
 		var form = document.createElement('form');
@@ -344,5 +357,9 @@ export default class RobroyImage {
 		items.forEach((item) => {
 			window.ROBROY.elements.imageList.prepend(RobroyImage.element(item));
 		});
+	}
+
+	static view(e) {
+		e.target.closest('[data-path]').querySelector('.robroy-link').click();
 	}
 }

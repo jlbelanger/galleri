@@ -107,9 +107,14 @@ export default class RobroyAuth {
 	static handleLogout() {
 		window.ROBROY.auth.innerText = 'Log In';
 
-		var elems = document.querySelectorAll('.robroy-admin');
+		let elems = document.querySelectorAll('.robroy-admin');
 		elems.forEach((elem) => {
 			elem.parentNode.removeChild(elem);
+		});
+
+		elems = document.querySelectorAll('.robroy-link');
+		elems.forEach((elem) => {
+			elem.style.pointerEvents = '';
 		});
 	}
 }
