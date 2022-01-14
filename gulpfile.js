@@ -1,10 +1,10 @@
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const gulp = require('gulp');
+const livereload = require('gulp-livereload');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('node-sass'));
-const livereload = require('gulp-livereload');
 
 function css() {
 	return gulp.src(['./scss/*.scss', './demo/scss/*.scss'])
@@ -32,6 +32,8 @@ gulp.task('default', () => {
 	gulp.watch(['scss/**/*.scss', 'demo/scss/**/*.scss'], css);
 	gulp.watch(['demo/public/*.css'], distCss);
 	gulp.watch(['demo/public/*.js'], distJs);
+	livereload.listen();
+	gulp.watch(['demo/public/*.css']).on('change', livereload.changed);
 });
 
 gulp.task('css', () => css());
