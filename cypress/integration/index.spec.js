@@ -293,6 +293,22 @@ describe('index', () => {
 						// Adds the folder to the folder list.
 						cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 
+						// Adds the new folder to the create parent list.
+						const items = [
+							'',
+							'Folders Only',
+							'Folders Only > Subfolder',
+							'Folders Only > Subfolder 2',
+							'Images And Folders',
+							'Images And Folders > Subfolder',
+							'Images Only',
+							'New Folder',
+							'No Images Or Folders',
+						];
+						cy.get('#robroy-create-folder-parent option').each((item, index) => {
+							cy.wrap(item).should('have.text', items[index]);
+						});
+
 						// Shows the new folder after a refresh.
 						cy.reload();
 						cy.wait('@getFolder');
@@ -328,6 +344,22 @@ describe('index', () => {
 
 						// Does not add the folder to the folder list.
 						cy.get('.robroy-folder-link').contains('New Folder').should('not.exist');
+
+						// Adds the new folder to the create parent list.
+						const items = [
+							'',
+							'Folders Only',
+							'Folders Only > New Folder',
+							'Folders Only > Subfolder',
+							'Folders Only > Subfolder 2',
+							'Images And Folders',
+							'Images And Folders > Subfolder',
+							'Images Only',
+							'No Images Or Folders',
+						];
+						cy.get('#robroy-create-folder-parent option').each((item, index) => {
+							cy.wrap(item).should('have.text', items[index]);
+						});
 
 						// Adds the folder to the subfolder.
 						cy.intercept('GET', '/api.php?type=folders&id=folders-only').as('getFolder2');
@@ -736,6 +768,27 @@ describe('index', () => {
 					// Adds the folder to the folder list.
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 
+					// Adds the new folder to the create parent list.
+					const items = [
+						'',
+						'Folders Only',
+						'Folders Only > Subfolder',
+						'Folders Only > Subfolder 2',
+						'Images And Folders',
+						'Images And Folders > Subfolder',
+						'Images Only',
+						'No Images Or Folders',
+						'No Images Or Folders > New Folder',
+					];
+					cy.get('#robroy-create-folder-parent option').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
+
+					// Adds the new folder to the edit parent list.
+					cy.get('#robroy-edit-folder-parent option').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
+
 					// Hides the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
 
@@ -774,6 +827,27 @@ describe('index', () => {
 
 					// Does not add the folder to the folder list.
 					cy.get('.robroy-folder-link').should('not.exist');
+
+					// Adds the new folder to the create parent list.
+					const items = [
+						'',
+						'Folders Only',
+						'Folders Only > New Folder',
+						'Folders Only > Subfolder',
+						'Folders Only > Subfolder 2',
+						'Images And Folders',
+						'Images And Folders > Subfolder',
+						'Images Only',
+						'No Images Or Folders',
+					];
+					cy.get('#robroy-create-folder-parent option').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
+
+					// Adds the new folder to the edit parent list.
+					cy.get('#robroy-edit-folder-parent option').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
 
 					// Does not hide the delete folder button.
 					cy.get('#robroy-delete-folder').should('be.visible');

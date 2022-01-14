@@ -98,7 +98,7 @@ export default class RobroyFolder {
 		return form;
 	}
 
-	static addFolderOptions(type, select) {
+	static addFolderOptions(type, select, setDefaultValue = null) {
 		select.innerText = '';
 
 		var option = document.createElement('option');
@@ -109,7 +109,11 @@ export default class RobroyFolder {
 			option = document.createElement('option');
 			option.setAttribute('value', folder.id);
 			option.innerText = RobroyFolder.getFullName(folder);
-			if (type === 'create') {
+			if (setDefaultValue) {
+				if (folder.id === setDefaultValue) {
+					option.setAttribute('selected', 'selected');
+				}
+			} else if (type === 'create') {
 				if (folder.id === window.ROBROY.currentFolderId) {
 					option.setAttribute('selected', 'selected');
 				}
@@ -188,6 +192,17 @@ export default class RobroyFolder {
 		}
 
 		document.getElementById('robroy-create-folder-name').value = '';
+
+		window.ROBROY.folders.push(response.data);
+		window.ROBROY.folders = window.ROBROY.folders.sort((a, b) => (a.id.localeCompare(b.id)));
+
+		const createParent = document.getElementById('robroy-create-folder-parent');
+		RobroyFolder.addFolderOptions('create', createParent, createParent.value);
+
+		const editParent = document.getElementById('robroy-edit-folder-parent');
+		if (editParent) {
+			RobroyFolder.addFolderOptions('edit', editParent);
+		}
 
 		RobroyUtilities.callback('afterCreateFolder');
 	}
