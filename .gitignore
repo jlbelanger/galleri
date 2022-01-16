@@ -3,6 +3,8 @@
 csp.php
 cypress/fixtures/current
 cypress.env.json
+demo/public/images2
+demo/public/json2
 node_modules
 /vendor
 TODO.md

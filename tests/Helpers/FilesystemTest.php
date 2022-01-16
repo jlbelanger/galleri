@@ -329,7 +329,17 @@ class FilesystemTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testReadFile() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testRename() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testWriteFile() : void
 	{
 		$this->markTestIncomplete();
 	}

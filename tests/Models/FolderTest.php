@@ -11,11 +11,6 @@ class FolderTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testAllInParent() : void
-	{
-		$this->markTestIncomplete();
-	}
-
 	public function testCreate() : void
 	{
 		$this->markTestIncomplete();
@@ -27,6 +22,11 @@ class FolderTest extends TestCase
 	}
 
 	public function testParent() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testRefreshCache() : void
 	{
 		$this->markTestIncomplete();
 	}

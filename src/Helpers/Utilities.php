@@ -57,11 +57,11 @@ class Utilities
 		$uploadsPath = Constant::get('UPLOADS_PATH');
 		$folder = $folder ? $folder . '/' : '';
 		$path = $uploadsPath . '/' . $folder . $filename;
-		$thumbnailFolderPath = $folder . Constant::get('THUMBNAILS_FOLDER');
+		$thumbnailFolderPath = $uploadsPath . '/' . $folder . Constant::get('THUMBNAILS_FOLDER');
 		if (!Filesystem::folderExists($thumbnailFolderPath)) {
-			Filesystem::createFolder($folder . Constant::get('THUMBNAILS_FOLDER'));
+			Filesystem::createFolder($uploadsPath . '/' . $folder . Constant::get('THUMBNAILS_FOLDER'));
 		}
-		$thumbnailPath = $uploadsPath . '/' . $thumbnailFolderPath . '/' . $filename;
+		$thumbnailPath = $thumbnailFolderPath . '/' . $filename;
 		if (!Filesystem::copyFile($path, $thumbnailPath)) {
 			throw new ApiException('File "' . $filename . '" could not be duplicated.', 500);
 		}

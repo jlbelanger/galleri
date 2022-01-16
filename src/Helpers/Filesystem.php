@@ -12,8 +12,8 @@ class Filesystem
 	/**
 	 * Returns true if folder exists.
 	 *
-	 * @param  string $oldPath
-	 * @param  string $newPath
+	 * @param  string $oldPath Eg. '/var/www/foo.png'.
+	 * @param  string $newPath Eg. '/var/www/bar.png'.
 	 * @return boolean
 	 */
 	public static function copyFile(string $oldPath, string $newPath) : bool
@@ -24,18 +24,18 @@ class Filesystem
 	/**
 	 * Creates a folder in the file system.
 	 *
-	 * @param  string $path
+	 * @param  string $path Eg. '/var/www/foo'.
 	 * @return void
 	 */
 	public static function createFolder(string $path) : void
 	{
+		$folder = basename($path);
 		if (self::fileExists($path)) {
-			throw new ApiException('Folder "' . $path . '" already exists.');
+			throw new ApiException('Folder "' . $folder . '" already exists.');
 		}
 
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
-		if (!mkdir($fullPath)) {
-			throw new ApiException('Folder "' . $path . '" could not be created.', 500);
+		if (!mkdir($path)) {
+			throw new ApiException('Folder "' . $folder . '" could not be created.', 500);
 		}
 	}
 
@@ -47,12 +47,12 @@ class Filesystem
 	 */
 	public static function deleteFile(string $filename) : void
 	{
-		if (!self::fileExists($filename)) {
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $filename;
+		if (!self::fileExists($fullPath)) {
 			throw new ApiException('File "' . $filename . '" does not exist.');
 		}
 
-		$path = Constant::get('UPLOADS_PATH') . '/' . $filename;
-		if (!unlink($path)) {
+		if (!unlink($fullPath)) {
 			throw new ApiException('File "' . $filename . '" could not be deleted.', 500);
 		}
 	}
@@ -65,16 +65,16 @@ class Filesystem
 	 */
 	public static function deleteFolder(string $path) : void
 	{
-		if (!self::fileExists($path)) {
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
+		if (!self::fileExists($fullPath)) {
 			return;
 		}
 
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
 		if (!self::isEmpty($fullPath)) {
 			throw new ApiException('Folder "' . $path . '" is not empty, so it could not be deleted.', 500);
 		}
 
-		if (self::fileExists($path . '/.DS_Store')) {
+		if (self::fileExists($fullPath . '/.DS_Store')) {
 			self::deleteFile($path . '/.DS_Store');
 		}
 
@@ -86,23 +86,23 @@ class Filesystem
 	/**
 	 * Returns true if file exists.
 	 *
-	 * @param  string $path
+	 * @param  string $path Eg. '/var/www/foo.png'.
 	 * @return boolean
 	 */
 	public static function fileExists(string $path) : bool
 	{
-		return file_exists(Constant::get('UPLOADS_PATH') . '/' . $path);
+		return file_exists($path);
 	}
 
 	/**
 	 * Returns true if folder exists.
 	 *
-	 * @param  string $path
+	 * @param  string $path Eg. '/var/www/foo'.
 	 * @return boolean
 	 */
 	public static function folderExists(string $path) : bool
 	{
-		return is_dir(Constant::get('UPLOADS_PATH') . '/' . $path);
+		return is_dir($path);
 	}
 
 	/**
@@ -132,19 +132,19 @@ class Filesystem
 	 */
 	public static function getFilesInFolder(string $parent, bool $isRecursive = false) : array
 	{
-		if (!self::folderExists($parent)) {
+		$fullParentPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
+		if (!self::folderExists($fullParentPath)) {
 			throw new ApiException('This folder does not exist.', 404);
 		}
 
 		$output = [];
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 
-		if ($handle = opendir($uploadsPath)) {
+		if ($handle = opendir($fullParentPath)) {
 			while (($filename = readdir($handle)) !== false) {
 				if (strpos($filename, '.') === 0) {
 					continue;
 				}
-				if (self::folderExists($parent . '/' . $filename)) {
+				if (self::folderExists($fullParentPath . '/' . $filename)) {
 					if ($isRecursive) {
 						$output = array_merge($output, self::getFilesInFolder($parent . '/' . $filename, $isRecursive));
 					} else {
@@ -174,18 +174,18 @@ class Filesystem
 	 */
 	public static function getFoldersInFolder(string $parent, bool $isRecursive = false) : array
 	{
-		if (!self::folderExists($parent)) {
+		$fullParentPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
+		if (!self::folderExists($fullParentPath)) {
 			throw new ApiException('This folder does not exist.', 404);
 		}
 
 		$output = [];
-		$uploadsPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 
-		if ($handle = opendir($uploadsPath)) {
+		if ($handle = opendir($fullParentPath)) {
 			while (($folderName = readdir($handle)) !== false) {
 				if (strpos($folderName, '.') === 0
 					|| $folderName === Constant::get('THUMBNAILS_FOLDER')
-					|| !self::folderExists($parent . '/' . $folderName)
+					|| !self::folderExists($fullParentPath . '/' . $folderName)
 				) {
 					continue;
 				}
@@ -212,6 +212,16 @@ class Filesystem
 	public static function moveFile(string $oldPath, string $newPath) : bool
 	{
 		return move_uploaded_file($oldPath, Constant::get('UPLOADS_PATH') . '/' . $newPath);
+	}
+
+	/**
+	 * @param  string $path
+	 * @return mixed
+	 */
+	public static function readFile(string $path)
+	{
+		$data = file_get_contents($path);
+		return json_decode($data, true);
 	}
 
 	/**
@@ -242,18 +252,30 @@ class Filesystem
 	 */
 	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder') : void
 	{
-		if (!self::fileExists($oldPath)) {
+		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
+		if (!self::fileExists($fullOldPath)) {
 			throw new ApiException($type . ' "' . $oldPath . '" does not exist.');
 		}
 
-		if (self::fileExists($newPath)) {
+		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
+		if (self::fileExists($fullNewPath)) {
 			throw new ApiException($type . ' "' . $newPath . '" already exists.');
 		}
 
-		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
-		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (!rename($fullOldPath, $fullNewPath)) {
 			throw new ApiException($type . ' "' . $oldPath . '" could not be moved to "' . $newPath . '".', 500);
 		}
+	}
+
+	/**
+	 * @param  string $path
+	 * @param  mixed  $data
+	 * @return boolean
+	 */
+	public static function writeFile(string $path, $data) : bool
+	{
+		$data = json_encode($data);
+		$result = file_put_contents($path, $data);
+		return $result !== false;
 	}
 }

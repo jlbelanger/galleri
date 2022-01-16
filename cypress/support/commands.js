@@ -25,13 +25,34 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
-Cypress.Commands.add('setUploadPath', (folder) => {
-	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/${folder}|" demo/.env`);
+Cypress.Commands.add('setPaths', () => {
+	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/demo/public/images2|" demo/.env`);
+	cy.exec('sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images2|" demo/.env');
+	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/demo/public/json2|" demo/.env`);
 });
 
-Cypress.Commands.add('resetFiles', () => {
-	cy.exec('mkdir -p cypress/fixtures/current');
-	cy.exec('rm -r cypress/fixtures/current');
-	cy.exec('mkdir cypress/fixtures/current');
-	cy.exec('cp -r cypress/fixtures/original/* cypress/fixtures/current');
+Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {
+	cy.exec('mkdir -p demo/public/images2');
+	cy.exec('rm -r demo/public/images2');
+	cy.exec(`cp -r ${uploadsFolder} demo/public/images2`);
+});
+
+Cypress.Commands.add('resetPaths', () => {
+	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/demo/public/images|" demo/.env`);
+	cy.exec('sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images|" demo/.env');
+	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/demo/public/json|" demo/.env`);
+});
+
+Cypress.Commands.add('resetJson', () => {
+	cy.exec('rm -f demo/public/json/folders.json');
+	cy.exec('rm -f demo/public/json2/folders.json');
+});
+
+Cypress.Commands.add('setupApi', () => {
+	cy.intercept('GET', '/json/folders.json').as('getFolders');
+	cy.intercept('GET', '/api.php?type=folders').as('getFolders2');
+	cy.intercept('GET', '/api.php?type=images&*').as('getImages');
+	cy.intercept('GET', '/api.php?type=images*/*').as('getImagesSubfolder');
+	cy.intercept('POST', '/api.php?type=images').as('uploadImage');
+	cy.intercept('POST', '/api.php?type=folders').as('createFolder');
 });

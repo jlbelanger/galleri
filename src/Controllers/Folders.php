@@ -3,10 +3,11 @@
 namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Models\Folder;
+use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
 use Jlbelanger\Robroy\Helpers\Utilities;
+use Jlbelanger\Robroy\Models\Folder;
 
 class Folders
 {
@@ -17,16 +18,7 @@ class Folders
 	 */
 	public static function get() : array
 	{
-		if (Input::hasGet('id')) {
-			$id = Input::get('id');
-			Folder::validateId($id, 'ID');
-			$folder = new Folder($id);
-			$output = ['data' => $folder->json()];
-			$output['data']['relationships']['folders'] = Folder::allInParent($id);
-			return $output;
-		}
-
-		return ['data' => Folder::all()];
+		return Folder::all();
 	}
 
 	/**
@@ -43,7 +35,7 @@ class Folders
 		$parent = Input::post('parent');
 		if ($parent) {
 			Folder::validateId($parent, 'Parent');
-			if (!Filesystem::folderExists($parent)) {
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $parent)) {
 				throw new ApiException('Parent "' . $parent . '" does not exist.');
 			}
 		}
@@ -71,7 +63,7 @@ class Folders
 		}
 		if (isset($input->parent)) {
 			Folder::validateId($input->parent, 'Parent');
-			if (!Filesystem::folderExists($input->parent)) {
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input->parent)) {
 				throw new ApiException('Parent "' . $input->parent . '" does not exist.');
 			}
 			if ($input->parent === $id) {

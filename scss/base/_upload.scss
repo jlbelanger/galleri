@@ -112,6 +112,7 @@
 #robroy-create-image-button {
 	align-items: center;
 	display: none;
+	justify-content: center;
 
 	&:focus-within {
 		position: relative;

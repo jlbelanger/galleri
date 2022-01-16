@@ -11,96 +11,9 @@ class FoldersTest extends TestCase
 	public function getProvider() : array
 	{
 		return [
-			'when id is not set' => [[
+			[[
 				'expected' => [
 					'data' => [],
-				],
-			]],
-			'when id is empty' => [[
-				'variables' => [
-					'_GET' => ['id' => ''],
-				],
-				'expected' => [
-					'data' => [
-						'id' => '',
-						'type' => 'folders',
-						'attributes' => [
-							'name' => '',
-						],
-						'relationships' => [
-							'parent' => null,
-							'folders' => [],
-						],
-					],
-				],
-			]],
-			'when id has a leading slash' => [[
-				'variables' => [
-					'_GET' => ['id' => '/foo'],
-				],
-				'expectedMessage' => 'ID cannot begin or end with slashes.',
-			]],
-			'when id has a leading slash' => [[
-				'variables' => [
-					'_GET' => ['id' => 'foo/'],
-				],
-				'expectedMessage' => 'ID cannot begin or end with slashes.',
-			]],
-			'when id has invalid characters' => [[
-				'variables' => [
-					'_GET' => ['id' => '..'],
-				],
-				'expectedMessage' => 'ID contains invalid characters.',
-			]],
-			'when id does not exist' => [[
-				'variables' => [
-					'_GET' => ['id' => 'does-not-exist'],
-				],
-				'expectedMessage' => 'This folder does not exist.',
-			]],
-			'when id is valid' => [[
-				'variables' => [
-					'_GET' => ['id' => 'foo'],
-				],
-				'expected' => [
-					'data' => [
-						'id' => 'foo',
-						'type' => 'folders',
-						'attributes' => [
-							'name' => 'Foo',
-						],
-						'relationships' => [
-							'parent' => null,
-							'folders' => [],
-						],
-					],
-				],
-			]],
-			'when id is valid with a mid slash' => [[
-				'variables' => [
-					'_GET' => ['id' => 'foo/bar'],
-				],
-				'expected' => [
-					'data' => [
-						'id' => 'foo/bar',
-						'type' => 'folders',
-						'attributes' => [
-							'name' => 'Bar',
-						],
-						'relationships' => [
-							'parent' => [
-								'id' => 'foo',
-								'type' => 'folders',
-								'attributes' => [
-									'name' => 'Foo',
-								],
-								'relationships' => [
-									'parent' => null,
-								],
-							],
-							'folders' => [],
-						],
-					],
 				],
 			]],
 		];

@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Models;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Helpers\Cache;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Utilities;
@@ -22,26 +23,24 @@ class Folder
 	/**
 	 * Returns all folders.
 	 *
+	 * @param  boolean $useCache
 	 * @return Folder[]
 	 */
-	public static function all() : array
+	public static function all(bool $useCache = true) : array
 	{
-		$folders = Filesystem::getFoldersInFolder('', true);
-		ksort($folders);
-		return array_values($folders);
-	}
-
-	/**
-	 * Returns all folders under the parent.
-	 *
-	 * @param  string $parent
-	 * @return Folder[]
-	 */
-	public static function allInParent(string $parent) : array
-	{
-		$folders = Filesystem::getFoldersInFolder($parent);
-		ksort($folders);
-		return array_values($folders);
+		$key = Constant::get('JSON_PATH');
+		if (!Filesystem::folderExists($key)) {
+			Filesystem::createFolder($key);
+		}
+		$key .= '/folders.json';
+		$output = $useCache ? Cache::get($key) : null;
+		if ($output === null) {
+			$folders = Filesystem::getFoldersInFolder('', true);
+			ksort($folders);
+			$output = ['data' => array_values($folders)];
+			Cache::set($key, $output);
+		}
+		return $output;
 	}
 
 	/**
@@ -57,8 +56,10 @@ class Folder
 		}
 		$path = $parentPath ? $parentPath . '/' . $slug : $slug;
 
-		Filesystem::createFolder($path);
-		Filesystem::createFolder($path . '/' . Constant::get('THUMBNAILS_FOLDER'));
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
+		Filesystem::createFolder($fullPath);
+		Filesystem::createFolder($fullPath . '/' . Constant::get('THUMBNAILS_FOLDER'));
+		self::refreshCache();
 
 		return new self($path);
 	}
@@ -72,6 +73,7 @@ class Folder
 	{
 		Filesystem::deleteFolder($this->id . '/' . Constant::get('THUMBNAILS_FOLDER'));
 		Filesystem::deleteFolder($this->id);
+		self::refreshCache();
 	}
 
 	/**
@@ -88,6 +90,14 @@ class Folder
 	}
 
 	/**
+	 * @return void
+	 */
+	public static function refreshCache() : void
+	{
+		self::all(false);
+	}
+
+	/**
 	 * @param  string $newId Eg. 'foo/bar'.
 	 * @return void
 	 */
@@ -96,6 +106,7 @@ class Folder
 		if ($this->id !== $newId) {
 			Filesystem::renameFolder($this->id, $newId);
 			$this->id = $newId;
+			self::refreshCache();
 		}
 	}
 
@@ -107,7 +118,6 @@ class Folder
 		$parent = $this->parent();
 		return [
 			'id' => $this->id,
-			'type' => 'folders',
 			'attributes' => [
 				'name' => Utilities::pathToName($this->id),
 			],

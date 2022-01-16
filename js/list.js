@@ -4,6 +4,7 @@ import RobroyBreadcrumb from './breadcrumb';
 import RobroyEmpty from './empty';
 import RobroyFolder from './folder';
 import RobroyImage from './image';
+import RobroyModal from './modal';
 import RobroyUtilities from './utilities';
 
 export default class RobroyList {
@@ -21,30 +22,77 @@ export default class RobroyList {
 		}
 
 		RobroyApi.request({
-			url: window.ROBROY.args.apiPath + '?type=folders&id=' + window.ROBROY.currentFolderId,
+			url: window.ROBROY.args.apiFoldersPath,
 			callback: (response) => {
-				window.ROBROY.currentFolder = response.data;
-
-				if (window.ROBROY.currentFolderId !== '') {
-					RobroyBreadcrumb.init();
-				}
-
-				if (response.data.attributes.name) {
-					RobroyUtilities.setMetaTitle(response.data.attributes.name);
-				}
-
-				if (response.data.relationships.folders.length > 0) {
-					RobroyList.appendFolders(response.data.relationships.folders);
-				}
-
-				RobroyAuth.init();
-
-				RobroyList.loadImages(() => { RobroyList.onScroll(); });
-				window.addEventListener('scroll', RobroyUtilities.debounce(() => { RobroyList.onScroll(); }, 100));
-
-				RobroyUtilities.callback('afterLoadFolder');
+				RobroyList.listCallback(response);
+			},
+			errorCallback: () => {
+				RobroyApi.request({
+					url: window.ROBROY.args.apiPath + '?type=folders',
+					callback: (response) => {
+						RobroyList.listCallback(response);
+					},
+				});
 			},
 		});
+	}
+
+	static listCallback(response) {
+		window.ROBROY.folders = response.data;
+
+		let folder;
+		if (window.ROBROY.currentFolderId === '') {
+			folder = {
+				id: '',
+				type: 'folders',
+				attributes: {
+					name: '',
+				},
+				relationships: {
+					parent: null,
+				},
+			};
+		} else {
+			folder = response.data.find((f) => (f.id === window.ROBROY.currentFolderId));
+		}
+
+		if (!folder) {
+			RobroyModal.show('Error: This folder does not exist.');
+			return;
+		}
+
+		window.ROBROY.currentFolder = folder;
+
+		if (window.ROBROY.currentFolderId !== '') {
+			RobroyBreadcrumb.init();
+		}
+
+		if (folder.attributes.name) {
+			RobroyUtilities.setMetaTitle(folder.attributes.name);
+		}
+
+		let children;
+		if (window.ROBROY.currentFolderId === '') {
+			children = response.data.filter((f) => (!f.id.includes('/')));
+		} else {
+			const numSlashes = window.ROBROY.currentFolderId.split('/').length + 1;
+			children = response.data.filter((f) => {
+				if (!f.id.startsWith(window.ROBROY.currentFolderId + '/')) {
+					return false;
+				}
+				return numSlashes === f.id.split('/').length;
+			});
+		}
+		if (children.length > 0) {
+			RobroyList.appendFolders(children);
+		}
+
+		RobroyAuth.init();
+
+		RobroyList.loadImages(() => { RobroyList.onScroll(); });
+		window.addEventListener('scroll', RobroyUtilities.debounce(() => { RobroyList.onScroll(); }, 100));
+
+		RobroyUtilities.callback('afterLoadFolder');
 	}
 
 	static loadImages(callback) {

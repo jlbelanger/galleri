@@ -4,6 +4,7 @@ namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Api;
+use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
 use Jlbelanger\Robroy\Helpers\Utilities;
@@ -82,7 +83,7 @@ class Images
 			$input->folder = '';
 		}
 		Folder::validateId($input->folder, 'Folder');
-		if (!Filesystem::folderExists($input->folder)) {
+		if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input->folder)) {
 			throw new ApiException('Folder "' . $input->folder . '" does not exist.');
 		}
 

@@ -65,7 +65,8 @@ class Image
 
 		// Move the image.
 		$newPath = ($folder ? $folder . '/' : '') . $newFilename;
-		if (Filesystem::fileExists($newPath)) {
+		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
+		if (Filesystem::fileExists($fullNewPath)) {
 			throw new ApiException('File "' . $newFilename . '" already exists.');
 		}
 		if (!Filesystem::moveFile($tempPath, $newPath)) {
@@ -143,8 +144,9 @@ class Image
 		$folder = self::getFolder($newId);
 		$folder = $folder ? $folder . '/' : '';
 		$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
-		if (!Filesystem::folderExists($thumbnailFolder)) {
-			Filesystem::createFolder($thumbnailFolder);
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $thumbnailFolder;
+		if (!Filesystem::folderExists($fullPath)) {
+			Filesystem::createFolder($fullPath);
 		}
 		Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
 
@@ -180,10 +182,11 @@ class Image
 	 */
 	public function thumbnailAbsolutePath() : string
 	{
-		if (!Filesystem::fileExists($this->thumbnailPath)) {
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
+		if (!Filesystem::fileExists($fullPath)) {
 			return '';
 		}
-		return Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
+		return $fullPath;
 	}
 
 	/**
@@ -198,7 +201,6 @@ class Image
 
 		return [
 			'id' => $this->id,
-			'type' => 'images',
 			'attributes' => [
 				'filename'        => $pathinfo['basename'],
 				'folder'          => $pathinfo['dirname'],

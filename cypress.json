@@ -1,3 +1,5 @@
 {
-	"baseUrl": "https://robroy.jennybelanger.local"
+	"baseUrl": "https://jenny:test@robroy.jennybelanger.local",
+	"viewportWidth": 1024,
+	"viewportHeight": 768
 }

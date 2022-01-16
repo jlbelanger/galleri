@@ -84,6 +84,7 @@ abstract class TestCase extends BaseTestCase
 					return strpos($path, 'does-not-exist') === false;
 				},
 				'copy' => true,
+				'file_put_contents' => 1,
 				'mkdir' => true,
 				'move_uploaded_file' => true,
 				'opendir' => false,
@@ -108,7 +109,13 @@ abstract class TestCase extends BaseTestCase
 		}
 
 		if (array_key_exists('body', $args)) {
-			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', $args['body']);
+			$this->addMock(
+				'Jlbelanger\Robroy\Helpers',
+				'file_get_contents',
+				function ($path) use ($args) {
+					return $path === 'php://input' ? $args['body'] : '';
+				}
+			);
 		} else {
 			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', '');
 		}

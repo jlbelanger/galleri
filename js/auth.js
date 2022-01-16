@@ -86,22 +86,15 @@ export default class RobroyAuth {
 			RobroyFolder.addEditControls();
 		}
 
-		RobroyApi.request({
-			url: window.ROBROY.args.apiPath + '?type=folders',
-			callback: (response) => {
-				window.ROBROY.folders = response.data;
+		var $parentInput = document.getElementById('robroy-create-folder-parent');
+		if ($parentInput) {
+			RobroyFolder.addFolderOptions('create', $parentInput);
+		}
 
-				var $parentInput = document.getElementById('robroy-create-folder-parent');
-				if ($parentInput) {
-					RobroyFolder.addFolderOptions('create', $parentInput);
-				}
-
-				$parentInput = document.getElementById('robroy-edit-folder-parent');
-				if ($parentInput) {
-					RobroyFolder.addFolderOptions('edit', $parentInput);
-				}
-			},
-		});
+		$parentInput = document.getElementById('robroy-edit-folder-parent');
+		if ($parentInput) {
+			RobroyFolder.addFolderOptions('edit', $parentInput);
+		}
 	}
 
 	static handleLogout() {

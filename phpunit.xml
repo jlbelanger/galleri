@@ -20,6 +20,7 @@
 		</testsuite>
 	</testsuites>
 	<php>
+		<env name="JSON_PATH" value="/var/www/robroy/tests/data"/>
 		<env name="UPLOADS_FOLDER" value="assets"/>
 		<env name="UPLOADS_PATH" value="/var/www/robroy/tests/assets"/>
 	</php>
