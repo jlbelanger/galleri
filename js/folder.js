@@ -86,7 +86,13 @@ export default class RobroyFolder {
 		parentInput.setAttribute('id', 'robroy-' + type + '-folder-parent');
 		parentInput.setAttribute('name', 'parent');
 		form.appendChild(parentInput);
-		RobroyFolder.addFolderOptions(type, parentInput);
+		let selectedValue;
+		if (type === 'create') {
+			selectedValue = window.ROBROY.currentFolderId;
+		} else if (type === 'edit') {
+			selectedValue = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
+		}
+		RobroyFolder.addFolderOptions(parentInput, selectedValue);
 
 		var button = document.createElement('button');
 		button.setAttribute('class', 'robroy-button');
@@ -98,29 +104,22 @@ export default class RobroyFolder {
 		return form;
 	}
 
-	static addFolderOptions(type, select, setDefaultValue = null) {
+	static addFolderOptions(select, selectedValue) {
 		select.innerText = '';
 
 		var option = document.createElement('option');
 		option.setAttribute('value', '');
 		select.appendChild(option);
 
-		window.ROBROY.folders.forEach(function (folder) {
+		const folderIds = Object.keys(window.ROBROY.folders).sort();
+		let folder;
+		folderIds.forEach(function (folderId) {
+			folder = window.ROBROY.folders[folderId];
 			option = document.createElement('option');
 			option.setAttribute('value', folder.id);
-			option.innerText = RobroyFolder.getFullName(folder);
-			if (setDefaultValue) {
-				if (folder.id === setDefaultValue) {
-					option.setAttribute('selected', 'selected');
-				}
-			} else if (type === 'create') {
-				if (folder.id === window.ROBROY.currentFolderId) {
-					option.setAttribute('selected', 'selected');
-				}
-			} else if (type === 'edit') {
-				if (window.ROBROY.currentFolder.relationships.parent && folder.id === window.ROBROY.currentFolder.relationships.parent.id) {
-					option.setAttribute('selected', 'selected');
-				}
+			option.innerText = RobroyFolder.getFullName(window.ROBROY.folders[folder.id]);
+			if (folder.id === selectedValue) {
+				option.setAttribute('selected', 'selected');
 			}
 			select.appendChild(option);
 		});
@@ -149,9 +148,10 @@ export default class RobroyFolder {
 			callback: () => {
 				RobroyUtilities.callback('afterDeleteFolder');
 
+				const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
 				window.location = window.location.href.replace(
 					'?folder=' + window.ROBROY.currentFolderId,
-					window.ROBROY.currentFolder.relationships.parent ? '?folder=' + window.ROBROY.currentFolder.relationships.parent.id : '',
+					parentId ? '?folder=' + parentId : '',
 				);
 			},
 		});
@@ -179,10 +179,8 @@ export default class RobroyFolder {
 	}
 
 	static createCallback(response) {
-		if (
-			(response.data.relationships.parent && response.data.relationships.parent.id === window.ROBROY.currentFolderId)
-			|| (!response.data.relationships.parent && !window.ROBROY.currentFolderId)
-		) {
+		const parentId = RobroyFolder.getParentId(response.data.id);
+		if ((parentId && parentId === window.ROBROY.currentFolderId) || (!parentId && !window.ROBROY.currentFolderId)) {
 			RobroyFolder.prependItems([response.data]);
 
 			var $deleteFolder = document.getElementById('robroy-delete-folder');
@@ -193,15 +191,14 @@ export default class RobroyFolder {
 
 		document.getElementById('robroy-create-folder-name').value = '';
 
-		window.ROBROY.folders.push(response.data);
-		window.ROBROY.folders = window.ROBROY.folders.sort((a, b) => (a.id.localeCompare(b.id)));
+		window.ROBROY.folders[response.data.id] = response.data;
 
 		const createParent = document.getElementById('robroy-create-folder-parent');
-		RobroyFolder.addFolderOptions('create', createParent, createParent.value);
+		RobroyFolder.addFolderOptions(createParent, createParent.value);
 
 		const editParent = document.getElementById('robroy-edit-folder-parent');
 		if (editParent) {
-			RobroyFolder.addFolderOptions('edit', editParent);
+			RobroyFolder.addFolderOptions(editParent, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
 		}
 
 		RobroyUtilities.callback('afterCreateFolder');
@@ -218,8 +215,9 @@ export default class RobroyFolder {
 		var parent = document.getElementById('robroy-edit-folder-parent');
 		var hasNameChanged = name.value !== window.ROBROY.currentFolder.attributes.name;
 		var hasParentChanged;
-		if (window.ROBROY.currentFolder.relationships.parent) {
-			hasParentChanged = parent.value !== window.ROBROY.currentFolder.relationships.parent.id;
+		const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
+		if (parentId) {
+			hasParentChanged = parent.value !== parentId;
 		} else {
 			hasParentChanged = !!parent.value;
 		}
@@ -263,10 +261,17 @@ export default class RobroyFolder {
 
 	static getFullName(folder) {
 		const output = [folder.attributes.name];
-		while (folder.relationships.parent) {
-			folder = folder.relationships.parent;
+		let parentId = RobroyFolder.getParentId(folder.id);
+		while (parentId) {
+			folder = window.ROBROY.folders[parentId];
 			output.push(folder.attributes.name);
+			parentId = RobroyFolder.getParentId(folder.id);
 		}
 		return output.reverse().join(' > ');
+	}
+
+	static getParentId(id) {
+		const i = id.lastIndexOf('/');
+		return i === -1 ? '' : id.substr(0, i);
 	}
 }

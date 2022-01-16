@@ -88,12 +88,12 @@ export default class RobroyAuth {
 
 		var $parentInput = document.getElementById('robroy-create-folder-parent');
 		if ($parentInput) {
-			RobroyFolder.addFolderOptions('create', $parentInput);
+			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolderId);
 		}
 
 		$parentInput = document.getElementById('robroy-edit-folder-parent');
 		if ($parentInput) {
-			RobroyFolder.addFolderOptions('edit', $parentInput);
+			RobroyFolder.addFolderOptions($parentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
 		}
 	}
 

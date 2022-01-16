@@ -1,3 +1,5 @@
+import RobroyFolder from './folder';
+
 export default class RobroyBreadcrumb {
 	static init() {
 		const list = document.createElement('ul');
@@ -7,7 +9,7 @@ export default class RobroyBreadcrumb {
 		let folder = window.ROBROY.currentFolder;
 		do {
 			list.prepend(this.item(folder.id, folder.attributes.name));
-			folder = folder.relationships.parent;
+			folder = window.ROBROY.folders[RobroyFolder.getParentId(folder.id)];
 		} while (folder);
 
 		list.prepend(this.item('', window.ROBROY.args.rootFolderName));

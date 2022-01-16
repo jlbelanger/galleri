@@ -171,6 +171,10 @@ yarn lint
 
 ``` bash
 ./vendor/bin/phpunit
+
+cp cypress.example.json cypress.json
+cp cypress.env.example.json cypress.env.json
+yarn test:cypress
 ```
 
 ### Deploy

@@ -48,12 +48,9 @@ export default class RobroyList {
 				attributes: {
 					name: '',
 				},
-				relationships: {
-					parent: null,
-				},
 			};
 		} else {
-			folder = response.data.find((f) => (f.id === window.ROBROY.currentFolderId));
+			folder = window.ROBROY.folders[window.ROBROY.currentFolderId];
 		}
 
 		if (!folder) {
@@ -71,20 +68,20 @@ export default class RobroyList {
 			RobroyUtilities.setMetaTitle(folder.attributes.name);
 		}
 
-		let children;
+		let childFolders;
 		if (window.ROBROY.currentFolderId === '') {
-			children = response.data.filter((f) => (!f.id.includes('/')));
+			childFolders = Object.values(window.ROBROY.folders).filter((f) => (!f.id.includes('/')));
 		} else {
 			const numSlashes = window.ROBROY.currentFolderId.split('/').length + 1;
-			children = response.data.filter((f) => {
+			childFolders = Object.values(window.ROBROY.folders).filter((f) => {
 				if (!f.id.startsWith(window.ROBROY.currentFolderId + '/')) {
 					return false;
 				}
 				return numSlashes === f.id.split('/').length;
 			});
 		}
-		if (children.length > 0) {
-			RobroyList.appendFolders(children);
+		if (childFolders.length > 0) {
+			RobroyList.appendFolders(childFolders);
 		}
 
 		RobroyAuth.init();

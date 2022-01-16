@@ -253,7 +253,7 @@ export default class RobroyImage {
 		folderInput.setAttribute('id', 'robroy-edit-image-folder');
 		folderInput.setAttribute('name', 'folder');
 		container.appendChild(folderInput);
-		RobroyImage.addFolderOptions(folderInput);
+		RobroyFolder.addFolderOptions(folderInput, window.ROBROY.currentImage.attributes.folder);
 
 		RobroyModal.show(
 			form,
@@ -324,24 +324,6 @@ export default class RobroyImage {
 				RobroyModal.hide(e);
 				RobroyUtilities.callback('afterEditImage');
 			},
-		});
-	}
-
-	static addFolderOptions(select) {
-		select.innerText = '';
-
-		var option = document.createElement('option');
-		option.setAttribute('value', '');
-		select.appendChild(option);
-
-		window.ROBROY.folders.forEach(function (folder) {
-			option = document.createElement('option');
-			option.setAttribute('value', folder.id);
-			option.innerText = RobroyFolder.getFullName(folder);
-			if (folder.id === window.ROBROY.currentImage.attributes.folder) {
-				option.setAttribute('selected', 'selected');
-			}
-			select.appendChild(option);
 		});
 	}
 

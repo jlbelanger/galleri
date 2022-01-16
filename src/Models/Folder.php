@@ -28,17 +28,14 @@ class Folder
 	 */
 	public static function all(bool $useCache = true) : array
 	{
-		$key = Constant::get('JSON_PATH');
-		if (!Filesystem::folderExists($key)) {
-			Filesystem::createFolder($key);
-		}
-		$key .= '/folders.json';
-		$output = $useCache ? Cache::get($key) : null;
+		$folder = Constant::get('JSON_PATH');
+		$filename = 'folders.json';
+		$output = $useCache ? Cache::get($folder, $filename) : null;
 		if ($output === null) {
-			$folders = Filesystem::getFoldersInFolder('', true);
+			$folders = Filesystem::getFolders();
 			ksort($folders);
-			$output = ['data' => array_values($folders)];
-			Cache::set($key, $output);
+			$output = ['data' => $folders];
+			Cache::set($folder, $filename, $output);
 		}
 		return $output;
 	}
@@ -115,14 +112,10 @@ class Folder
 	 */
 	public function json() : array
 	{
-		$parent = $this->parent();
 		return [
 			'id' => $this->id,
 			'attributes' => [
 				'name' => Utilities::pathToName($this->id),
-			],
-			'relationships' => [
-				'parent' => $parent ? $parent->json() : null,
 			],
 		];
 	}

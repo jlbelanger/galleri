@@ -7,13 +7,15 @@ use Jlbelanger\Robroy\Helpers\Filesystem;
 class Cache
 {
 	/**
-	 * @param  string $key
+	 * @param  string $folder
+	 * @param  string $filename
 	 * @return mixed
 	 */
-	public static function get(string $key)
+	public static function get(string $folder, string $filename)
 	{
-		if (Filesystem::fileExists($key)) {
-			$result = Filesystem::readFile($key);
+		$path = $folder . '/' . $filename;
+		if (Filesystem::fileExists($path)) {
+			$result = Filesystem::readFile($path);
 			if ($result) {
 				return $result;
 			}
@@ -22,12 +24,17 @@ class Cache
 	}
 
 	/**
-	 * @param  string $key
+	 * @param  string $folder
+	 * @param  string $filename
 	 * @param  mixed  $value
-	 * @return mixed
+	 * @return bool
 	 */
-	public static function set(string $key, $value)
+	public static function set(string $folder, string $filename, $value) : bool
 	{
-		return Filesystem::writeFile($key, $value);
+		if (!Filesystem::folderExists($folder)) {
+			Filesystem::createFolder($folder);
+		}
+		$path = $folder . '/' . $filename;
+		return Filesystem::writeFile($path, $value);
 	}
 }

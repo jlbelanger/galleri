@@ -169,14 +169,13 @@ class Filesystem
 
 	/**
 	 * @param  string  $parent
-	 * @param  boolean $isRecursive
 	 * @return array
 	 */
-	public static function getFoldersInFolder(string $parent, bool $isRecursive = false) : array
+	public static function getFolders(string $parent = '') : array
 	{
 		$fullParentPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 		if (!self::folderExists($fullParentPath)) {
-			throw new ApiException('This folder does not exist.', 404);
+			throw new ApiException('Folder "' . $parent . '" does not exist.', 404);
 		}
 
 		$output = [];
@@ -190,12 +189,10 @@ class Filesystem
 					continue;
 				}
 
-				$fullPath = trim($parent . '/' . $folderName, '/');
-				$folder = new Folder($fullPath);
-				$output[$fullPath] = $folder->json();
-				if ($isRecursive) {
-					$output = array_merge($output, self::getFoldersInFolder($fullPath, $isRecursive));
-				}
+				$id = trim($parent . '/' . $folderName, '/');
+				$folder = new Folder($id);
+				$output[$id] = $folder->json();
+				$output = array_merge($output, self::getFolders($id));
 			}
 
 			closedir($handle);
