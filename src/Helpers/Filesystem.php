@@ -168,7 +168,7 @@ class Filesystem
 	}
 
 	/**
-	 * @param  string  $parent
+	 * @param  string $parent
 	 * @return array
 	 */
 	public static function getFolders(string $parent = '') : array

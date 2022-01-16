@@ -2,33 +2,33 @@ import RobroyFolder from './folder';
 
 export default class RobroyBreadcrumb {
 	static init() {
-		const list = document.createElement('ul');
-		list.setAttribute('class', 'robroy-breadcrumb');
-		window.ROBROY.container.prepend(list);
+		const $ul = document.createElement('ul');
+		$ul.setAttribute('class', 'robroy-breadcrumb');
+		window.ROBROY.elements.$container.prepend($ul);
 
 		let folder = window.ROBROY.currentFolder;
 		do {
-			list.prepend(this.item(folder.id, folder.attributes.name));
+			$ul.prepend(this.item(folder.id, folder.attributes.name));
 			folder = window.ROBROY.folders[RobroyFolder.getParentId(folder.id)];
 		} while (folder);
 
-		list.prepend(this.item('', window.ROBROY.args.rootFolderName));
+		$ul.prepend(this.item('', window.ROBROY.args.rootFolderName));
 	}
 
 	static item(id, name) {
-		const item = document.createElement('li');
-		item.setAttribute('class', 'robroy-breadcrumb-item');
+		const $li = document.createElement('li');
+		$li.setAttribute('class', 'robroy-breadcrumb-item');
 
 		if (id === window.ROBROY.currentFolderId) {
-			item.innerText = name;
+			$li.innerText = name;
 		} else {
-			const a = document.createElement('a');
-			a.setAttribute('class', 'robroy-breadcrumb-link');
-			a.setAttribute('href', id ? `?folder=${id}` : window.location.pathname);
-			a.innerText = name;
-			item.prepend(a);
+			const $a = document.createElement('a');
+			$a.setAttribute('class', 'robroy-breadcrumb-link');
+			$a.setAttribute('href', id ? `?folder=${id}` : window.location.pathname);
+			$a.innerText = name;
+			$li.prepend($a);
 		}
 
-		return item;
+		return $li;
 	}
 }

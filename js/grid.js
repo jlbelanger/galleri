@@ -11,18 +11,18 @@ export default class RobroyGrid {
 	}
 
 	calculate() {
-		var gridStyle = window.getComputedStyle(window.ROBROY.elements.imageList);
+		const gridStyle = window.getComputedStyle(window.ROBROY.elements.$imageList);
 		this.gridRowHeight = parseInt(gridStyle.getPropertyValue('grid-auto-rows'), 10);
 		this.gridRowGap = parseInt(gridStyle.getPropertyValue('grid-row-gap'), 10);
 	}
 
 	checkResizeItem(figure) {
-		var img = figure.querySelector('img');
-		if (img.complete) {
+		const $img = figure.querySelector('img');
+		if ($img.complete) {
 			this.resizeItem(figure);
 		} else {
-			var int = setInterval(() => {
-				if (!img.complete) {
+			const int = setInterval(() => {
+				if (!$img.complete) {
 					return;
 				}
 				clearInterval(int);
@@ -32,16 +32,16 @@ export default class RobroyGrid {
 	}
 
 	resizeItem(figure) {
-		var a = figure.querySelector('a');
-		a.style.position = '';
-		var itemHeight = a.getBoundingClientRect().height;
-		var rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
-		a.style.position = 'absolute';
-		figure.style.gridRowEnd = 'span ' + rowSpan;
+		const $a = figure.querySelector('a');
+		$a.style.position = '';
+		const itemHeight = $a.getBoundingClientRect().height;
+		const rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
+		$a.style.position = 'absolute';
+		figure.style.gridRowEnd = `span ${rowSpan}`;
 	}
 
 	resizeAllItems() {
-		var figures = document.getElementsByClassName('robroy-figure');
-		[...figures].forEach((figure) => { this.checkResizeItem(figure); });
+		const $figures = document.getElementsByClassName('robroy-figure');
+		[...$figures].forEach((figure) => { this.checkResizeItem(figure); });
 	}
 }

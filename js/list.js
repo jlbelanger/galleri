@@ -28,7 +28,7 @@ export default class RobroyList {
 			},
 			errorCallback: () => {
 				RobroyApi.request({
-					url: window.ROBROY.args.apiPath + '?type=folders',
+					url: `${window.ROBROY.args.apiPath}?type=folders`,
 					callback: (response) => {
 						RobroyList.listCallback(response);
 					},
@@ -74,7 +74,7 @@ export default class RobroyList {
 		} else {
 			const numSlashes = window.ROBROY.currentFolderId.split('/').length + 1;
 			childFolders = Object.values(window.ROBROY.folders).filter((f) => {
-				if (!f.id.startsWith(window.ROBROY.currentFolderId + '/')) {
+				if (!f.id.startsWith(`${window.ROBROY.currentFolderId}/`)) {
 					return false;
 				}
 				return numSlashes === f.id.split('/').length;
@@ -95,13 +95,13 @@ export default class RobroyList {
 	static loadImages(callback) {
 		window.ROBROY.args.isLoadingImages = true;
 
-		var url = [
+		let url = [
 			window.ROBROY.args.apiPath,
-			'?type=images&page[number]=' + (++window.ROBROY.args.pageNumber),
-			'&page[size]=' + window.ROBROY.args.pageSize,
+			`?type=images&page[number]=${++window.ROBROY.args.pageNumber}`,
+			`&page[size]=${window.ROBROY.args.pageSize}`,
 		].join('');
 		if (!window.ROBROY.args.showAllImages) {
-			url += '&parent=' + window.ROBROY.currentFolderId;
+			url += `&parent=${window.ROBROY.currentFolderId}`;
 		}
 
 		RobroyApi.request({
@@ -126,9 +126,9 @@ export default class RobroyList {
 
 				if (response.meta.total_pages <= 0) {
 					if (!RobroyEmpty.hasFolders()) {
-						var $deleteFolder = document.getElementById('robroy-delete-folder');
-						if ($deleteFolder) {
-							$deleteFolder.style.display = '';
+						const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+						if ($deleteFolderButton) {
+							$deleteFolderButton.style.display = '';
 						}
 					}
 				}
@@ -147,13 +147,13 @@ export default class RobroyList {
 			return;
 		}
 
-		var lastItem = document.querySelector('#robroy-images > figure:last-of-type');
-		if (!lastItem) {
+		const $lastFigure = document.querySelector('#robroy-images > figure:last-of-type');
+		if (!$lastFigure) {
 			return;
 		}
 
-		var lastItemOffsetFromTop = lastItem.offsetTop;
-		var pageOffsetFromTop = window.pageYOffset + window.innerHeight;
+		const lastItemOffsetFromTop = $lastFigure.offsetTop;
+		const pageOffsetFromTop = window.pageYOffset + window.innerHeight;
 
 		if (pageOffsetFromTop > lastItemOffsetFromTop) {
 			RobroyList.loadImages();
@@ -162,13 +162,13 @@ export default class RobroyList {
 
 	static appendImages(images) {
 		images.forEach((image) => {
-			window.ROBROY.elements.imageList.appendChild(RobroyImage.element(image));
+			window.ROBROY.elements.$imageList.appendChild(RobroyImage.element(image));
 		});
 	}
 
 	static appendFolders(folders) {
 		folders.forEach((folder) => {
-			window.ROBROY.elements.folderList.appendChild(RobroyFolder.element(folder));
+			window.ROBROY.elements.$folderList.appendChild(RobroyFolder.element(folder));
 		});
 	}
 }

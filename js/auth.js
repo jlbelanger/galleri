@@ -30,11 +30,11 @@ export default class RobroyAuth {
 			return;
 		}
 
-		var url = [
+		const url = [
 			window.location.protocol,
 			'//log:out@',
 			window.location.host,
-			window.ROBROY.args.apiPath + '?type=sessions',
+			`${window.ROBROY.args.apiPath}?type=sessions`,
 		].join('');
 		RobroyApi.request({
 			method: 'DELETE',
@@ -50,7 +50,7 @@ export default class RobroyAuth {
 	static login() {
 		RobroyApi.request({
 			method: 'POST',
-			url: window.ROBROY.args.apiPath + '?type=sessions',
+			url: `${window.ROBROY.args.apiPath}?type=sessions`,
 			noParse: true,
 			callback: (_response, status) => {
 				if (status !== 204) {
@@ -74,7 +74,7 @@ export default class RobroyAuth {
 	static handleLogin() {
 		window.ROBROY.auth.innerText = 'Log Out';
 
-		var images = RobroyEmpty.getImages();
+		const images = RobroyEmpty.getImages();
 		images.forEach((container) => {
 			RobroyImage.addEditControls(container);
 		});
@@ -86,7 +86,7 @@ export default class RobroyAuth {
 			RobroyFolder.addEditControls();
 		}
 
-		var $parentInput = document.getElementById('robroy-create-folder-parent');
+		let $parentInput = document.getElementById('robroy-create-folder-parent');
 		if ($parentInput) {
 			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolderId);
 		}
@@ -100,13 +100,13 @@ export default class RobroyAuth {
 	static handleLogout() {
 		window.ROBROY.auth.innerText = 'Log In';
 
-		let elems = document.querySelectorAll('.robroy-admin');
-		elems.forEach((elem) => {
+		let $elems = document.querySelectorAll('.robroy-admin');
+		$elems.forEach((elem) => {
 			elem.parentNode.removeChild(elem);
 		});
 
-		elems = document.querySelectorAll('.robroy-link');
-		elems.forEach((elem) => {
+		$elems = document.querySelectorAll('.robroy-link');
+		$elems.forEach((elem) => {
 			elem.style.pointerEvents = '';
 		});
 	}

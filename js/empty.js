@@ -1,7 +1,7 @@
 export default class RobroyEmpty {
 	static isEmpty() {
-		const imageListStyle = window.getComputedStyle(window.ROBROY.elements.imageList);
-		const folderListStyle = window.getComputedStyle(window.ROBROY.elements.folderList);
+		const imageListStyle = window.getComputedStyle(window.ROBROY.elements.$imageList);
+		const folderListStyle = window.getComputedStyle(window.ROBROY.elements.$folderList);
 		return imageListStyle.display === 'none' && folderListStyle.display === 'none';
 	}
 

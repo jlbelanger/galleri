@@ -8,7 +8,7 @@ export default class RobroyApi {
 
 		RobroySpinner.show();
 
-		var req = new XMLHttpRequest();
+		const req = new XMLHttpRequest();
 		req.onreadystatechange = () => {
 			if (req.readyState !== XMLHttpRequest.DONE) {
 				return;
@@ -16,12 +16,12 @@ export default class RobroyApi {
 
 			RobroySpinner.hide();
 
-			var response = req.responseText;
+			let response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {
 				if (args.errorCallback) {
 					args.errorCallback(response, req.status);
 				} else {
-					RobroyModal.show('Error: The server returned a ' + req.status + ' error.');
+					RobroyModal.show(`Error: The server returned a ${req.status} error.`);
 				}
 				return;
 			}
@@ -32,14 +32,14 @@ export default class RobroyApi {
 					if (args.errorCallback) {
 						args.errorCallback(response, req.status);
 					} else {
-						RobroyModal.show('Error: The server returned a non-JSON response. (' + args.url + ')');
+						RobroyModal.show(`Error: The server returned a non-JSON response. (${args.url})`);
 					}
 					return;
 				}
 
 				if (response.errors) {
-					var errors = response.errors.map((error) => error.title);
-					RobroyModal.show('Error: ' + errors);
+					const errors = response.errors.map((error) => error.title);
+					RobroyModal.show(`Error: ${errors}`);
 					return;
 				}
 			}

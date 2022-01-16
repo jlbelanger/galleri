@@ -1,12 +1,12 @@
 export default class RobroySpinner {
 	static show() {
-		var elem = document.querySelector('.robroy-spinner');
-		if (!elem) {
-			elem = document.createElement('div');
-			elem.setAttribute('class', 'robroy-spinner');
-			document.body.appendChild(elem);
+		let $spinner = document.querySelector('.robroy-spinner');
+		if (!$spinner) {
+			$spinner = document.createElement('div');
+			$spinner.setAttribute('class', 'robroy-spinner');
+			document.body.appendChild($spinner);
 		}
-		elem.style.display = '';
+		$spinner.style.display = '';
 	}
 
 	static hide() {

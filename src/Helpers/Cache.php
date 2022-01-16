@@ -27,7 +27,7 @@ class Cache
 	 * @param  string $folder
 	 * @param  string $filename
 	 * @param  mixed  $value
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function set(string $folder, string $filename, $value) : bool
 	{

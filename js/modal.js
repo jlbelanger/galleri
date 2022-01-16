@@ -6,35 +6,35 @@ export default class RobroyModal {
 		args.closeButtonText = args.closeButtonText || 'OK';
 		args.closeButtonClass = args.closeButtonClass || '';
 
-		var id = 'robroy-modal-' + (new Date().getTime());
-		var container = document.createElement('div');
-		container.setAttribute('id', id);
-		container.setAttribute('class', 'robroy-modal');
-		container.setAttribute('role', 'alert');
+		const id = `robroy-modal-${new Date().getTime()}`;
+		const $container = document.createElement('div');
+		$container.setAttribute('id', id);
+		$container.setAttribute('class', 'robroy-modal');
+		$container.setAttribute('role', 'alert');
 
-		var inner = document.createElement('div');
-		inner.setAttribute('class', 'robroy-modal-box');
-		container.appendChild(inner);
+		const $innerContainer = document.createElement('div');
+		$innerContainer.setAttribute('class', 'robroy-modal-box');
+		$container.appendChild($innerContainer);
 
-		var text = document.createElement('p');
-		text.setAttribute('class', 'robroy-modal-text');
+		const $p = document.createElement('p');
+		$p.setAttribute('class', 'robroy-modal-text');
 		if (args.html) {
-			text.innerHTML = message;
+			$p.innerHTML = message;
 		} else if (args.append) {
-			text.appendChild(message);
+			$p.appendChild(message);
 		} else {
-			text.innerText = message;
+			$p.innerText = message;
 		}
-		inner.appendChild(text);
+		$innerContainer.appendChild($p);
 
-		var closeButton;
+		let $closeButton;
 		if (!args.hideClose || args.showCancel) {
-			var optionsParagraph = document.createElement('p');
-			optionsParagraph.setAttribute('class', 'robroy-modal-options');
-			inner.appendChild(optionsParagraph);
+			const $optionsContainer = document.createElement('p');
+			$optionsContainer.setAttribute('class', 'robroy-modal-options');
+			$innerContainer.appendChild($optionsContainer);
 
 			if (!args.hideClose) {
-				var callback = (e) => {
+				const callback = (e) => {
 					if (RobroyUtilities.propertyExists(args, 'callback')) {
 						args.callback(e);
 					} else {
@@ -42,40 +42,40 @@ export default class RobroyModal {
 					}
 				};
 
-				closeButton = document.createElement('button');
-				closeButton.setAttribute('id', 'robroy-modal-close');
-				closeButton.setAttribute('type', 'button');
-				closeButton.setAttribute('class', ('robroy-button ' + args.closeButtonClass).trim());
-				closeButton.setAttribute('data-id', id);
-				closeButton.setAttribute('data-robroy-modal-close', '');
+				$closeButton = document.createElement('button');
+				$closeButton.setAttribute('id', 'robroy-modal-close');
+				$closeButton.setAttribute('type', 'button');
+				$closeButton.setAttribute('class', `robroy-button ${args.closeButtonClass}`.trim());
+				$closeButton.setAttribute('data-id', id);
+				$closeButton.setAttribute('data-robroy-modal-close', '');
 				if (args.closeButtonAttributes) {
 					Object.keys(args.closeButtonAttributes).forEach((property) => {
-						closeButton.setAttribute(property, args.closeButtonAttributes[property]);
+						$closeButton.setAttribute(property, args.closeButtonAttributes[property]);
 					});
 				}
-				closeButton.innerText = args.closeButtonText;
-				closeButton.addEventListener('click', callback);
-				optionsParagraph.appendChild(closeButton);
+				$closeButton.innerText = args.closeButtonText;
+				$closeButton.addEventListener('click', callback);
+				$optionsContainer.appendChild($closeButton);
 
 				document.addEventListener('keydown', RobroyModal.keydownListener, false);
 			}
 
 			if (args.showCancel) {
-				var cancelButton = document.createElement('button');
-				cancelButton.setAttribute('id', 'robroy-modal-cancel');
-				cancelButton.setAttribute('type', 'button');
-				cancelButton.setAttribute('class', 'robroy-button robroy-button--secondary');
-				cancelButton.setAttribute('data-id', id);
-				cancelButton.innerText = 'Cancel';
-				cancelButton.addEventListener('click', this.hide);
-				optionsParagraph.appendChild(cancelButton);
+				const $cancelButton = document.createElement('button');
+				$cancelButton.setAttribute('id', 'robroy-modal-cancel');
+				$cancelButton.setAttribute('type', 'button');
+				$cancelButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+				$cancelButton.setAttribute('data-id', id);
+				$cancelButton.innerText = 'Cancel';
+				$cancelButton.addEventListener('click', this.hide);
+				$optionsContainer.appendChild($cancelButton);
 			}
 		}
 
-		document.body.appendChild(container);
-		if (closeButton) {
+		document.body.appendChild($container);
+		if ($closeButton) {
 			window.ROBROY.activeElement = document.activeElement;
-			closeButton.focus();
+			$closeButton.focus();
 		}
 	}
 
@@ -87,15 +87,15 @@ export default class RobroyModal {
 	}
 
 	static hide(e) {
-		let target;
+		let $target;
 		if (e && e.target) {
-			target = e.target;
+			$target = e.target;
 		} else {
-			target = document.querySelector('[data-robroy-modal-close]');
+			$target = document.querySelector('[data-robroy-modal-close]');
 		}
 
-		const container = document.getElementById(target.getAttribute('data-id'));
-		container.parentNode.removeChild(container);
+		const $container = document.getElementById($target.getAttribute('data-id'));
+		$container.parentNode.removeChild($container);
 
 		if (window.ROBROY.activeElement) {
 			window.ROBROY.activeElement.focus();

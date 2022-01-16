@@ -20,36 +20,36 @@ export default class Robroy {
 		args.pluralImageText = args.pluralImageText || 'images';
 		this.args = args;
 
-		var container = document.querySelector(args.selector);
-		if (!container) {
+		const $container = document.querySelector(args.selector);
+		if (!$container) {
 			return;
 		}
 
-		var header = document.createElement('div');
-		header.setAttribute('id', 'robroy-folder-header');
-		container.appendChild(header);
+		const $header = document.createElement('div');
+		$header.setAttribute('id', 'robroy-folder-header');
+		$container.appendChild($header);
 
-		var folderList = document.createElement('ul');
-		folderList.setAttribute('id', 'robroy-folders');
-		header.appendChild(folderList);
+		const $folderList = document.createElement('ul');
+		$folderList.setAttribute('id', 'robroy-folders');
+		$header.appendChild($folderList);
 
-		var numImages = document.createElement('p');
-		numImages.setAttribute('id', 'robroy-num');
-		header.appendChild(numImages);
+		const $numImages = document.createElement('p');
+		$numImages.setAttribute('id', 'robroy-num');
+		$header.appendChild($numImages);
 
-		var imageList = document.createElement('div');
-		imageList.setAttribute('id', 'robroy-images');
-		container.appendChild(imageList);
+		const $imageList = document.createElement('div');
+		$imageList.setAttribute('id', 'robroy-images');
+		$container.appendChild($imageList);
 
-		var urlSearchParams = new URLSearchParams(window.location.search);
-		var currentFolderId = urlSearchParams.get('folder');
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const currentFolderId = urlSearchParams.get('folder');
 
 		this.auth = document.querySelector('[data-action="authenticate"]');
-		this.container = container;
 		this.elements = {
-			folderList,
-			imageList,
-			numImages,
+			$container,
+			$folderList,
+			$imageList,
+			$numImages,
 		};
 		this.currentFolderId = currentFolderId || '';
 		this.currentFolder = null;
@@ -62,7 +62,7 @@ export default class Robroy {
 	static init(args) {
 		if (!RobroyUtilities.propertyExists(window, 'ROBROY')) {
 			window.ROBROY = new Robroy(args);
-			if (!window.ROBROY.elements.imageList) {
+			if (!window.ROBROY.elements.$imageList) {
 				return null;
 			}
 			RobroyList.init();

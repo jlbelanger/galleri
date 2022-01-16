@@ -11,11 +11,11 @@ export default class RobroyUtilities {
 	static addError(input, message) {
 		input.classList.add('robroy-has-error');
 
-		const error = document.createElement('span');
-		error.setAttribute('class', 'robroy-error');
-		error.setAttribute('id', 'robroy-error-' + input.getAttribute('id'));
-		error.innerText = message;
-		input.after(error);
+		const $span = document.createElement('span');
+		$span.setAttribute('class', 'robroy-error');
+		$span.setAttribute('id', `robroy-error-${input.getAttribute('id')}`);
+		$span.innerText = message;
+		input.after($span);
 	}
 
 	static callback(name) {
@@ -26,16 +26,16 @@ export default class RobroyUtilities {
 	}
 
 	static debounce(func, wait, immediate, ...args) {
-		var timeout;
+		let timeout;
 		return function () {
-			var context = this;
-			var later = function () {
+			const context = this;
+			const later = function () {
 				timeout = null;
 				if (!immediate) {
 					func.apply(context, args);
 				}
 			};
-			var callNow = immediate && !timeout;
+			const callNow = immediate && !timeout;
 			clearTimeout(timeout);
 			timeout = setTimeout(later, wait);
 			if (callNow) {
@@ -53,12 +53,12 @@ export default class RobroyUtilities {
 	}
 
 	static setMetaTitle(title) {
-		var elem = document.querySelector('title');
-		elem.innerText = title + window.ROBROY.args.metaTitleSeparator + elem.innerText;
+		const $title = document.querySelector('title');
+		$title.innerText = title + window.ROBROY.args.metaTitleSeparator + $title.innerText;
 	}
 
 	static setNumImages() {
 		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.args.singularImageText : window.ROBROY.args.pluralImageText;
-		window.ROBROY.elements.numImages.innerText = window.ROBROY.currentNumImages.toLocaleString() + ' ' + label;
+		window.ROBROY.elements.$numImages.innerText = `${window.ROBROY.currentNumImages.toLocaleString()} ${label}`;
 	}
 }
