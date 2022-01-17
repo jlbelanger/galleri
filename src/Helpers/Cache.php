@@ -7,12 +7,13 @@ use Jlbelanger\Robroy\Helpers\Filesystem;
 class Cache
 {
 	/**
-	 * @param  string $folder
 	 * @param  string $filename
 	 * @return mixed
 	 */
-	public static function get(string $folder, string $filename)
+	public static function get(string $filename)
 	{
+		Constant::verify('JSON_PATH');
+		$folder = Constant::get('JSON_PATH');
 		$path = $folder . '/' . $filename;
 		if (Filesystem::fileExists($path)) {
 			$result = Filesystem::readFile($path);
@@ -24,13 +25,14 @@ class Cache
 	}
 
 	/**
-	 * @param  string $folder
 	 * @param  string $filename
 	 * @param  mixed  $value
 	 * @return boolean
 	 */
-	public static function set(string $folder, string $filename, $value) : bool
+	public static function set(string $filename, $value) : bool
 	{
+		Constant::verify('JSON_PATH');
+		$folder = Constant::get('JSON_PATH');
 		if (!Filesystem::folderExists($folder)) {
 			Filesystem::createFolder($folder);
 		}

@@ -32,14 +32,13 @@ class Folder
 	 */
 	public static function all(bool $useCache = true) : array
 	{
-		$folder = Constant::get('JSON_PATH');
 		$filename = 'folders.json';
-		$output = $useCache ? Cache::get($folder, $filename) : null;
+		$output = $useCache ? Cache::get($filename) : null;
 		if ($output === null) {
 			$folders = Filesystem::getFolders();
 			ksort($folders);
 			$output = ['data' => $folders];
-			Cache::set($folder, $filename, $output);
+			Cache::set($filename, $output);
 		}
 		return $output;
 	}
@@ -124,11 +123,10 @@ class Folder
 	 */
 	public function deleteFromCache() : void
 	{
-		$folder = Constant::get('JSON_PATH');
 		$filename = 'folders.json';
-		$data = Cache::get($folder, $filename);
+		$data = Cache::get($filename);
 		unset($data['data'][$this->id]);
-		Cache::set($folder, $filename, $data);
+		Cache::set($filename, $data);
 	}
 
 	/**
@@ -138,9 +136,8 @@ class Folder
 	 */
 	public function updateCache(string $oldId = '', string $newId = '') : void
 	{
-		$folder = Constant::get('JSON_PATH');
 		$filename = 'folders.json';
-		$data = Cache::get($folder, $filename);
+		$data = Cache::get($filename);
 		$data['data'][$this->id] = $this->json();
 		if ($oldId) {
 			unset($data['data'][$oldId]);
@@ -154,7 +151,7 @@ class Folder
 			}
 		}
 		ksort($data['data']);
-		Cache::set($folder, $filename, $data);
+		Cache::set($filename, $data);
 	}
 
 	/**
