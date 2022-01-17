@@ -77,7 +77,10 @@ abstract class TestCase extends BaseTestCase
 
 		$mocks = [
 			'Jlbelanger\Robroy\Helpers' => [
-				'file_exists' => function ($path) {
+				'file_exists' => function ($path) use ($args) {
+					if ($path === '/var/www/robroy/tests/data/folders.json' && !isset($args['folders.json'])) {
+						return false;
+					}
 					return strpos($path, 'does-not-exist') === false;
 				},
 				'is_dir' => function ($path) {
@@ -108,16 +111,18 @@ abstract class TestCase extends BaseTestCase
 			}
 		}
 
-		if (array_key_exists('body', $args)) {
-			$this->addMock(
-				'Jlbelanger\Robroy\Helpers',
-				'file_get_contents',
-				function ($path) use ($args) {
-					return $path === 'php://input' ? $args['body'] : '';
+		$this->addMock(
+			'Jlbelanger\Robroy\Helpers',
+			'file_get_contents',
+			function ($path) use ($args) {
+				if ($path === '/var/www/robroy/tests/data/folders.json' && isset($args['folders.json'])) {
+					return $args['folders.json'];
 				}
-			);
-		} else {
-			$this->addMock('Jlbelanger\Robroy\Helpers', 'file_get_contents', '');
-		}
+				if ($path === 'php://input' && isset($args['body'])) {
+					return $args['body'];
+				}
+				return '';
+			}
+		);
 	}
 }

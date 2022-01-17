@@ -28,18 +28,28 @@ class Folders
 	 */
 	public static function post() : array
 	{
-		$name = Input::post('name');
-		if (empty($name)) {
+		$input = Input::json(['filter' => ['name' => false]]);
+
+		if (empty($input['name'])) {
 			throw new ApiException('Name is required.');
 		}
-		$parent = Input::post('parent');
-		if ($parent) {
-			Folder::validateId($parent, 'Parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $parent)) {
-				throw new ApiException('Parent "' . $parent . '" does not exist.');
+		$input['name'] = trim($input['name']);
+
+		if (isset($input['parent'])) {
+			Folder::validateId($input['parent'], 'Parent');
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
+				throw new ApiException('Parent "' . $input['parent'] . '" does not exist.');
 			}
+		} else {
+			$input['parent'] = '';
 		}
-		$folder = Folder::create($name, $parent);
+
+		$id = Utilities::nameToSlug($input['name']);
+		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException('Name cannot be the same as the thumbnails folder.');
+		}
+
+		$folder = Folder::create($id, $input['name'], $input['parent']);
 
 		return ['data' => $folder->json()];
 	}
@@ -57,28 +67,34 @@ class Folders
 		}
 		Folder::validateId($id, 'ID');
 
-		$input = Input::json();
-		if (empty($input->name)) {
+		$folder = Folder::get($id);
+		if (!$folder) {
+			throw new ApiException('Folder "' . $id . '" does not exist.');
+		}
+
+		$input = Input::json(['filter' => ['name' => false]]);
+
+		if (empty($input['name'])) {
 			throw new ApiException('Name is required.');
 		}
-		if (isset($input->parent)) {
-			Folder::validateId($input->parent, 'Parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input->parent)) {
-				throw new ApiException('Parent "' . $input->parent . '" does not exist.');
+		$input['name'] = trim($input['name']);
+
+		if (isset($input['parent'])) {
+			Folder::validateId($input['parent'], 'Parent');
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
+				throw new ApiException('Parent "' . $input['parent'] . '" does not exist.');
 			}
-			if ($input->parent === $id) {
+			if ($input['parent'] === $id) {
 				throw new ApiException('Name and parent cannot be the same.');
 			}
-			if (strpos($input->parent, $id) === 0) {
+			if (strpos($input['parent'], $id) === 0) {
 				throw new ApiException('Parent cannot be a descendant of name.');
 			}
 		} else {
-			$input->parent = '';
+			$input['parent'] = '';
 		}
 
-		$newName = trim($input->parent . '/' . Utilities::nameToSlug($input->name), '/');
-		$folder = new Folder($id);
-		$folder->rename($newName);
+		$folder->rename($input['parent'], $input['name']);
 
 		return ['data' => $folder->json()];
 	}

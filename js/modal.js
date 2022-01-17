@@ -18,9 +18,7 @@ export default class RobroyModal {
 
 		const $p = document.createElement('p');
 		$p.setAttribute('class', 'robroy-modal-text');
-		if (args.html) {
-			$p.innerHTML = message;
-		} else if (args.append) {
+		if (args.append) {
 			$p.appendChild(message);
 		} else {
 			$p.innerText = message;

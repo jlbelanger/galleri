@@ -11,7 +11,20 @@ class FoldersTest extends TestCase
 	public function getProvider() : array
 	{
 		return [
-			[[
+			'when folders.json exists' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'expected' => [
+					'data' => [
+						'foo' => [
+							'id' => 'foo',
+							'attributes' => [
+								'name' => 'Foo',
+							],
+						],
+					],
+				],
+			]],
+			'when folders.json does not exist' => [[
 				'expected' => [
 					'data' => [],
 				],
@@ -38,95 +51,53 @@ class FoldersTest extends TestCase
 	public function postProvider() : array
 	{
 		return [
-			'when name is not set' => [[
+			'when body is not set' => [[
 				'expectedMessage' => 'Name is required.',
 			]],
-			'when name is an empty string' => [[
-				'variables' => [
-					'_POST' => ['name' => ''],
-				],
+			'when name is not set' => [[
+				'body' => '{}',
+				'expectedMessage' => 'Name is required.',
+			]],
+			'when name is empty' => [[
+				'body' => '{"name":""}',
 				'expectedMessage' => 'Name is required.',
 			]],
 			'when name is the same as THUMBNAILS_FOLDER' => [[
-				'variables' => [
-					'_POST' => ['name' => 'Thumbnails'],
-				],
+				'body' => '{"name":"Thumbnails"}',
 				'expectedMessage' => 'Name cannot be the same as the thumbnails folder.',
 			]],
 			'when name is valid, parent has a leading slash' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => '/foo',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":"/foo"}',
 				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when name is valid, parent has a trailing slash' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => 'foo/',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":"foo/"}',
 				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when name is valid, parent has a invalid characters' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => '..',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":".."}',
 				'expectedMessage' => 'Parent contains invalid characters.',
 			]],
 			'when name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => 'thumbnails',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":"thumbnails"}',
 				'expectedMessage' => 'Parent cannot be the same as the thumbnails folder.',
 			]],
 			'when name is valid, parent ends in THUMBNAILS_FOLDER' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => 'foo/thumbnails',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":"foo/thumbnails"}',
 				'expectedMessage' => 'Parent cannot end in the thumbnails folder.',
 			]],
 			'when name is valid, parent does not exist' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'New Folder',
-						'parent' => 'does-not-exist',
-					],
-				],
+				'body' => '{"name":"New Folder","parent":"does-not-exist"}',
 				'expectedMessage' => 'Parent "does-not-exist" does not exist.',
 			]],
 			'when name is valid, parent is not set' => [[
-				'variables' => [
-					'_POST' => ['name' => 'Does Not Exist'],
-				],
+				'body' => '{"name":"Does Not Exist"}',
 			]],
 			'when name is valid, parent is empty' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'Does Not Exist',
-						'parent' => '',
-					],
-				],
+				'body' => '{"name":"Does Not Exist","parent":""}',
 			]],
 			'when name is valid, parent is valid' => [[
-				'variables' => [
-					'_POST' => [
-						'name' => 'Does Not Exist',
-						'parent' => 'foo',
-					],
-				],
+				'body' => '{"name":"Does Not Exist","parent":"foo"}',
 			]],
 		];
 	}
@@ -154,7 +125,7 @@ class FoldersTest extends TestCase
 			'when id is not set' => [[
 				'expectedMessage' => 'ID is required.',
 			]],
-			'when id is an empty string' => [[
+			'when id is empty' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
@@ -190,13 +161,21 @@ class FoldersTest extends TestCase
 				],
 				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
+			'when id does not exist' => [[
+				'variables' => [
+					'_GET' => ['id' => 'foo'],
+				],
+				'expectedMessage' => 'Folder "foo" does not exist.',
+			]],
 			'when id is valid, body is not set' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Name is required.',
 			]],
 			'when id is valid, name is not set' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -204,13 +183,31 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Name is required.',
 			]],
 			'when id is valid, name is empty' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => 'Name is required.',
 			]],
+			'when id is valid, name is the same as THUMBNAILS_FOLDER' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'body' => '{"name":"thumbnails"}',
+				'variables' => [
+					'_GET' => ['id' => 'foo'],
+				],
+				'expectedMessage' => 'Name cannot be the same as the thumbnails folder.',
+			]],
+			'when id is valid, name already exists' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'body' => '{"name":"bar"}',
+				'variables' => [
+					'_GET' => ['id' => 'foo'],
+				],
+				'expectedMessage' => 'Folder "bar" already exists.',
+			]],
 			'when id is valid, name is valid, parent has a leading slash' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"/bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -218,6 +215,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when id is valid, name is valid, parent has a trailing slash' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"bar/"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -225,6 +223,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent cannot begin or end with slashes.',
 			]],
 			'when id is valid, name is valid, parent has invalid characters' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -232,6 +231,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent contains invalid characters.',
 			]],
 			'when id is valid, name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -239,6 +239,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent cannot be the same as the thumbnails folder.',
 			]],
 			'when id is valid, name is valid, parent ends in THUMBNAILS_FOLDER' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"bar/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -246,6 +247,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent cannot end in the thumbnails folder.',
 			]],
 			'when id is valid, name is valid, parent does not exist' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -253,6 +255,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent "does-not-exist" does not exist.',
 			]],
 			'when id is valid, name is valid, parent is self' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -260,6 +263,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Name and parent cannot be the same.',
 			]],
 			'when id is valid, name is valid, parent is child' => [[
+				'folders.json' => '{"data":{"parent":{"id":"parent","attributes":{"name":"parent"}}}}',
 				'body' => '{"name":"parent","parent":"parent/child"}',
 				'variables' => [
 					'_GET' => ['id' => 'parent'],
@@ -267,12 +271,14 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Parent cannot be a descendant of name.',
 			]],
 			'when id is valid, name is valid, parent is not set' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 			]],
 			'when id is valid, name is valid, parent is empty' => [[
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
 				'body' => '{"name":"foo","parent":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -289,6 +295,7 @@ class FoldersTest extends TestCase
 						},
 					],
 				],
+				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}},"bar":{"id":"bar","attributes":{"name":"Bar"}}}}',
 				'body' => '{"name":"foo","parent":"bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -320,7 +327,7 @@ class FoldersTest extends TestCase
 			'when id is not set' => [[
 				'expectedMessage' => 'ID is required.',
 			]],
-			'when id is an empty string' => [[
+			'when id is empty' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
@@ -355,6 +362,11 @@ class FoldersTest extends TestCase
 					'_GET' => ['id' => 'folder/thumbnails'],
 				],
 				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
+			]],
+			'when id does not exist' => [[
+				'variables' => [
+					'_GET' => ['id' => 'does-not-exist'],
+				],
 			]],
 			'when id is valid' => [[
 				'variables' => [

@@ -114,7 +114,7 @@ class ImagesTest extends TestCase
 			'when id is not set' => [[
 				'expectedMessage' => 'ID is required.',
 			]],
-			'when id is an empty string' => [[
+			'when id is empty' => [[
 				'variables' => [
 					'_GET' => ['id' => ''],
 				],
@@ -455,7 +455,7 @@ class ImagesTest extends TestCase
 			'when path is not set' => [[
 				'expectedMessage' => 'Path is required.',
 			]],
-			'when path is an empty string' => [[
+			'when path is empty' => [[
 				'variables' => [
 					'_GET' => ['path' => ''],
 				],

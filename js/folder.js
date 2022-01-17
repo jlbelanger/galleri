@@ -167,11 +167,16 @@ export default class RobroyFolder {
 
 		const $form = document.getElementById('robroy-create-folder-form');
 		const formData = new FormData($form);
+		let json = {};
+		formData.forEach((value, key) => {
+			json[key] = value;
+		});
+		json = JSON.stringify(json);
 
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
-			formData: formData,
+			json: json,
 			callback: (response) => {
 				RobroyFolder.createCallback(response);
 			},
@@ -181,7 +186,7 @@ export default class RobroyFolder {
 	static createCallback(response) {
 		const parentId = RobroyFolder.getParentId(response.data.id);
 		if ((parentId && parentId === window.ROBROY.currentFolderId) || (!parentId && !window.ROBROY.currentFolderId)) {
-			RobroyFolder.prependItems([response.data]);
+			RobroyFolder.addToList(response.data);
 
 			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
 			if ($deleteFolderButton) {
@@ -253,17 +258,35 @@ export default class RobroyFolder {
 		);
 	}
 
-	static prependItems(items) {
-		items.forEach((item) => {
+	static addToList(item) {
+		let i;
+		const $li = window.ROBROY.elements.$folderList.children;
+		const num = $li.length;
+		let $previousItem;
+		for (i = 0; i < num; i++) {
+			if ($li[i].getAttribute('data-path') < item.id) {
+				$previousItem = $li[i];
+			} else {
+				break;
+			}
+		}
+
+		if ($previousItem) {
+			$previousItem.after(RobroyFolder.element(item));
+		} else {
 			window.ROBROY.elements.$folderList.prepend(RobroyFolder.element(item));
-		});
+		}
 	}
 
 	static getFullName(folder) {
 		const output = [folder.attributes.name];
 		let parentId = RobroyFolder.getParentId(folder.id);
 		while (parentId) {
-			folder = window.ROBROY.folders[parentId];
+			if (window.ROBROY.folders[parentId]) {
+				folder = window.ROBROY.folders[parentId];
+			} else {
+				break;
+			}
 			output.push(folder.attributes.name);
 			parentId = RobroyFolder.getParentId(folder.id);
 		}

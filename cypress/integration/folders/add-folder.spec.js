@@ -65,10 +65,19 @@ describe('add folder', () => {
 					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
 
 					// Adds the folder to the folder list.
-					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+					const items = [
+						'Folders Only',
+						'Images And Folders',
+						'Images Only',
+						'New Folder',
+						'No Images Or Folders',
+					];
+					cy.get('.robroy-folder-link').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
 
 					// Adds the new folder to the create parent list.
-					const items = [
+					const options = [
 						'',
 						'Folders Only',
 						'Folders Only > Subfolder',
@@ -80,7 +89,7 @@ describe('add folder', () => {
 						'No Images Or Folders',
 					];
 					cy.get('#robroy-create-folder-parent option').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', options[index]);
 					});
 
 					// Shows the new folder after a refresh.
@@ -110,10 +119,18 @@ describe('add folder', () => {
 					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only');
 
 					// Does not add the folder to the folder list.
-					cy.get('.robroy-folder-link').contains('New Folder').should('not.exist');
+					const items = [
+						'Folders Only',
+						'Images And Folders',
+						'Images Only',
+						'No Images Or Folders',
+					];
+					cy.get('.robroy-folder-link').each((item, index) => {
+						cy.wrap(item).should('have.text', items[index]);
+					});
 
 					// Adds the new folder to the create parent list.
-					const items = [
+					const options = [
 						'',
 						'Folders Only',
 						'Folders Only > New Folder',
@@ -125,7 +142,7 @@ describe('add folder', () => {
 						'No Images Or Folders',
 					];
 					cy.get('#robroy-create-folder-parent option').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', options[index]);
 					});
 
 					// Adds the folder to the subfolder.
@@ -161,10 +178,15 @@ describe('add folder', () => {
 				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'No Images Or Folders');
 
 				// Adds the folder to the folder list.
-				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
+				const items = [
+					'New Folder',
+				];
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
 
 				// Adds the new folder to the create parent list.
-				const items = [
+				const options = [
 					'',
 					'Folders Only',
 					'Folders Only > Subfolder',
@@ -176,12 +198,12 @@ describe('add folder', () => {
 					'No Images Or Folders > New Folder',
 				];
 				cy.get('#robroy-create-folder-parent option').each((item, index) => {
-					cy.wrap(item).should('have.text', items[index]);
+					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Adds the new folder to the edit parent list.
 				cy.get('#robroy-edit-folder-parent option').each((item, index) => {
-					cy.wrap(item).should('have.text', items[index]);
+					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Hides the delete folder button.
@@ -217,7 +239,7 @@ describe('add folder', () => {
 				cy.get('.robroy-folder-link').should('not.exist');
 
 				// Adds the new folder to the create parent list.
-				const items = [
+				const options = [
 					'',
 					'Folders Only',
 					'Folders Only > New Folder',
@@ -229,12 +251,12 @@ describe('add folder', () => {
 					'No Images Or Folders',
 				];
 				cy.get('#robroy-create-folder-parent option').each((item, index) => {
-					cy.wrap(item).should('have.text', items[index]);
+					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Adds the new folder to the edit parent list.
 				cy.get('#robroy-edit-folder-parent option').each((item, index) => {
-					cy.wrap(item).should('have.text', items[index]);
+					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Does not hide the delete folder button.

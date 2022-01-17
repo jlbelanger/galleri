@@ -12,12 +12,16 @@ class Folder
 {
 	private $id;
 
+	private $name;
+
 	/**
-	 * @param string $id Eg. 'foo/bar'.
+	 * @param string $id   Eg. 'foo/bar/example-name'.
+	 * @param string $name Eg. 'Example Name'.
 	 */
-	public function __construct(string $id)
+	public function __construct(string $id, string $name = '')
 	{
 		$this->id = trim($id, '/');
+		$this->name = $name ? $name : Utilities::pathToName($id);
 	}
 
 	/**
@@ -41,49 +45,46 @@ class Folder
 	}
 
 	/**
-	 * @param  string $name       Eg. 'Foo Bar'.
-	 * @param  string $parentPath Eg. 'foo/bar'.
+	 * @param  string $id       Eg. 'example-name'.
+	 * @param  string $name     Eg. 'Example Name'.
+	 * @param  string $parentId Eg. 'foo/bar'.
 	 * @return Folder
 	 */
-	public static function create(string $name, string $parentPath = '') : self
+	public static function create(string $id, string $name, string $parentId) : self
 	{
-		$slug = Utilities::nameToSlug($name);
-		if ($slug === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException('Name cannot be the same as the thumbnails folder.');
-		}
-		$path = $parentPath ? $parentPath . '/' . $slug : $slug;
+		$fullId = trim($parentId . '/' . $id, '/');
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $fullId;
 
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $path;
 		Filesystem::createFolder($fullPath);
 		Filesystem::createFolder($fullPath . '/' . Constant::get('THUMBNAILS_FOLDER'));
-		self::refreshCache();
 
-		return new self($path);
+		$folder = new self($fullId, $name);
+		$folder->updateCache();
+
+		return $folder;
 	}
 
 	/**
-	 * Deletes an image.
-	 *
 	 * @return void
 	 */
 	public function delete() : void
 	{
 		Filesystem::deleteFolder($this->id . '/' . Constant::get('THUMBNAILS_FOLDER'));
 		Filesystem::deleteFolder($this->id);
-		self::refreshCache();
+		$this->deleteFromCache();
 	}
 
 	/**
-	 * @return self|null
+	 * @param  string $id
+	 * @return Folder|null
 	 */
-	public function parent()
+	public static function get(string $id)
 	{
-		$pos = strrpos($this->id, '/');
-		if ($pos === false) {
+		$data = self::all();
+		if (empty($data['data'][$id])) {
 			return null;
 		}
-		$parentPath = substr($this->id, 0, $pos);
-		return new self($parentPath);
+		return new self($id, $data['data'][$id]['attributes']['name']);
 	}
 
 	/**
@@ -95,16 +96,65 @@ class Folder
 	}
 
 	/**
-	 * @param  string $newId Eg. 'foo/bar'.
+	 * @param  string $parentId Eg. 'foo/bar'.
+	 * @param  string $name     Eg. 'Example'.
 	 * @return void
 	 */
-	public function rename(string $newId) : void
+	public function rename(string $parentId, string $name) : void
 	{
+		$newId = trim($parentId . '/' . Utilities::nameToSlug($name), '/');
+		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException('Name cannot be the same as the thumbnails folder.');
+		}
+
 		if ($this->id !== $newId) {
 			Filesystem::renameFolder($this->id, $newId);
+			$oldId = $this->id;
 			$this->id = $newId;
-			self::refreshCache();
+			$this->name = $name;
+			$this->updateCache($oldId, $newId);
+		} elseif ($this->name !== $name) {
+			$this->name = $name;
+			$this->updateCache();
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function deleteFromCache() : void
+	{
+		$folder = Constant::get('JSON_PATH');
+		$filename = 'folders.json';
+		$data = Cache::get($folder, $filename);
+		unset($data['data'][$this->id]);
+		Cache::set($folder, $filename, $data);
+	}
+
+	/**
+	 * @param  string $oldId
+	 * @param  string $newId
+	 * @return void
+	 */
+	public function updateCache(string $oldId = '', string $newId = '') : void
+	{
+		$folder = Constant::get('JSON_PATH');
+		$filename = 'folders.json';
+		$data = Cache::get($folder, $filename);
+		$data['data'][$this->id] = $this->json();
+		if ($oldId) {
+			unset($data['data'][$oldId]);
+			foreach ($data['data'] as $id => $value) {
+				if (strpos($id, $oldId . '/') === 0) {
+					$newChildId = preg_replace('/^' . str_replace('/', '\/', $oldId) . '\//', $newId . '/', $id);
+					$value['id'] = $newChildId;
+					$data['data'][$newChildId] = $value;
+					unset($data['data'][$id]);
+				}
+			}
+		}
+		ksort($data['data']);
+		Cache::set($folder, $filename, $data);
 	}
 
 	/**
@@ -115,7 +165,7 @@ class Folder
 		return [
 			'id' => $this->id,
 			'attributes' => [
-				'name' => Utilities::pathToName($this->id),
+				'name' => $this->name,
 			],
 		];
 	}

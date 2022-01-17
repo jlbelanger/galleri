@@ -45,6 +45,16 @@ class Utilities
 	}
 
 	/**
+	 * @param  array $defaults
+	 * @param  array $values
+	 * @return array
+	 */
+	public static function combineArgs(array $defaults, array $values) : array
+	{
+		return array_merge($defaults, $values);
+	}
+
+	/**
 	 * @param  string  $folder
 	 * @param  string  $filename
 	 * @param  integer $oldWidth
@@ -76,9 +86,15 @@ class Utilities
 	 */
 	public static function nameToSlug(string $s, string $allowed = 'a-z0-9') : string
 	{
+		$s = strip_tags($s);
 		$s = strtolower($s);
 		$s = str_replace(' & ', ' and ', $s);
+		$s = str_replace('&', ' and ', $s);
 		$s = str_replace("'", '', $s);
+		$s = str_replace('’', '', $s);
+		if (strpos($allowed, '.') === false) {
+			$s = str_replace('.', '', $s);
+		}
 		$s = preg_replace('/[^' . $allowed . ']+/', '-', $s);
 		$s = preg_replace('/-+/', '-', $s);
 		$s = trim($s, '-');

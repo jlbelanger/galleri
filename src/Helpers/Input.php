@@ -8,16 +8,22 @@ class Input
 	 * Returns an ENV value.
 	 *
 	 * @param  string|array $key
-	 * @param  mixed        $defaultValue
-	 * @param  integer      $filter
+	 * @param  array        $args
+	 *         mixed        $args['default]
+	 *         integer      $args['filter']
 	 * @return mixed
 	 */
-	public static function env($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function env($key, array $args = [])
 	{
+		$defaults = [
+			'default' => '',
+			'filter' => FILTER_SANITIZE_STRING,
+		];
+		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasEnv($key)) {
-			return $defaultValue;
+			return $args['default'];
 		}
-		return self::filter($key, $_ENV, $filter);
+		return self::filter($key, $_ENV, $args['filter']);
 	}
 
 	/**
@@ -35,16 +41,22 @@ class Input
 	 * Returns a FILES value.
 	 *
 	 * @param  string|array $key
-	 * @param  mixed        $defaultValue
-	 * @param  integer      $filter
+	 * @param  array        $args
+	 *         mixed        $args['default]
+	 *         integer      $args['filter']
 	 * @return mixed
 	 */
-	public static function file($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function file($key, array $args = [])
 	{
+		$defaults = [
+			'default' => '',
+			'filter' => FILTER_SANITIZE_STRING,
+		];
+		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasFile($key)) {
-			return $defaultValue;
+			return $args['default'];
 		}
-		return self::filter($key, $_FILES, $filter);
+		return self::filter($key, $_FILES, $args['filter']);
 	}
 
 	/**
@@ -62,16 +74,22 @@ class Input
 	 * Returns a GET parameter value.
 	 *
 	 * @param  string|array $key
-	 * @param  mixed        $defaultValue
-	 * @param  integer      $filter
+	 * @param  array        $args
+	 *         mixed        $args['default]
+	 *         integer      $args['filter']
 	 * @return mixed
 	 */
-	public static function get($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function get($key, array $args = [])
 	{
+		$defaults = [
+			'default' => '',
+			'filter' => FILTER_SANITIZE_STRING,
+		];
+		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasGet($key)) {
-			return $defaultValue;
+			return $args['default'];
 		}
-		return self::filter($key, $_GET, $filter);
+		return self::filter($key, $_GET, $args['filter']);
 	}
 
 	/**
@@ -88,28 +106,44 @@ class Input
 	/**
 	 * Returns a JSON request's body.
 	 *
-	 * @return object
+	 * @param  array $args
+	 *         int[] $args['filter']
+	 * @return array
 	 */
-	public static function json() : object
+	public static function json(array $args = []) : array
 	{
 		$body = file_get_contents('php://input');
-		return $body ? json_decode($body) : new \stdClass();
+		if (!$body) {
+			return [];
+		}
+		$output = json_decode($body, true);
+		foreach ($output as $key => $value) {
+			$filter = isset($args['filter'][$key]) ? $args['filter'][$key] : FILTER_SANITIZE_STRING;
+			$output[$key] = self::filter($key, $output, $filter);
+		}
+		return $output;
 	}
 
 	/**
 	 * Returns a POST value.
 	 *
 	 * @param  string|array $key
-	 * @param  mixed        $defaultValue
-	 * @param  integer      $filter
+	 * @param  array        $args
+	 *         mixed        $args['default]
+	 *         integer      $args['filter']
 	 * @return mixed
 	 */
-	public static function post($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function post($key, array $args = [])
 	{
+		$defaults = [
+			'default' => '',
+			'filter' => FILTER_SANITIZE_STRING,
+		];
+		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasPost($key)) {
-			return $defaultValue;
+			return $args['default'];
 		}
-		return self::filter($key, $_POST, $filter);
+		return self::filter($key, $_POST, $args['filter']);
 	}
 
 	/**
@@ -127,16 +161,22 @@ class Input
 	 * Returns a SERVER value.
 	 *
 	 * @param  string|array $key
-	 * @param  mixed        $defaultValue
-	 * @param  integer      $filter
+	 * @param  array        $args
+	 *         mixed        $args['default]
+	 *         integer      $args['filter']
 	 * @return mixed
 	 */
-	public static function server($key, $defaultValue = '', int $filter = FILTER_SANITIZE_STRING)
+	public static function server($key, array $args = [])
 	{
+		$defaults = [
+			'default' => '',
+			'filter' => FILTER_SANITIZE_STRING,
+		];
+		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasServer($key)) {
-			return $defaultValue;
+			return $args['default'];
 		}
-		return self::filter($key, $_SERVER, $filter);
+		return self::filter($key, $_SERVER, $args['filter']);
 	}
 
 	/**
@@ -167,7 +207,14 @@ class Input
 			}
 			return $pointer;
 		}
-		return filter_var($value[$key], $filter);
+		if ($filter === FILTER_SANITIZE_STRING) {
+			$output = htmlspecialchars($value[$key]);
+		} elseif ($filter) {
+			$output = filter_var($value[$key], $filter);
+		} else {
+			$output = $value[$key];
+		}
+		return $output;
 	}
 
 	/**

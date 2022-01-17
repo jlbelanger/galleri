@@ -24,7 +24,16 @@ export default class RobroyList {
 		RobroyApi.request({
 			url: window.ROBROY.args.apiFoldersPath,
 			callback: (response) => {
-				RobroyList.listCallback(response);
+				if (response) {
+					RobroyList.listCallback(response);
+				} else {
+					RobroyApi.request({
+						url: `${window.ROBROY.args.apiPath}?type=folders`,
+						callback: (response2) => {
+							RobroyList.listCallback(response2);
+						},
+					});
+				}
 			},
 			errorCallback: () => {
 				RobroyApi.request({

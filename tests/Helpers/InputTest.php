@@ -287,15 +287,17 @@ class InputTest extends TestCase
 	{
 		return [
 			'when body is not set' => [[
-				'expected' => '{}',
+				'expected' => [],
 			]],
 			'when body is empty' => [[
 				'body' => '',
-				'expected' => '{}',
+				'expected' => [],
 			]],
 			'when body is set' => [[
 				'body' => '{"foo":"bar"}',
-				'expected' => '{"foo":"bar"}',
+				'expected' => [
+					'foo' => 'bar',
+				],
 			]],
 		];
 	}
@@ -306,7 +308,7 @@ class InputTest extends TestCase
 	public function testJson(array $args) : void
 	{
 		self::setupTest($args);
-		$output = json_encode(Input::json());
+		$output = Input::json();
 		$this->assertSame($args['expected'], $output);
 	}
 

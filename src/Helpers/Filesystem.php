@@ -134,7 +134,7 @@ class Filesystem
 	{
 		$fullParentPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 		if (!self::folderExists($fullParentPath)) {
-			throw new ApiException('This folder does not exist.', 404);
+			return [];
 		}
 
 		$output = [];
@@ -175,7 +175,7 @@ class Filesystem
 	{
 		$fullParentPath = Constant::get('UPLOADS_PATH') . '/' . $parent;
 		if (!self::folderExists($fullParentPath)) {
-			throw new ApiException('Folder "' . $parent . '" does not exist.', 404);
+			return [];
 		}
 
 		$output = [];
