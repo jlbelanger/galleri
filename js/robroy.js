@@ -7,6 +7,7 @@ export default class Robroy {
 		args = args || {};
 		args.allPagesLoaded = false;
 		args.apiPath = args.apiPath || '/api.php';
+		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
 		args.attributes = args.attributes || {};
 		args.callbacks = args.callbacks || {};
 		args.isLoadingImages = false;
