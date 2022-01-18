@@ -21,22 +21,27 @@ class FolderTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testParent() : void
+	public function testDeleteFromCache() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testRefreshCache() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testRename() : void
+	public function testGet() : void
 	{
 		$this->markTestIncomplete();
 	}
 
 	public function testJson() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testUpdate() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testUpdateCache() : void
 	{
 		$this->markTestIncomplete();
 	}

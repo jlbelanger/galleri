@@ -5,7 +5,7 @@ namespace Jlbelanger\Robroy\Models;
 use Exception;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\Exif;
+use Jlbelanger\Robroy\Helpers\ImageFile;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Utilities;
 
@@ -46,13 +46,15 @@ class Image
 	}
 
 	/**
+	 * Creates a new image.
+	 *
 	 * @param  string  $folder   Eg. 'foo'.
 	 * @param  string  $name     Eg. 'bar.jpg'.
 	 * @param  string  $tempPath Eg. '/tmp/phpHp00pt'.
 	 * @param  integer $error
 	 * @return Image
 	 */
-	public static function upload(string $folder, string $name, string $tempPath, int $error) : self
+	public static function create(string $folder, string $name, string $tempPath, int $error) : self
 	{
 		self::validateUpload($name, $tempPath, $error);
 
@@ -65,21 +67,15 @@ class Image
 
 		// Move the image.
 		$newPath = ($folder ? $folder . '/' : '') . $newFilename;
-		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
-		if (Filesystem::fileExists($fullNewPath)) {
-			throw new ApiException('File "' . $newFilename . '" already exists.');
-		}
-		if (!Filesystem::moveFile($tempPath, $newPath)) {
-			throw new ApiException('File "' . $newFilename . '" could not be moved.', 500);
-		}
+		Filesystem::moveFile($tempPath, $newPath);
 
 		// Create thumbnail and resize original.
 		try {
-			Utilities::createThumbnailFile($folder, $newFilename, $originalWidth, $originalHeight, $fileType);
+			ImageFile::createThumbnailFile($folder, $newFilename, $originalWidth, $originalHeight, $fileType);
 
 			$maxWidth = Constant::get('FULL_IMAGE_MAX_WIDTH');
 			if ($maxWidth && $originalWidth > $maxWidth) {
-				Utilities::resizeFile($folder, $newFilename, $maxWidth, $originalWidth, $originalHeight, $fileType, true);
+				ImageFile::resizeFile($folder, $newFilename, $maxWidth, $originalWidth, $originalHeight, $fileType, true);
 			}
 		} catch (Exception $e) {
 			Filesystem::deleteFile(($folder ? $folder . '/' : '') . $newFilename);
@@ -91,6 +87,118 @@ class Image
 	}
 
 	/**
+	 * Deletes an existing image.
+	 *
+	 * @return void
+	 */
+	public function delete() : void
+	{
+		Filesystem::deleteFile($this->id);
+		Filesystem::deleteFile($this->thumbnailPath);
+	}
+
+	/**
+	 * Gets an existing image's data.
+	 *
+	 * @param  string $id
+	 * @return Image|null
+	 */
+	public static function get(string $id)
+	{
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $id;
+		if (!Filesystem::fileExists($fullPath)) {
+			return null;
+		}
+		return new self($id);
+	}
+
+	/**
+	 * Returns all data about this image.
+	 *
+	 * @return array
+	 */
+	public function json() : array
+	{
+		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
+
+		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
+		$pathinfo = pathinfo($this->id);
+
+		return [
+			'id' => $this->id,
+			'attributes' => [
+				'filename'        => $pathinfo['basename'],
+				'folder'          => $pathinfo['dirname'],
+				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
+				'thumbnailHeight' => $height,
+				'thumbnailWidth'  => $width,
+				'url'             => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->id,
+			],
+		];
+	}
+
+	/**
+	 * Updates an existing image.
+	 *
+	 * @param  string $newId Eg. 'foo/bar.jpg'.
+	 * @return void
+	 */
+	public function update(string $newId) : void
+	{
+		if ($this->id === $newId) {
+			return;
+		}
+
+		Filesystem::renameFile($this->id, $newId);
+
+		$folder = self::getFolder($newId);
+		$folder = $folder ? $folder . '/' : '';
+		$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $thumbnailFolder;
+		if (!Filesystem::folderExists($fullPath)) {
+			Filesystem::createFolder($fullPath);
+		}
+		Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+
+		$this->id = $newId;
+		$this->thumbnailPath = $this->getThumbnailPath($newId);
+	}
+
+	/**
+	 * Checks if the given ID is valid.
+	 *
+	 * @param  string $id
+	 * @param  string $type
+	 * @return void
+	 */
+	public static function validateId(string $id, string $type = 'Filename') : void
+	{
+		if ($id === '') {
+			return;
+		}
+		if (trim($id, '/') !== $id) {
+			throw new ApiException($type . ' cannot begin or end with slashes.');
+		}
+		if (trim($id, '.') !== $id) {
+			throw new ApiException($type . ' cannot begin or end with periods.');
+		}
+		if (strpos($id, '.') === false) {
+			throw new ApiException($type . ' is missing a file extension (eg. JPG, PNG).');
+		}
+		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
+		}
+		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
+			throw new ApiException($type . ' cannot end in the thumbnails folder.');
+		}
+		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id)) {
+			throw new ApiException($type . ' contains invalid characters.');
+		}
+	}
+
+	/**
+	 * Checks if the given file is valid.
+	 *
 	 * @param  string  $name     Eg. 'bar.jpg'.
 	 * @param  string  $tempPath Eg. '/tmp/phpHp00pt'.
 	 * @param  integer $error
@@ -116,42 +224,6 @@ class Image
 			}
 			throw new ApiException('File "' . $name . '" could not be uploaded: ' . $error);
 		}
-	}
-
-	/**
-	 * Deletes an image.
-	 *
-	 * @return void
-	 */
-	public function delete() : void
-	{
-		Filesystem::deleteFile($this->id);
-		Filesystem::deleteFile($this->thumbnailPath);
-	}
-
-	/**
-	 * @param  string $newId Eg. 'foo/bar.jpg'.
-	 * @return void
-	 */
-	public function rename(string $newId) : void
-	{
-		if ($this->id === $newId) {
-			return;
-		}
-
-		Filesystem::renameFile($this->id, $newId);
-
-		$folder = self::getFolder($newId);
-		$folder = $folder ? $folder . '/' : '';
-		$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $thumbnailFolder;
-		if (!Filesystem::folderExists($fullPath)) {
-			Filesystem::createFolder($fullPath);
-		}
-		Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
-
-		$this->id = $newId;
-		$this->thumbnailPath = $this->getThumbnailPath($newId);
 	}
 
 	/**
@@ -187,58 +259,5 @@ class Image
 			return '';
 		}
 		return $fullPath;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function json() : array
-	{
-		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
-
-		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
-		$pathinfo = pathinfo($this->id);
-
-		return [
-			'id' => $this->id,
-			'attributes' => [
-				'filename'        => $pathinfo['basename'],
-				'folder'          => $pathinfo['dirname'],
-				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
-				'thumbnailHeight' => $height,
-				'thumbnailWidth'  => $width,
-				'url'             => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->id,
-			],
-		];
-	}
-
-	/**
-	 * @param  string $id
-	 * @param  string $type
-	 * @return void
-	 */
-	public static function validateId(string $id, string $type = 'Filename') : void
-	{
-		if ($id === '') {
-			return;
-		}
-		if (trim($id, '/') !== $id) {
-			throw new ApiException($type . ' cannot begin or end with slashes.');
-		}
-		if (trim($id, '.') !== $id) {
-			throw new ApiException($type . ' cannot begin or end with periods.');
-		}
-		if (strpos($id, '.') === false) {
-			throw new ApiException($type . ' is missing a file extension (eg. JPG, PNG).');
-		}
-		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
-		}
-		if (!preg_match('/^[a-z0-9_\.\/-]+$/', $id)) {
-			throw new ApiException($type . ' contains invalid characters.');
-		}
-		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
-			throw new ApiException($type . ' cannot end in the thumbnails folder.');
-		}
 	}
 }

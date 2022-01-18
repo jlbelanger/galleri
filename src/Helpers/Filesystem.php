@@ -10,15 +10,17 @@ use Jlbelanger\Robroy\Models\Image;
 class Filesystem
 {
 	/**
-	 * Returns true if folder exists.
+	 * Copies a file from one location to another.
 	 *
 	 * @param  string $oldPath Eg. '/var/www/foo.png'.
 	 * @param  string $newPath Eg. '/var/www/bar.png'.
-	 * @return boolean
+	 * @return void
 	 */
-	public static function copyFile(string $oldPath, string $newPath) : bool
+	public static function copyFile(string $oldPath, string $newPath) : void
 	{
-		return copy($oldPath, $newPath);
+		if (!copy($oldPath, $newPath)) {
+			throw new ApiException('File "' . basename($oldPath) . '" could not be duplicated.', 500);
+		}
 	}
 
 	/**
@@ -49,7 +51,7 @@ class Filesystem
 	{
 		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		if (!self::fileExists($fullPath)) {
-			throw new ApiException('File "' . $filename . '" does not exist.');
+			return;
 		}
 
 		if (!unlink($fullPath)) {
@@ -126,6 +128,8 @@ class Filesystem
 	}
 
 	/**
+	 * Returns a list of files in a folder.
+	 *
 	 * @param  string  $parent
 	 * @param  boolean $isRecursive
 	 * @return array
@@ -168,6 +172,8 @@ class Filesystem
 	}
 
 	/**
+	 * Returns a list of all folders.
+	 *
 	 * @param  string $parent
 	 * @return array
 	 */
@@ -202,16 +208,27 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a file from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
-	 * @return boolean
+	 * @return void
 	 */
-	public static function moveFile(string $oldPath, string $newPath) : bool
+	public static function moveFile(string $oldPath, string $newPath) : void
 	{
-		return move_uploaded_file($oldPath, Constant::get('UPLOADS_PATH') . '/' . $newPath);
+		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
+		if (self::fileExists($fullNewPath)) {
+			throw new ApiException('File "' . basename($fullNewPath) . '" already exists.');
+		}
+
+		if (!move_uploaded_file($oldPath, $fullNewPath)) {
+			throw new ApiException('File "' . basename($oldPath) . '" could not be moved.', 500);
+		}
 	}
 
 	/**
+	 * Reads the contents of a file.
+	 *
 	 * @param  string $path
 	 * @return mixed
 	 */
@@ -222,6 +239,8 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a file from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @return void
@@ -232,6 +251,8 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a folder from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @return void
@@ -242,6 +263,8 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a file or folder from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @param  string $type
@@ -265,6 +288,8 @@ class Filesystem
 	}
 
 	/**
+	 * Writes contents to a file.
+	 *
 	 * @param  string $path
 	 * @param  mixed  $data
 	 * @return boolean

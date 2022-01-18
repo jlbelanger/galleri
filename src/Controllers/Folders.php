@@ -94,7 +94,12 @@ class Folders
 			$input['parent'] = '';
 		}
 
-		$folder->rename($input['parent'], $input['name']);
+		$newId = trim($input['parent'] . '/' . Utilities::nameToSlug($input['name']), '/');
+		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
+			throw new ApiException('Name cannot be the same as the thumbnails folder.');
+		}
+
+		$folder->update($newId, $input['name']);
 
 		return ['data' => $folder->json()];
 	}

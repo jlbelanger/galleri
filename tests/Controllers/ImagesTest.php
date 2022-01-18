@@ -164,6 +164,12 @@ class ImagesTest extends TestCase
 				],
 				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
+			'when id does not exist' => [[
+				'variables' => [
+					'_GET' => ['id' => 'does-not-exist.png'],
+				],
+				'expectedMessage' => 'Image "does-not-exist.png" does not exist.',
+			]],
 			'when id is valid, body is not set' => [[
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -204,20 +210,6 @@ class ImagesTest extends TestCase
 					'_GET' => ['id' => 'example.png'],
 				],
 				'expectedMessage' => 'Filename cannot contain slashes.',
-			]],
-			'when id is valid, filename has leading period' => [[
-				'body' => '{"filename":".example.png"}',
-				'variables' => [
-					'_GET' => ['id' => 'example.png'],
-				],
-				'expectedMessage' => 'Filename cannot begin or end with periods.',
-			]],
-			'when id is valid, filename has trailing period' => [[
-				'body' => '{"filename":"example.png."}',
-				'variables' => [
-					'_GET' => ['id' => 'example.png'],
-				],
-				'expectedMessage' => 'Filename cannot begin or end with periods.',
 			]],
 			'when id is valid, filename has no extension' => [[
 				'body' => '{"filename":"example"}',
@@ -452,67 +444,72 @@ class ImagesTest extends TestCase
 	public function deleteProvider() : array
 	{
 		return [
-			'when path is not set' => [[
-				'expectedMessage' => 'Path is required.',
+			'when id is not set' => [[
+				'expectedMessage' => 'ID is required.',
 			]],
-			'when path is empty' => [[
+			'when id is empty' => [[
 				'variables' => [
-					'_GET' => ['path' => ''],
+					'_GET' => ['id' => ''],
 				],
-				'expectedMessage' => 'Path is required.',
+				'expectedMessage' => 'ID is required.',
 			]],
-			'when path has a leading slash' => [[
+			'when id has a leading slash' => [[
 				'variables' => [
-					'_GET' => ['path' => '/example.png'],
+					'_GET' => ['id' => '/example.png'],
 				],
-				'expectedMessage' => 'Path cannot begin or end with slashes.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
-			'when path has a trailing slash' => [[
+			'when id has a trailing slash' => [[
 				'variables' => [
-					'_GET' => ['path' => 'example.png/'],
+					'_GET' => ['id' => 'example.png/'],
 				],
-				'expectedMessage' => 'Path cannot begin or end with slashes.',
+				'expectedMessage' => 'ID cannot begin or end with slashes.',
 			]],
-			'when path has a leading period' => [[
+			'when id has a leading period' => [[
 				'variables' => [
-					'_GET' => ['path' => '.example.png'],
+					'_GET' => ['id' => '.example.png'],
 				],
-				'expectedMessage' => 'Path cannot begin or end with periods.',
+				'expectedMessage' => 'ID cannot begin or end with periods.',
 			]],
-			'when path has a trailing period' => [[
+			'when id has a trailing period' => [[
 				'variables' => [
-					'_GET' => ['path' => 'example.png.'],
+					'_GET' => ['id' => 'example.png.'],
 				],
-				'expectedMessage' => 'Path cannot begin or end with periods.',
+				'expectedMessage' => 'ID cannot begin or end with periods.',
 			]],
-			'when path has no extension' => [[
+			'when id has no extension' => [[
 				'variables' => [
-					'_GET' => ['path' => 'example'],
+					'_GET' => ['id' => 'example'],
 				],
-				'expectedMessage' => 'Path is missing a file extension (eg. JPG, PNG).',
+				'expectedMessage' => 'ID is missing a file extension (eg. JPG, PNG).',
 			]],
-			'when path is the same as THUMBNAILS_FOLDER' => [[
+			'when id is the same as THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['path' => 'thumbnails.jpg'],
+					'_GET' => ['id' => 'thumbnails.jpg'],
 					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
-				'expectedMessage' => 'Path cannot be the same as the thumbnails folder.',
+				'expectedMessage' => 'ID cannot be the same as the thumbnails folder.',
 			]],
-			'when path ends in THUMBNAILS_FOLDER' => [[
+			'when id ends in THUMBNAILS_FOLDER' => [[
 				'variables' => [
-					'_GET' => ['path' => 'folder/thumbnails.jpg'],
+					'_GET' => ['id' => 'folder/thumbnails.jpg'],
 					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
-				'expectedMessage' => 'Path cannot end in the thumbnails folder.',
+				'expectedMessage' => 'ID cannot end in the thumbnails folder.',
 			]],
-			'when path is valid' => [[
+			'when id does not exist' => [[
 				'variables' => [
-					'_GET' => ['path' => 'example.png'],
+					'_GET' => ['id' => 'does-not-exist.png'],
 				],
 			]],
-			'when path is valid with a mid slash' => [[
+			'when id is valid' => [[
 				'variables' => [
-					'_GET' => ['path' => 'foo/example.png'],
+					'_GET' => ['id' => 'foo.png'],
+				],
+			]],
+			'when id is valid with a mid slash' => [[
+				'variables' => [
+					'_GET' => ['id' => 'foo/bar.png'],
 				],
 			]],
 		];

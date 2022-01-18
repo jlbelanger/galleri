@@ -495,4 +495,115 @@ class InputTest extends TestCase
 		$output = Input::hasServer(...array_values($args['args']));
 		$this->assertSame($args['expected'], $output);
 	}
+
+	public function valueProvider() : array
+	{
+		return [
+			'with a string key and a string value' => [[
+				'args' => [
+					'key' => 'a',
+					'value' => ['a' => 'b'],
+				],
+				'expected' => 'b',
+			]],
+			'with a string key and an array value' => [[
+				'args' => [
+					'key' => 'a',
+					'value' => ['a' => ['b' => 'c']],
+				],
+				'expected' => ['b' => 'c'],
+			]],
+			'with an array key and a string value' => [[
+				'args' => [
+					'key' => ['a', 'b'],
+					'value' => [
+						'a' => [
+							'b' => 'c',
+						],
+					],
+				],
+				'expected' => 'c',
+			]],
+			'with an array key and an array value' => [[
+				'args' => [
+					'key' => ['a', 'b'],
+					'value' => [
+						'a' => [
+							'b' => ['c' => 'd'],
+						],
+					],
+				],
+				'expected' => ['c' => 'd'],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider valueProvider
+	 */
+	public function testValue(array $args) : void
+	{
+		$output = $this->callPrivate(new Input, 'value', array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function filterProvider() : array
+	{
+		return [
+			'with a string value' => [[
+				'args' => [
+					's' => ' ...M&M\'s - "Foo" & P.E.I. (Foo’s) <img> and? AC/DC #1-2-3-',
+				],
+				'expected' => '...M&amp;M\'s - &quot;Foo&quot; &amp; P.E.I. (Foo’s) &lt;img&gt; and? AC/DC #1-2-3-',
+			]],
+			'with an array value' => [[
+				'args' => [
+					's' => [
+						'<img>',
+						'"Foo"',
+						['<d>' => 'A & B'],
+					],
+				],
+				'expected' => [
+					'&lt;img&gt;',
+					'&quot;Foo&quot;',
+					['&lt;d&gt;' => 'A &amp; B'],
+				],
+			]],
+			'with an associative array value' => [[
+				'args' => [
+					's' => [
+						'a' => '<img>',
+						'b' => '"Foo"',
+						'c' => [
+							'<d>' => 'A & B',
+						],
+					],
+				],
+				'expected' => [
+					'a' => '&lt;img&gt;',
+					'b' => '&quot;Foo&quot;',
+					'c' => [
+						'&lt;d&gt;' => 'A &amp; B',
+					],
+				],
+			]],
+			'with a custom filter' => [[
+				'args' => [
+					's' => '1,000',
+					'filter' => FILTER_SANITIZE_NUMBER_INT,
+				],
+				'expected' => '1000',
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider filterProvider
+	 */
+	public function testFilter(array $args) : void
+	{
+		$output = $this->callPrivate(new Input, 'filter', array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
 }

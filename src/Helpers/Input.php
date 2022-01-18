@@ -23,7 +23,7 @@ class Input
 		if (!self::hasEnv($key)) {
 			return $args['default'];
 		}
-		return self::filter($key, $_ENV, $args['filter']);
+		return self::filter(self::value($key, $_ENV), $args['filter']);
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Input
 		if (!self::hasFile($key)) {
 			return $args['default'];
 		}
-		return self::filter($key, $_FILES, $args['filter']);
+		return self::filter(self::value($key, $_FILES), $args['filter']);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Input
 		if (!self::hasGet($key)) {
 			return $args['default'];
 		}
-		return self::filter($key, $_GET, $args['filter']);
+		return self::filter(self::value($key, $_GET), $args['filter']);
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Input
 		$output = json_decode($body, true);
 		foreach ($output as $key => $value) {
 			$filter = isset($args['filter'][$key]) ? $args['filter'][$key] : FILTER_SANITIZE_STRING;
-			$output[$key] = self::filter($key, $output, $filter);
+			$output[$key] = self::filter(self::value($key, $output), $filter);
 		}
 		return $output;
 	}
@@ -143,7 +143,7 @@ class Input
 		if (!self::hasPost($key)) {
 			return $args['default'];
 		}
-		return self::filter($key, $_POST, $args['filter']);
+		return self::filter(self::value($key, $_POST), $args['filter']);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Input
 		if (!self::hasServer($key)) {
 			return $args['default'];
 		}
-		return self::filter($key, $_SERVER, $args['filter']);
+		return self::filter(self::value($key, $_SERVER), $args['filter']);
 	}
 
 	/**
@@ -191,14 +191,11 @@ class Input
 	}
 
 	/**
-	 * Returns a parameter value.
-	 *
 	 * @param  string|array $key
 	 * @param  array        $value
-	 * @param  integer      $filter
 	 * @return mixed
 	 */
-	protected static function filter($key, array $value, int $filter = FILTER_SANITIZE_STRING)
+	protected static function value($key, array $value)
 	{
 		if (is_array($key)) {
 			$pointer = $value;
@@ -207,14 +204,31 @@ class Input
 			}
 			return $pointer;
 		}
-		if ($filter === FILTER_SANITIZE_STRING) {
-			$output = htmlspecialchars($value[$key]);
-		} elseif ($filter) {
-			$output = filter_var($value[$key], $filter);
-		} else {
-			$output = $value[$key];
+		return $value[$key];
+	}
+
+	/**
+	 * @param  mixed   $s
+	 * @param  integer $filter
+	 * @return mixed
+	 */
+	protected static function filter($s, int $filter = FILTER_SANITIZE_STRING)
+	{
+		if (is_array($s)) {
+			$output = [];
+			foreach ($s as $key => $value) {
+				$key = self::filter($key, $filter);
+				$value = self::filter($value, $filter);
+				$output[$key] = $value;
+			}
+			return $output;
 		}
-		return $output;
+		if ($filter === FILTER_SANITIZE_STRING) {
+			$s = trim(htmlspecialchars($s));
+		} elseif ($filter) {
+			$s = filter_var($s, $filter);
+		}
+		return $s;
 	}
 
 	/**

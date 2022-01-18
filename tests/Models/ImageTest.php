@@ -11,12 +11,12 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testUpload() : void
+	public function testAllInFolder() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testValidateUpload() : void
+	public function testCreate() : void
 	{
 		$this->markTestIncomplete();
 	}
@@ -26,7 +26,27 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testRename() : void
+	public function testGet() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testJson() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testUpdate() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testValidateId() : void
+	{
+		$this->markTestIncomplete();
+	}
+
+	public function testValidateUpload() : void
 	{
 		$this->markTestIncomplete();
 	}
@@ -42,16 +62,6 @@ class ImageTest extends TestCase
 	}
 
 	public function testThumbnailAbsolutePath() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testJson() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testValidateId() : void
 	{
 		$this->markTestIncomplete();
 	}

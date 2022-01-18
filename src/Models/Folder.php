@@ -44,6 +44,8 @@ class Folder
 	}
 
 	/**
+	 * Creates a new folder.
+	 *
 	 * @param  string $id       Eg. 'example-name'.
 	 * @param  string $name     Eg. 'Example Name'.
 	 * @param  string $parentId Eg. 'foo/bar'.
@@ -64,6 +66,8 @@ class Folder
 	}
 
 	/**
+	 * Deletes an existing folder.
+	 *
 	 * @return void
 	 */
 	public function delete() : void
@@ -74,6 +78,21 @@ class Folder
 	}
 
 	/**
+	 * Deletes a folder from the cache.
+	 *
+	 * @return void
+	 */
+	public function deleteFromCache() : void
+	{
+		$filename = 'folders.json';
+		$data = Cache::get($filename);
+		unset($data['data'][$this->id]);
+		Cache::set($filename, $data);
+	}
+
+	/**
+	 * Gets an existing folder's data.
+	 *
 	 * @param  string $id
 	 * @return Folder|null
 	 */
@@ -87,23 +106,31 @@ class Folder
 	}
 
 	/**
-	 * @return void
+	 * Returns all data about this folder.
+	 *
+	 * @return array
 	 */
-	public static function refreshCache() : void
+	public function json() : array
 	{
-		self::all(false);
+		return [
+			'id' => $this->id,
+			'attributes' => [
+				'name' => $this->name,
+			],
+		];
 	}
 
 	/**
-	 * @param  string $parentId Eg. 'foo/bar'.
-	 * @param  string $name     Eg. 'Example'.
+	 * Updates an existing folder.
+	 *
+	 * @param  string $newId Eg. 'foo/bar/example-name'.
+	 * @param  string $name  Eg. 'Example Name'.
 	 * @return void
 	 */
-	public function rename(string $parentId, string $name) : void
+	public function update(string $newId, string $name) : void
 	{
-		$newId = trim($parentId . '/' . Utilities::nameToSlug($name), '/');
-		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException('Name cannot be the same as the thumbnails folder.');
+		if ($this->id === $newId && $this->name === $name) {
+			return;
 		}
 
 		if ($this->id !== $newId) {
@@ -119,17 +146,8 @@ class Folder
 	}
 
 	/**
-	 * @return void
-	 */
-	public function deleteFromCache() : void
-	{
-		$filename = 'folders.json';
-		$data = Cache::get($filename);
-		unset($data['data'][$this->id]);
-		Cache::set($filename, $data);
-	}
-
-	/**
+	 * Updates a folder in the cache.
+	 *
 	 * @param  string $oldId
 	 * @param  string $newId
 	 * @return void
@@ -155,19 +173,8 @@ class Folder
 	}
 
 	/**
-	 * @return array
-	 */
-	public function json() : array
-	{
-		return [
-			'id' => $this->id,
-			'attributes' => [
-				'name' => $this->name,
-			],
-		];
-	}
-
-	/**
+	 * Checks if the given ID is valid.
+	 *
 	 * @param  string $id
 	 * @param  string $type
 	 * @return void
@@ -183,11 +190,11 @@ class Folder
 		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
 			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
 		}
-		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
-			throw new ApiException($type . ' contains invalid characters.');
-		}
 		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
 			throw new ApiException($type . ' cannot end in the thumbnails folder.');
+		}
+		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
+			throw new ApiException($type . ' contains invalid characters.');
 		}
 	}
 }

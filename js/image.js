@@ -122,19 +122,19 @@ export default class RobroyImage {
 		);
 	}
 
-	static deleteCallback(path) {
+	static deleteCallback(id) {
 		RobroyApi.request({
 			method: 'DELETE',
-			url: `${window.ROBROY.args.apiPath}?type=images&path=${path}`,
+			url: `${window.ROBROY.args.apiPath}?type=images&id=${id}`,
 			callback: () => {
-				RobroyImage.removeImageFromList(path);
+				RobroyImage.removeImageFromList(id);
 				RobroyUtilities.callback('afterDeleteImage');
 			},
 		});
 	}
 
-	static removeImageFromList(path) {
-		const $container = document.querySelector(`[data-path="${path}"]`);
+	static removeImageFromList(id) {
+		const $container = document.querySelector(`[data-path="${id}"]`);
 		let nextLink;
 		if ($container.nextSibling) {
 			nextLink = [...$container.nextSibling.children].find((child) => child.tagName === 'A');

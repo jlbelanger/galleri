@@ -2,11 +2,14 @@
 
 namespace Jlbelanger\Robroy\Helpers;
 
+use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 
 class Cache
 {
 	/**
+	 * Returns cached data.
+	 *
 	 * @param  string $filename
 	 * @return mixed
 	 */
@@ -25,6 +28,8 @@ class Cache
 	}
 
 	/**
+	 * Caches data.
+	 *
 	 * @param  string $filename
 	 * @param  mixed  $value
 	 * @return boolean

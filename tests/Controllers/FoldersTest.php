@@ -163,9 +163,9 @@ class FoldersTest extends TestCase
 			]],
 			'when id does not exist' => [[
 				'variables' => [
-					'_GET' => ['id' => 'foo'],
+					'_GET' => ['id' => 'does-not-exist'],
 				],
-				'expectedMessage' => 'Folder "foo" does not exist.',
+				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
 			]],
 			'when id is valid, body is not set' => [[
 				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',

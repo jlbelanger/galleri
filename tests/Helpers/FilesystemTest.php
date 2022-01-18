@@ -13,20 +13,20 @@ class FilesystemTest extends TestCase
 		return [
 			'when copy fails' => [[
 				'args' => [
-					'oldPath' => 'foo',
-					'newPath' => 'bar',
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'copy' => false,
 					],
 				],
-				'expected' => false,
+				'expectedMessage' => 'File "foo.png" could not be duplicated',
 			]],
 			'when copy succeeds' => [[
 				'args' => [
-					'oldPath' => 'foo',
-					'newPath' => 'bar',
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
 				],
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
@@ -44,8 +44,15 @@ class FilesystemTest extends TestCase
 	public function testCopyFile(array $args) : void
 	{
 		self::setupTest($args);
-		$output = Filesystem::copyFile(...array_values($args['args']));
-		$this->assertSame($args['expected'], $output);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::copyFile(...array_values($args['args']));
 	}
 
 	public function createFolderProvider() : array
@@ -117,7 +124,6 @@ class FilesystemTest extends TestCase
 						'file_exists' => false,
 					],
 				],
-				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
 			]],
 			'when the file exists and unlink fails' => [[
 				'args' => [
@@ -319,28 +325,263 @@ class FilesystemTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testGetFoldersInFolder() : void
+	public function testGetFolders() : void
 	{
 		$this->markTestIncomplete();
 	}
 
-	public function testMoveFile() : void
+	public function moveFileProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			'when the new file already exists' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => true,
+						'move_uploaded_file' => true,
+					],
+				],
+				'expectedMessage' => 'File "bar.png" already exists',
+			]],
+			'when move fails' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => function ($path) {
+							if (strpos($path, 'foo.png') !== false) {
+								return true;
+							}
+							return false;
+						},
+						'move_uploaded_file' => false,
+					],
+				],
+				'expectedMessage' => 'File "foo.png" could not be moved',
+			]],
+			'when move succeeds' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_exists' => function ($path) {
+							if (strpos($path, 'foo.png') !== false) {
+								return true;
+							}
+							return false;
+						},
+						'move_uploaded_file' => true,
+					],
+				],
+				'expected' => true,
+			]],
+		];
 	}
 
-	public function testReadFile() : void
+	/**
+	 * @dataProvider moveFileProvider
+	 */
+	public function testMoveFile(array $args) : void
 	{
-		$this->markTestIncomplete();
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::moveFile(...array_values($args['args']));
 	}
 
-	public function testRename() : void
+	public function readFileProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			[[
+				'args' => [
+					'path' => 'foo',
+				],
+				'file_get_contents' => '{"foo":"bar"}',
+				'expected' => ['foo' => 'bar'],
+			]],
+		];
 	}
 
-	public function testWriteFile() : void
+	/**
+	 * @dataProvider readFileProvider
+	 */
+	public function testReadFile(array $args) : void
 	{
-		$this->markTestIncomplete();
+		self::setupTest($args);
+		$output = Filesystem::readFile(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function renameFileProvider() : array
+	{
+		return [
+			'when the old file does not exist' => [[
+				'args' => [
+					'oldPath' => 'does-not-exist.png',
+					'newPath' => 'new-does-not-exist.png',
+				],
+				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
+			]],
+			'when the new file already exists' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'bar.png',
+				],
+				'expectedMessage' => 'File "bar.png" already exists.',
+			]],
+			'when rename fails' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'does-not-exist.png',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'rename' => false,
+					],
+				],
+				'expectedMessage' => 'File "foo.png" could not be moved to "does-not-exist.png".',
+			]],
+			'when rename succeeds' => [[
+				'args' => [
+					'oldPath' => 'foo.png',
+					'newPath' => 'does-not-exist.png',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'rename' => true,
+					],
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider renameFileProvider
+	 */
+	public function testRenameFile(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::renameFile(...array_values($args['args']));
+	}
+
+	public function renameFolderProvider() : array
+	{
+		return [
+			'when the old folder does not exist' => [[
+				'args' => [
+					'oldPath' => 'does-not-exist',
+					'newPath' => 'new-does-not-exist',
+				],
+				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
+			]],
+			'when the new folder already exists' => [[
+				'args' => [
+					'oldPath' => 'foo',
+					'newPath' => 'bar',
+				],
+				'expectedMessage' => 'Folder "bar" already exists.',
+			]],
+			'when rename fails' => [[
+				'args' => [
+					'oldPath' => 'foo',
+					'newPath' => 'does-not-exist',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'rename' => false,
+					],
+				],
+				'expectedMessage' => 'Folder "foo" could not be moved to "does-not-exist".',
+			]],
+			'when rename succeeds' => [[
+				'args' => [
+					'oldPath' => 'foo',
+					'newPath' => 'does-not-exist',
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'rename' => true,
+					],
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider renameFolderProvider
+	 */
+	public function testRenameFolder(array $args) : void
+	{
+		self::setupTest($args);
+
+		if (!empty($args['expectedMessage'])) {
+			$this->expectException(ApiException::class);
+			$this->expectExceptionMessage($args['expectedMessage']);
+		} else {
+			$this->expectNotToPerformAssertions();
+		}
+
+		Filesystem::renameFolder(...array_values($args['args']));
+	}
+
+	public function writeFileProvider() : array
+	{
+		return [
+			'when file_put_contents succeeds' => [[
+				'args' => [
+					'path' => 'foo',
+					'data' => ['foo' => 'bar'],
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_put_contents' => true,
+					],
+				],
+				'expected' => true,
+			]],
+			'when file_put_contents fails' => [[
+				'args' => [
+					'path' => 'foo',
+					'data' => ['foo' => 'bar'],
+				],
+				'mocks' => [
+					'Jlbelanger\Robroy\Helpers' => [
+						'file_put_contents' => false,
+					],
+				],
+				'expected' => false,
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider writeFileProvider
+	 */
+	public function testWriteFile(array $args) : void
+	{
+		self::setupTest($args);
+		$output = Filesystem::writeFile(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
 	}
 }

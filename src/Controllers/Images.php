@@ -53,7 +53,7 @@ class Images
 			$tempPath = Input::file(['upload', 'tmp_name', $i]);
 			$error = Input::file(['upload', 'error', $i], ['default' => 0, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
 
-			$image = Image::upload($folder, $name, $tempPath, $error);
+			$image = Image::create($folder, $name, $tempPath, $error);
 			$images[] = $image->json();
 		}
 
@@ -61,7 +61,7 @@ class Images
 	}
 
 	/**
-	 * Updates an existing folder.
+	 * Updates an existing image.
 	 *
 	 * @return array
 	 */
@@ -73,7 +73,13 @@ class Images
 		}
 		Image::validateId($id, 'ID');
 
+		$image = Image::get($id);
+		if (!$image) {
+			throw new ApiException('Image "' . $id . '" does not exist.');
+		}
+
 		$input = Input::json();
+
 		if (empty($input['filename'])) {
 			throw new ApiException('Filename is required.');
 		}
@@ -82,6 +88,7 @@ class Images
 		}
 		$input['filename'] = Utilities::normalizeFilename($input['filename']);
 		Image::validateId($input['filename'], 'Filename');
+
 		if (!isset($input['folder'])) {
 			$input['folder'] = '';
 		}
@@ -91,8 +98,8 @@ class Images
 		}
 
 		$newName = trim($input['folder'] . '/' . $input['filename'], '/');
-		$image = new Image($id);
-		$image->rename($newName);
+
+		$image->update($newName);
 
 		return ['data' => $image->json()];
 	}
@@ -104,13 +111,13 @@ class Images
 	 */
 	public static function delete() : void
 	{
-		$path = Input::get('path');
-		if (!$path) {
-			throw new ApiException('Path is required.');
+		$id = Input::get('id');
+		if (!$id) {
+			throw new ApiException('ID is required.');
 		}
-		Image::validateId($path, 'Path');
+		Image::validateId($id, 'ID');
 
-		$image = new Image($path);
+		$image = new Image($id);
 		$image->delete();
 	}
 }

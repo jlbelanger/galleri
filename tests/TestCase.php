@@ -43,6 +43,14 @@ abstract class TestCase extends BaseTestCase
 		$this->mocks[] = $mock;
 	}
 
+	protected function callPrivate($obj, string $name, array $args = [])
+	{
+		$class = new \ReflectionClass($obj);
+		$method = $class->getMethod($name);
+		$method->setAccessible(true);
+		return $method->invokeArgs($obj, $args);
+	}
+
 	protected function setupTest(array $args) : void // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 	{
 		if (!empty($args['variables']['_ENV'])) {
@@ -120,6 +128,9 @@ abstract class TestCase extends BaseTestCase
 				}
 				if ($path === 'php://input' && isset($args['body'])) {
 					return $args['body'];
+				}
+				if (!empty($args['file_get_contents'])) {
+					return $args['file_get_contents'];
 				}
 				return '';
 			}

@@ -12,9 +12,36 @@ class UtilitiesTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testCreateThumbnailFile() : void
+	public function combineArgsProvider() : array
 	{
-		$this->markTestIncomplete();
+		return [
+			[[
+				'args' => [
+					'defaults' => [
+						'a' => 'b',
+						'c' => 'd',
+					],
+					'values' => [
+						'c' => 'e',
+						'f' => 'g',
+					],
+				],
+				'expected' => [
+					'a' => 'b',
+					'c' => 'e',
+					'f' => 'g',
+				],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider combineArgsProvider
+	 */
+	public function testCombineArgs(array $args) : void
+	{
+		$output = Utilities::combineArgs(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
 	}
 
 	public function nameToSlugProvider() : array
@@ -22,21 +49,9 @@ class UtilitiesTest extends TestCase
 		return [
 			[[
 				'args' => [
-					's' => 'Foo Bar 1',
+					's' => ' ...M&M\'s - "Foo" & P.E.I. (Foo’s) <img> and? AC/DC #1-2-3-',
 				],
-				'expected' => 'foo-bar-1',
-			]],
-			'with an apostrophe' => [[
-				'args' => [
-					's' => "Foo's Bar 1",
-				],
-				'expected' => 'foos-bar-1',
-			]],
-			'with special characters' => [[
-				'args' => [
-					's' => '"Foo/Bar"',
-				],
-				'expected' => 'foo-bar',
+				'expected' => 'm-and-ms-foo-and-pei-foos-and-ac-dc-1-2-3',
 			]],
 		];
 	}
@@ -47,6 +62,33 @@ class UtilitiesTest extends TestCase
 	public function testNameToSlug(array $args) : void
 	{
 		$output = Utilities::nameToSlug(...array_values($args['args']));
+		$this->assertSame($args['expected'], $output);
+	}
+
+	public function normalizeFilenameProvider() : array
+	{
+		return [
+			'with a file extension' => [[
+				'args' => [
+					's' => ' ...M&M\'s - "Foo" & P.E.I. (Foo’s) <img> and? AC/DC #1-2-3-.Jpeg ',
+				],
+				'expected' => 'm-and-ms-foo-and-pei-foos-and-ac-dc-1-2-3.jpg',
+			]],
+			'with no file extension' => [[
+				'args' => [
+					's' => 'foo',
+				],
+				'expected' => 'foo',
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider normalizeFilenameProvider
+	 */
+	public function testNormalizeFilename(array $args) : void
+	{
+		$output = Utilities::normalizeFilename(...array_values($args['args']));
 		$this->assertSame($args['expected'], $output);
 	}
 
@@ -69,30 +111,5 @@ class UtilitiesTest extends TestCase
 	{
 		$output = Utilities::pathToName(...array_values($args['args']));
 		$this->assertSame($args['expected'], $output);
-	}
-
-	public function testResizeFile() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testResizeImage() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testAddWatermark() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testGetImageSource() : void
-	{
-		$this->markTestIncomplete();
-	}
-
-	public function testFixOrientation() : void
-	{
-		$this->markTestIncomplete();
 	}
 }
