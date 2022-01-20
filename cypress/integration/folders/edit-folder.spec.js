@@ -13,15 +13,30 @@ describe('edit folder', () => {
 		cy.resetPaths();
 	});
 
-	describe('when not making any changes', () => {
-		it('shows an error', () => {
+	describe('when clicking the cancel button', () => {
+		it('closes the popup', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImagesSubfolder');
 			cy.contains('Log In').click();
-			cy.get('#robroy-edit-submit').click();
-			cy.get('.robroy-modal-text').should('have.text', 'Nothing to update.');
+			cy.get('#robroy-edit-folder').click();
+			cy.get('#robroy-modal-cancel').click();
+			cy.get('.robroy-modal').should('not.exist');
+		});
+	});
+
+	describe('when not making any changes', () => {
+		it('closes the popup', () => {
+			cy.visit('/dark.html?folder=folders-only/subfolder');
+			cy.wait('@getFolders');
+			cy.wait('@getFolders2');
+			cy.wait('@getImagesSubfolder');
+			cy.contains('Log In').click();
+			cy.get('#robroy-edit-folder').click();
+			cy.get('#robroy-modal-close').click();
+			cy.get('.robroy-modal').should('not.exist');
+			cy.get('.robroy-toast-text').should('have.text', 'Nothing to save.');
 		});
 	});
 
@@ -33,9 +48,11 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear();
-				cy.get('#robroy-edit-submit').click();
-				cy.get('#robroy-error-robroy-edit-folder-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear();
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -46,10 +63,12 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear();
-				cy.get('#robroy-edit-folder-parent').select('');
-				cy.get('#robroy-edit-submit').click();
-				cy.get('#robroy-error-robroy-edit-folder-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear();
+				cy.get('#robroy-input-parent').select('');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -60,9 +79,11 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('Subfolder 2');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('Subfolder 2');
+				cy.get('#robroy-modal-close').click();
 				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "folders-only/subfolder-2" already exists.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -73,9 +94,11 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
 				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "images-and-folders/subfolder" already exists.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 	});
@@ -92,8 +115,9 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('New Name');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-modal-close').click();
 
 				// Redirects.
 				cy.location('pathname').should('eq', '/dark.html');
@@ -109,8 +133,9 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
@@ -127,8 +152,9 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
@@ -144,8 +170,9 @@ describe('edit folder', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Folders Only');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Folders Only');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
@@ -162,9 +189,10 @@ describe('edit folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImagesSubfolder');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('New Name');
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.

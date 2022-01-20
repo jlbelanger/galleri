@@ -1,5 +1,6 @@
 import RobroyApi from './api';
 import RobroyModal from './modal';
+import RobroyToast from './toast';
 import RobroyUtilities from './utilities';
 
 export default class RobroyFolder {
@@ -7,16 +8,15 @@ export default class RobroyFolder {
 		return `?folder=${folder.id}`;
 	}
 
-	static element(folder) {
+	static element(data) {
 		const $li = document.createElement(window.ROBROY.args.folderItemElement);
 		$li.setAttribute('class', 'robroy-folder');
-		$li.setAttribute('data-path', folder.id);
-		$li.setAttribute('data-name', folder.attributes.name);
+		$li.setAttribute('data-path', data.id);
 
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-folder-link');
-		$a.setAttribute('href', RobroyFolder.url(folder));
-		$a.innerText = folder.attributes.name;
+		$a.setAttribute('href', RobroyFolder.url(data));
+		$a.innerText = data.attributes.name;
 		$li.appendChild($a);
 
 		RobroyUtilities.modifier('folderItem', { element: $li });
@@ -24,60 +24,63 @@ export default class RobroyFolder {
 		return $li;
 	}
 
-	static addEditControls() {
-		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-admin robroy-form robroy-form-container');
+	static showCreateForm() {
+		const $form = RobroyFolder.form(window.ROBROY.lang.titleCreateFolder, 'post', RobroyFolder.submitCreateFormCallback);
 
-		const $form = RobroyFolder.form(
-			window.ROBROY.lang.titleEditFolder,
-			window.ROBROY.lang.submitEditFolder,
-			'edit',
-			'put',
-			RobroyFolder.edit,
-		);
-		$form.setAttribute('class', 'robroy-form robroy-form--folder');
-		$div.appendChild($form);
-
-		const $button = document.createElement('button');
-		$button.setAttribute('class', 'robroy-button robroy-button--danger robroy-form--delete');
-		$button.setAttribute('id', 'robroy-delete-folder');
-		$button.setAttribute('type', 'button');
-		$button.innerText = window.ROBROY.lang.deleteFolder;
-		if (!RobroyUtilities.isEmpty()) {
-			$button.style.display = 'none';
+		const $parentInput = $form.querySelector('#robroy-input-parent');
+		if ($parentInput) {
+			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolder.id);
 		}
-		$button.addEventListener('click', RobroyFolder.delete);
-		$div.appendChild($button);
 
-		window.ROBROY.elements.$container.prepend($div);
+		RobroyUtilities.modifier('folderCreateForm', { element: $form });
 
-		const $parentInput = document.getElementById('robroy-edit-folder-parent');
+		RobroyModal.show(
+			$form,
+			{
+				append: true,
+				callback: RobroyFolder.submitCreateFormCallback,
+				closeButtonAttributes: {
+					form: 'robroy-folder-form',
+					type: 'submit',
+				},
+				closeButtonText: window.ROBROY.lang.save,
+				showCancel: true,
+			},
+		);
+	}
+
+	static showEditForm() {
+		const $form = RobroyFolder.form(window.ROBROY.lang.titleEditFolder, 'put', RobroyFolder.submitEditFormCallback);
+
+		const $nameInput = $form.querySelector('#robroy-input-name');
+		$nameInput.setAttribute('value', window.ROBROY.currentFolder.attributes.name);
+
+		const $parentInput = $form.querySelector('#robroy-input-parent');
 		if ($parentInput) {
 			RobroyFolder.addFolderOptions($parentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
 		}
-	}
 
-	static addCreateControl() {
-		const $form = RobroyFolder.form(
-			window.ROBROY.lang.titleCreateFolder,
-			window.ROBROY.lang.submitCreateFolder,
-			'create',
-			'post',
-			RobroyFolder.create,
+		RobroyUtilities.modifier('folderEditForm', { element: $form });
+
+		RobroyModal.show(
+			$form,
+			{
+				append: true,
+				callback: RobroyFolder.submitEditFormCallback,
+				closeButtonAttributes: {
+					form: 'robroy-folder-form',
+					type: 'submit',
+				},
+				closeButtonText: window.ROBROY.lang.save,
+				showCancel: true,
+			},
 		);
-		$form.setAttribute('class', 'robroy-admin robroy-form robroy-form--folder robroy-form-container');
-		window.ROBROY.elements.$container.prepend($form);
-
-		const $parentInput = document.getElementById('robroy-create-folder-parent');
-		if ($parentInput) {
-			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolderId);
-		}
 	}
 
-	static form(title, buttonText, type, method, callback) {
+	static form(title, method, callback) {
 		const $form = document.createElement('form');
 		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=folders`);
-		$form.setAttribute('id', `robroy-${type}-folder-form`);
+		$form.setAttribute('id', 'robroy-folder-form');
 		$form.setAttribute('method', method);
 		$form.addEventListener('submit', callback);
 
@@ -86,76 +89,22 @@ export default class RobroyFolder {
 		$heading.innerText = title;
 		$form.appendChild($heading);
 
-		const $inputLabel = document.createElement('label');
-		$inputLabel.setAttribute('class', 'robroy-label');
-		$inputLabel.setAttribute('for', `robroy-${type}-folder-name`);
-		$inputLabel.innerText = window.ROBROY.lang.fieldFolderName;
-		$form.appendChild($inputLabel);
+		const $container = document.createElement('div');
+		$container.setAttribute('class', 'robroy-fields');
+		$form.appendChild($container);
 
-		const $nameInput = document.createElement('input');
-		$nameInput.setAttribute('class', 'robroy-input');
-		$nameInput.setAttribute('id', `robroy-${type}-folder-name`);
-		$nameInput.setAttribute('name', 'name');
-		$nameInput.setAttribute('type', 'text');
-		$form.appendChild($nameInput);
-		if (type === 'edit') {
-			$nameInput.setAttribute('value', window.ROBROY.currentFolder.attributes.name);
-		}
+		RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
+		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
 
-		const $selectLabel = document.createElement('label');
-		$selectLabel.setAttribute('class', 'robroy-label');
-		$selectLabel.setAttribute('for', `robroy-${type}-folder-parent`);
-		$selectLabel.innerText = window.ROBROY.lang.fieldFolderParent;
-		$form.appendChild($selectLabel);
-
-		const $parentInput = document.createElement('select');
-		$parentInput.setAttribute('class', 'robroy-select');
-		$parentInput.setAttribute('id', `robroy-${type}-folder-parent`);
-		$parentInput.setAttribute('name', 'parent');
-		$form.appendChild($parentInput);
-		let selectedValue;
-		if (type === 'create') {
-			selectedValue = window.ROBROY.currentFolderId;
-		} else if (type === 'edit') {
-			selectedValue = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
-		}
-		RobroyFolder.addFolderOptions($parentInput, selectedValue);
-
-		const $button = document.createElement('button');
-		$button.setAttribute('class', 'robroy-button');
-		$button.setAttribute('id', `robroy-${type}-submit`);
-		$button.setAttribute('type', 'submit');
-		$button.innerText = buttonText;
-		$form.appendChild($button);
+		RobroyUtilities.modifier('folderForm', { element: $form });
 
 		return $form;
 	}
 
-	static addFolderOptions(select, selectedValue) {
-		select.innerText = '';
-
-		let $option = document.createElement('option');
-		$option.setAttribute('value', '');
-		select.appendChild($option);
-
-		const folderIds = Object.keys(window.ROBROY.folders).sort();
-		let folder;
-		folderIds.forEach(function (folderId) {
-			folder = window.ROBROY.folders[folderId];
-			$option = document.createElement('option');
-			$option.setAttribute('value', folder.id);
-			$option.innerText = RobroyFolder.getFullName(window.ROBROY.folders[folder.id]);
-			if (folder.id === selectedValue) {
-				$option.setAttribute('selected', 'selected');
-			}
-			select.appendChild($option);
-		});
-	}
-
 	static delete() {
-		const id = window.ROBROY.currentFolderId;
+		const id = window.ROBROY.currentFolder.id;
 		RobroyModal.show(
-			RobroyUtilities.sprintf(window.ROBROY.lang.confirmDeleteFolder, id),
+			RobroyUtilities.sprintf(window.ROBROY.lang.confirmDeleteFolder, window.ROBROY.currentFolder.attributes.name),
 			{
 				closeButtonText: window.ROBROY.lang.delete,
 				closeButtonClass: 'robroy-button--danger',
@@ -173,7 +122,7 @@ export default class RobroyFolder {
 			method: 'DELETE',
 			url: `${window.ROBROY.args.apiPath}?type=folders&id=${id}`,
 			callback: () => {
-				RobroyUtilities.callback('afterDeleteFolder');
+				RobroyUtilities.callback('afterDeleteFolder', { id });
 
 				const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
 				window.location = window.location.href.replace(
@@ -184,13 +133,13 @@ export default class RobroyFolder {
 		});
 	}
 
-	static create(e) {
+	static submitCreateFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-create-folder-form');
+		const $form = document.getElementById('robroy-folder-form');
 		RobroyUtilities.clearErrors($form);
 
-		const $nameInput = document.getElementById('robroy-create-folder-name');
+		const $nameInput = document.getElementById('robroy-input-name');
 		if (!$nameInput.value) {
 			RobroyUtilities.addError($nameInput, window.ROBROY.lang.validationRequired);
 			return;
@@ -208,14 +157,16 @@ export default class RobroyFolder {
 			url: $form.getAttribute('action'),
 			json: json,
 			callback: (response) => {
-				RobroyFolder.createCallback(response);
+				RobroyFolder.createRequestCallback(response);
 			},
 		});
 	}
 
-	static createCallback(response) {
+	static createRequestCallback(response) {
+		RobroyToast.show(window.ROBROY.lang.createdSuccessfullyFolder, { class: 'robroy-toast--success' });
+
 		const parentId = RobroyFolder.getParentId(response.data.id);
-		if ((parentId && parentId === window.ROBROY.currentFolderId) || (!parentId && !window.ROBROY.currentFolderId)) {
+		if ((parentId && parentId === window.ROBROY.currentFolder.id) || (!parentId && !window.ROBROY.currentFolder.id)) {
 			RobroyFolder.addToList(response.data);
 
 			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
@@ -224,34 +175,29 @@ export default class RobroyFolder {
 			}
 		}
 
-		document.getElementById('robroy-create-folder-name').value = '';
+		document.getElementById('robroy-input-name').value = '';
 
 		window.ROBROY.folders[response.data.id] = response.data;
 
-		const $createParentInput = document.getElementById('robroy-create-folder-parent');
+		const $createParentInput = document.getElementById('robroy-input-parent');
 		RobroyFolder.addFolderOptions($createParentInput, $createParentInput.value);
-
-		const $editParentInput = document.getElementById('robroy-edit-folder-parent');
-		if ($editParentInput) {
-			RobroyFolder.addFolderOptions($editParentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
-		}
 
 		RobroyUtilities.callback('afterCreateFolder', { folder: response.data });
 	}
 
-	static edit(e) {
+	static submitEditFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-edit-folder-form');
+		const $form = document.getElementById('robroy-folder-form');
 		RobroyUtilities.clearErrors($form);
 
-		const $nameInput = document.getElementById('robroy-edit-folder-name');
+		const $nameInput = document.getElementById('robroy-input-name');
 		if (!$nameInput.value) {
 			RobroyUtilities.addError($nameInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
-		const $parentInput = document.getElementById('robroy-edit-folder-parent');
+		const $parentInput = document.getElementById('robroy-input-parent');
 		const hasNameChanged = $nameInput.value !== window.ROBROY.currentFolder.attributes.name;
 		let hasParentChanged;
 		const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
@@ -261,7 +207,8 @@ export default class RobroyFolder {
 			hasParentChanged = !!$parentInput.value;
 		}
 		if (!hasNameChanged && !hasParentChanged) {
-			RobroyModal.show(window.ROBROY.lang.nothingToUpdate);
+			RobroyToast.show(window.ROBROY.lang.nothingToSave);
+			RobroyModal.hide(e);
 			return;
 		}
 
@@ -274,15 +221,15 @@ export default class RobroyFolder {
 
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
-			url: `${$form.getAttribute('action')}&id=${window.ROBROY.currentFolderId}`,
+			url: `${$form.getAttribute('action')}&id=${window.ROBROY.currentFolder.id}`,
 			json: json,
 			callback: (response) => {
-				RobroyFolder.editCallback(response);
+				RobroyFolder.editRequestCallback(response);
 			},
 		});
 	}
 
-	static editCallback(response) {
+	static editRequestCallback(response) {
 		RobroyUtilities.callback('afterEditFolder', { folder: response.data });
 
 		window.location = window.location.href.replace(
@@ -337,5 +284,26 @@ export default class RobroyFolder {
 
 	static hasFolders() {
 		return RobroyFolder.getFolders().length > 0;
+	}
+
+	static addFolderOptions(select, selectedValue) {
+		select.innerText = '';
+
+		let $option = document.createElement('option');
+		$option.setAttribute('value', '');
+		select.appendChild($option);
+
+		const folderIds = Object.keys(window.ROBROY.folders).sort();
+		let folder;
+		folderIds.forEach(function (folderId) {
+			folder = window.ROBROY.folders[folderId];
+			$option = document.createElement('option');
+			$option.setAttribute('value', folder.id);
+			$option.innerText = RobroyFolder.getFullName(window.ROBROY.folders[folder.id]);
+			if (folder.id === selectedValue) {
+				$option.setAttribute('selected', 'selected');
+			}
+			select.appendChild($option);
+		});
 	}
 }

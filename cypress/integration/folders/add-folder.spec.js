@@ -22,8 +22,9 @@ describe('add folder', () => {
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
-					cy.get('#robroy-create-submit').click();
-					cy.get('#robroy-error-robroy-create-folder-name').should('have.text', 'Error: This field is required.');
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-modal-close').click();
+					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
 				});
 			});
 
@@ -34,8 +35,9 @@ describe('add folder', () => {
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
-					cy.get('#robroy-create-folder-name').clear().type('Folders Only');
-					cy.get('#robroy-create-submit').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-name').clear().type('Folders Only');
+					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 422);
 					cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "folders-only" already exists.');
 				});
@@ -54,15 +56,19 @@ describe('add folder', () => {
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
-					cy.get('#robroy-create-folder-name').clear().type('New Folder');
-					cy.get('#robroy-create-submit').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-name').clear().type('New Folder');
+					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
 
+					// Shows a toast.
+					cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
+
 					// Clears the name field.
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+					cy.get('#robroy-input-name').invoke('val').should('equal', '');
 
 					// Does not clear the parent field.
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
+					cy.get('#robroy-input-parent option:selected').should('have.text', '');
 
 					// Adds the folder to the folder list.
 					const items = [
@@ -76,7 +82,7 @@ describe('add folder', () => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
 
-					// Adds the new folder to the create parent list.
+					// Adds the new folder to the parent list.
 					const options = [
 						'',
 						'Folders Only',
@@ -88,7 +94,7 @@ describe('add folder', () => {
 						'New Folder',
 						'No Images Or Folders',
 					];
-					cy.get('#robroy-create-folder-parent option').each((item, index) => {
+					cy.get('#robroy-input-parent option').each((item, index) => {
 						cy.wrap(item).should('have.text', options[index]);
 					});
 
@@ -107,16 +113,20 @@ describe('add folder', () => {
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
-					cy.get('#robroy-create-folder-name').clear().type('New Folder');
-					cy.get('#robroy-create-folder-parent').select('Folders Only');
-					cy.get('#robroy-create-submit').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-name').clear().type('New Folder');
+					cy.get('#robroy-input-parent').select('Folders Only');
+					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
 
+					// Shows a toast.
+					cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
+
 					// Clears the name field.
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+					cy.get('#robroy-input-name').invoke('val').should('equal', '');
 
 					// Does not clear the parent field.
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only');
+					cy.get('#robroy-input-parent option:selected').should('have.text', 'Folders Only');
 
 					// Does not add the folder to the folder list.
 					const items = [
@@ -141,7 +151,7 @@ describe('add folder', () => {
 						'Images Only',
 						'No Images Or Folders',
 					];
-					cy.get('#robroy-create-folder-parent option').each((item, index) => {
+					cy.get('#robroy-input-parent option').each((item, index) => {
 						cy.wrap(item).should('have.text', options[index]);
 					});
 
@@ -167,15 +177,19 @@ describe('add folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
 				cy.contains('Log In').click();
-				cy.get('#robroy-create-folder-name').clear().type('New Folder');
-				cy.get('#robroy-create-submit').click();
+				cy.get('#robroy-create-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Folder');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
 
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
+
 				// Clears the name field.
-				cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+				cy.get('#robroy-input-name').invoke('val').should('equal', '');
 
 				// Does not clear the parent field.
-				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'No Images Or Folders');
+				cy.get('#robroy-input-parent option:selected').should('have.text', 'No Images Or Folders');
 
 				// Adds the folder to the folder list.
 				const items = [
@@ -197,12 +211,12 @@ describe('add folder', () => {
 					'No Images Or Folders',
 					'No Images Or Folders > New Folder',
 				];
-				cy.get('#robroy-create-folder-parent option').each((item, index) => {
+				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Adds the new folder to the edit parent list.
-				cy.get('#robroy-edit-folder-parent option').each((item, index) => {
+				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 
@@ -224,16 +238,20 @@ describe('add folder', () => {
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
 				cy.contains('Log In').click();
-				cy.get('#robroy-create-folder-name').clear().type('New Folder');
-				cy.get('#robroy-create-folder-parent').select('Folders Only');
-				cy.get('#robroy-create-submit').click();
+				cy.get('#robroy-create-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Folder');
+				cy.get('#robroy-input-parent').select('Folders Only');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@createFolder').its('response.statusCode').should('equal', 200);
 
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
+
 				// Clears the name field.
-				cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
+				cy.get('#robroy-input-name').invoke('val').should('equal', '');
 
 				// Does not clear the parent field.
-				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only');
+				cy.get('#robroy-input-parent option:selected').should('have.text', 'Folders Only');
 
 				// Does not add the folder to the folder list.
 				cy.get('.robroy-folder-link').should('not.exist');
@@ -250,12 +268,12 @@ describe('add folder', () => {
 					'Images Only',
 					'No Images Or Folders',
 				];
-				cy.get('#robroy-create-folder-parent option').each((item, index) => {
+				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 
 				// Adds the new folder to the edit parent list.
-				cy.get('#robroy-edit-folder-parent option').each((item, index) => {
+				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 

@@ -52,6 +52,9 @@ describe('delete image', () => {
 			cy.get('#robroy-modal-close').click();
 			cy.wait('@deleteImage1').its('response.statusCode').should('equal', 204);
 
+			// Shows a toast.
+			cy.get('.robroy-toast-text').should('have.text', 'Image deleted successfully.');
+
 			// Removes the image from the list.
 			cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
 
@@ -66,9 +69,13 @@ describe('delete image', () => {
 			cy.focused().should('have.attr', 'href', '/images2/images-only/400x400.png');
 
 			// When deleting the last image.
+			cy.get('.robroy-toast-close').click();
 			cy.get('[data-path="images-only/400x400.png"] .robroy-button--danger').click();
 			cy.get('#robroy-modal-close').click();
 			cy.wait('@deleteImage2').its('response.statusCode').should('equal', 204);
+
+			// Shows a toast.
+			cy.get('.robroy-toast-text').should('have.text', 'Image deleted successfully.');
 
 			// Hides the image list.
 			cy.get('#robroy-images').should('not.be.visible');
@@ -121,6 +128,9 @@ describe('delete image', () => {
 			cy.get('#robroy-modal-close').click();
 			cy.wait('@deleteImage1').its('response.statusCode').should('equal', 204);
 
+			// Shows a toast.
+			cy.get('.robroy-toast-text').should('have.text', 'Image deleted successfully.');
+
 			// Removes the image from the list.
 			cy.get('[data-path="images-and-folders/400x500.png"]').should('not.exist');
 
@@ -135,9 +145,13 @@ describe('delete image', () => {
 			cy.focused().should('have.attr', 'href', '/images2/images-and-folders/400x400.png');
 
 			// When deleting the last image.
+			cy.get('.robroy-toast-close').click();
 			cy.get('[data-path="images-and-folders/400x400.png"] .robroy-button--danger').click();
 			cy.get('#robroy-modal-close').click();
 			cy.wait('@deleteImage2').its('response.statusCode').should('equal', 204);
+
+			// Shows a toast.
+			cy.get('.robroy-toast-text').should('have.text', 'Image deleted successfully.');
 
 			// Hides the image list.
 			cy.get('#robroy-images').should('not.be.visible');

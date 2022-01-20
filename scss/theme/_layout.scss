@@ -19,7 +19,7 @@ $robroy-max-width: 1600px !default;
 }
 
 body {
-	background: $robroy-body-background-color;
+	background-color: $robroy-body-background-color;
 	color: $robroy-body-text-color;
 	font-family: $robroy-body-font-family;
 	font-size: $robroy-body-font-size;
@@ -34,7 +34,7 @@ main {
 
 #header,
 #footer {
-	background: $robroy-header-background-color;
+	background-color: $robroy-header-background-color;
 	color: $robroy-header-text-color;
 }
 
@@ -62,9 +62,21 @@ main {
 	font-size: 28px;
 	font-weight: normal;
 	margin: 0;
+	text-decoration: none;
 
 	@media screen and (min-width: $robroy-breakpoint) {
 		font-size: 44px;
+	}
+}
+
+#robroy-folder-title {
+	font-size: 24px;
+	font-weight: normal;
+	margin: $robroy-padding-mobile $robroy-padding-mobile 0;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		font-size: 36px;
+		margin: $robroy-padding-desktop $robroy-padding-desktop 0;
 	}
 }
 

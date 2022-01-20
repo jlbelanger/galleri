@@ -1,13 +1,41 @@
 export default class RobroyUtilities {
 	static addError($input, message) {
-		$input.classList.add('robroy-has-error');
 		$input.setAttribute('aria-invalid', true);
+
+		const $field = $input.closest('.robroy-field');
+		$field.classList.add('robroy-has-error');
 
 		const $span = document.createElement('span');
 		$span.setAttribute('class', 'robroy-error');
 		$span.setAttribute('id', `robroy-error-${$input.getAttribute('id')}`);
 		$span.innerText = message;
-		$input.after($span);
+		$field.append($span);
+	}
+
+	static addField($container, name, label, type = 'text') {
+		const $div = document.createElement('div');
+		$div.setAttribute('class', 'robroy-field');
+		$div.setAttribute('id', `robroy-field-${name}`);
+		$container.appendChild($div);
+
+		const $label = document.createElement('label');
+		$label.setAttribute('class', 'robroy-label');
+		$label.setAttribute('for', `robroy-input-${name}`);
+		$label.innerText = label;
+		$div.appendChild($label);
+
+		let $input;
+		if (type === 'select') {
+			$input = document.createElement('select');
+			$input.setAttribute('class', 'robroy-select');
+		} else {
+			$input = document.createElement('input');
+			$input.setAttribute('class', 'robroy-input');
+			$input.setAttribute('type', type);
+		}
+		$input.setAttribute('id', `robroy-input-${name}`);
+		$input.setAttribute('name', name);
+		$div.appendChild($input);
 	}
 
 	static clearErrors($form) {
@@ -73,6 +101,16 @@ export default class RobroyUtilities {
 	static setMetaTitle(title) {
 		const $title = document.querySelector('title');
 		$title.innerText = title + window.ROBROY.args.metaTitleSeparator + $title.innerText;
+	}
+
+	static setPageTitle(title) {
+		let $title = document.getElementById('robroy-folder-title');
+		if (!$title) {
+			$title = document.createElement('h1');
+			$title.setAttribute('id', 'robroy-folder-title');
+			window.ROBROY.elements.$container.prepend($title);
+		}
+		$title.innerText = title;
 	}
 
 	static setNumImages() {

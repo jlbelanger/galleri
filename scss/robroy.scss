@@ -3,14 +3,16 @@
 @import 'base/breadcrumb';
 @import 'base/button';
 @import 'base/error';
+@import 'base/file';
 @import 'base/focus';
 @import 'base/folder-list';
+@import 'base/heading';
 @import 'base/image-list';
 @import 'base/input';
 @import 'base/label';
 @import 'base/modal';
 @import 'base/spinner';
-@import 'base/upload';
+@import 'base/toast';
 
 // TODO: Clean up.
 
@@ -18,19 +20,62 @@
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
-	margin: $robroy-padding-mobile;
+	margin: #{$robroy-padding-mobile - $robroy-folder-item-margin} $robroy-padding-mobile;
 
 	@media screen and (min-width: $robroy-breakpoint) {
-		margin: $robroy-padding-desktop;
+		margin: #{$robroy-padding-desktop - $robroy-folder-item-margin} $robroy-padding-desktop;
 	}
 }
 
 #robroy-num {
-	margin: 0;
+	margin: $robroy-folder-item-margin 0;
 	text-align: right;
 	white-space: nowrap;
 
 	&:empty {
 		display: none;
 	}
+
+	#robroy-folders:not(:empty) + & {
+		margin-left: $robroy-padding-mobile;
+
+		@media screen and (min-width: $robroy-breakpoint) {
+			margin-left: $robroy-padding-desktop;
+		}
+	}
+}
+
+.robroy-button-container {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: $robroy-padding-mobile;
+
+	.robroy-button {
+		flex: 1 1 auto;
+	}
+
+	figure & {
+		bottom: 0;
+		left: 0;
+		position: absolute;
+		right: 0;
+	}
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		gap: $robroy-padding-desktop;
+	}
+}
+
+#robroy-admin {
+	margin: $robroy-padding-mobile;
+	width: calc(100% - #{$robroy-padding-mobile * 2});
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin: $robroy-padding-desktop;
+		width: calc(100% - #{$robroy-padding-desktop * 2});
+	}
+}
+
+.robroy-button-authenticate {
+	width: 100px;
 }

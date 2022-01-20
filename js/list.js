@@ -68,21 +68,22 @@ export default class RobroyList {
 
 		window.ROBROY.currentFolder = folder;
 
-		if (window.ROBROY.currentFolderId !== '') {
+		if (window.ROBROY.currentFolder.id !== '') {
 			RobroyBreadcrumb.init();
 		}
 
 		if (folder.attributes.name) {
 			RobroyUtilities.setMetaTitle(folder.attributes.name);
+			RobroyUtilities.setPageTitle(folder.attributes.name);
 		}
 
 		let childFolders;
-		if (window.ROBROY.currentFolderId === '') {
+		if (window.ROBROY.currentFolder.id === '') {
 			childFolders = Object.values(window.ROBROY.folders).filter((f) => (!f.id.includes('/')));
 		} else {
-			const numSlashes = window.ROBROY.currentFolderId.split('/').length + 1;
+			const numSlashes = window.ROBROY.currentFolder.id.split('/').length + 1;
 			childFolders = Object.values(window.ROBROY.folders).filter((f) => {
-				if (!f.id.startsWith(`${window.ROBROY.currentFolderId}/`)) {
+				if (!f.id.startsWith(`${window.ROBROY.currentFolder.id}/`)) {
 					return false;
 				}
 				return numSlashes === f.id.split('/').length;
@@ -109,7 +110,7 @@ export default class RobroyList {
 			`&page[size]=${window.ROBROY.args.pageSize}`,
 		].join('');
 		if (!window.ROBROY.args.showAllImages) {
-			url += `&parent=${window.ROBROY.currentFolderId}`;
+			url += `&parent=${window.ROBROY.currentFolder.id}`;
 		}
 
 		RobroyApi.request({

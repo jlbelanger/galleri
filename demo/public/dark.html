@@ -12,8 +12,8 @@
 		<main>
 			<header id="header">
 				<div class="contain" id="header-inner">
-					<h1 id="title">Robroy Photo Gallery Demo - Dark Theme</h1>
-					<button class="robroy-button robroy-button--secondary" data-action="authenticate" type="button"></button>
+					<a href="/dark.html" id="title">Robroy Photo Gallery Demo - Dark Theme</a>
+					<button class="robroy-button robroy-button--secondary robroy-button-authenticate" data-action="authenticate" type="button"></button>
 				</div>
 			</header>
 			<article>
@@ -32,8 +32,8 @@
 			callbacks: {
 				afterCreateImage: ({ image }) => { refreshFsLightbox(); },
 				afterCreateFolder: ({ folder }) => {},
-				afterDeleteImage: () => { refreshFsLightbox(); },
-				afterDeleteFolder: () => {},
+				afterDeleteImage: ({ id }) => { refreshFsLightbox(); },
+				afterDeleteFolder: ({ id }) => {},
 				afterEditFolder: ({ folder }) => {},
 				afterEditImage: ({ image }) => { refreshFsLightbox(); },
 				afterLoadImage: () => { refreshFsLightbox(); },
@@ -47,6 +47,10 @@
 				breadcrumbList: ({ element }) => {},
 				breadcrumbItem: ({ element, folder }) => {},
 				folderItem: ({ element }) => {},
+				folderForm: ({ element }) => {},
+				folderCreateForm: ({ element }) => {},
+				folderEditForm: ({ element }) => {},
+				imageEditForm: ({ element }) => {},
 				imageItem: ({ element }) => {
 					element.querySelector('a').setAttribute('data-fslightbox', true);
 				},

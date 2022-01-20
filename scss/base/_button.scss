@@ -9,7 +9,6 @@
 	line-height: 1;
 	margin: 0;
 	padding: $robroy-button-padding;
-	white-space: nowrap;
 
 	&:hover,
 	&:active,
@@ -42,13 +41,4 @@
 	&:focus {
 		background-color: $robroy-button-secondary-background-color-hover;
 	}
-}
-
-.robroy-button-container {
-	bottom: 0;
-	display: flex;
-	justify-content: space-between;
-	left: 0;
-	position: absolute;
-	right: 0;
 }

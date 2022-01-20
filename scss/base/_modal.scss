@@ -1,6 +1,6 @@
 .robroy-modal {
 	align-items: center;
-	background: $robroy-modal-container-background-color;
+	background-color: $robroy-modal-container-background-color;
 	bottom: 0;
 	display: flex;
 	justify-content: center;
@@ -11,7 +11,7 @@
 }
 
 .robroy-modal-box {
-	background: $robroy-modal-background-color;
+	background-color: $robroy-modal-background-color;
 	color: $robroy-modal-text-color;
 	margin: $robroy-modal-margin;
 	max-width: $robroy-modal-max-width;
@@ -30,5 +30,9 @@
 
 	button + button {
 		margin-left: $robroy-modal-button-margin-side;
+	}
+
+	form + & {
+		margin-top: $robroy-field-margin-top;
 	}
 }

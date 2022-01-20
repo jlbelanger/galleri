@@ -1,8 +1,7 @@
 import RobroyUtilities from './utilities';
 
 export default class RobroyModal {
-	static show(message, args) {
-		args = args || {};
+	static show(message, args = {}) {
 		args.closeButtonText = args.closeButtonText || window.ROBROY.lang.ok;
 		args.closeButtonClass = args.closeButtonClass || '';
 
@@ -16,14 +15,14 @@ export default class RobroyModal {
 		$innerContainer.setAttribute('class', 'robroy-modal-box');
 		$container.appendChild($innerContainer);
 
-		const $p = document.createElement('p');
-		$p.setAttribute('class', 'robroy-modal-text');
 		if (args.append) {
-			$p.appendChild(message);
+			$innerContainer.appendChild(message);
 		} else {
+			const $p = document.createElement('p');
+			$p.setAttribute('class', 'robroy-modal-text');
 			$p.innerText = message;
+			$innerContainer.appendChild($p);
 		}
-		$innerContainer.appendChild($p);
 
 		let $closeButton;
 		if (!args.hideClose || args.showCancel) {
@@ -44,7 +43,6 @@ export default class RobroyModal {
 				$closeButton.setAttribute('id', 'robroy-modal-close');
 				$closeButton.setAttribute('type', 'button');
 				$closeButton.setAttribute('class', `robroy-button ${args.closeButtonClass}`.trim());
-				$closeButton.setAttribute('data-id', id);
 				$closeButton.setAttribute('data-robroy-modal-close', '');
 				if (args.closeButtonAttributes) {
 					Object.keys(args.closeButtonAttributes).forEach((property) => {
@@ -63,7 +61,6 @@ export default class RobroyModal {
 				$cancelButton.setAttribute('id', 'robroy-modal-cancel');
 				$cancelButton.setAttribute('type', 'button');
 				$cancelButton.setAttribute('class', 'robroy-button robroy-button--secondary');
-				$cancelButton.setAttribute('data-id', id);
 				$cancelButton.innerText = window.ROBROY.lang.cancel;
 				$cancelButton.addEventListener('click', this.hide);
 				$optionsContainer.appendChild($cancelButton);
@@ -71,12 +68,14 @@ export default class RobroyModal {
 		}
 
 		document.body.appendChild($container);
-		if ($closeButton) {
-			window.ROBROY.activeElement = document.activeElement;
-			$closeButton.focus();
-		}
+
+		window.ROBROY.activeElement = document.activeElement;
+		$container.setAttribute('tabindex', '-1');
+		$container.focus();
 
 		RobroyUtilities.modifier('modal', { element: $container });
+
+		return $container;
 	}
 
 	static keydownListener(e) {
@@ -94,7 +93,7 @@ export default class RobroyModal {
 			$target = document.querySelector('[data-robroy-modal-close]');
 		}
 
-		const $container = document.getElementById($target.getAttribute('data-id'));
+		const $container = $target.closest('.robroy-modal');
 		$container.remove();
 
 		if (window.ROBROY.activeElement) {

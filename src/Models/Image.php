@@ -128,7 +128,7 @@ class Image
 			'id' => $this->id,
 			'attributes' => [
 				'filename'        => $pathinfo['basename'],
-				'folder'          => $pathinfo['dirname'],
+				'folder'          => $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'],
 				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
 				'thumbnailHeight' => $height,
 				'thumbnailWidth'  => $width,

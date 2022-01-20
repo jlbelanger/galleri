@@ -29,20 +29,17 @@ describe('index', () => {
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
 
-					// Does not show the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('not.exist');
+					// Does not show the edit folder button.
+					cy.get('#robroy-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.exist');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Shows the folder list.
 					cy.get('#robroy-folders').should('be.visible');
@@ -73,20 +70,17 @@ describe('index', () => {
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
 
-					// Does not show the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('not.exist');
+					// Does not show the edit folder button.
+					cy.get('#robroy-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.exist');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Does not show the folder list.
 					cy.get('#robroy-folders').should('not.be.visible');
@@ -117,20 +111,17 @@ describe('index', () => {
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
 
-					// Does not show the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('not.exist');
+					// Does not show the edit folder button.
+					cy.get('#robroy-editfolder').should('not.exist');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.exist');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Shows the folder list.
 					cy.get('#robroy-folders').should('be.visible');
@@ -161,20 +152,17 @@ describe('index', () => {
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
 
-					// Does not show the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('not.exist');
+					// Does not show the edit folder button.
+					cy.get('#robroy-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.exist');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', '');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Does not show the folder list.
 					cy.get('#robroy-folders').should('not.be.visible');
@@ -214,22 +202,17 @@ describe('index', () => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
 
-					// Shows the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('be.visible');
-					cy.get('#robroy-edit-folder-name').invoke('val').should('equal', 'Folders Only');
-					cy.get('#robroy-edit-folder-parent option:selected').should('have.text', '');
+					// Shows the edit folder button.
+					cy.get('#robroy-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Shows the folder list.
 					cy.get('#robroy-folders').should('be.visible');
@@ -263,22 +246,17 @@ describe('index', () => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
 
-					// Shows the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('be.visible');
-					cy.get('#robroy-edit-folder-name').invoke('val').should('equal', 'Images Only');
-					cy.get('#robroy-edit-folder-parent option:selected').should('have.text', '');
+					// Shows the edit folder button.
+					cy.get('#robroy-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Images Only');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Does not show the folder list.
 					cy.get('#robroy-folders').should('not.be.visible');
@@ -312,22 +290,17 @@ describe('index', () => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
 
-					// Shows the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('be.visible');
-					cy.get('#robroy-edit-folder-name').invoke('val').should('equal', 'Images And Folders');
-					cy.get('#robroy-edit-folder-parent option:selected').should('have.text', '');
+					// Shows the edit folder button.
+					cy.get('#robroy-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
 					cy.get('#robroy-delete-folder').should('not.be.visible');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Images And Folders');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Show the folder list.
 					cy.get('#robroy-folders').should('be.visible');
@@ -361,22 +334,17 @@ describe('index', () => {
 						cy.wrap(item).should('have.text', items[index]);
 					});
 
-					// Shows the edit folder form.
-					cy.get('#robroy-edit-folder-form').should('be.visible');
-					cy.get('#robroy-edit-folder-name').invoke('val').should('equal', 'No Images Or Folders');
-					cy.get('#robroy-edit-folder-parent option:selected').should('have.text', '');
+					// Shows the edit folder button.
+					cy.get('#robroy-edit-folder').should('be.visible');
 
 					// Shows the delete folder button.
 					cy.get('#robroy-delete-folder').should('be.visible');
 
-					// Shows the create folder form.
-					cy.get('#robroy-create-folder-form').should('be.visible');
-					cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-					cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'No Images Or Folders');
+					// Shows the create folder button.
+					cy.get('#robroy-create-folder').should('be.visible');
 
-					// Shows the create image form.
-					cy.get('#robroy-create-image-form').should('be.visible');
-					cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+					// Shows the create image button.
+					cy.get('#robroy-create-image').should('be.visible');
 
 					// Does not show the folder list.
 					cy.get('#robroy-folders').should('not.be.visible');
@@ -412,21 +380,16 @@ describe('index', () => {
 				});
 
 				// Shows the edit folder form.
-				cy.get('#robroy-edit-folder-form').should('be.visible');
-				cy.get('#robroy-edit-folder-name').invoke('val').should('equal', 'Subfolder');
-				cy.get('#robroy-edit-folder-parent option:selected').should('have.text', 'Folders Only');
+				cy.get('#robroy-edit-folder').should('be.visible');
 
 				// Shows the delete folder button.
 				cy.get('#robroy-delete-folder').should('be.visible');
 
 				// Shows the create folder form.
-				cy.get('#robroy-create-folder-form').should('be.visible');
-				cy.get('#robroy-create-folder-name').invoke('val').should('equal', '');
-				cy.get('#robroy-create-folder-parent option:selected').should('have.text', 'Folders Only > Subfolder');
+				cy.get('#robroy-create-folder').should('be.visible');
 
 				// Shows the create image form.
-				cy.get('#robroy-create-image-form').should('be.visible');
-				cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
+				cy.get('#robroy-create-image').should('be.visible');
 
 				// Does not shows the folder list.
 				cy.get('#robroy-folders').should('not.be.visible');

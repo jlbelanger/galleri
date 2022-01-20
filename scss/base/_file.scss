@@ -1,0 +1,48 @@
+.robroy-file-container {
+	align-items: center;
+	color: $robroy-file-input-text-color;
+	display: flex;
+	flex: 1 1 auto;
+	height: $robroy-file-input-height;
+	justify-content: center;
+	margin-top: $robroy-input-margin-top;
+	overflow: hidden;
+	padding: 0 $robroy-file-input-padding;
+	position: relative;
+
+	.robroy-has-error & {
+		box-shadow: 0 0 0 $robroy-error-border-width $robroy-error-border-color;
+	}
+}
+
+.robroy-file-input {
+	background-color: $robroy-file-input-background-color;
+	border: 0;
+	bottom: 0;
+	cursor: pointer;
+	font-size: 0;
+	height: auto;
+	left: 0;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	top: -100%;
+	width: 100%;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $robroy-file-input-background-color-hover;
+	}
+
+	.robroy-modal & {
+		background-color: $robroy-modal-input-background-color;
+	}
+}
+
+.robroy-file-text {
+	pointer-events: none;
+	position: relative;
+}

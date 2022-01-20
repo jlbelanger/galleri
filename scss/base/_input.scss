@@ -1,12 +1,22 @@
+.robroy-field {
+	margin-top: $robroy-field-margin-top;
+}
+
 .robroy-input,
 .robroy-select {
-	background: $robroy-input-background-color;
+	background-color: $robroy-input-background-color;
 	border: 0;
 	border-radius: 0;
 	color: $robroy-input-text-color;
+	margin-top: $robroy-input-margin-top;
 	padding: $robroy-input-padding;
+	width: 100%;
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		margin-right: 20px; // TODO: Use variable.
+	.robroy-modal & {
+		background-color: $robroy-modal-input-background-color;
+	}
+
+	.robroy-has-error & {
+		box-shadow: 0 0 0 $robroy-error-border-width $robroy-error-border-color;
 	}
 }

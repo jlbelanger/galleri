@@ -22,7 +22,7 @@ export default class RobroyBreadcrumb {
 		const $li = document.createElement('li');
 		$li.setAttribute('class', 'robroy-breadcrumb-item');
 
-		if (folder.id === window.ROBROY.currentFolderId) {
+		if (folder.id === window.ROBROY.currentFolder.id) {
 			$li.innerText = folder.attributes.name;
 		} else {
 			const $a = document.createElement('a');

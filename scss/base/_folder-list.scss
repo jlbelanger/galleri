@@ -1,6 +1,7 @@
 #robroy-folders {
 	display: flex;
 	flex-wrap: wrap;
+	line-height: 1;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -21,5 +22,6 @@
 
 	&:last-of-type::after {
 		content: '';
+		margin: 0;
 	}
 }

@@ -76,15 +76,11 @@ export default class RobroyAuth {
 	static handleLogin() {
 		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logOut;
 
-		RobroyImage.getImages().forEach(($container) => {
-			RobroyImage.addEditControls($container);
-		});
-		if (window.ROBROY.currentFolderId) {
-			RobroyFolder.addEditControls();
-		}
+		RobroyAuth.addAdminBar();
 
-		RobroyImage.addCreateControl();
-		RobroyFolder.addCreateControl();
+		RobroyImage.getImages().forEach(($container) => {
+			RobroyImage.addAdminControls($container);
+		});
 
 		RobroyUtilities.callback('afterLogin');
 	}
@@ -105,5 +101,51 @@ export default class RobroyAuth {
 		}
 
 		RobroyUtilities.callback('afterLogout');
+	}
+
+	static addAdminBar() {
+		const $div = document.createElement('div');
+		$div.setAttribute('class', 'robroy-admin robroy-button-container');
+		$div.setAttribute('id', 'robroy-admin');
+		window.ROBROY.elements.$container.prepend($div);
+
+		const $uploadButton = document.createElement('button');
+		$uploadButton.setAttribute('class', 'robroy-button');
+		$uploadButton.setAttribute('id', 'robroy-create-image');
+		$uploadButton.setAttribute('type', 'button');
+		$uploadButton.innerText = window.ROBROY.lang.uploadImage;
+		$uploadButton.addEventListener('click', RobroyImage.showCreateForm);
+		$div.append($uploadButton);
+
+		const $createButton = document.createElement('button');
+		$createButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+		$createButton.setAttribute('id', 'robroy-create-folder');
+		$createButton.setAttribute('type', 'button');
+		$createButton.innerText = window.ROBROY.lang.createFolder;
+		$createButton.addEventListener('click', RobroyFolder.showCreateForm);
+		$div.append($createButton);
+
+		if (window.ROBROY.currentFolder.id) {
+			const $editButton = document.createElement('button');
+			$editButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+			$editButton.setAttribute('id', 'robroy-edit-folder');
+			$editButton.setAttribute('type', 'button');
+			$editButton.innerText = window.ROBROY.lang.editFolder;
+			$editButton.addEventListener('click', RobroyFolder.showEditForm);
+			$div.append($editButton);
+
+			const $deleteButton = document.createElement('button');
+			$deleteButton.setAttribute('class', 'robroy-button robroy-button--danger');
+			$deleteButton.setAttribute('id', 'robroy-delete-folder');
+			$deleteButton.setAttribute('type', 'button');
+			$deleteButton.innerText = window.ROBROY.lang.deleteFolder;
+			if (!RobroyUtilities.isEmpty()) {
+				$deleteButton.style.display = 'none';
+			}
+			$deleteButton.addEventListener('click', RobroyFolder.delete);
+			$div.append($deleteButton);
+		}
+
+		RobroyUtilities.modifier('adminBar', { element: $div });
 	}
 }

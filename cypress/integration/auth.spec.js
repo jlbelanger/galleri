@@ -31,5 +31,11 @@ describe('auth', () => {
 
 		// Hide admin controls after logout.
 		cy.get('.robroy-admin').should('not.exist');
+
+		cy.contains('Log In').click();
+		cy.reload();
+
+		// Shows admin controls initially if logged in.
+		cy.get('.robroy-admin').should('be.visible');
 	});
 });

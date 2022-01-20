@@ -1,16 +1,19 @@
 .robroy-breadcrumb {
 	display: flex;
 	flex-wrap: wrap;
+	line-height: 1;
 	list-style: none;
-	margin: $robroy-padding-mobile;
+	margin: 0 $robroy-padding-mobile;
 	padding: 0;
 
 	@media screen and (min-width: $robroy-breakpoint) {
-		margin: $robroy-padding-desktop;
+		margin: 0 $robroy-padding-desktop;
 	}
 }
 
 .robroy-breadcrumb-item {
+	margin: $robroy-breadcrumb-item-margin 0;
+
 	&::after {
 		color: $robroy-breadcrumb-item-arrow-color;
 		content: $robroy-breadcrumb-icon;
