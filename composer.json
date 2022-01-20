@@ -3,7 +3,7 @@
 	"description": "Databaseless vanilla PHP photo gallery.",
 	"version": "1.0.1",
 	"type": "project",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
 	"authors": [
 		{
 			"name": "Jenny Belanger",

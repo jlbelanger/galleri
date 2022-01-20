@@ -2,7 +2,7 @@
 	"name": "jlbelanger/robroy-demo",
 	"description": "",
 	"type": "project",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
 	"require": {
 		"jlbelanger/robroy": "@dev",
 		"vlucas/phpdotenv": "^5.4.1"

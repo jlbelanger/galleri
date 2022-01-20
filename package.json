@@ -2,7 +2,7 @@
 	"name": "jlbelanger-robroy",
 	"version": "1.0.2",
 	"description": "Databaseless vanilla JS photo gallery.",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
 	"author": {
 		"name": "Jenny Belanger",
 		"email": "mail@jennybelanger.com",
