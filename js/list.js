@@ -141,6 +141,11 @@ export default class RobroyList {
 							$deleteFolderButton.style.display = '';
 						}
 					}
+				} else {
+					const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+					if ($deleteFolderButton) {
+						$deleteFolderButton.style.display = 'none';
+					}
 				}
 
 				if (callback) {
