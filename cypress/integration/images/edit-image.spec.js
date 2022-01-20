@@ -50,7 +50,7 @@ describe('edit image', () => {
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-edit-image-filename').clear();
 				cy.get('#robroy-edit-image-submit').click();
-				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: Please enter a filename.');
+				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: This field is required.');
 			});
 		});
 
@@ -65,7 +65,7 @@ describe('edit image', () => {
 				cy.get('#robroy-edit-image-filename').clear();
 				cy.get('#robroy-edit-image-folder').select('');
 				cy.get('#robroy-edit-image-submit').click();
-				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: Please enter a filename.');
+				cy.get('#robroy-error-robroy-edit-image-filename').should('have.text', 'Error: This field is required.');
 				cy.get('#robroy-error-robroy-edit-image-folder').should('not.exist');
 			});
 		});

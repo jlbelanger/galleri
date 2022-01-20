@@ -1,28 +1,33 @@
 export default class RobroyUtilities {
-	static addAttributes(elemName, elem) {
-		if (!window.ROBROY.args.attributes[elemName]) {
-			return;
-		}
-		Object.keys(window.ROBROY.args.attributes[elemName]).forEach((property) => {
-			elem.setAttribute(property, window.ROBROY.args.attributes[elemName][property]);
-		});
-	}
-
-	static addError(input, message) {
-		input.classList.add('robroy-has-error');
+	static addError($input, message) {
+		$input.classList.add('robroy-has-error');
+		$input.setAttribute('aria-invalid', true);
 
 		const $span = document.createElement('span');
 		$span.setAttribute('class', 'robroy-error');
-		$span.setAttribute('id', `robroy-error-${input.getAttribute('id')}`);
+		$span.setAttribute('id', `robroy-error-${$input.getAttribute('id')}`);
 		$span.innerText = message;
-		input.after($span);
+		$input.after($span);
 	}
 
-	static callback(name) {
+	static clearErrors($form) {
+		let $elems = $form.querySelectorAll('.robroy-error');
+		$elems.forEach(($elem) => {
+			$elem.remove();
+		});
+
+		$elems = $form.querySelectorAll('.robroy-has-error');
+		$elems.forEach(($elem) => {
+			$elem.classList.remove('robroy-has-error');
+			$elem.removeAttribute('aria-invalid');
+		});
+	}
+
+	static callback(name, args) {
 		if (!window.ROBROY.args.callbacks[name]) {
 			return;
 		}
-		window.ROBROY.args.callbacks[name]();
+		window.ROBROY.args.callbacks[name](args);
 	}
 
 	static debounce(func, wait, immediate, ...args) {
@@ -44,8 +49,21 @@ export default class RobroyUtilities {
 		};
 	}
 
+	static isEmpty() {
+		const imageListStyle = window.getComputedStyle(window.ROBROY.elements.$imageList);
+		const folderListStyle = window.getComputedStyle(window.ROBROY.elements.$folderList);
+		return imageListStyle.display === 'none' && folderListStyle.display === 'none';
+	}
+
 	static isLoggedIn() {
-		return window.localStorage.getItem('authenticated');
+		return window.localStorage.getItem(window.ROBROY.args.localStorageKey);
+	}
+
+	static modifier(name, args) {
+		if (!window.ROBROY.args.modifiers[name]) {
+			return;
+		}
+		window.ROBROY.args.modifiers[name](args);
 	}
 
 	static propertyExists(object, property) {
@@ -58,7 +76,14 @@ export default class RobroyUtilities {
 	}
 
 	static setNumImages() {
-		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.args.singularImageText : window.ROBROY.args.pluralImageText;
+		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.lang.singularImageText : window.ROBROY.lang.pluralImageText;
 		window.ROBROY.elements.$numImages.innerText = `${window.ROBROY.currentNumImages.toLocaleString()} ${label}`;
+	}
+
+	static sprintf(s, ...args) {
+		args.forEach((a) => {
+			s = s.replace('%s', a);
+		});
+		return s;
 	}
 }

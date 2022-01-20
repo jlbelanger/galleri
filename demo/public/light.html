@@ -29,49 +29,30 @@
 		<script src="https://unpkg.com/fslightbox@3.1.0/index.js" integrity="sha384-HpFPRJTv1hMt/0XGUpq+/fMLpT+t4E8MwBd77nggUDvbEuBGnv5TV+ZIxW0TvHfX" crossorigin="anonymous"></script>
 		<script>
 		Robroy.default.init({
-			// Required. The selector for the element where the images will be loaded.
-			selector: '#robroy',
-
-			// Optional. Specify an alternate path for the API PHP file.
-			apiPath: '/api.php',
-			apiFoldersPath: '/json/folders.json',
-
-			// Optional. Add additional attributes to image elements. (eg. The fslightbox plugin requires an attribute on the link elements.)
-			attributes: {
-				a: {
-					'data-fslightbox': '',
-				},
-				figure: {},
-				img: {},
-			},
-
-			// Optional. If you want something to happen after an image has been added or removed from the grid, use a callback function.
 			callbacks: {
-				afterCreateImage: () => { refreshFsLightbox(); },
-				afterCreateFolder: () => {},
+				afterCreateImage: ({ image }) => { refreshFsLightbox(); },
+				afterCreateFolder: ({ folder }) => {},
 				afterDeleteImage: () => { refreshFsLightbox(); },
 				afterDeleteFolder: () => {},
-				afterEditFolder: () => {},
-				afterEditImage: () => { refreshFsLightbox(); },
+				afterEditFolder: ({ folder }) => {},
+				afterEditImage: ({ image }) => { refreshFsLightbox(); },
 				afterLoadImage: () => { refreshFsLightbox(); },
 				afterLoadFolder: () => {},
+				afterLogin: () => {},
+				afterLogout: () => {},
+				afterUpdateImage: ({ element, image }) => {},
 			},
 
-			// Optional.
-			metaTitleSeparator: ' | ',
-
-			// Optional.
-			showAllImages: false,
-
-			// Optional. The top-level folder name shown in the breadcrumb.
-			rootFolderName: 'Home',
-
-			// Optional. The number of images to load each time the user reaches the end of the list.
-			pageSize: 8,
-
-			// Optional. The text used for displaying the number of images on each page.
-			singularImageText: 'image',
-			pluralImageText: 'images',
+			modifiers: {
+				breadcrumbList: ({ element }) => {},
+				breadcrumbItem: ({ element, folder }) => {},
+				folderItem: ({ element }) => {},
+				imageItem: ({ element }) => {
+					element.querySelector('a').setAttribute('data-fslightbox', true);
+				},
+				modal: ({ element }) => {},
+				spinner: ({ element }) => {},
+			},
 		});
 		</script>
 	</body>

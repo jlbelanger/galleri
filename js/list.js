@@ -1,7 +1,6 @@
 import RobroyApi from './api';
 import RobroyAuth from './auth';
 import RobroyBreadcrumb from './breadcrumb';
-import RobroyEmpty from './empty';
 import RobroyFolder from './folder';
 import RobroyImage from './image';
 import RobroyModal from './modal';
@@ -63,7 +62,7 @@ export default class RobroyList {
 		}
 
 		if (!folder) {
-			RobroyModal.show('Error: This folder does not exist.');
+			RobroyModal.show(window.ROBROY.lang.errorFolderDoesNotExist);
 			return;
 		}
 
@@ -102,11 +101,11 @@ export default class RobroyList {
 	}
 
 	static loadImages(callback) {
-		window.ROBROY.args.isLoadingImages = true;
+		window.ROBROY.state.isLoadingImages = true;
 
 		let url = [
 			window.ROBROY.args.apiPath,
-			`?type=images&page[number]=${++window.ROBROY.args.pageNumber}`,
+			`?type=images&page[number]=${++window.ROBROY.state.pageNumber}`,
 			`&page[size]=${window.ROBROY.args.pageSize}`,
 		].join('');
 		if (!window.ROBROY.args.showAllImages) {
@@ -121,11 +120,13 @@ export default class RobroyList {
 				});
 
 				RobroyList.appendImages(response.data);
-				window.ROBROY.grid.resizeAllItems();
+				if (window.ROBROY.grid) {
+					window.ROBROY.grid.resizeAllItems();
+				}
 
-				window.ROBROY.args.isLoadingImages = false;
+				window.ROBROY.state.isLoadingImages = false;
 				if (response.meta.page_number >= response.meta.total_pages) {
-					window.ROBROY.args.allPagesLoaded = true;
+					window.ROBROY.state.allPagesLoaded = true;
 				}
 
 				if (response.meta.num_items !== window.ROBROY.currentNumImages) {
@@ -134,7 +135,7 @@ export default class RobroyList {
 				}
 
 				if (response.meta.total_pages <= 0) {
-					if (!RobroyEmpty.hasFolders()) {
+					if (!RobroyFolder.hasFolders()) {
 						const $deleteFolderButton = document.getElementById('robroy-delete-folder');
 						if ($deleteFolderButton) {
 							$deleteFolderButton.style.display = '';
@@ -152,11 +153,11 @@ export default class RobroyList {
 	}
 
 	static onScroll() {
-		if (window.ROBROY.args.allPagesLoaded || window.ROBROY.args.isLoadingImages) {
+		if (window.ROBROY.state.allPagesLoaded || window.ROBROY.state.isLoadingImages) {
 			return;
 		}
 
-		const $lastFigure = document.querySelector('#robroy-images > figure:last-of-type');
+		const $lastFigure = Array.from(RobroyImage.getImages()).pop();
 		if (!$lastFigure) {
 			return;
 		}

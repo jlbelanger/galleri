@@ -1,0 +1,12 @@
+.robroy-input,
+.robroy-select {
+	background: $robroy-input-background-color;
+	border: 0;
+	border-radius: 0;
+	color: $robroy-input-text-color;
+	padding: $robroy-input-padding;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin-right: 20px; // TODO: Use variable.
+	}
+}

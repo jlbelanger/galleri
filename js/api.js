@@ -1,12 +1,13 @@
 import RobroyModal from './modal';
 import RobroySpinner from './spinner';
+import RobroyUtilities from './utilities';
 
 export default class RobroyApi {
 	static request(args) {
 		args = args || {};
 		args.method = args.method || 'GET';
 
-		RobroySpinner.show();
+		const $spinner = RobroySpinner.show();
 
 		const req = new XMLHttpRequest();
 		req.onreadystatechange = () => {
@@ -14,14 +15,15 @@ export default class RobroyApi {
 				return;
 			}
 
-			RobroySpinner.hide();
+			RobroySpinner.hide($spinner);
 
+			// TODO: Refactor so it's more consistent.
 			let response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {
 				if (args.errorCallback) {
 					args.errorCallback(response, req.status);
 				} else {
-					RobroyModal.show(`Error: The server returned a ${req.status} error.`);
+					RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.errorStatus, req.status));
 				}
 				return;
 			}
@@ -32,14 +34,18 @@ export default class RobroyApi {
 					if (args.errorCallback) {
 						args.errorCallback(response, req.status);
 					} else {
-						RobroyModal.show(`Error: The server returned a non-JSON response. (${args.url})`);
+						RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.errorStatus, req.status));
 					}
 					return;
 				}
 
 				if (response.errors) {
-					const errors = response.errors.map((error) => error.title);
-					RobroyModal.show(`Error: ${errors}`);
+					if (args.errorCallback) {
+						args.errorCallback(response, req.status);
+					} else {
+						const errors = response.errors.map((error) => error.title);
+						RobroyModal.show(`Error: ${errors}`); // TODO: Use inline errors.
+					}
 					return;
 				}
 			}

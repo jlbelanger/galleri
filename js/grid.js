@@ -2,6 +2,8 @@ import RobroyUtilities from './utilities';
 
 export default class RobroyGrid {
 	constructor() {
+		window.ROBROY.elements.$imageList.classList.add('robroy-grid');
+
 		this.calculate();
 
 		window.addEventListener('resize', RobroyUtilities.debounce(() => {
@@ -16,28 +18,28 @@ export default class RobroyGrid {
 		this.gridRowGap = parseInt(gridStyle.getPropertyValue('grid-row-gap'), 10);
 	}
 
-	checkResizeItem(figure) {
-		const $img = figure.querySelector('img');
+	checkResizeItem($container) {
+		const $img = $container.querySelector('img');
 		if ($img.complete) {
-			this.resizeItem(figure);
+			this.resizeItem($container);
 		} else {
 			const int = setInterval(() => {
 				if (!$img.complete) {
 					return;
 				}
 				clearInterval(int);
-				this.resizeItem(figure);
+				this.resizeItem($container);
 			}, 100);
 		}
 	}
 
-	resizeItem(figure) {
-		const $a = figure.querySelector('a');
+	resizeItem($container) {
+		const $a = $container.querySelector('a');
 		$a.style.position = '';
 		const itemHeight = $a.getBoundingClientRect().height;
 		const rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
 		$a.style.position = 'absolute';
-		figure.style.gridRowEnd = `span ${rowSpan}`;
+		$container.style.gridRowEnd = `span ${rowSpan}`;
 	}
 
 	resizeAllItems() {

@@ -1,21 +1,18 @@
 import RobroyApi from './api';
-import RobroyEmpty from './empty';
 import RobroyFolder from './folder';
 import RobroyModal from './modal';
 import RobroyUtilities from './utilities';
 
 export default class RobroyImage {
 	static element(image) {
-		const $figure = document.createElement('figure');
+		const $figure = document.createElement(window.ROBROY.args.imageItemElement);
 		$figure.setAttribute('class', 'robroy-figure');
 		$figure.setAttribute('data-path', image.id);
-		RobroyUtilities.addAttributes('figure', $figure);
 
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-link');
 		$a.setAttribute('href', image.attributes.url);
 		$a.style.backgroundImage = `url("${image.attributes.thumbnail}")`;
-		RobroyUtilities.addAttributes('a', $a);
 		$figure.appendChild($a);
 
 		const $img = document.createElement('img');
@@ -23,12 +20,13 @@ export default class RobroyImage {
 		$img.setAttribute('src', image.attributes.thumbnail);
 		$img.setAttribute('height', image.attributes.thumbnailHeight);
 		$img.setAttribute('width', image.attributes.thumbnailWidth);
-		RobroyUtilities.addAttributes('img', $img);
 		$a.appendChild($img);
 
 		if (RobroyUtilities.isLoggedIn()) {
 			RobroyImage.addEditControls($figure);
 		}
+
+		RobroyUtilities.modifier('imageItem', { element: $figure });
 
 		return $figure;
 	}
@@ -41,25 +39,27 @@ export default class RobroyImage {
 		const $viewButton = document.createElement('button');
 		$viewButton.setAttribute('class', 'robroy-admin robroy-button');
 		$viewButton.setAttribute('href', 'button');
-		$viewButton.innerText = 'View';
+		$viewButton.innerText = window.ROBROY.lang.view;
 		$viewButton.addEventListener('click', RobroyImage.view);
 		$div.appendChild($viewButton);
 
 		const $deleteButton = document.createElement('button');
 		$deleteButton.setAttribute('class', 'robroy-admin robroy-button robroy-button--danger');
 		$deleteButton.setAttribute('type', 'button');
-		$deleteButton.innerText = 'Delete';
+		$deleteButton.innerText = window.ROBROY.lang.delete;
 		$deleteButton.addEventListener('click', RobroyImage.delete);
 		$div.appendChild($deleteButton);
 
 		const $editButton = document.createElement('button');
 		$editButton.setAttribute('class', 'robroy-admin robroy-button robroy-button--secondary');
 		$editButton.setAttribute('type', 'button');
-		$editButton.innerText = 'Edit';
+		$editButton.innerText = window.ROBROY.lang.edit;
 		$editButton.addEventListener('click', RobroyImage.edit);
 		$div.appendChild($editButton);
 
-		$container.querySelector('.robroy-link').style.pointerEvents = 'none';
+		if (window.ROBROY.args.removePointerEventsOnLogin) {
+			$container.querySelector('.robroy-link').style.pointerEvents = 'none';
+		}
 	}
 
 	static addCreateControl() {
@@ -72,7 +72,7 @@ export default class RobroyImage {
 		$form.addEventListener('submit', RobroyImage.create);
 
 		const $div = document.createElement('div');
-		$div.setAttribute('id', 'robroy-create-image-container');
+		$div.setAttribute('class', 'robroy-file-input-container');
 		$form.appendChild($div);
 
 		const $fileInput = document.createElement('input');
@@ -80,21 +80,21 @@ export default class RobroyImage {
 		$fileInput.setAttribute('id', 'robroy-create-image-input');
 		$fileInput.setAttribute('name', 'upload[]');
 		$fileInput.setAttribute('multiple', 'multiple');
-		$fileInput.setAttribute('title', 'Select images to upload');
+		$fileInput.setAttribute('title', window.ROBROY.lang.selectImagesToUpload);
 		$fileInput.setAttribute('type', 'file');
 		$fileInput.addEventListener('change', RobroyImage.onChange);
 		$div.appendChild($fileInput);
 
 		const $text = document.createElement('div');
 		$text.setAttribute('id', 'robroy-create-image-text');
-		$text.innerText = 'Drag images or click here to upload.';
+		$text.innerText = window.ROBROY.lang.dragImagesOrClickHereToUpload;
 		$div.appendChild($text);
 
 		const $button = document.createElement('button');
 		$button.setAttribute('class', 'robroy-button');
 		$button.setAttribute('id', 'robroy-create-image-button');
 		$button.setAttribute('type', 'submit');
-		$button.innerText = 'Upload';
+		$button.innerText = window.ROBROY.lang.upload;
 		$form.appendChild($button);
 
 		const $parentInput = document.createElement('input');
@@ -107,15 +107,15 @@ export default class RobroyImage {
 	}
 
 	static delete(e) {
-		const path = e.target.closest('[data-path]').getAttribute('data-path');
+		const id = e.target.closest('[data-path]').getAttribute('data-path');
 		RobroyModal.show(
-			`Are you sure you want to delete "${path}"?`,
+			RobroyUtilities.sprintf(window.ROBROY.lang.confirmDeleteImage, id),
 			{
-				closeButtonText: 'Delete',
+				closeButtonText: window.ROBROY.lang.delete,
 				closeButtonClass: 'robroy-button--danger',
 				showCancel: true,
 				callback: () => {
-					RobroyImage.deleteCallback(path);
+					RobroyImage.deleteCallback(id);
 					RobroyModal.hide();
 				},
 			},
@@ -135,21 +135,23 @@ export default class RobroyImage {
 
 	static removeImageFromList(id) {
 		const $container = document.querySelector(`[data-path="${id}"]`);
-		let nextLink;
+		let $nextLink;
 		if ($container.nextSibling) {
-			nextLink = [...$container.nextSibling.children].find((child) => child.tagName === 'A');
+			$nextLink = [...$container.nextSibling.children].find((child) => child.tagName === 'A');
 		}
-		$container.parentNode.removeChild($container);
+		$container.remove();
 
 		window.ROBROY.currentNumImages -= 1;
 		RobroyUtilities.setNumImages();
 
-		if (RobroyEmpty.hasImages()) {
-			window.ROBROY.grid.resizeAllItems();
-			if (nextLink) {
-				nextLink.focus();
+		if (RobroyImage.hasImages()) {
+			if (window.ROBROY.grid) {
+				window.ROBROY.grid.resizeAllItems();
 			}
-		} else if (!RobroyEmpty.hasFolders()) {
+			if ($nextLink) {
+				$nextLink.focus();
+			}
+		} else if (!RobroyFolder.hasFolders()) {
 			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
 			if ($deleteFolderButton) {
 				$deleteFolderButton.style.display = '';
@@ -169,7 +171,7 @@ export default class RobroyImage {
 		e.preventDefault();
 		const files = document.getElementById('robroy-create-image-input').files;
 		if (files.length <= 0) {
-			RobroyModal.show('Error: No files selected.');
+			RobroyModal.show(window.ROBROY.lang.validationRequiredFiles);
 			return;
 		}
 
@@ -188,7 +190,9 @@ export default class RobroyImage {
 
 	static createCallback(response) {
 		RobroyImage.prependItems(response.data);
-		window.ROBROY.grid.resizeAllItems();
+		if (window.ROBROY.grid) {
+			window.ROBROY.grid.resizeAllItems();
+		}
 
 		response.data.forEach((image) => {
 			window.ROBROY.currentImages[image.id] = image;
@@ -198,7 +202,7 @@ export default class RobroyImage {
 		RobroyUtilities.setNumImages();
 
 		document.getElementById('robroy-create-image-input').value = '';
-		document.getElementById('robroy-create-image-text').innerText = 'Drag files or click here to upload.';
+		document.getElementById('robroy-create-image-text').innerText = window.ROBROY.lang.dragImagesOrClickHereToUpload;
 		document.getElementById('robroy-create-image-button').style.display = '';
 
 		const $deleteFolderButton = document.getElementById('robroy-delete-folder');
@@ -206,7 +210,7 @@ export default class RobroyImage {
 			$deleteFolderButton.style.display = 'none';
 		}
 
-		RobroyUtilities.callback('afterCreateImage');
+		RobroyUtilities.callback('afterCreateImage', { image: response.data });
 	}
 
 	static edit(e) {
@@ -221,7 +225,7 @@ export default class RobroyImage {
 
 		const $heading = document.createElement('h2');
 		$heading.setAttribute('class', 'robroy-heading');
-		$heading.innerText = 'Edit Image';
+		$heading.innerText = window.ROBROY.lang.titleEditImage;
 		$form.appendChild($heading);
 
 		const $container = document.createElement('div');
@@ -231,7 +235,7 @@ export default class RobroyImage {
 		const $filenameLabel = document.createElement('label');
 		$filenameLabel.setAttribute('class', 'robroy-label');
 		$filenameLabel.setAttribute('for', 'robroy-edit-image-filename');
-		$filenameLabel.innerText = 'Filename:';
+		$filenameLabel.innerText = window.ROBROY.lang.fieldImageFilename;
 		$container.appendChild($filenameLabel);
 
 		const $filenameInput = document.createElement('input');
@@ -245,7 +249,7 @@ export default class RobroyImage {
 		const $folderLabel = document.createElement('label');
 		$folderLabel.setAttribute('class', 'robroy-label');
 		$folderLabel.setAttribute('for', 'robroy-edit-image-folder');
-		$folderLabel.innerText = 'Folder:';
+		$folderLabel.innerText = window.ROBROY.lang.fieldImageFolder;
 		$container.appendChild($folderLabel);
 
 		const $folderInput = document.createElement('select');
@@ -265,7 +269,7 @@ export default class RobroyImage {
 					form: 'robroy-edit-image-form',
 					type: 'submit',
 				},
-				closeButtonText: 'Save',
+				closeButtonText: window.ROBROY.lang.save,
 				showCancel: true,
 			},
 		);
@@ -274,19 +278,12 @@ export default class RobroyImage {
 	static submitEditFormCallback(e) {
 		e.preventDefault();
 
-		// Reset errors.
-		const $fieldsWithErrors = document.querySelectorAll('#robroy-edit-image-form .robroy-has-error');
-		$fieldsWithErrors.forEach(($elem) => {
-			$elem.classList.remove('robroy-has-error');
-		});
-		const $errors = document.querySelectorAll('#robroy-edit-image-form .robroy-error');
-		$errors.forEach(($elem) => {
-			$elem.remove();
-		});
+		const $form = document.getElementById('robroy-edit-image-form');
+		RobroyUtilities.clearErrors($form);
 
 		const $filenameInput = document.getElementById('robroy-edit-image-filename');
 		if (!$filenameInput.value) {
-			RobroyUtilities.addError($filenameInput, 'Error: Please enter a filename.');
+			RobroyUtilities.addError($filenameInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
@@ -298,7 +295,6 @@ export default class RobroyImage {
 			return;
 		}
 
-		const $form = document.getElementById('robroy-edit-image-form');
 		const formData = new FormData($form);
 		let json = {};
 		formData.forEach((value, key) => {
@@ -322,17 +318,19 @@ export default class RobroyImage {
 				window.ROBROY.currentImage = null;
 
 				RobroyModal.hide(e);
-				RobroyUtilities.callback('afterEditImage');
+				RobroyUtilities.callback('afterEditImage', { image: response.data });
 			},
 		});
 	}
 
 	static updateImage(path, image) {
-		const $figure = document.querySelector(`[data-path="${path}"]`);
-		$figure.setAttribute('data-path', image.id);
+		const $container = document.querySelector(`[data-path="${path}"]`);
+		$container.setAttribute('data-path', image.id);
 
-		const $a = $figure.querySelector('.robroy-link');
+		const $a = $container.querySelector('.robroy-link');
 		$a.setAttribute('href', image.attributes.url);
+
+		RobroyUtilities.callback('afterUpdateImage', { image, element: $container });
 	}
 
 	static prependItems(items) {
@@ -343,5 +341,13 @@ export default class RobroyImage {
 
 	static view(e) {
 		e.target.closest('[data-path]').querySelector('.robroy-link').click();
+	}
+
+	static getImages() {
+		return document.querySelectorAll(`#robroy-images > ${window.ROBROY.args.imageItemElement}`);
+	}
+
+	static hasImages() {
+		return RobroyImage.getImages().length > 0;
 	}
 }

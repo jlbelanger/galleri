@@ -40,7 +40,7 @@ describe('add image', () => {
 
 			// Resets the upload form.
 			cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
-			cy.get('#robroy-create-image-text').should('have.text', 'Drag files or click here to upload.');
+			cy.get('#robroy-create-image-text').should('have.text', 'Drag images or click here to upload.');
 			cy.get('#robroy-create-image-button').should('not.be.visible');
 
 			// When the image already exists.
@@ -77,7 +77,7 @@ describe('add image', () => {
 
 			// Resets the upload form.
 			cy.get('#robroy-create-image-input').invoke('val').should('equal', '');
-			cy.get('#robroy-create-image-text').should('have.text', 'Drag files or click here to upload.');
+			cy.get('#robroy-create-image-text').should('have.text', 'Drag images or click here to upload.');
 			cy.get('#robroy-create-image-button').should('not.be.visible');
 
 			// Hides the delete folder button.

@@ -35,7 +35,7 @@ describe('edit folder', () => {
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder-name').clear();
 				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Please enter a name.');
+				cy.get('#robroy-error-robroy-edit-folder-name').should('have.text', 'Error: This field is required.');
 			});
 		});
 
@@ -49,7 +49,7 @@ describe('edit folder', () => {
 				cy.get('#robroy-edit-folder-name').clear();
 				cy.get('#robroy-edit-folder-parent').select('');
 				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Please enter a name.');
+				cy.get('#robroy-error-robroy-edit-folder-name').should('have.text', 'Error: This field is required.');
 			});
 		});
 

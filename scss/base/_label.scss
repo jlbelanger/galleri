@@ -1,0 +1,9 @@
+.robroy-label {
+	cursor: pointer;
+	margin-top: $robroy-padding-mobile;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin-right: 8px; // TODO: Use variable.
+		margin-top: 0;
+	}
+}

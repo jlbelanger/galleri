@@ -5,26 +5,62 @@ import RobroyUtilities from './utilities';
 export default class Robroy {
 	constructor(args) {
 		args = args || {};
-		args.allPagesLoaded = false;
-		args.apiPath = args.apiPath || '/api.php';
 		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
-		args.attributes = args.attributes || {};
+		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
-		args.isLoadingImages = false;
+		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
+		args.folderItemElement = args.folderItemElement || 'li';
+		args.folderSeparator = args.folderSeparator || ' > ';
+		args.imageItemElement = args.imageItemElement || 'figure';
+		args.localStorageKey = args.localStorageKey || 'authenticated';
 		args.metaTitleSeparator = args.metaTitleSeparator || ' | ';
-		args.pageNumber = 0;
+		args.modifiers = args.modifiers || {};
 		args.pageSize = args.pageSize || 8;
-		args.rootFolderName = args.rootFolderName || 'Home';
+		args.removePointerEventsOnLogin = RobroyUtilities.propertyExists(args, 'removePointerEventsOnLogin') ? args.removePointerEventsOnLogin : true;
 		args.selector = args.selector || '#robroy';
 		args.showAllImages = args.showAllImages || false;
-		args.singularImageText = args.singularImageText || 'image';
-		args.pluralImageText = args.pluralImageText || 'images';
 		this.args = args;
 
 		const $container = document.querySelector(args.selector);
 		if (!$container) {
 			return;
 		}
+
+		const lang = args.lang || {};
+		lang.cancel = lang.cancel || 'Cancel';
+		lang.confirmDeleteFolder = lang.confirmDeleteFolder || 'Are you sure you want to delete the folder "%s"?';
+		lang.confirmDeleteImage = lang.confirmDeleteImage || 'Are you sure you want to delete the image "%s"?';
+		lang.delete = lang.delete || 'Delete';
+		lang.deleteFolder = lang.deleteFolder || 'Delete Folder';
+		lang.dragImagesOrClickHereToUpload = lang.dragImagesOrClickHereToUpload || 'Drag images or click here to upload.';
+		lang.edit = lang.edit || 'Edit';
+		lang.errorFolderDoesNotExist = lang.errorFolderDoesNotExist || 'Error: This folder does not exist.';
+		lang.errorInvalidUsername = lang.errorInvalidUsername || 'Error: Invalid username or password.';
+		lang.errorStatus = lang.errorStatus || 'Error: The server returned a %s error.';
+		lang.fieldFolderName = lang.fieldFolderName || 'Name';
+		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
+		lang.fieldImageFilename = lang.fieldImageFilename || 'Filename';
+		lang.fieldImageFolder = lang.fieldImageFolder || 'Folder';
+		lang.home = lang.home || 'Home';
+		lang.loading = lang.loading || 'Loading...';
+		lang.logIn = lang.logIn || 'Log In';
+		lang.logOut = lang.logOut || 'Log Out';
+		lang.nothingToUpdate = lang.nothingToUpdate || 'Nothing to update.';
+		lang.ok = lang.ok || 'OK';
+		lang.pluralImageText = lang.pluralImageText || 'images';
+		lang.save = lang.save || 'Save';
+		lang.selectImagesToUpload = lang.selectImagesToUpload || 'Select images to upload';
+		lang.singularImageText = lang.singularImageText || 'image';
+		lang.submitCreateFolder = lang.submitCreateFolder || 'Create';
+		lang.submitEditFolder = lang.submitEditFolder || 'Save';
+		lang.titleCreateFolder = lang.titleCreateFolder || 'Create Folder';
+		lang.titleEditFolder = lang.titleEditFolder || 'Edit Folder';
+		lang.titleEditImage = lang.titleEditImage || 'Edit Image';
+		lang.upload = lang.upload || 'Upload';
+		lang.validationRequired = lang.validationRequired || 'Error: This field is required.';
+		lang.validationRequiredFiles = lang.validationRequiredFiles || 'Error: No files selected.';
+		lang.view = lang.view || 'View';
+		this.lang = lang;
 
 		const $header = document.createElement('div');
 		$header.setAttribute('id', 'robroy-folder-header');
@@ -45,12 +81,17 @@ export default class Robroy {
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		const currentFolderId = urlSearchParams.get('folder');
 
-		this.auth = document.querySelector('[data-action="authenticate"]');
 		this.elements = {
+			$authenticateButton: document.querySelector('[data-action="authenticate"]'),
 			$container,
 			$folderList,
 			$imageList,
 			$numImages,
+		};
+		this.state = {
+			allPagesLoaded: false,
+			isLoadingImages: false,
+			pageNumber: 0,
 		};
 		this.currentFolderId = currentFolderId || '';
 		this.currentFolder = null;
@@ -67,7 +108,9 @@ export default class Robroy {
 				return null;
 			}
 			RobroyList.init();
-			window.ROBROY.grid = new RobroyGrid();
+			if (args.enableGrid) {
+				window.ROBROY.grid = new RobroyGrid();
+			}
 		}
 		return window.ROBROY;
 	}

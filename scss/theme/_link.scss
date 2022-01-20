@@ -1,0 +1,16 @@
+$robroy-link-text-color: $robroy-lightest !default;
+
+a {
+	color: $robroy-link-text-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		text-decoration: none;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+		outline: none;
+	}
+}

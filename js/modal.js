@@ -3,7 +3,7 @@ import RobroyUtilities from './utilities';
 export default class RobroyModal {
 	static show(message, args) {
 		args = args || {};
-		args.closeButtonText = args.closeButtonText || 'OK';
+		args.closeButtonText = args.closeButtonText || window.ROBROY.lang.ok;
 		args.closeButtonClass = args.closeButtonClass || '';
 
 		const id = `robroy-modal-${new Date().getTime()}`;
@@ -64,7 +64,7 @@ export default class RobroyModal {
 				$cancelButton.setAttribute('type', 'button');
 				$cancelButton.setAttribute('class', 'robroy-button robroy-button--secondary');
 				$cancelButton.setAttribute('data-id', id);
-				$cancelButton.innerText = 'Cancel';
+				$cancelButton.innerText = window.ROBROY.lang.cancel;
 				$cancelButton.addEventListener('click', this.hide);
 				$optionsContainer.appendChild($cancelButton);
 			}
@@ -75,6 +75,8 @@ export default class RobroyModal {
 			window.ROBROY.activeElement = document.activeElement;
 			$closeButton.focus();
 		}
+
+		RobroyUtilities.modifier('modal', { element: $container });
 	}
 
 	static keydownListener(e) {
@@ -93,7 +95,7 @@ export default class RobroyModal {
 		}
 
 		const $container = document.getElementById($target.getAttribute('data-id'));
-		$container.parentNode.removeChild($container);
+		$container.remove();
 
 		if (window.ROBROY.activeElement) {
 			window.ROBROY.activeElement.focus();

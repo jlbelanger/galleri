@@ -1,10 +1,28 @@
+// TODO: Clean up.
+
+$robroy-body-background-color: $robroy-darkest !default;
+$robroy-body-font-family: helvetica, sans-serif !default;
+$robroy-body-font-size: 18px !default;
+$robroy-body-text-color: $robroy-lightest !default;
+
+$robroy-button-height: ($robroy-button-padding * 2) + $robroy-button-font-size;
+
+$robroy-header-background-color: $robroy-darker !default;
+$robroy-header-text-color: $robroy-lightest !default;
+
+$robroy-paragraph-margin: 20px !default;
+
+$robroy-max-width: 1600px !default;
+
 * {
 	box-sizing: border-box;
 }
 
 body {
-	background: $body-background-color;
-	color: $body-text-color;
+	background: $robroy-body-background-color;
+	color: $robroy-body-text-color;
+	font-family: $robroy-body-font-family;
+	font-size: $robroy-body-font-size;
 	margin: 0;
 }
 
@@ -16,31 +34,52 @@ main {
 
 #header,
 #footer {
-	background: $header-background-color;
-	color: $header-text-color;
+	background: $robroy-header-background-color;
+	color: $robroy-header-text-color;
 }
 
 #header-inner,
 #footer-inner {
-	padding: $padding-mobile;
+	padding: $robroy-padding-mobile;
 
-	@media screen and (min-width: $breakpoint) {
-		padding: $padding-desktop;
+	@media screen and (min-width: $robroy-breakpoint) {
+		padding: $robroy-padding-desktop;
+	}
+}
+
+#header-inner {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	min-height: #{$robroy-button-height + ($robroy-padding-mobile * 2)};
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		min-height: #{$robroy-button-height + ($robroy-padding-desktop * 2)};
+	}
+}
+
+#title {
+	font-size: 28px;
+	font-weight: normal;
+	margin: 0;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		font-size: 44px;
 	}
 }
 
 #content-inner {
-	margin: $padding-mobile auto;
-	padding: 0 $padding-mobile;
+	margin: $robroy-padding-mobile auto;
+	padding: 0 $robroy-padding-mobile;
 
 	h2,
 	p {
-		margin: 20px 0 0;
+		margin: $robroy-paragraph-margin 0 0;
 	}
 
-	@media screen and (min-width: $breakpoint) {
-		margin: $padding-desktop auto;
-		padding: 0 $padding-desktop;
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin: $robroy-padding-desktop auto;
+		padding: 0 $robroy-padding-desktop;
 	}
 }
 
@@ -56,6 +95,6 @@ article {
 
 .contain {
 	margin: 0 auto;
-	max-width: 1600px;
+	max-width: $robroy-max-width;
 	width: 100%;
 }

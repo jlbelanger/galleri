@@ -1,0 +1,49 @@
+#robroy-images {
+	display: grid;
+	grid-gap: $robroy-padding-mobile;
+	grid-template-columns: repeat(auto-fill, $robroy-image-width);
+	justify-content: space-between;
+	margin: $robroy-padding-mobile;
+
+	&.robroy-grid {
+		grid-auto-rows: 1px;
+		grid-template-columns: repeat(auto-fill, minmax($robroy-image-width, 1fr));
+	}
+
+	&:empty {
+		display: none;
+	}
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		grid-gap: $robroy-padding-desktop;
+		margin: $robroy-padding-desktop;
+	}
+}
+
+.robroy-figure {
+	margin: 0;
+	position: relative;
+}
+
+.robroy-link {
+	display: block;
+	font-size: 0;
+
+	.robroy-grid & {
+		background-position: center;
+		background-size: cover;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+	}
+}
+
+.robroy-img {
+	height: auto;
+	width: 100%;
+
+	.robroy-grid & {
+		opacity: 0;
+	}
+}

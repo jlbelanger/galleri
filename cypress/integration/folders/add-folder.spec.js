@@ -23,7 +23,7 @@ describe('add folder', () => {
 					cy.wait('@getImages');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-submit').click();
-					cy.get('.robroy-modal-text').should('have.text', 'Error: Please enter a name.');
+					cy.get('#robroy-error-robroy-create-folder-name').should('have.text', 'Error: This field is required.');
 				});
 			});
 

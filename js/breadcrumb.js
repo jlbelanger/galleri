@@ -1,4 +1,5 @@
 import RobroyFolder from './folder';
+import RobroyUtilities from './utilities';
 
 export default class RobroyBreadcrumb {
 	static init() {
@@ -8,26 +9,30 @@ export default class RobroyBreadcrumb {
 
 		let folder = window.ROBROY.currentFolder;
 		do {
-			$ul.prepend(this.item(folder.id, folder.attributes.name));
+			$ul.prepend(this.item(folder));
 			folder = window.ROBROY.folders[RobroyFolder.getParentId(folder.id)];
 		} while (folder);
 
-		$ul.prepend(this.item('', window.ROBROY.args.rootFolderName));
+		$ul.prepend(this.item({ id: '', attributes: { name: window.ROBROY.lang.home } }));
+
+		RobroyUtilities.modifier('breadcrumbList', { element: $ul });
 	}
 
-	static item(id, name) {
+	static item(folder) {
 		const $li = document.createElement('li');
 		$li.setAttribute('class', 'robroy-breadcrumb-item');
 
-		if (id === window.ROBROY.currentFolderId) {
-			$li.innerText = name;
+		if (folder.id === window.ROBROY.currentFolderId) {
+			$li.innerText = folder.attributes.name;
 		} else {
 			const $a = document.createElement('a');
 			$a.setAttribute('class', 'robroy-breadcrumb-link');
-			$a.setAttribute('href', id ? `?folder=${id}` : window.location.pathname);
-			$a.innerText = name;
+			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : window.location.pathname);
+			$a.innerText = folder.attributes.name;
 			$li.prepend($a);
 		}
+
+		RobroyUtilities.modifier('breadcrumbItem', { element: $li, folder });
 
 		return $li;
 	}

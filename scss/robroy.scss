@@ -2,41 +2,35 @@
 @import 'utilities/variables';
 @import 'base/breadcrumb';
 @import 'base/button';
-@import 'base/list';
+@import 'base/error';
+@import 'base/focus';
+@import 'base/folder-list';
+@import 'base/image-list';
+@import 'base/input';
+@import 'base/label';
 @import 'base/modal';
 @import 'base/spinner';
 @import 'base/upload';
 
-.robroy-fields {
-	.robroy-label {
-		display: inline-block;
-		margin-right: 0;
-		margin-top: 20px;
-	}
+// TODO: Clean up.
 
-	.robroy-select,
-	.robroy-input {
-		background: $modal-input-background-color;
-		display: block;
-		margin-right: 0;
-		margin-top: 8px;
-		width: 100%;
+#robroy-folder-header {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	margin: $robroy-padding-mobile;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin: $robroy-padding-desktop;
 	}
 }
 
-.robroy-error {
-	color: $red;
-	display: block;
-	font-size: 16px;
-	margin-top: 8px;
-}
+#robroy-num {
+	margin: 0;
+	text-align: right;
+	white-space: nowrap;
 
-.robroy-has-error {
-	box-shadow: 0 0 0 2px $red;
-}
-
-#robroy-create-folder-name,
-#robroy-edit-folder-name,
-#robroy-edit-folder-form {
-	width: 100%;
+	&:empty {
+		display: none;
+	}
 }

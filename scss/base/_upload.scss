@@ -1,7 +1,9 @@
+// TODO: Clean up.
+
 .robroy-form-container {
 	margin: 16px;
 
-	@media screen and (min-width: $breakpoint) {
+	@media screen and (min-width: $robroy-breakpoint) {
 		margin: 32px;
 	}
 }
@@ -10,33 +12,20 @@
 	display: flex;
 	flex-direction: column;
 
-	@media screen and (min-width: $breakpoint) {
+	@media screen and (min-width: $robroy-breakpoint) {
 		flex-direction: row;
 	}
 }
 
 .robroy-form--folder {
-	@media screen and (min-width: $breakpoint) {
+	@media screen and (min-width: $robroy-breakpoint) {
 		align-items: center;
 	}
 }
 
 .robroy-form--delete {
-	@media screen and (min-width: $breakpoint) {
+	@media screen and (min-width: $robroy-breakpoint) {
 		margin-left: 16px;
-	}
-}
-
-.robroy-input,
-.robroy-select {
-	background: $input-background-color;
-	border: 0;
-	border-radius: 0;
-	color: $input-color;
-	padding: 12px;
-
-	@media screen and (min-width: $breakpoint) {
-		margin-right: 20px;
 	}
 }
 
@@ -45,28 +34,18 @@
 	white-space: nowrap;
 }
 
-.robroy-label {
-	cursor: pointer;
-	margin-top: $padding-mobile;
-
-	@media screen and (min-width: $breakpoint) {
-		margin-right: 8px;
-		margin-top: 0;
-	}
-}
-
 #robroy-edit-submit,
 #robroy-create-submit {
-	margin-top: $padding-mobile;
+	margin-top: $robroy-padding-mobile;
 
-	@media screen and (min-width: $breakpoint) {
+	@media screen and (min-width: $robroy-breakpoint) {
 		margin-top: 0;
 	}
 }
 
-#robroy-create-image-container {
+.robroy-file-input-container {
 	align-items: center;
-	color: $upload-text-color;
+	color: $robroy-file-input-text-color;
 	display: flex;
 	flex: 1 1 auto;
 	height: 100px;
@@ -74,15 +53,10 @@
 	overflow: hidden;
 	padding: 0 16px;
 	position: relative;
-	transition: background-color ease-in-out 50ms;
-
-	&:focus-within {
-		box-shadow: 0 0 0 4px $focus-border-color;
-	}
 }
 
 #robroy-create-image-input {
-	background-color: $upload-background-color;
+	background-color: $robroy-file-input-background-color;
 	border: 0;
 	bottom: 0;
 	cursor: pointer;
@@ -100,7 +74,7 @@
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $upload-background-color-hover;
+		background-color: $robroy-file-input-background-color-hover;
 	}
 }
 
@@ -117,4 +91,27 @@
 	&:focus-within {
 		position: relative;
 	}
+}
+
+.robroy-fields {
+	.robroy-label {
+		display: inline-block;
+		margin-right: 0;
+		margin-top: 20px;
+	}
+
+	.robroy-select,
+	.robroy-input {
+		background: $robroy-modal-input-background-color;
+		display: block;
+		margin-right: 0;
+		margin-top: 8px;
+		width: 100%;
+	}
+}
+
+#robroy-create-folder-name,
+#robroy-edit-folder-name,
+#robroy-edit-folder-form {
+	width: 100%;
 }
