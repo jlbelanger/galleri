@@ -46,7 +46,7 @@ describe('index', () => {
 
 					// Does not show the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-num').should('have.text', '0 images');
+					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -87,7 +87,7 @@ describe('index', () => {
 
 					// Shows the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-num').should('have.text', '2 images');
+					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -128,7 +128,7 @@ describe('index', () => {
 
 					// Shows the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-num').should('have.text', '2 images');
+					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -169,7 +169,7 @@ describe('index', () => {
 
 					// Does not show the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-num').should('have.text', '0 images');
+					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -219,7 +219,7 @@ describe('index', () => {
 
 					// Does not show the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-num').should('have.text', '0 images');
+					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -263,7 +263,7 @@ describe('index', () => {
 
 					// Shows the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-num').should('have.text', '2 images');
+					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -307,7 +307,7 @@ describe('index', () => {
 
 					// Shows the image list.
 					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-num').should('have.text', '2 images');
+					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -351,7 +351,7 @@ describe('index', () => {
 
 					// Does not show the image list.
 					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-num').should('have.text', '0 images');
+					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -396,7 +396,7 @@ describe('index', () => {
 
 				// Does not show the image list.
 				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-num').should('have.text', '0 images');
+				cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 				// Repeat assertions when already logged in.
 				cy.reload();

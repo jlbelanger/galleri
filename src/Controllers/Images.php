@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Api;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
@@ -81,20 +82,20 @@ class Images
 		$input = Input::json();
 
 		if (empty($input['filename'])) {
-			throw new ApiException('Filename is required.');
+			throw ValidationException::new(['filename' => ['This field is required.']]);
 		}
 		if (strpos($input['filename'], '/') !== false) {
-			throw new ApiException('Filename cannot contain slashes.');
+			throw ValidationException::new(['filename' => ['Filename cannot contain slashes.']]);
 		}
 		$input['filename'] = Utilities::normalizeFilename($input['filename']);
-		Image::validateId($input['filename'], 'Filename');
+		Image::validateId($input['filename'], 'Filename', 'filename');
 
 		if (!isset($input['folder'])) {
 			$input['folder'] = '';
 		}
-		Folder::validateId($input['folder'], 'Folder');
+		Folder::validateId($input['folder'], 'Folder', 'folder');
 		if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['folder'])) {
-			throw new ApiException('Folder "' . $input['folder'] . '" does not exist.');
+			throw ValidationException::new(['folder' => ['Folder "' . $input['folder'] . '" does not exist.']]);
 		}
 
 		$newName = trim($input['folder'] . '/' . $input['filename'], '/');

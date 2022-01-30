@@ -51,6 +51,13 @@ abstract class TestCase extends BaseTestCase
 		return $method->invokeArgs($obj, $args);
 	}
 
+	protected function expectExceptionMessageSame(string $value)
+	{
+		$value = preg_quote($value);
+		$value = str_replace('/', '\/', $value);
+		$this->expectExceptionMessageMatches('/^' . $value . '$/');
+	}
+
 	protected function setupTest(array $args) : void // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 	{
 		if (!empty($args['variables']['_ENV'])) {

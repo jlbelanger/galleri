@@ -58,7 +58,7 @@ describe('add image', () => {
 
 				// Shows the image list.
 				cy.get('#robroy-images').should('be.visible');
-				cy.get('#robroy-num').should('have.text', '1 image');
+				cy.get('#robroy-folder-num').should('have.text', '(1 image)');
 
 				// Adds the image to the list.
 				cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"]').should('be.visible');
@@ -71,7 +71,7 @@ describe('add image', () => {
 				cy.wait('@uploadImage').its('response.statusCode').should('equal', 422);
 
 				// Shows an error.
-				cy.get('.robroy-modal-text').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
+				cy.get('#robroy-error-robroy-input-upload').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
 			});
 		});
 	});
@@ -105,7 +105,7 @@ describe('add image', () => {
 
 			// Shows the image list.
 			cy.get('#robroy-images').should('be.visible');
-			cy.get('#robroy-num').should('have.text', '1 image');
+			cy.get('#robroy-folder-num').should('have.text', '(1 image)');
 
 			// Adds the image to the list.
 			cy.get('[data-path="no-images-or-folders/2020-01-01-12-00-00-500x500.jpg"]').should('be.visible');
@@ -121,7 +121,7 @@ describe('add image', () => {
 			cy.wait('@uploadImage').its('response.statusCode').should('equal', 422);
 
 			// Shows an error.
-			cy.get('.robroy-modal-text').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
+			cy.get('#robroy-error-robroy-input-upload').should('have.text', 'Error: File "2020-01-01-12-00-00-500x500.jpg" already exists.');
 		});
 	});
 });

@@ -82,7 +82,7 @@ describe('edit image', () => {
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('400x400.png');
 				cy.get('#robroy-modal-close').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: File "images-only/400x400.png" already exists.');
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: File "images-only/400x400.png" already exists.');
 				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
 			});
 		});
@@ -97,7 +97,67 @@ describe('edit image', () => {
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-folder').select('Images And Folders');
 				cy.get('#robroy-modal-close').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: File "images-and-folders/400x500.png" already exists.');
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: File "images-and-folders/400x500.png" already exists.');
+				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
+			});
+		});
+
+		describe('when filename begins with a slash', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-filename').clear().type('/400x400.png');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
+				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
+			});
+		});
+
+		describe('when filename ends with a slash', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-filename').clear().type('400x400.png/');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
+				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
+			});
+		});
+
+		describe('when filename has a mid slash', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-filename').clear().type('400/400.png');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
+				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
+			});
+		});
+
+		describe('when filename has no extension', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.contains('Log In').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-filename').clear().type('400x400');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename is missing a file extension (eg. JPG, PNG).');
 				cy.get('#robroy-error-robroy-input-folder').should('not.exist');
 			});
 		});
@@ -208,6 +268,7 @@ describe('edit image', () => {
 				cy.get('#robroy-modal-close').click();
 				cy.wait('@uploadImage').its('response.statusCode').should('equal', 200);
 				cy.get('#robroy-modal-cancel').click();
+				cy.get('.robroy-toast-close').click();
 				cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-folder').select('Folders Only');
 				cy.get('#robroy-modal-close').click();

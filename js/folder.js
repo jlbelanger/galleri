@@ -1,4 +1,5 @@
 import RobroyApi from './api';
+import RobroyErrors from './errors';
 import RobroyModal from './modal';
 import RobroyToast from './toast';
 import RobroyUtilities from './utilities';
@@ -137,11 +138,11 @@ export default class RobroyFolder {
 		e.preventDefault();
 
 		const $form = document.getElementById('robroy-folder-form');
-		RobroyUtilities.clearErrors($form);
+		RobroyErrors.clear($form);
 
 		const $nameInput = document.getElementById('robroy-input-name');
 		if (!$nameInput.value) {
-			RobroyUtilities.addError($nameInput, window.ROBROY.lang.validationRequired);
+			RobroyErrors.add($nameInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
@@ -158,6 +159,9 @@ export default class RobroyFolder {
 			json: json,
 			callback: (response) => {
 				RobroyFolder.createRequestCallback(response);
+			},
+			errorCallback: (response, status) => {
+				RobroyErrors.show(response, status);
 			},
 		});
 	}
@@ -189,11 +193,11 @@ export default class RobroyFolder {
 		e.preventDefault();
 
 		const $form = document.getElementById('robroy-folder-form');
-		RobroyUtilities.clearErrors($form);
+		RobroyErrors.clear($form);
 
 		const $nameInput = document.getElementById('robroy-input-name');
 		if (!$nameInput.value) {
-			RobroyUtilities.addError($nameInput, window.ROBROY.lang.validationRequired);
+			RobroyErrors.add($nameInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
@@ -225,6 +229,9 @@ export default class RobroyFolder {
 			json: json,
 			callback: (response) => {
 				RobroyFolder.editRequestCallback(response);
+			},
+			errorCallback: (response, status) => {
+				RobroyErrors.show(response, status);
 			},
 		});
 	}

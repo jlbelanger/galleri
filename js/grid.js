@@ -39,6 +39,7 @@ export default class RobroyGrid {
 		const itemHeight = $a.getBoundingClientRect().height;
 		const rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
 		$a.style.position = 'absolute';
+		$container.style.opacity = 1;
 		$container.style.gridRowEnd = `span ${rowSpan}`;
 	}
 

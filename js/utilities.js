@@ -1,17 +1,4 @@
 export default class RobroyUtilities {
-	static addError($input, message) {
-		$input.setAttribute('aria-invalid', true);
-
-		const $field = $input.closest('.robroy-field');
-		$field.classList.add('robroy-has-error');
-
-		const $span = document.createElement('span');
-		$span.setAttribute('class', 'robroy-error');
-		$span.setAttribute('id', `robroy-error-${$input.getAttribute('id')}`);
-		$span.innerText = message;
-		$field.append($span);
-	}
-
 	static addField($container, name, label, type = 'text') {
 		const $div = document.createElement('div');
 		$div.setAttribute('class', 'robroy-field');
@@ -36,19 +23,6 @@ export default class RobroyUtilities {
 		$input.setAttribute('id', `robroy-input-${name}`);
 		$input.setAttribute('name', name);
 		$div.appendChild($input);
-	}
-
-	static clearErrors($form) {
-		let $elems = $form.querySelectorAll('.robroy-error');
-		$elems.forEach(($elem) => {
-			$elem.remove();
-		});
-
-		$elems = $form.querySelectorAll('.robroy-has-error');
-		$elems.forEach(($elem) => {
-			$elem.classList.remove('robroy-has-error');
-			$elem.removeAttribute('aria-invalid');
-		});
 	}
 
 	static callback(name, args) {
@@ -104,18 +78,26 @@ export default class RobroyUtilities {
 	}
 
 	static setPageTitle(title) {
-		let $title = document.getElementById('robroy-folder-title');
-		if (!$title) {
-			$title = document.createElement('h1');
+		let $span = document.getElementById('robroy-folder-title-text');
+		if (!$span) {
+			const $title = document.createElement('h1');
 			$title.setAttribute('id', 'robroy-folder-title');
 			window.ROBROY.elements.$container.prepend($title);
+
+			$span = document.createElement('span');
+			$span.setAttribute('id', 'robroy-folder-title-text');
+			$title.appendChild($span);
+
+			window.ROBROY.elements.$numImages = document.createElement('small');
+			window.ROBROY.elements.$numImages.setAttribute('id', 'robroy-folder-num');
+			$title.appendChild(window.ROBROY.elements.$numImages);
 		}
-		$title.innerText = title;
+		$span.innerText = title;
 	}
 
 	static setNumImages() {
 		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.lang.singularImageText : window.ROBROY.lang.pluralImageText;
-		window.ROBROY.elements.$numImages.innerText = `${window.ROBROY.currentNumImages.toLocaleString()} ${label}`;
+		window.ROBROY.elements.$numImages.innerText = `(${window.ROBROY.currentNumImages.toLocaleString()} ${label})`;
 	}
 
 	static sprintf(s, ...args) {

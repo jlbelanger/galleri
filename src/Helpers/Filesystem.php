@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Helpers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Models\Folder;
 use Jlbelanger\Robroy\Models\Image;
@@ -33,7 +34,7 @@ class Filesystem
 	{
 		$folder = basename($path);
 		if (self::fileExists($path)) {
-			throw new ApiException('Folder "' . $folder . '" already exists.');
+			throw ValidationException::new(['name' => ['Folder "' . $folder . '" already exists.']]);
 		}
 
 		if (!mkdir($path)) {
@@ -218,7 +219,7 @@ class Filesystem
 	{
 		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (self::fileExists($fullNewPath)) {
-			throw new ApiException('File "' . basename($fullNewPath) . '" already exists.');
+			throw ValidationException::new(['upload' => ['File "' . basename($fullNewPath) . '" already exists.']]);
 		}
 
 		if (!move_uploaded_file($oldPath, $fullNewPath)) {
@@ -247,7 +248,7 @@ class Filesystem
 	 */
 	public static function renameFile(string $oldPath, string $newPath) : void
 	{
-		self::rename($oldPath, $newPath, 'File');
+		self::rename($oldPath, $newPath, 'File', 'filename');
 	}
 
 	/**
@@ -259,7 +260,7 @@ class Filesystem
 	 */
 	public static function renameFolder(string $oldPath, string $newPath) : void
 	{
-		self::rename($oldPath, $newPath, 'Folder');
+		self::rename($oldPath, $newPath, 'Folder', 'name');
 	}
 
 	/**
@@ -268,18 +269,19 @@ class Filesystem
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @param  string $type
+	 * @param  string $key
 	 * @return void
 	 */
-	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder') : void
+	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder', string $key = 'folder') : void
 	{
 		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
 		if (!self::fileExists($fullOldPath)) {
-			throw new ApiException($type . ' "' . $oldPath . '" does not exist.');
+			throw ValidationException::new([$key => [$type . ' "' . $newPath . '" does not exist.']]);
 		}
 
 		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (self::fileExists($fullNewPath)) {
-			throw new ApiException($type . ' "' . $newPath . '" already exists.');
+			throw ValidationException::new([$key => [$type . ' "' . $newPath . '" already exists.']]);
 		}
 
 		if (!rename($fullOldPath, $fullNewPath)) {

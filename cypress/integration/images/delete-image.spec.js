@@ -39,7 +39,7 @@ describe('delete image', () => {
 
 			// Does not hide the image list.
 			cy.get('#robroy-images').should('be.visible');
-			cy.get('#robroy-num').should('have.text', '2 images');
+			cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 			// Does not show the delete folder button.
 			cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -60,7 +60,7 @@ describe('delete image', () => {
 
 			// Does not hide the image list.
 			cy.get('#robroy-images').should('be.visible');
-			cy.get('#robroy-num').should('have.text', '1 image');
+			cy.get('#robroy-folder-num').should('have.text', '(1 image)');
 
 			// Does not show the delete folder button.
 			cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -79,7 +79,7 @@ describe('delete image', () => {
 
 			// Hides the image list.
 			cy.get('#robroy-images').should('not.be.visible');
-			cy.get('#robroy-num').should('have.text', '0 images');
+			cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 			// Shows the delete folder button.
 			cy.get('#robroy-delete-folder').should('be.visible');
@@ -115,7 +115,7 @@ describe('delete image', () => {
 
 			// Does not hide the image list.
 			cy.get('#robroy-images').should('be.visible');
-			cy.get('#robroy-num').should('have.text', '2 images');
+			cy.get('#robroy-folder-num').should('have.text', '(2 images)');
 
 			// Does not show the delete folder button.
 			cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -136,7 +136,7 @@ describe('delete image', () => {
 
 			// Does not hide the image list.
 			cy.get('#robroy-images').should('be.visible');
-			cy.get('#robroy-num').should('have.text', '1 image');
+			cy.get('#robroy-folder-num').should('have.text', '(1 image)');
 
 			// Does not show the delete folder button.
 			cy.get('#robroy-delete-folder').should('not.be.visible');
@@ -155,7 +155,7 @@ describe('delete image', () => {
 
 			// Hides the image list.
 			cy.get('#robroy-images').should('not.be.visible');
-			cy.get('#robroy-num').should('have.text', '0 images');
+			cy.get('#robroy-folder-num').should('have.text', '(0 images)');
 
 			// Does not show the delete folder button.
 			cy.get('#robroy-delete-folder').should('not.be.visible');

@@ -82,7 +82,22 @@ describe('edit folder', () => {
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear().type('Subfolder 2');
 				cy.get('#robroy-modal-close').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "folders-only/subfolder-2" already exists.');
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "folders-only/subfolder-2" already exists.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
+			});
+		});
+
+		describe('when changing the name to the thumbnails folder', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=folders-only/subfolder');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImagesSubfolder');
+				cy.contains('Log In').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('Thumbnails');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Name cannot be the same as the thumbnails folder.');
 				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
@@ -97,7 +112,7 @@ describe('edit folder', () => {
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent').select('Images And Folders');
 				cy.get('#robroy-modal-close').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "images-and-folders/subfolder" already exists.');
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "images-and-folders/subfolder" already exists.');
 				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});

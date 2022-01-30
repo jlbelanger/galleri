@@ -21,7 +21,7 @@ class FilesystemTest extends TestCase
 						'copy' => false,
 					],
 				],
-				'expectedMessage' => 'File "foo.png" could not be duplicated',
+				'expectedMessage' => 'File "foo.png" could not be duplicated.',
 			]],
 			'when copy succeeds' => [[
 				'args' => [
@@ -47,7 +47,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -67,7 +67,7 @@ class FilesystemTest extends TestCase
 						'file_exists' => true,
 					],
 				],
-				'expectedMessage' => 'Folder "foo" already exists.',
+				'expectedMessage' => '[{"title":"Folder \"foo\" already exists.","status":422,"pointer":"name"}]',
 			]],
 			'when the folder does not exist and mkdir fails' => [[
 				'args' => [
@@ -104,7 +104,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -160,7 +160,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -231,7 +231,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -344,7 +344,7 @@ class FilesystemTest extends TestCase
 						'move_uploaded_file' => true,
 					],
 				],
-				'expectedMessage' => 'File "bar.png" already exists',
+				'expectedMessage' => '[{"title":"File \"bar.png\" already exists.","status":422,"pointer":"upload"}]',
 			]],
 			'when move fails' => [[
 				'args' => [
@@ -362,7 +362,7 @@ class FilesystemTest extends TestCase
 						'move_uploaded_file' => false,
 					],
 				],
-				'expectedMessage' => 'File "foo.png" could not be moved',
+				'expectedMessage' => 'File "foo.png" could not be moved.',
 			]],
 			'when move succeeds' => [[
 				'args' => [
@@ -394,7 +394,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -433,14 +433,14 @@ class FilesystemTest extends TestCase
 					'oldPath' => 'does-not-exist.png',
 					'newPath' => 'new-does-not-exist.png',
 				],
-				'expectedMessage' => 'File "does-not-exist.png" does not exist.',
+				'expectedMessage' => '[{"title":"File \"new-does-not-exist.png\" does not exist.","status":422,"pointer":"filename"}]',
 			]],
 			'when the new file already exists' => [[
 				'args' => [
 					'oldPath' => 'foo.png',
 					'newPath' => 'bar.png',
 				],
-				'expectedMessage' => 'File "bar.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"bar.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when rename fails' => [[
 				'args' => [
@@ -477,7 +477,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -493,14 +493,14 @@ class FilesystemTest extends TestCase
 					'oldPath' => 'does-not-exist',
 					'newPath' => 'new-does-not-exist',
 				],
-				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
+				'expectedMessage' => '[{"title":"Folder \"new-does-not-exist\" does not exist.","status":422,"pointer":"name"}]',
 			]],
 			'when the new folder already exists' => [[
 				'args' => [
 					'oldPath' => 'foo',
 					'newPath' => 'bar',
 				],
-				'expectedMessage' => 'Folder "bar" already exists.',
+				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"name"}]',
 			]],
 			'when rename fails' => [[
 				'args' => [
@@ -537,7 +537,7 @@ class FilesystemTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}

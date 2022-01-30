@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy;
 
 use Exception;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Input;
 
@@ -37,6 +38,11 @@ class Router
 					],
 				];
 			}
+		} catch (ValidationException $e) {
+			$code = $e->getCode() ? $e->getCode() : 500;
+			$response = [
+				'errors' => json_decode($e->getMessage()),
+			];
 		} catch (Exception $e) {
 			$code = $e->getCode() ? $e->getCode() : 500;
 			$response = [

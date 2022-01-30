@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Models;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Cache;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
@@ -177,24 +178,32 @@ class Folder
 	 *
 	 * @param  string $id
 	 * @param  string $type
+	 * @param  string $attribute
 	 * @return void
 	 */
-	public static function validateId(string $id, string $type = 'Folder') : void
+	public static function validateId(string $id, string $type = 'Folder', string $attribute = '') : void
 	{
 		if ($id === '') {
 			return;
 		}
+
+		$message = '';
 		if (trim($id, '/') !== $id) {
-			throw new ApiException($type . ' cannot begin or end with slashes.');
+			$message = $type . ' cannot begin or end with slashes.';
+		} elseif ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			$message = $type . ' cannot be the same as the thumbnails folder.';
+		} elseif (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
+			$message = $type . ' cannot end in the thumbnails folder.';
+		} elseif (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
+			$message = $type . ' contains invalid characters.';
 		}
-		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
-		}
-		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
-			throw new ApiException($type . ' cannot end in the thumbnails folder.');
-		}
-		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
-			throw new ApiException($type . ' contains invalid characters.');
+
+		if ($message) {
+			if ($attribute) {
+				throw ValidationException::new([$attribute => [$message]]);
+			} else {
+				throw new ApiException($message);
+			}
 		}
 	}
 }

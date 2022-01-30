@@ -39,7 +39,22 @@ describe('add folder', () => {
 					cy.get('#robroy-input-name').clear().type('Folders Only');
 					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 422);
-					cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "folders-only" already exists.');
+					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "folders-only" already exists.');
+				});
+			});
+
+			describe('when the folder matches the thumbnails folder', () => {
+				it('shows an error', () => {
+					cy.visit('/dark.html');
+					cy.wait('@getFolders');
+					cy.wait('@getFolders2');
+					cy.wait('@getImages');
+					cy.contains('Log In').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-name').clear().type('Thumbnails');
+					cy.get('#robroy-modal-close').click();
+					cy.wait('@createFolder').its('response.statusCode').should('equal', 422);
+					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Name cannot be the same as the thumbnails folder.');
 				});
 			});
 		});

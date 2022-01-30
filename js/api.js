@@ -17,37 +17,24 @@ export default class RobroyApi {
 
 			RobroySpinner.hide($spinner);
 
-			// TODO: Refactor so it's more consistent.
 			let response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {
-				if (args.errorCallback) {
-					args.errorCallback(response, req.status);
-				} else {
-					RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.errorStatus, req.status));
-				}
+				RobroyApi.error(args, response, req);
 				return;
 			}
+
 			if (response && !args.noParse) {
 				try {
 					response = JSON.parse(response);
 				} catch (e) {
-					if (args.errorCallback) {
-						args.errorCallback(response, req.status);
-					} else {
-						RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.errorStatus, req.status));
-					}
+					RobroyApi.error(args, response, req);
 					return;
 				}
+			}
 
-				if (response.errors) {
-					if (args.errorCallback) {
-						args.errorCallback(response, req.status);
-					} else {
-						const errors = response.errors.map((error) => error.title);
-						RobroyModal.show(`Error: ${errors}`); // TODO: Use inline errors.
-					}
-					return;
-				}
+			if (req.status < 200 || req.status > 299) {
+				RobroyApi.error(args, response, req);
+				return;
 			}
 
 			args.callback(response, req.status);
@@ -59,6 +46,14 @@ export default class RobroyApi {
 			req.send(args.json);
 		} else {
 			req.send(args.formData);
+		}
+	}
+
+	static error(args, response, req) {
+		if (args.errorCallback) {
+			args.errorCallback(response, req.status);
+		} else {
+			RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.error + window.ROBROY.lang.errorStatus, req.status));
 		}
 	}
 }

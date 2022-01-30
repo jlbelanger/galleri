@@ -1,4 +1,5 @@
 import RobroyApi from './api';
+import RobroyErrors from './errors';
 import RobroyFolder from './folder';
 import RobroyModal from './modal';
 import RobroyToast from './toast';
@@ -176,11 +177,11 @@ export default class RobroyImage {
 		e.preventDefault();
 
 		const $form = document.getElementById('robroy-image-form');
-		RobroyUtilities.clearErrors($form);
+		RobroyErrors.clear($form);
 
 		const $uploadInput = document.getElementById('robroy-input-upload');
 		if ($uploadInput.files.length <= 0) {
-			RobroyUtilities.addError($uploadInput, window.ROBROY.lang.validationRequired);
+			RobroyErrors.add($uploadInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
@@ -192,6 +193,9 @@ export default class RobroyImage {
 			formData: formData,
 			callback: (response) => {
 				RobroyImage.createRequestCallback(response);
+			},
+			errorCallback: (response, status) => {
+				RobroyErrors.show(response, status);
 			},
 		});
 	}
@@ -226,11 +230,11 @@ export default class RobroyImage {
 		e.preventDefault();
 
 		const $form = document.getElementById('robroy-image-form');
-		RobroyUtilities.clearErrors($form);
+		RobroyErrors.clear($form);
 
 		const $filenameInput = document.getElementById('robroy-input-filename');
 		if (!$filenameInput.value) {
-			RobroyUtilities.addError($filenameInput, window.ROBROY.lang.validationRequired);
+			RobroyErrors.add($filenameInput, window.ROBROY.lang.validationRequired);
 			return;
 		}
 
@@ -256,6 +260,9 @@ export default class RobroyImage {
 			json: json,
 			callback: (response) => {
 				RobroyImage.editRequestCallback(e, response, hasFolderChanged, hasFilenameChanged);
+			},
+			errorCallback: (response, status) => {
+				RobroyErrors.show(response, status);
 			},
 		});
 	}

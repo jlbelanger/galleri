@@ -41,9 +41,10 @@ export default class Robroy {
 		lang.dragImagesOrClickHereToUpload = lang.dragImagesOrClickHereToUpload || 'Drag images or click here to upload.';
 		lang.edit = lang.edit || 'Edit';
 		lang.editFolder = lang.editFolder || 'Edit Folder';
-		lang.errorFolderDoesNotExist = lang.errorFolderDoesNotExist || 'Error: This folder does not exist.';
-		lang.errorInvalidUsername = lang.errorInvalidUsername || 'Error: Invalid username or password.';
-		lang.errorStatus = lang.errorStatus || 'Error: The server returned a %s error.';
+		lang.error = lang.error || 'Error: ';
+		lang.errorFolderDoesNotExist = lang.errorFolderDoesNotExist || 'This folder does not exist.';
+		lang.errorInvalidUsername = lang.errorInvalidUsername || 'Invalid username or password.';
+		lang.errorStatus = lang.errorStatus || 'The server returned a %s error.';
 		lang.fieldFolderName = lang.fieldFolderName || 'Name';
 		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
 		lang.fieldImageFilename = lang.fieldImageFilename || 'Filename';
@@ -70,17 +71,9 @@ export default class Robroy {
 		lang.view = lang.view || 'View';
 		this.lang = lang;
 
-		const $header = document.createElement('div');
-		$header.setAttribute('id', 'robroy-folder-header');
-		$container.appendChild($header);
-
 		const $folderList = document.createElement('ul');
 		$folderList.setAttribute('id', 'robroy-folders');
-		$header.appendChild($folderList);
-
-		const $numImages = document.createElement('p');
-		$numImages.setAttribute('id', 'robroy-num');
-		$header.appendChild($numImages);
+		$container.appendChild($folderList);
 
 		const $imageList = document.createElement('div');
 		$imageList.setAttribute('id', 'robroy-images');
@@ -94,7 +87,6 @@ export default class Robroy {
 			$container,
 			$folderList,
 			$imageList,
-			$numImages,
 		};
 		this.state = {
 			allPagesLoaded: false,

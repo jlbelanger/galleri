@@ -41,6 +41,9 @@ export default class RobroyAuth {
 			callback: () => {
 				RobroyAuth.logoutCallback();
 			},
+			errorCallback: () => {
+				RobroyAuth.logoutCallback();
+			},
 		});
 	}
 
@@ -56,7 +59,7 @@ export default class RobroyAuth {
 			noParse: true,
 			callback: (_response, status) => {
 				if (status !== 204) {
-					RobroyModal.show(window.ROBROY.lang.errorInvalidUsername);
+					RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorInvalidUsername);
 					return;
 				}
 				window.localStorage.setItem(window.ROBROY.args.localStorageKey, true);

@@ -23,6 +23,10 @@
 .robroy-figure {
 	margin: 0;
 	position: relative;
+
+	.robroy-grid & {
+		opacity: 0;
+	}
 }
 
 .robroy-link {

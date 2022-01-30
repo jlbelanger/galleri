@@ -96,7 +96,7 @@ class ImagesTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		}
 
 		$output = Images::get();
@@ -174,49 +174,49 @@ class ImagesTest extends TestCase
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename is required.',
+				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is not set' => [[
 				'body' => '{}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename is required.',
+				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is empty' => [[
 				'body' => '{"filename":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename is required.',
+				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has leading slash' => [[
 				'body' => '{"filename":"/example.png"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename cannot contain slashes.',
+				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has trailing slash' => [[
 				'body' => '{"filename":"example.png/"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename cannot contain slashes.',
+				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has mid slash' => [[
 				'body' => '{"filename":"foo/example.png"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename cannot contain slashes.',
+				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has no extension' => [[
 				'body' => '{"filename":"example"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename is missing a file extension (eg. JPG, PNG).',
+				'expectedMessage' => '[{"title":"Filename is missing a file extension (eg. JPG, PNG).","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is the same as THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"thumbnails.jpg"}',
@@ -224,56 +224,56 @@ class ImagesTest extends TestCase
 					'_GET' => ['id' => 'example.png'],
 					'_ENV' => ['THUMBNAILS_FOLDER' => 'thumbnails.jpg'],
 				],
-				'expectedMessage' => 'Filename cannot be the same as the thumbnails folder.',
+				'expectedMessage' => '[{"title":"Filename cannot be the same as the thumbnails folder.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename ends in THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"foo/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Filename cannot contain slashes.',
+				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is valid, folder has a leading slash' => [[
 				'body' => '{"filename":"example.png","folder":"/foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder cannot begin or end with slashes.',
+				'expectedMessage' => '[{"title":"Folder cannot begin or end with slashes.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder has a trailing slash' => [[
 				'body' => '{"filename":"example.png","folder":"foo/"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder cannot begin or end with slashes.',
+				'expectedMessage' => '[{"title":"Folder cannot begin or end with slashes.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder has invalid characters' => [[
 				'body' => '{"filename":"example.png","folder":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder contains invalid characters.',
+				'expectedMessage' => '[{"title":"Folder contains invalid characters.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder is the same as THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"example.png","folder":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder cannot be the same as the thumbnails folder.',
+				'expectedMessage' => '[{"title":"Folder cannot be the same as the thumbnails folder.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder ends in THUMBNAILS_FOLDER' => [[
 				'body' => '{"filename":"example.png","folder":"foo/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder cannot end in the thumbnails folder.',
+				'expectedMessage' => '[{"title":"Folder cannot end in the thumbnails folder.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder does not exist' => [[
 				'body' => '{"filename":"example.png","folder":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
+				'expectedMessage' => '[{"title":"Folder \"does-not-exist\" does not exist.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder is not set' => [[
 				'body' => '{"filename":"example.png"}',
@@ -292,35 +292,35 @@ class ImagesTest extends TestCase
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'File "new-filename.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"new-filename.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when setting folder to one where that filename already exists' => [[
 				'body' => '{"filename":"example.png","folder":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'File "foo/example.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"foo\/example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing folder to one where that filename already exists' => [[
 				'body' => '{"filename":"example.png","folder":"bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo/example.png'],
 				],
-				'expectedMessage' => 'File "bar/example.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"bar\/example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing filename and folder to one where that filename already exists' => [[
 				'body' => '{"filename":"new-filename.png","folder":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
-				'expectedMessage' => 'File "foo/new-filename.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"foo\/new-filename.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when removing folder to one where that filename already exists' => [[
 				'body' => '{"filename":"example.png","folder":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo/example.png'],
 				],
-				'expectedMessage' => 'File "example.png" already exists.',
+				'expectedMessage' => '[{"title":"File \"example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing filename' => [[
 				'mocks' => [
@@ -433,7 +433,7 @@ class ImagesTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}
@@ -524,7 +524,7 @@ class ImagesTest extends TestCase
 
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}

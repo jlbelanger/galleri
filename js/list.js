@@ -62,7 +62,7 @@ export default class RobroyList {
 		}
 
 		if (!folder) {
-			RobroyModal.show(window.ROBROY.lang.errorFolderDoesNotExist);
+			RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorFolderDoesNotExist);
 			return;
 		}
 
@@ -74,8 +74,9 @@ export default class RobroyList {
 
 		if (folder.attributes.name) {
 			RobroyUtilities.setMetaTitle(folder.attributes.name);
-			RobroyUtilities.setPageTitle(folder.attributes.name);
 		}
+
+		RobroyUtilities.setPageTitle(folder.attributes.name ? folder.attributes.name : window.ROBROY.lang.home);
 
 		let childFolders;
 		if (window.ROBROY.currentFolder.id === '') {
