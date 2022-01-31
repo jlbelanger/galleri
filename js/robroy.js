@@ -1,11 +1,14 @@
+import RobroyAuth from './auth';
 import RobroyGrid from './grid';
-import RobroyList from './list';
+import RobroyFolder from './folder';
+import RobroyImage from './image';
 import RobroyUtilities from './utilities';
 
 export default class Robroy {
 	constructor(args) {
 		args = args || {};
 		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
+		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
 		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
 		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
@@ -48,6 +51,7 @@ export default class Robroy {
 		lang.fieldFolderName = lang.fieldFolderName || 'Name';
 		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
 		lang.fieldImageFilename = lang.fieldImageFilename || 'Filename';
+		lang.fieldImageTitle = lang.fieldImageTitle || 'Title';
 		lang.fieldImageFolder = lang.fieldImageFolder || 'Folder';
 		lang.home = lang.home || 'Home';
 		lang.loading = lang.loading || 'Loading...';
@@ -79,9 +83,6 @@ export default class Robroy {
 		$imageList.setAttribute('id', 'robroy-images');
 		$container.appendChild($imageList);
 
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const currentFolderId = urlSearchParams.get('folder');
-
 		this.elements = {
 			$authenticateButton: document.querySelector('[data-action="authenticate"]'),
 			$container,
@@ -89,11 +90,9 @@ export default class Robroy {
 			$imageList,
 		};
 		this.state = {
-			allPagesLoaded: false,
+			isLoadingFolder: false,
 			isLoadingImages: false,
-			pageNumber: 0,
 		};
-		this.currentFolderId = currentFolderId || '';
 		this.currentFolder = null;
 		this.currentImage = null;
 		this.currentImages = {};
@@ -107,10 +106,19 @@ export default class Robroy {
 			if (!window.ROBROY.elements.$imageList) {
 				return null;
 			}
-			RobroyList.init();
+			RobroyFolder.load();
+			RobroyImage.load();
 			if (args.enableGrid) {
 				window.ROBROY.grid = new RobroyGrid();
 			}
+			let int = setInterval(() => {
+				if (!window.ROBROY.state.isLoadingFolder && !window.ROBROY.state.isLoadingImages) {
+					RobroyAuth.init();
+					RobroyUtilities.setNumImages();
+					clearInterval(int);
+					int = null;
+				}
+			}, 250);
 		}
 		return window.ROBROY;
 	}

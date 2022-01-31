@@ -6,7 +6,76 @@ import RobroyToast from './toast';
 import RobroyUtilities from './utilities';
 
 export default class RobroyImage {
-	static element(data) {
+	static load() {
+		window.ROBROY.state.isLoadingImages = true;
+
+		RobroyApi.request({
+			url: window.ROBROY.args.apiImagesPath,
+			callback: (response) => {
+				if (response) {
+					RobroyImage.getImagesCallback(response);
+				} else {
+					RobroyApi.request({
+						url: `${window.ROBROY.args.apiPath}?type=images`,
+						callback: (response2) => {
+							RobroyImage.getImagesCallback(response2);
+						},
+					});
+				}
+			},
+			errorCallback: () => {
+				RobroyApi.request({
+					url: `${window.ROBROY.args.apiPath}?type=images`,
+					callback: (response) => {
+						RobroyImage.getImagesCallback(response);
+					},
+				});
+			},
+		});
+	}
+
+	static getImagesCallback(response) {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const currentFolderId = urlSearchParams.get('folder') || '';
+
+		const images = Object.values(response.data).filter((image) => (image.attributes.folder === currentFolderId));
+
+		images.forEach((image) => {
+			window.ROBROY.currentImages[image.id] = image;
+		});
+
+		RobroyImage.appendItems(images);
+		if (window.ROBROY.grid) {
+			window.ROBROY.grid.resizeAllItems();
+		}
+
+		window.ROBROY.state.allPagesLoaded = true;
+
+		window.ROBROY.currentNumImages = images.length;
+
+		if (images.length <= 0) {
+			if (!RobroyFolder.hasFolders()) {
+				const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+				if ($deleteFolderButton) {
+					$deleteFolderButton.style.display = '';
+				}
+			}
+		} else {
+			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+			if ($deleteFolderButton) {
+				$deleteFolderButton.style.display = 'none';
+			}
+		}
+
+		window.ROBROY.state.isLoadingImages = false;
+
+		RobroyImage.onScroll();
+		window.addEventListener('scroll', RobroyUtilities.debounce(() => { RobroyImage.onScroll(); }, 100));
+
+		RobroyUtilities.callback('afterLoadImages', { images });
+	}
+
+	static element(data, setSrc = false) {
 		const $figure = document.createElement(window.ROBROY.args.imageItemElement);
 		$figure.setAttribute('class', 'robroy-figure');
 		$figure.setAttribute('data-path', data.id);
@@ -14,15 +83,19 @@ export default class RobroyImage {
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-link');
 		$a.setAttribute('href', data.attributes.url);
-		$a.style.backgroundImage = `url("${data.attributes.thumbnail}")`;
 		$figure.appendChild($a);
 
 		const $img = document.createElement('img');
+		$img.setAttribute('alt', data.attributes.title);
 		$img.setAttribute('class', 'robroy-img');
-		$img.setAttribute('src', data.attributes.thumbnail);
+		$img.setAttribute('data-src', data.attributes.thumbnail);
 		$img.setAttribute('height', data.attributes.thumbnailHeight);
 		$img.setAttribute('width', data.attributes.thumbnailWidth);
 		$a.appendChild($img);
+
+		if (setSrc) {
+			RobroyImage.setSrc($img);
+		}
 
 		if (RobroyUtilities.isLoggedIn()) {
 			RobroyImage.addAdminControls($figure);
@@ -119,14 +192,14 @@ export default class RobroyImage {
 		$container.setAttribute('class', 'robroy-fields');
 		$form.appendChild($container);
 
-		RobroyUtilities.addField($container, 'filename', window.ROBROY.lang.fieldImageFilename);
-		RobroyUtilities.addField($container, 'folder', window.ROBROY.lang.fieldImageFolder, 'select');
-
-		const $filenameInput = $form.querySelector('#robroy-input-filename');
+		const $filenameInput = RobroyUtilities.addField($container, 'filename', window.ROBROY.lang.fieldImageFilename);
 		$filenameInput.setAttribute('value', window.ROBROY.currentImage.attributes.filename);
 
-		const $folderInput = $form.querySelector('#robroy-input-folder');
+		const $folderInput = RobroyUtilities.addField($container, 'folder', window.ROBROY.lang.fieldImageFolder, 'select');
 		RobroyFolder.addFolderOptions($folderInput, window.ROBROY.currentImage.attributes.folder);
+
+		const $titleInput = RobroyUtilities.addField($container, 'title', window.ROBROY.lang.fieldImageTitle);
+		$titleInput.setAttribute('value', window.ROBROY.currentImage.attributes.title);
 
 		RobroyUtilities.modifier('imageEditForm', { element: $form });
 
@@ -204,6 +277,7 @@ export default class RobroyImage {
 		RobroyToast.show(window.ROBROY.lang.createdSuccessfullyImage, { class: 'robroy-toast--success' });
 
 		RobroyImage.prependItems(response.data);
+
 		if (window.ROBROY.grid) {
 			window.ROBROY.grid.resizeAllItems();
 		}
@@ -239,9 +313,11 @@ export default class RobroyImage {
 		}
 
 		const $folderInput = document.getElementById('robroy-input-folder');
+		const $titleInput = document.getElementById('robroy-input-title');
 		const hasFilenameChanged = $filenameInput.value !== window.ROBROY.currentImage.attributes.filename;
 		const hasFolderChanged = $folderInput.value !== window.ROBROY.currentImage.attributes.folder;
-		if (!hasFilenameChanged && !hasFolderChanged) {
+		const hasTitleChanged = $titleInput.value !== window.ROBROY.currentImage.attributes.title;
+		if (!hasFilenameChanged && !hasFolderChanged && !hasTitleChanged) {
 			RobroyToast.show(window.ROBROY.lang.nothingToSave);
 			RobroyModal.hide(e);
 			return;
@@ -259,7 +335,7 @@ export default class RobroyImage {
 			url: `${$form.getAttribute('action')}&id=${window.ROBROY.currentImage.id}`,
 			json: json,
 			callback: (response) => {
-				RobroyImage.editRequestCallback(e, response, hasFolderChanged, hasFilenameChanged);
+				RobroyImage.editRequestCallback(e, response, hasFolderChanged);
 			},
 			errorCallback: (response, status) => {
 				RobroyErrors.show(response, status);
@@ -267,12 +343,12 @@ export default class RobroyImage {
 		});
 	}
 
-	static editRequestCallback(e, response, hasFolderChanged, hasFilenameChanged) {
+	static editRequestCallback(e, response, hasFolderChanged) {
 		RobroyToast.show(window.ROBROY.lang.updatedSuccessfullyImage, { class: 'robroy-toast--success' });
 
 		if (hasFolderChanged) {
 			RobroyImage.removeImageFromList(window.ROBROY.currentImage.id);
-		} else if (hasFilenameChanged) {
+		} else {
 			RobroyImage.updateImage(window.ROBROY.currentImage.id, response.data);
 		}
 
@@ -282,6 +358,17 @@ export default class RobroyImage {
 
 		RobroyModal.hide(e);
 		RobroyUtilities.callback('afterEditImage', { image: response.data });
+	}
+
+	static appendItems(images) {
+		const elements = images.map((image) => RobroyImage.element(image));
+		window.ROBROY.elements.$imageList.append(...elements);
+	}
+
+	static prependItems(items) {
+		items.forEach((item) => {
+			window.ROBROY.elements.$imageList.prepend(RobroyImage.element(item, true));
+		});
 	}
 
 	static removeImageFromList(id) {
@@ -324,13 +411,10 @@ export default class RobroyImage {
 		const $a = $container.querySelector('.robroy-link');
 		$a.setAttribute('href', image.attributes.url);
 
-		RobroyUtilities.callback('afterUpdateImage', { image, element: $container });
-	}
+		const $img = $container.querySelector('.robroy-img');
+		$img.setAttribute('alt', image.attributes.title);
 
-	static prependItems(items) {
-		items.forEach((item) => {
-			window.ROBROY.elements.$imageList.prepend(RobroyImage.element(item));
-		});
+		RobroyUtilities.callback('afterUpdateImage', { image, element: $container });
 	}
 
 	static view(e) {
@@ -346,6 +430,10 @@ export default class RobroyImage {
 	}
 
 	static addAdminControls($container) {
+		if ($container.querySelector('.robroy-admin')) {
+			return;
+		}
+
 		const $div = document.createElement('div');
 		$div.setAttribute('class', 'robroy-admin robroy-button-container');
 		$container.appendChild($div);
@@ -374,5 +462,30 @@ export default class RobroyImage {
 		if (window.ROBROY.args.removePointerEventsOnLogin) {
 			$container.querySelector('.robroy-link').style.pointerEvents = 'none';
 		}
+	}
+
+	static onScroll() {
+		const $images = document.querySelectorAll('[data-src]');
+		const browserHeight = window.innerHeight;
+		const offsetFromTopOfPage = window.pageYOffset;
+		const buffer = browserHeight;
+		const max = offsetFromTopOfPage + browserHeight + buffer;
+
+		$images.forEach(($img) => {
+			const topOfImage = $img.getBoundingClientRect().top;
+			if (topOfImage <= max) {
+				RobroyImage.setSrc($img);
+			}
+		});
+	}
+
+	static setSrc($img) {
+		const src = $img.getAttribute('data-src');
+		$img.setAttribute('src', src);
+		$img.removeAttribute('data-src');
+
+		$img.closest('.robroy-link').style.backgroundImage = `url("${src}")`;
+
+		RobroyUtilities.callback('afterLoadImage', { element: $img });
 	}
 }

@@ -33,18 +33,22 @@ export default class RobroyGrid {
 		}
 	}
 
-	resizeItem($container) {
-		const $a = $container.querySelector('a');
-		$a.style.position = '';
-		const itemHeight = $a.getBoundingClientRect().height;
-		const rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
-		$a.style.position = 'absolute';
-		$container.style.opacity = 1;
-		$container.style.gridRowEnd = `span ${rowSpan}`;
+	resizeItem($figure) {
+		const $img = $figure.querySelector('img');
+		$img.onload = () => {
+			const $a = $figure.querySelector('a');
+			const itemHeight = $img.getBoundingClientRect().height;
+			$a.style.position = 'static';
+			const rowSpan = Math.ceil((itemHeight + this.gridRowGap) / (this.gridRowHeight + this.gridRowGap));
+
+			$figure.style.opacity = 1;
+			$figure.style.gridRowEnd = `span ${rowSpan}`;
+			$a.style.position = 'absolute';
+		};
 	}
 
 	resizeAllItems() {
 		const $figures = document.getElementsByClassName('robroy-figure');
-		[...$figures].forEach((figure) => { this.checkResizeItem(figure); });
+		[...$figures].forEach(($figure) => { this.checkResizeItem($figure); });
 	}
 }

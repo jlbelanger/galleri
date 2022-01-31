@@ -5,6 +5,91 @@ import RobroyToast from './toast';
 import RobroyUtilities from './utilities';
 
 export default class RobroyFolder {
+	static load() {
+		window.ROBROY.state.isLoadingFolder = true;
+
+		RobroyApi.request({
+			url: window.ROBROY.args.apiFoldersPath,
+			callback: (response) => {
+				if (response) {
+					RobroyFolder.loadFolderCallback(response);
+				} else {
+					RobroyApi.request({
+						url: `${window.ROBROY.args.apiPath}?type=folders`,
+						callback: (response2) => {
+							RobroyFolder.loadFolderCallback(response2);
+						},
+					});
+				}
+			},
+			errorCallback: () => {
+				RobroyApi.request({
+					url: `${window.ROBROY.args.apiPath}?type=folders`,
+					callback: (response) => {
+						RobroyFolder.loadFolderCallback(response);
+					},
+				});
+			},
+		});
+	}
+
+	static loadFolderCallback(response) {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const currentFolderId = urlSearchParams.get('folder') || '';
+
+		window.ROBROY.folders = response.data;
+
+		let folder;
+		if (currentFolderId === '') {
+			folder = {
+				id: '',
+				type: 'folders',
+				attributes: {
+					name: '',
+				},
+			};
+		} else {
+			folder = window.ROBROY.folders[currentFolderId];
+		}
+
+		if (!folder) {
+			RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorFolderDoesNotExist);
+			return;
+		}
+
+		window.ROBROY.currentFolder = folder;
+
+		if (window.ROBROY.currentFolder.id !== '') {
+			RobroyFolder.initBreadcrumb();
+		}
+
+		if (folder.attributes.name) {
+			RobroyUtilities.setMetaTitle(folder.attributes.name);
+		}
+
+		RobroyUtilities.setPageTitle(folder.attributes.name ? folder.attributes.name : window.ROBROY.lang.home);
+
+		let childFolders;
+		if (window.ROBROY.currentFolder.id === '') {
+			childFolders = Object.values(window.ROBROY.folders).filter((f) => (!f.id.includes('/')));
+		} else {
+			const numSlashes = window.ROBROY.currentFolder.id.split('/').length + 1;
+			childFolders = Object.values(window.ROBROY.folders).filter((f) => {
+				if (!f.id.startsWith(`${window.ROBROY.currentFolder.id}/`)) {
+					return false;
+				}
+				return numSlashes === f.id.split('/').length;
+			});
+		}
+		if (childFolders.length > 0) {
+			RobroyFolder.appendItems(childFolders);
+		}
+
+		window.ROBROY.state.isLoadingFolder = false;
+
+		RobroyUtilities.callback('afterLoadFolder', { folder });
+	}
+
 	static url(folder) {
 		return `?folder=${folder.id}`;
 	}
@@ -262,6 +347,12 @@ export default class RobroyFolder {
 		);
 	}
 
+	static appendItems(folders) {
+		folders.forEach((folder) => {
+			window.ROBROY.elements.$folderList.appendChild(RobroyFolder.element(folder));
+		});
+	}
+
 	static addToList(item) {
 		let i;
 		const $li = window.ROBROY.elements.$folderList.children;
@@ -329,5 +420,40 @@ export default class RobroyFolder {
 			}
 			select.appendChild($option);
 		});
+	}
+
+	static initBreadcrumb() {
+		const $ul = document.createElement('ul');
+		$ul.setAttribute('class', 'robroy-breadcrumb');
+		window.ROBROY.elements.$container.prepend($ul);
+
+		let folder = window.ROBROY.currentFolder;
+		do {
+			$ul.prepend(this.breadcrumbItem(folder));
+			folder = window.ROBROY.folders[RobroyFolder.getParentId(folder.id)];
+		} while (folder);
+
+		$ul.prepend(this.breadcrumbItem({ id: '', attributes: { name: window.ROBROY.lang.home } }));
+
+		RobroyUtilities.modifier('breadcrumbList', { element: $ul });
+	}
+
+	static breadcrumbItem(folder) {
+		const $li = document.createElement('li');
+		$li.setAttribute('class', 'robroy-breadcrumb-item');
+
+		if (folder.id === window.ROBROY.currentFolder.id) {
+			$li.innerText = folder.attributes.name;
+		} else {
+			const $a = document.createElement('a');
+			$a.setAttribute('class', 'robroy-breadcrumb-link');
+			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : window.location.pathname);
+			$a.innerText = folder.attributes.name;
+			$li.prepend($a);
+		}
+
+		RobroyUtilities.modifier('breadcrumbItem', { element: $li, folder });
+
+		return $li;
 	}
 }

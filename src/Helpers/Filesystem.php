@@ -143,6 +143,7 @@ class Filesystem
 		}
 
 		$output = [];
+		$thumbnailsFolder = Constant::get('THUMBNAILS_FOLDER');
 
 		if ($handle = opendir($fullParentPath)) {
 			while (($filename = readdir($handle)) !== false) {
@@ -150,26 +151,26 @@ class Filesystem
 					continue;
 				}
 				if (self::folderExists($fullParentPath . '/' . $filename)) {
+					if ($filename === $thumbnailsFolder) {
+						continue;
+					}
 					if ($isRecursive) {
 						$output = array_merge($output, self::getFilesInFolder($parent . '/' . $filename, $isRecursive));
+						continue;
 					} else {
 						continue;
 					}
 				}
 
-				$fullPath = trim($parent . '/' . $filename, '/');
-				$image = new Image($fullPath);
-				if (!$image->thumbnailAbsolutePath()) {
-					continue;
-				}
-				$output[$fullPath] = $image;
+				$id = trim($parent . '/' . $filename, '/');
+				$image = new Image($id);
+				$output[$id] = $image->json();
 			}
 
 			closedir($handle);
 		}
 
-		ksort($output);
-		return array_reverse(array_values($output));
+		return $output;
 	}
 
 	/**

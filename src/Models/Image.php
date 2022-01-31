@@ -5,6 +5,7 @@ namespace Jlbelanger\Robroy\Models;
 use Exception;
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Exceptions\ValidationException;
+use Jlbelanger\Robroy\Helpers\Cache;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\ImageFile;
 use Jlbelanger\Robroy\Helpers\Filesystem;
@@ -17,33 +18,33 @@ class Image
 	private $thumbnailPath;
 
 	/**
-	 * @param string $id Eg. 'foo/bar.jpg'.
+	 * @param string $id    Eg. 'foo/bar.jpg'.
+	 * @param string $title Eg. 'Example Title'.
 	 */
-	public function __construct(string $id)
+	public function __construct(string $id, string $title = '')
 	{
 		$this->id = $id;
+		$this->title = $title;
 		$this->thumbnailPath = $this->getThumbnailPath($id);
 	}
 
 	/**
 	 * Returns all images.
 	 *
+	 * @param  boolean $useCache
 	 * @return Image[]
 	 */
-	public static function all() : array
+	public static function all(bool $useCache = true) : array
 	{
-		return Filesystem::getFilesInFolder('', true);
-	}
-
-	/**
-	 * Returns all images in a folder.
-	 *
-	 * @param  string $parent
-	 * @return Image[]
-	 */
-	public static function allInFolder(string $parent) : array
-	{
-		return Filesystem::getFilesInFolder($parent);
+		$filename = 'images.json';
+		$output = $useCache ? Cache::get($filename) : null;
+		if ($output === null) {
+			$rows = Filesystem::getFilesInFolder('', true);
+			ksort($rows);
+			$output = ['data' => $rows];
+			Cache::set($filename, $output);
+		}
+		return $output;
 	}
 
 	/**
@@ -84,7 +85,10 @@ class Image
 			throw $e;
 		}
 
-		return new self(($folder ? $folder . '/' : '') . $newFilename);
+		$image = new self(($folder ? $folder . '/' : '') . $newFilename);
+		$image->updateCache();
+
+		return $image;
 	}
 
 	/**
@@ -96,6 +100,20 @@ class Image
 	{
 		Filesystem::deleteFile($this->id);
 		Filesystem::deleteFile($this->thumbnailPath);
+		$this->deleteFromCache();
+	}
+
+	/**
+	 * Deletes an image from the cache.
+	 *
+	 * @return void
+	 */
+	public function deleteFromCache() : void
+	{
+		$filename = 'images.json';
+		$data = Cache::get($filename);
+		unset($data['data'][$this->id]);
+		Cache::set($filename, $data);
 	}
 
 	/**
@@ -106,11 +124,11 @@ class Image
 	 */
 	public static function get(string $id)
 	{
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $id;
-		if (!Filesystem::fileExists($fullPath)) {
+		$data = self::all();
+		if (empty($data['data'][$id])) {
 			return null;
 		}
-		return new self($id);
+		return new self($id, $data['data'][$id]['attributes']['title']);
 	}
 
 	/**
@@ -125,9 +143,11 @@ class Image
 		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
 		$pathinfo = pathinfo($this->id);
 
+		// TODO: This info should come from the cache.
 		return [
 			'id' => $this->id,
 			'attributes' => [
+				'title'           => $this->title,
 				'filename'        => $pathinfo['basename'],
 				'folder'          => $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'],
 				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
@@ -142,27 +162,53 @@ class Image
 	 * Updates an existing image.
 	 *
 	 * @param  string $newId Eg. 'foo/bar.jpg'.
+	 * @param  string $title Eg. 'Example Title'.
 	 * @return void
 	 */
-	public function update(string $newId) : void
+	public function update(string $newId, string $title) : void
 	{
-		if ($this->id === $newId) {
+		if ($this->id === $newId && $this->title === $title) {
 			return;
 		}
 
-		Filesystem::renameFile($this->id, $newId);
+		if ($this->id !== $newId) {
+			Filesystem::renameFile($this->id, $newId);
 
-		$folder = self::getFolder($newId);
-		$folder = $folder ? $folder . '/' : '';
-		$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $thumbnailFolder;
-		if (!Filesystem::folderExists($fullPath)) {
-			Filesystem::createFolder($fullPath);
+			$folder = self::getFolder($newId);
+			$folder = $folder ? $folder . '/' : '';
+			$thumbnailFolder = $folder . Constant::get('THUMBNAILS_FOLDER');
+			$fullPath = Constant::get('UPLOADS_PATH') . '/' . $thumbnailFolder;
+			if (!Filesystem::folderExists($fullPath)) {
+				Filesystem::createFolder($fullPath);
+			}
+			Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+
+			$this->id = $newId;
+			$this->thumbnailPath = $this->getThumbnailPath($newId);
+			$this->title = $title;
+			$this->updateCache();
+		} elseif ($this->title !== $title) {
+			$this->title = $title;
+			$this->updateCache();
 		}
-		Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+	}
 
-		$this->id = $newId;
-		$this->thumbnailPath = $this->getThumbnailPath($newId);
+	/**
+	 * Updates an image in the cache.
+	 *
+	 * @param  string $oldId
+	 * @return void
+	 */
+	public function updateCache(string $oldId = '') : void
+	{
+		$filename = 'images.json';
+		$data = Cache::get($filename);
+		$data['data'][$this->id] = $this->json();
+		if ($oldId) {
+			unset($data['data'][$oldId]);
+		}
+		ksort($data['data']);
+		Cache::set($filename, $data);
 	}
 
 	/**

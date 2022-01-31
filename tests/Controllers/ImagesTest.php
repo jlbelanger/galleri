@@ -11,77 +11,22 @@ class ImagesTest extends TestCase
 	public function getProvider() : array
 	{
 		return [
-			'when parent is not set' => [[
+			'when images.json exists' => [[
+				'images.json' => '{"data":{"foo.png":{"id":"foo.png","attributes":{"title":"Foo"}}}}',
 				'expected' => [
-					'data' => [],
-					'meta' => [
-						'num_items' => 0,
-						'page_number' => 1,
-						'total_pages' => 0,
+					'data' => [
+						'foo.png' => [
+							'id' => 'foo.png',
+							'attributes' => [
+								'title' => 'Foo',
+							],
+						],
 					],
 				],
 			]],
-			'when parent is empty' => [[
-				'variables' => [
-					'_GET' => ['parent' => ''],
-				],
+			'when images.json does not exist' => [[
 				'expected' => [
 					'data' => [],
-					'meta' => [
-						'num_items' => 0,
-						'page_number' => 1,
-						'total_pages' => 0,
-					],
-				],
-			]],
-			'when parent has a leading slash' => [[
-				'variables' => [
-					'_GET' => ['parent' => '/foo'],
-				],
-				'expectedMessage' => 'Parent cannot begin or end with slashes.',
-			]],
-			'when parent has a leading slash' => [[
-				'variables' => [
-					'_GET' => ['parent' => 'foo/'],
-				],
-				'expectedMessage' => 'Parent cannot begin or end with slashes.',
-			]],
-			'when parent has invalid characters' => [[
-				'variables' => [
-					'_GET' => ['parent' => '..'],
-				],
-				'expectedMessage' => 'Parent contains invalid characters.',
-			]],
-			'when parent does not exist' => [[
-				'variables' => [
-					'_GET' => ['parent' => 'does-not-exist'],
-				],
-				'expectedMessage' => 'This folder does not exist.',
-			]],
-			'when parent is valid' => [[
-				'variables' => [
-					'_GET' => ['parent' => 'foo'],
-				],
-				'expected' => [
-					'data' => [],
-					'meta' => [
-						'num_items' => 0,
-						'page_number' => 1,
-						'total_pages' => 0,
-					],
-				],
-			]],
-			'when parent is valid with a mid slash' => [[
-				'variables' => [
-					'_GET' => ['parent' => 'foo/bar'],
-				],
-				'expected' => [
-					'data' => [],
-					'meta' => [
-						'num_items' => 0,
-						'page_number' => 1,
-						'total_pages' => 0,
-					],
 				],
 			]],
 		];
@@ -110,6 +55,7 @@ class ImagesTest extends TestCase
 
 	public function putProvider() : array
 	{
+		$json = '{"data":{"example.png":{"id":"example.png","attributes":{"title":"Foo"}}}}';
 		return [
 			'when id is not set' => [[
 				'expectedMessage' => 'ID is required.',
@@ -171,12 +117,14 @@ class ImagesTest extends TestCase
 				'expectedMessage' => 'Image "does-not-exist.png" does not exist.',
 			]],
 			'when id is valid, body is not set' => [[
+				'images.json' => $json,
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is not set' => [[
+				'images.json' => $json,
 				'body' => '{}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -184,6 +132,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is empty' => [[
+				'images.json' => $json,
 				'body' => '{"filename":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -191,6 +140,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has leading slash' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"/example.png"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -198,6 +148,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has trailing slash' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png/"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -205,6 +156,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has mid slash' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"foo/example.png"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -234,6 +186,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is valid, folder has a leading slash' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"/foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -241,6 +194,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder cannot begin or end with slashes.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder has a trailing slash' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"foo/"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -248,6 +202,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder cannot begin or end with slashes.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder has invalid characters' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -255,6 +210,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder contains invalid characters.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder is the same as THUMBNAILS_FOLDER' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -295,6 +251,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"File \"new-filename.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when setting folder to one where that filename already exists' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -427,7 +384,7 @@ class ImagesTest extends TestCase
 	/**
 	 * @dataProvider putProvider
 	 */
-	public function testPut(array $args) : void
+	public function testPutx(array $args) : void
 	{
 		self::setupTest($args);
 

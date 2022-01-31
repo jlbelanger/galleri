@@ -96,6 +96,9 @@ abstract class TestCase extends BaseTestCase
 					if ($path === '/var/www/robroy/tests/data/folders.json' && !isset($args['folders.json'])) {
 						return false;
 					}
+					if ($path === '/var/www/robroy/tests/data/images.json' && !isset($args['images.json'])) {
+						return false;
+					}
 					return strpos($path, 'does-not-exist') === false;
 				},
 				'is_dir' => function ($path) {
@@ -132,6 +135,9 @@ abstract class TestCase extends BaseTestCase
 			function ($path) use ($args) {
 				if ($path === '/var/www/robroy/tests/data/folders.json' && isset($args['folders.json'])) {
 					return $args['folders.json'];
+				}
+				if ($path === '/var/www/robroy/tests/data/images.json' && isset($args['images.json'])) {
+					return $args['images.json'];
 				}
 				if ($path === 'php://input' && isset($args['body'])) {
 					return $args['body'];

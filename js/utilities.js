@@ -23,6 +23,8 @@ export default class RobroyUtilities {
 		$input.setAttribute('id', `robroy-input-${name}`);
 		$input.setAttribute('name', name);
 		$div.appendChild($input);
+
+		return $input;
 	}
 
 	static callback(name, args) {

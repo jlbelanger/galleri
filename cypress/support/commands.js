@@ -44,8 +44,8 @@ Cypress.Commands.add('resetPaths', () => {
 });
 
 Cypress.Commands.add('resetJson', () => {
-	cy.exec('rm -f demo/public/json/folders.json');
-	cy.exec('rm -f demo/public/json2/folders.json');
+	cy.exec('rm -f demo/public/json/*.json');
+	cy.exec('rm -f demo/public/json2/*.json');
 });
 
 Cypress.Commands.add('setupApi', () => {

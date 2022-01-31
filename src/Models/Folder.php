@@ -36,9 +36,9 @@ class Folder
 		$filename = 'folders.json';
 		$output = $useCache ? Cache::get($filename) : null;
 		if ($output === null) {
-			$folders = Filesystem::getFolders();
-			ksort($folders);
-			$output = ['data' => $folders];
+			$rows = Filesystem::getFolders();
+			ksort($rows);
+			$output = ['data' => $rows];
 			Cache::set($filename, $output);
 		}
 		return $output;
@@ -144,6 +144,8 @@ class Folder
 			$this->name = $name;
 			$this->updateCache();
 		}
+
+		// TODO: Update image cache.
 	}
 
 	/**

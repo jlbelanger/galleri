@@ -11,11 +11,6 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function testAllInFolder() : void
-	{
-		$this->markTestIncomplete();
-	}
-
 	public function testCreate() : void
 	{
 		$this->markTestIncomplete();

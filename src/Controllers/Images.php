@@ -4,7 +4,6 @@ namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Exceptions\ValidationException;
-use Jlbelanger\Robroy\Helpers\Api;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
@@ -21,20 +20,7 @@ class Images
 	 */
 	public static function get() : array
 	{
-		$parent = Input::get('parent', ['default' => null]);
-		if ($parent === null) {
-			$images = Image::all();
-		} else {
-			Folder::validateId($parent, 'Parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $parent)) {
-				throw new ApiException('This folder does not exist.');
-			}
-			$images = Image::allInFolder($parent);
-		}
-		$number = Input::get(['page', 'number'], ['default' => 1, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
-		$size = Input::get(['page', 'size'], ['default' => 10, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
-
-		return Api::paginate($images, $number, $size);
+		return Image::all();
 	}
 
 	/**
@@ -79,7 +65,7 @@ class Images
 			throw new ApiException('Image "' . $id . '" does not exist.');
 		}
 
-		$input = Input::json();
+		$input = Input::json(['filter' => ['title' => false]]);
 
 		if (empty($input['filename'])) {
 			throw ValidationException::new(['filename' => ['This field is required.']]);
@@ -98,9 +84,14 @@ class Images
 			throw ValidationException::new(['folder' => ['Folder "' . $input['folder'] . '" does not exist.']]);
 		}
 
-		$newName = trim($input['folder'] . '/' . $input['filename'], '/');
+		if (!isset($input['folder'])) {
+			$input['title'] = '';
+		} else {
+			$input['title'] = trim($input['title']);
+		}
 
-		$image->update($newName);
+		$newName = trim($input['folder'] . '/' . $input['filename'], '/');
+		$image->update($newName, $input['title']);
 
 		return ['data' => $image->json()];
 	}

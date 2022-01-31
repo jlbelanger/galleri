@@ -121,6 +121,7 @@ class FoldersTest extends TestCase
 
 	public function putProvider() : array
 	{
+		$json = '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}';
 		return [
 			'when id is not set' => [[
 				'expectedMessage' => 'ID is required.',
@@ -168,14 +169,14 @@ class FoldersTest extends TestCase
 				'expectedMessage' => 'Folder "does-not-exist" does not exist.',
 			]],
 			'when id is valid, body is not set' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"name"}]',
 			]],
 			'when id is valid, name is not set' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -183,7 +184,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"name"}]',
 			]],
 			'when id is valid, name is empty' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -191,7 +192,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"This field is required.","status":422,"pointer":"name"}]',
 			]],
 			'when id is valid, name is the same as THUMBNAILS_FOLDER' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -199,7 +200,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Name cannot be the same as the thumbnails folder.","status":422,"pointer":"name"}]',
 			]],
 			'when id is valid, name already exists' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -207,7 +208,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"name"}]',
 			]],
 			'when id is valid, name is valid, parent has a leading slash' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"/bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -215,7 +216,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent cannot begin or end with slashes.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent has a trailing slash' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"bar/"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -223,7 +224,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent cannot begin or end with slashes.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent has invalid characters' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":".."}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -231,7 +232,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent contains invalid characters.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent is the same as THUMBNAILS_FOLDER' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -239,7 +240,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent cannot be the same as the thumbnails folder.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent ends in THUMBNAILS_FOLDER' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"bar/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -247,7 +248,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent cannot end in the thumbnails folder.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent does not exist' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -255,7 +256,7 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent \"does-not-exist\" does not exist.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent is self' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
@@ -271,14 +272,14 @@ class FoldersTest extends TestCase
 				'expectedMessage' => '[{"title":"Parent cannot be a descendant of name.","status":422,"pointer":"parent"}]',
 			]],
 			'when id is valid, name is valid, parent is not set' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
 			]],
 			'when id is valid, name is valid, parent is empty' => [[
-				'folders.json' => '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}',
+				'folders.json' => $json,
 				'body' => '{"name":"foo","parent":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
