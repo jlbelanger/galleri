@@ -106,6 +106,10 @@
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 
+	<rule ref="Generic.Files.LineLength.MaxExceeded">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
 	<rule ref="Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>

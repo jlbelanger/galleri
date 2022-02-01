@@ -61,7 +61,7 @@ abstract class TestCase extends BaseTestCase
 	protected function setupTest(array $args) : void // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 	{
 		if (!empty($args['variables']['_ENV'])) {
-			$_ENV = $args['variables']['_ENV'];
+			$_ENV = array_merge($this->originalEnv, $args['variables']['_ENV']);
 		} else {
 			$_ENV = $this->originalEnv;
 		}

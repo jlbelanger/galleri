@@ -164,6 +164,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename cannot contain slashes.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename has no extension' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -171,6 +172,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename is missing a file extension (eg. JPG, PNG).","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename is the same as THUMBNAILS_FOLDER' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"thumbnails.jpg"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -179,6 +181,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Filename cannot be the same as the thumbnails folder.","status":422,"pointer":"filename"}]',
 			]],
 			'when id is valid, filename ends in THUMBNAILS_FOLDER' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"foo/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -218,6 +221,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder cannot be the same as the thumbnails folder.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder ends in THUMBNAILS_FOLDER' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"foo/thumbnails"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -225,6 +229,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder cannot end in the thumbnails folder.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder does not exist' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":"does-not-exist"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -232,18 +237,21 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"Folder \"does-not-exist\" does not exist.","status":422,"pointer":"folder"}]',
 			]],
 			'when id is valid, filename is valid, folder is not set' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
 			]],
 			'when id is valid, filename is valid, folder is empty' => [[
+				'images.json' => $json,
 				'body' => '{"filename":"example.png","folder":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
 				],
 			]],
 			'when changing filename to one that already exists' => [[
+				'images.json' => '{"data":{"example.png":{"id":"example.png","attributes":{"title":"Foo"}},"new-filename.png":{"id":"new-filename.png","attributes":{"title":"Foo"}}}}',
 				'body' => '{"filename":"new-filename.png","folder":""}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -259,6 +267,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"File \"foo\/example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing folder to one where that filename already exists' => [[
+				'images.json' => '{"data":{"foo/example.png":{"id":"foo/example.png","attributes":{"title":"Foo"}},"bar/example.png":{"id":"bar/example.png","attributes":{"title":"Foo"}}}}',
 				'body' => '{"filename":"example.png","folder":"bar"}',
 				'variables' => [
 					'_GET' => ['id' => 'foo/example.png'],
@@ -266,6 +275,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"File \"bar\/example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing filename and folder to one where that filename already exists' => [[
+				'images.json' => '{"data":{"example.png":{"id":"example.png","attributes":{"title":"Foo"}},"new-filename.png":{"id":"new-filename.png","attributes":{"title":"Foo"}}}}',
 				'body' => '{"filename":"new-filename.png","folder":"foo"}',
 				'variables' => [
 					'_GET' => ['id' => 'example.png'],
@@ -273,6 +283,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"File \"foo\/new-filename.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when removing folder to one where that filename already exists' => [[
+				'images.json' => '{"data":{"example.png":{"id":"example.png","attributes":{"title":"Foo"}},"foo/example.png":{"id":"foo/example.png","attributes":{"title":"Foo"}}}}',
 				'body' => '{"filename":"example.png","folder":""}',
 				'variables' => [
 					'_GET' => ['id' => 'foo/example.png'],
@@ -280,6 +291,7 @@ class ImagesTest extends TestCase
 				'expectedMessage' => '[{"title":"File \"example.png\" already exists.","status":422,"pointer":"filename"}]',
 			]],
 			'when changing filename' => [[
+				'images.json' => $json,
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {
@@ -296,6 +308,7 @@ class ImagesTest extends TestCase
 				],
 			]],
 			'when changing filename with invalid characters' => [[
+				'images.json' => $json,
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {
@@ -312,6 +325,7 @@ class ImagesTest extends TestCase
 				],
 			]],
 			'when setting folder' => [[
+				'images.json' => $json,
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {
@@ -328,6 +342,7 @@ class ImagesTest extends TestCase
 				],
 			]],
 			'when changing folder' => [[
+				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {
@@ -344,6 +359,7 @@ class ImagesTest extends TestCase
 				],
 			]],
 			'when changing filename and folder' => [[
+				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {
@@ -363,6 +379,7 @@ class ImagesTest extends TestCase
 				],
 			]],
 			'when removing folder' => [[
+				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
 					'Jlbelanger\Robroy\Helpers' => [
 						'file_exists' => function ($path) {

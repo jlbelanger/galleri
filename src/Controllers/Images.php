@@ -84,7 +84,7 @@ class Images
 			throw ValidationException::new(['folder' => ['Folder "' . $input['folder'] . '" does not exist.']]);
 		}
 
-		if (!isset($input['folder'])) {
+		if (!isset($input['title'])) {
 			$input['title'] = '';
 		} else {
 			$input['title'] = trim($input['title']);
