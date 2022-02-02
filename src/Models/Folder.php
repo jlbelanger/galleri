@@ -13,16 +13,25 @@ class Folder
 {
 	private $id;
 
-	private $name;
+	private $attributes;
 
 	/**
-	 * @param string $id   Eg. 'foo/bar/example-name'.
-	 * @param string $name Eg. 'Example Name'.
+	 * @param string $id         Eg. 'foo/bar/example-name'.
+	 * @param array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 */
-	public function __construct(string $id, string $name = '')
+	public function __construct(string $id, array $attributes = [])
 	{
 		$this->id = trim($id, '/');
-		$this->name = $name ? $name : Utilities::pathToName($id);
+
+		$this->attributes = $attributes;
+		if (empty($this->attributes['name'])) {
+			$this->attributes['name'] = Utilities::pathToName($this->id);
+		}
+
+		if (empty($this->attributes['parent'])) {
+			$pathinfo = pathinfo($this->id);
+			$this->attributes['parent'] = $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'];
+		}
 	}
 
 	/**
@@ -47,20 +56,19 @@ class Folder
 	/**
 	 * Creates a new folder.
 	 *
-	 * @param  string $id       Eg. 'example-name'.
-	 * @param  string $name     Eg. 'Example Name'.
-	 * @param  string $parentId Eg. 'foo/bar'.
+	 * @param  string $id         Eg. 'example-name'.
+	 * @param  array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 * @return Folder
 	 */
-	public static function create(string $id, string $name, string $parentId) : self
+	public static function create(string $id, array $attributes) : self
 	{
-		$fullId = trim($parentId . '/' . $id, '/');
+		$fullId = trim($attributes['parent'] . '/' . $id, '/');
 		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $fullId;
 
 		Filesystem::createFolder($fullPath);
 		Filesystem::createFolder($fullPath . '/' . Constant::get('THUMBNAILS_FOLDER'));
 
-		$folder = new self($fullId, $name);
+		$folder = new self($fullId, $attributes);
 		$folder->updateCache();
 
 		return $folder;
@@ -103,7 +111,7 @@ class Folder
 		if (empty($data['data'][$id])) {
 			return null;
 		}
-		return new self($id, $data['data'][$id]['attributes']['name']);
+		return new self($id, $data['data'][$id]['attributes']);
 	}
 
 	/**
@@ -115,35 +123,32 @@ class Folder
 	{
 		return [
 			'id' => $this->id,
-			'attributes' => [
-				'name' => $this->name,
-			],
+			'attributes' => $this->attributes,
 		];
 	}
 
 	/**
 	 * Updates an existing folder.
 	 *
-	 * @param  string $newId Eg. 'foo/bar/example-name'.
-	 * @param  string $name  Eg. 'Example Name'.
+	 * @param  string $newId      Eg. 'foo/bar/example-name'.
+	 * @param  array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 * @return void
 	 */
-	public function update(string $newId, string $name) : void
+	public function update(string $newId, array $attributes) : void
 	{
-		if ($this->id === $newId && $this->name === $name) {
-			return;
-		}
-
+		$oldId = $this->id;
 		if ($this->id !== $newId) {
 			Filesystem::renameFolder($this->id, $newId);
-			$oldId = $this->id;
 			$this->id = $newId;
-			$this->name = $name;
-			$this->updateCache($oldId, $newId);
 			Image::updateFoldersInCache($oldId, $newId);
-		} elseif ($this->name !== $name) {
-			$this->name = $name;
+		}
+
+		$this->attributes = $attributes;
+
+		if ($oldId === $newId) {
 			$this->updateCache();
+		} else {
+			$this->updateCache($oldId, $newId);
 		}
 	}
 

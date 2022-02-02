@@ -50,7 +50,7 @@ class Folders
 			throw ValidationException::new(['name' => ['Name cannot be the same as the thumbnails folder.']]);
 		}
 
-		$folder = Folder::create($id, $input['name'], $input['parent']);
+		$folder = Folder::create($id, $input);
 
 		return ['data' => $folder->json()];
 	}
@@ -101,7 +101,7 @@ class Folders
 		}
 
 		$newId = trim($input['parent'] . '/' . $newId, '/');
-		$folder->update($newId, $input['name']);
+		$folder->update($newId, $input);
 
 		return ['data' => $folder->json()];
 	}

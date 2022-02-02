@@ -223,9 +223,11 @@ class Image
 	{
 		$filename = 'images.json';
 		$data = Cache::get($filename);
-		foreach ($data['data'] as $imageId => $image) {
-			if ($image['attributes']['folder'] === $oldFolderId) {
-				$data['data'][$imageId]['attributes']['folder'] = $newFolderId;
+		if (!empty($data['data'])) {
+			foreach ($data['data'] as $imageId => $image) {
+				if ($image['attributes']['folder'] === $oldFolderId) {
+					$data['data'][$imageId]['attributes']['folder'] = $newFolderId;
+				}
 			}
 		}
 		Cache::set($filename, $data);

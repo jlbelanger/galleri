@@ -145,9 +145,6 @@ export default class RobroyFolder {
 	static showEditForm() {
 		const $form = RobroyFolder.form(window.ROBROY.lang.titleEditFolder, 'put', RobroyFolder.submitEditFormCallback);
 
-		const $nameInput = $form.querySelector('#robroy-input-name');
-		$nameInput.setAttribute('value', window.ROBROY.currentFolder.attributes.name);
-
 		const $parentInput = $form.querySelector('#robroy-input-parent');
 		if ($parentInput) {
 			RobroyFolder.addFolderOptions($parentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
@@ -159,6 +156,13 @@ export default class RobroyFolder {
 		} else {
 			$parentField.style.display = '';
 		}
+
+		Object.keys(window.ROBROY.currentFolder.attributes).forEach((key) => {
+			const $input = $form.querySelector(`#robroy-input-${key}`);
+			if ($input) {
+				$input.setAttribute('value', window.ROBROY.currentFolder.attributes[key]);
+			}
+		});
 
 		RobroyUtilities.modifier('folderEditForm', { element: $form });
 
@@ -303,27 +307,20 @@ export default class RobroyFolder {
 			return;
 		}
 
-		const $parentInput = document.getElementById('robroy-input-parent');
-		const hasNameChanged = $nameInput.value !== window.ROBROY.currentFolder.attributes.name;
-		let hasParentChanged;
-		const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
-		if (parentId) {
-			hasParentChanged = $parentInput.value !== parentId;
-		} else {
-			hasParentChanged = !!$parentInput.value;
-		}
-		if (!hasNameChanged && !hasParentChanged) {
-			RobroyToast.show(window.ROBROY.lang.nothingToSave);
-			RobroyModal.hide(e);
-			return;
-		}
-
 		const formData = new FormData($form);
 		let json = {};
 		formData.forEach((value, key) => {
 			json[key] = value;
 		});
 		json = JSON.stringify(json);
+
+		const oldJson = JSON.stringify(window.ROBROY.currentFolder.attributes);
+
+		if (json === oldJson) {
+			RobroyToast.show(window.ROBROY.lang.nothingToSave);
+			RobroyModal.hide(e);
+			return;
+		}
 
 		RobroyApi.request({
 			method: $form.getAttribute('method'),

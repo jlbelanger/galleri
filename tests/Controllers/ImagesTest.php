@@ -401,7 +401,7 @@ class ImagesTest extends TestCase
 	/**
 	 * @dataProvider putProvider
 	 */
-	public function testPutx(array $args) : void
+	public function testPut(array $args) : void
 	{
 		self::setupTest($args);
 
