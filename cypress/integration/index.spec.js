@@ -20,6 +20,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -61,6 +62,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -102,6 +104,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -143,6 +146,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -189,6 +193,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -233,6 +238,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -277,6 +283,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -321,6 +328,7 @@ describe('index', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				for (let i = 0; i < 2; i++) {
@@ -365,7 +373,8 @@ describe('index', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
-			cy.wait('@getImagesSubfolder');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
 			for (let i = 0; i < 2; i++) {

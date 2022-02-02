@@ -19,6 +19,7 @@ describe('edit image', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 			cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 			cy.get('#robroy-modal-cancel').click();
@@ -32,6 +33,7 @@ describe('edit image', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 			cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 			cy.get('#robroy-modal-close').click();
@@ -47,6 +49,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear();
@@ -62,6 +65,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear();
@@ -78,6 +82,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('400x400.png');
@@ -93,6 +98,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-folder').select('Images And Folders');
@@ -108,6 +114,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('/400x400.png');
@@ -123,6 +130,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('400x400.png/');
@@ -138,6 +146,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('400/400.png');
@@ -153,6 +162,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('400x400');
@@ -174,6 +184,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('new-filename.png');
@@ -193,6 +204,7 @@ describe('edit image', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
 				cy.get('[data-path="images-only/new-filename.png"]').should('exist');
 			});
@@ -204,6 +216,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-folder').select('Folders Only');
@@ -223,6 +236,7 @@ describe('edit image', () => {
 				cy.visit('/dark.html?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/400x500.png"]').should('exist');
 			});
 		});
@@ -233,6 +247,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-folder').select('');
@@ -252,6 +267,7 @@ describe('edit image', () => {
 				cy.visit('/dark.html');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('[data-path="400x500.png"]').should('exist');
 			});
 		});
@@ -262,6 +278,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-create-image').click();
 				cy.get('#robroy-input-upload').attachFile('500x500.jpg');
@@ -287,6 +304,7 @@ describe('edit image', () => {
 				cy.visit('/dark.html?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/2020-01-01-12-00-00-500x500.jpg"]').should('exist');
 			});
 		});
@@ -297,6 +315,7 @@ describe('edit image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
 				cy.get('#robroy-input-filename').clear().type('new-filename.png');
@@ -321,6 +340,7 @@ describe('edit image', () => {
 				cy.visit('/dark.html?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/new-filename.png"]').should('exist');
 			});
 		});

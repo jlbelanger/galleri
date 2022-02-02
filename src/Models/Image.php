@@ -183,10 +183,11 @@ class Image
 			}
 			Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
 
+			$oldId = $this->id;
 			$this->id = $newId;
 			$this->thumbnailPath = $this->getThumbnailPath($newId);
 			$this->title = $title;
-			$this->updateCache();
+			$this->updateCache($oldId);
 		} elseif ($this->title !== $title) {
 			$this->title = $title;
 			$this->updateCache();
@@ -208,6 +209,25 @@ class Image
 			unset($data['data'][$oldId]);
 		}
 		ksort($data['data']);
+		Cache::set($filename, $data);
+	}
+
+	/**
+	 * Updates the folders for images in the cache.
+	 *
+	 * @param  string $oldFolderId
+	 * @param  string $newFolderId
+	 * @return void
+	 */
+	public static function updateFoldersInCache(string $oldFolderId, string $newFolderId) : void
+	{
+		$filename = 'images.json';
+		$data = Cache::get($filename);
+		foreach ($data['data'] as $imageId => $image) {
+			if ($image['attributes']['folder'] === $oldFolderId) {
+				$data['data'][$imageId]['attributes']['folder'] = $newFolderId;
+			}
+		}
 		Cache::set($filename, $data);
 	}
 

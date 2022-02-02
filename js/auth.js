@@ -98,8 +98,9 @@ export default class RobroyAuth {
 
 		if (window.ROBROY.args.removePointerEventsOnLogin) {
 			$elems = document.querySelectorAll('.robroy-link');
-			$elems.forEach((elem) => {
-				elem.style.pointerEvents = '';
+			$elems.forEach(($elem) => {
+				$elem.removeAttribute('tabindex');
+				$elem.style.pointerEvents = '';
 			});
 		}
 

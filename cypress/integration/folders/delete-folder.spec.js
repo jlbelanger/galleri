@@ -23,6 +23,7 @@ describe('delete folder', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
 			// When clicking the cancel button.
@@ -45,6 +46,7 @@ describe('delete folder', () => {
 			cy.location('search').should('eq', '');
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 
 			// Does not show the folder in the folder list.
 			const items = ['Folders Only', 'Images And Folders', 'Images Only'];
@@ -59,7 +61,8 @@ describe('delete folder', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
-			cy.wait('@getImagesSubfolder');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 			cy.get('#robroy-delete-folder').click();
 			cy.get('#robroy-modal-close').click();
@@ -69,6 +72,7 @@ describe('delete folder', () => {
 			cy.location('search').should('eq', '?folder=folders-only');
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 
 			// Does not show the folder in the folder list.
 			const items = ['Subfolder 2'];

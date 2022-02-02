@@ -44,15 +44,18 @@ Cypress.Commands.add('resetPaths', () => {
 });
 
 Cypress.Commands.add('resetJson', () => {
-	cy.exec('rm -f demo/public/json/*.json');
-	cy.exec('rm -f demo/public/json2/*.json');
+	cy.exec('rm -f demo/public/json/folders.json');
+	cy.exec('rm -f demo/public/json/images.json');
+	cy.exec('rm -f demo/public/json2/folders.json');
+	cy.exec('rm -f demo/public/json2/images.json');
 });
 
 Cypress.Commands.add('setupApi', () => {
 	cy.intercept('GET', '/json/folders.json').as('getFolders');
 	cy.intercept('GET', '/api.php?type=folders').as('getFolders2');
-	cy.intercept('GET', '/api.php?type=images&*').as('getImages');
-	cy.intercept('GET', '/api.php?type=images*/*').as('getImagesSubfolder');
+	cy.intercept('GET', '/json/images.json').as('getImages');
+	cy.intercept('GET', '/api.php?type=images').as('getImages2');
+	cy.intercept('GET', '/api.php?type=images').as('getImagesSubfolder');
 	cy.intercept('POST', '/api.php?type=images').as('uploadImage');
 	cy.intercept('POST', '/api.php?type=folders').as('createFolder');
 });

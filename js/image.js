@@ -375,7 +375,10 @@ export default class RobroyImage {
 		const $container = document.querySelector(`[data-path="${id}"]`);
 		let $nextLink;
 		if ($container.nextSibling) {
-			$nextLink = [...$container.nextSibling.children].find((child) => child.tagName === 'A');
+			$nextLink = $container.nextSibling.querySelector('button');
+		}
+		if (!$nextLink && $container.previousSibling) {
+			$nextLink = $container.previousSibling.querySelector('button');
 		}
 		$container.remove();
 
@@ -460,7 +463,9 @@ export default class RobroyImage {
 		$div.appendChild($deleteButton);
 
 		if (window.ROBROY.args.removePointerEventsOnLogin) {
-			$container.querySelector('.robroy-link').style.pointerEvents = 'none';
+			const $link = $container.querySelector('.robroy-link');
+			$link.style.pointerEvents = 'none';
+			$link.setAttribute('tabindex', -1);
 		}
 	}
 

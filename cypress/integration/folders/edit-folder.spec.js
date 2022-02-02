@@ -18,7 +18,8 @@ describe('edit folder', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
-			cy.wait('@getImagesSubfolder');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 			cy.get('#robroy-edit-folder').click();
 			cy.get('#robroy-modal-cancel').click();
@@ -31,7 +32,8 @@ describe('edit folder', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
-			cy.wait('@getImagesSubfolder');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 			cy.get('#robroy-edit-folder').click();
 			cy.get('#robroy-modal-close').click();
@@ -46,7 +48,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear();
@@ -61,7 +64,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear();
@@ -77,7 +81,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear().type('Subfolder 2');
@@ -92,7 +97,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear().type('Thumbnails');
@@ -107,7 +113,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent').select('Images And Folders');
@@ -128,7 +135,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear().type('New Name');
@@ -140,13 +148,52 @@ describe('edit folder', () => {
 			});
 		});
 
+		describe('when changing the name for a folder with images and folders', () => {
+			it('redirects to the new URL', () => {
+				cy.visit('/dark.html?folder=images-and-folders');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+
+				// Shows the folders.
+				const items = ['Subfolder'];
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+
+				cy.contains('Log In').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-modal-close').click();
+
+				// Redirects.
+				cy.location('pathname').should('eq', '/dark.html');
+				cy.location('search').should('eq', '?folder=new-name');
+
+				// Shows the folders.
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+			});
+		});
+
 		describe('when changing the parent', () => {
 			it('redirects to the new URL', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=folders-only/subfolder-2').as('updateFolder');
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent').select('Images And Folders');
@@ -165,7 +212,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent').select('');
@@ -184,6 +232,18 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=images-and-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
+
+				// Shows the folders.
+				const items = ['Subfolder'];
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent').select('Folders Only');
@@ -193,6 +253,14 @@ describe('edit folder', () => {
 				// Redirects.
 				cy.location('pathname').should('eq', '/dark.html');
 				cy.location('search').should('eq', '?folder=folders-only/images-and-folders');
+				// Shows the folders.
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
 			});
 		});
 
@@ -202,7 +270,8 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-name').clear().type('New Name');

@@ -25,6 +25,7 @@ describe('delete image', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
 			// When clicking the cancel button.
@@ -66,7 +67,7 @@ describe('delete image', () => {
 			cy.get('#robroy-delete-folder').should('not.be.visible');
 
 			// Sets focus to the next image.
-			cy.focused().should('have.attr', 'href', '/images2/images-only/400x400.png');
+			cy.focused().closest('.robroy-figure').should('have.attr', 'data-path', 'images-only/400x400.png');
 
 			// When deleting the last image.
 			cy.get('.robroy-toast-close').click();
@@ -88,6 +89,7 @@ describe('delete image', () => {
 			cy.reload();
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
 			cy.get('[data-path="images-only/400x400.png"]').should('not.exist');
 		});
@@ -101,6 +103,7 @@ describe('delete image', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
 			// When clicking the cancel button.
@@ -142,7 +145,7 @@ describe('delete image', () => {
 			cy.get('#robroy-delete-folder').should('not.be.visible');
 
 			// Sets focus to the next image.
-			cy.focused().should('have.attr', 'href', '/images2/images-and-folders/400x400.png');
+			cy.focused().closest('.robroy-figure').should('have.attr', 'data-path', 'images-and-folders/400x400.png');
 
 			// When deleting the last image.
 			cy.get('.robroy-toast-close').click();
@@ -164,6 +167,7 @@ describe('delete image', () => {
 			cy.reload();
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.get('[data-path="images-and-folders/400x500.png"]').should('not.exist');
 			cy.get('[data-path="images-and-folders/400x400.png"]').should('not.exist');
 		});

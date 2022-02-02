@@ -36,6 +36,11 @@ class ImageTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
+	public function testUpdateFoldersInCache() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function testValidateId() : void
 	{
 		$this->markTestIncomplete();

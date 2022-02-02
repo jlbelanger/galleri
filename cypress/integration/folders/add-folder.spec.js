@@ -21,6 +21,7 @@ describe('add folder', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
 					cy.get('#robroy-modal-close').click();
@@ -34,6 +35,7 @@ describe('add folder', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
 					cy.get('#robroy-input-name').clear().type('Folders Only');
@@ -49,6 +51,7 @@ describe('add folder', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
 					cy.get('#robroy-input-name').clear().type('Thumbnails');
@@ -70,6 +73,7 @@ describe('add folder', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
 					cy.get('#robroy-input-name').clear().type('New Folder');
@@ -117,6 +121,7 @@ describe('add folder', () => {
 					cy.reload();
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 				});
 			});
@@ -127,6 +132,7 @@ describe('add folder', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
 					cy.get('#robroy-input-name').clear().type('New Folder');
@@ -174,6 +180,7 @@ describe('add folder', () => {
 					cy.visit('/dark.html?folder=folders-only');
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 				});
 			});
@@ -191,6 +198,7 @@ describe('add folder', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-create-folder').click();
 				cy.get('#robroy-input-name').clear().type('New Folder');
@@ -242,6 +250,7 @@ describe('add folder', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 			});
 		});
@@ -252,6 +261,7 @@ describe('add folder', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 				cy.get('#robroy-create-folder').click();
 				cy.get('#robroy-input-name').clear().type('New Folder');
@@ -300,6 +310,7 @@ describe('add folder', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 			});
 		});

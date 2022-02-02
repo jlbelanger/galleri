@@ -140,12 +140,11 @@ class Folder
 			$this->id = $newId;
 			$this->name = $name;
 			$this->updateCache($oldId, $newId);
+			Image::updateFoldersInCache($oldId, $newId);
 		} elseif ($this->name !== $name) {
 			$this->name = $name;
 			$this->updateCache();
 		}
-
-		// TODO: Update image cache.
 	}
 
 	/**

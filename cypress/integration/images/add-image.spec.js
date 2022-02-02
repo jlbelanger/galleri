@@ -21,6 +21,7 @@ describe('add image', () => {
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
+					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-image').click();
 					cy.get('#robroy-modal-close').click();
@@ -39,6 +40,7 @@ describe('add image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
 				// When the image does not exist.
@@ -86,6 +88,7 @@ describe('add image', () => {
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
 			// When the image does not exist.

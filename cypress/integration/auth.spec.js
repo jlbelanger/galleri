@@ -18,6 +18,7 @@ describe('auth', () => {
 		cy.wait('@getFolders');
 		cy.wait('@getFolders2');
 		cy.wait('@getImages');
+		cy.wait('@getImages2');
 
 		// Hides admin controls initially.
 		cy.get('.robroy-admin').should('not.exist');
