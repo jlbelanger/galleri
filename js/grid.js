@@ -22,11 +22,10 @@ export default class RobroyGrid {
 		const $img = $figure.querySelector('img');
 		if ($img.complete) {
 			this.resizeItem($figure, $img);
-		} else {
-			$img.onload = () => {
-				this.resizeItem($figure, $img);
-			};
 		}
+		$img.onload = () => {
+			this.resizeItem($figure, $img);
+		};
 	}
 
 	resizeItem($figure, $img) {

@@ -11,7 +11,7 @@ export default class Robroy {
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
 		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
-		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
+		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') && args.enableGrid;
 		args.folderItemElement = args.folderItemElement || 'li';
 		args.folderSeparator = args.folderSeparator || ' > ';
 		args.imageItemElement = args.imageItemElement || 'figure';

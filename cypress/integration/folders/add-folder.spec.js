@@ -238,13 +238,15 @@ describe('add folder', () => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 
+				// Hides the delete folder button.
+				cy.get('#robroy-modal-cancel').click();
+				cy.get('#robroy-delete-folder').should('not.be.visible');
+
 				// Adds the new folder to the edit parent list.
+				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
-
-				// Hides the delete folder button.
-				cy.get('#robroy-delete-folder').should('not.be.visible');
 
 				// Shows the new folder after a refresh.
 				cy.reload();
@@ -297,13 +299,15 @@ describe('add folder', () => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
 
+				// Does not hide the delete folder button.
+				cy.get('#robroy-modal-cancel').click();
+				cy.get('#robroy-delete-folder').should('be.visible');
+
 				// Adds the new folder to the edit parent list.
+				cy.get('#robroy-edit-folder').click();
 				cy.get('#robroy-input-parent option').each((item, index) => {
 					cy.wrap(item).should('have.text', options[index]);
 				});
-
-				// Does not hide the delete folder button.
-				cy.get('#robroy-delete-folder').should('be.visible');
 
 				// Adds the folder to the subfolder.
 				cy.visit('/dark.html?folder=folders-only');

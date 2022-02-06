@@ -15,6 +15,8 @@ $robroy-white: #fff !default;
 $robroy-padding-desktop: 32px !default;
 $robroy-padding-mobile: 16px !default;
 
+$robroy-admin-zindex: 997 !default;
+
 $robroy-breadcrumb-icon: '\203a' !default; // &rsaquo;
 $robroy-breadcrumb-item-arrow-color: $robroy-dark !default;
 $robroy-breadcrumb-padding: 8px !default;
@@ -27,6 +29,7 @@ $robroy-button-background-color-hover: scale-color($robroy-button-background-col
 $robroy-button-font-size: 18px !default;
 $robroy-button-padding: 16px !default;
 $robroy-button-text-color: if($robroy-dark-mode, $robroy-darkest, $robroy-lightest) !default;
+$robroy-button-height: ($robroy-button-padding * 2) + $robroy-button-font-size !default;
 
 $robroy-button-danger-background-color: $robroy-red !default;
 $robroy-button-danger-background-color-hover: scale-color($robroy-button-danger-background-color, $lightness: 10% * $robroy-multiply) !default;
@@ -73,6 +76,7 @@ $robroy-modal-margin: 32px !default;
 $robroy-modal-max-width: 800px !default;
 $robroy-modal-padding: 32px !default;
 $robroy-modal-text-color: $robroy-lightest !default;
+$robroy-modal-zindex: 998 !default;
 
 $robroy-spinner-color-alternate: $robroy-primary !default;
 $robroy-spinner-color: $robroy-darker !default;

@@ -37,8 +37,11 @@ export default class RobroyImage {
 	static getImagesCallback(response) {
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		const currentFolderId = urlSearchParams.get('folder') || '';
+		let images = Object.values(response.data);
 
-		const images = Object.values(response.data).filter((image) => (image.attributes.folder === currentFolderId));
+		if (!window.ROBROY.args.showAllImages) {
+			images = images.filter((image) => (image.attributes.folder === currentFolderId));
+		}
 
 		images.forEach((image) => {
 			window.ROBROY.currentImages[image.id] = image;
@@ -82,15 +85,17 @@ export default class RobroyImage {
 
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-link');
-		$a.setAttribute('href', data.attributes.url);
+		$a.setAttribute('href', data.meta.url);
 		$figure.appendChild($a);
 
 		const $img = document.createElement('img');
-		$img.setAttribute('alt', data.attributes.title);
+		if (data.attributes.title) {
+			$img.setAttribute('alt', data.attributes.title);
+		}
 		$img.setAttribute('class', 'robroy-img');
-		$img.setAttribute('data-src', data.attributes.thumbnail);
-		$img.setAttribute('height', data.attributes.thumbnailHeight);
-		$img.setAttribute('width', data.attributes.thumbnailWidth);
+		$img.setAttribute('data-src', data.meta.thumbnail);
+		$img.setAttribute('height', data.meta.thumbnailHeight);
+		$img.setAttribute('width', data.meta.thumbnailWidth);
 		$a.appendChild($img);
 
 		if (setSrc) {
@@ -178,7 +183,7 @@ export default class RobroyImage {
 		window.ROBROY.currentImage = window.ROBROY.currentImages[path];
 
 		const $form = document.createElement('form');
-		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=images`);
+		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=images&id=${window.ROBROY.currentImage.id}`);
 		$form.setAttribute('id', 'robroy-image-form');
 		$form.setAttribute('method', 'PUT');
 		$form.addEventListener('submit', RobroyImage.submitEditFormCallback);
@@ -192,14 +197,19 @@ export default class RobroyImage {
 		$container.setAttribute('class', 'robroy-fields');
 		$form.appendChild($container);
 
-		const $filenameInput = RobroyUtilities.addField($container, 'filename', window.ROBROY.lang.fieldImageFilename);
-		$filenameInput.setAttribute('value', window.ROBROY.currentImage.attributes.filename);
+		RobroyUtilities.addField($container, 'filename', window.ROBROY.lang.fieldImageFilename);
 
 		const $folderInput = RobroyUtilities.addField($container, 'folder', window.ROBROY.lang.fieldImageFolder, 'select');
 		RobroyFolder.addFolderOptions($folderInput, window.ROBROY.currentImage.attributes.folder);
 
-		const $titleInput = RobroyUtilities.addField($container, 'title', window.ROBROY.lang.fieldImageTitle);
-		$titleInput.setAttribute('value', window.ROBROY.currentImage.attributes.title);
+		RobroyUtilities.addField($container, 'title', window.ROBROY.lang.fieldImageTitle);
+
+		Object.keys(window.ROBROY.currentImage.attributes).forEach((key) => {
+			const $input = $form.querySelector(`#robroy-input-${key}`);
+			if ($input && Object.prototype.hasOwnProperty.call(window.ROBROY.currentImage.attributes, key)) {
+				$input.setAttribute('value', window.ROBROY.currentImage.attributes[key]);
+			}
+		});
 
 		RobroyUtilities.modifier('imageEditForm', { element: $form });
 
@@ -263,7 +273,7 @@ export default class RobroyImage {
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
-			formData: formData,
+			formData,
 			callback: (response) => {
 				RobroyImage.createRequestCallback(response);
 			},
@@ -312,30 +322,32 @@ export default class RobroyImage {
 			return;
 		}
 
-		const $folderInput = document.getElementById('robroy-input-folder');
-		const $titleInput = document.getElementById('robroy-input-title');
-		const hasFilenameChanged = $filenameInput.value !== window.ROBROY.currentImage.attributes.filename;
-		const hasFolderChanged = $folderInput.value !== window.ROBROY.currentImage.attributes.folder;
-		const hasTitleChanged = $titleInput.value !== window.ROBROY.currentImage.attributes.title;
-		if (!hasFilenameChanged && !hasFolderChanged && !hasTitleChanged) {
+		const formData = new FormData($form);
+		let json = {};
+		let oldJson = {};
+		formData.forEach((value, key) => {
+			json[key] = value;
+			if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentImage.attributes, key)) {
+				oldJson[key] = window.ROBROY.currentImage.attributes[key];
+			} else {
+				oldJson[key] = '';
+			}
+		});
+		json = JSON.stringify(json);
+		oldJson = JSON.stringify(oldJson);
+
+		if (json === oldJson) {
 			RobroyToast.show(window.ROBROY.lang.nothingToSave);
 			RobroyModal.hide(e);
 			return;
 		}
 
-		const formData = new FormData($form);
-		let json = {};
-		formData.forEach((value, key) => {
-			json[key] = value;
-		});
-		json = JSON.stringify(json);
-
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
-			url: `${$form.getAttribute('action')}&id=${window.ROBROY.currentImage.id}`,
-			json: json,
+			url: $form.getAttribute('action'),
+			json,
 			callback: (response) => {
-				RobroyImage.editRequestCallback(e, response, hasFolderChanged);
+				RobroyImage.editRequestCallback(e, response);
 			},
 			errorCallback: (response, status) => {
 				RobroyErrors.show(response, status);
@@ -343,9 +355,11 @@ export default class RobroyImage {
 		});
 	}
 
-	static editRequestCallback(e, response, hasFolderChanged) {
+	static editRequestCallback(e, response) {
 		RobroyToast.show(window.ROBROY.lang.updatedSuccessfullyImage, { class: 'robroy-toast--success' });
 
+		const $folderInput = document.getElementById('robroy-input-folder');
+		const hasFolderChanged = $folderInput.value !== window.ROBROY.currentImage.attributes.folder;
 		if (hasFolderChanged) {
 			RobroyImage.removeImageFromList(window.ROBROY.currentImage.id);
 		} else {
@@ -412,10 +426,14 @@ export default class RobroyImage {
 		$container.setAttribute('data-path', image.id);
 
 		const $a = $container.querySelector('.robroy-link');
-		$a.setAttribute('href', image.attributes.url);
+		$a.setAttribute('href', image.meta.url);
 
 		const $img = $container.querySelector('.robroy-img');
-		$img.setAttribute('alt', image.attributes.title);
+		if (image.attributes.title) {
+			$img.setAttribute('alt', image.attributes.title);
+		} else {
+			$img.removeAttribute('alt');
+		}
 
 		RobroyUtilities.callback('afterUpdateImage', { image, element: $container });
 	}

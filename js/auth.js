@@ -36,7 +36,7 @@ export default class RobroyAuth {
 		].join('');
 		RobroyApi.request({
 			method: 'DELETE',
-			url: url,
+			url,
 			noParse: true,
 			callback: () => {
 				RobroyAuth.logoutCallback();
@@ -79,6 +79,8 @@ export default class RobroyAuth {
 	static handleLogin() {
 		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logOut;
 
+		document.body.classList.add('robroy-is-admin');
+
 		RobroyAuth.addAdminBar();
 
 		RobroyImage.getImages().forEach(($container) => {
@@ -90,6 +92,8 @@ export default class RobroyAuth {
 
 	static handleLogout() {
 		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logIn;
+
+		document.body.classList.remove('robroy-is-admin');
 
 		let $elems = document.querySelectorAll('.robroy-admin');
 		$elems.forEach((elem) => {

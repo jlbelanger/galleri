@@ -91,7 +91,7 @@ class Images
 		}
 
 		$newName = trim($input['folder'] . '/' . $input['filename'], '/');
-		$image->update($newName, $input['title']);
+		$image->update($newName, $input);
 
 		return ['data' => $image->json()];
 	}

@@ -15,17 +15,41 @@ class Image
 {
 	private $id;
 
-	private $thumbnailPath;
+	private $attributes;
+
+	private $meta;
 
 	/**
-	 * @param string $id    Eg. 'foo/bar.jpg'.
-	 * @param string $title Eg. 'Example Title'.
+	 * @param string $id         Eg. 'foo/bar.jpg'.
+	 * @param array  $attributes Eg. ['title' => 'Example Title'].
+	 * @param array  $meta
 	 */
-	public function __construct(string $id, string $title = '')
+	public function __construct(string $id, array $attributes = [], array $meta = [])
 	{
 		$this->id = $id;
-		$this->title = $title;
-		$this->thumbnailPath = $this->getThumbnailPath($id);
+
+		$this->attributes = $attributes;
+		$pathinfo = pathinfo($this->id);
+		if (empty($this->attributes['filename'])) {
+			$this->attributes['filename'] = $pathinfo['basename'];
+		}
+		if (empty($this->attributes['folder'])) {
+			$this->attributes['folder'] = $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'];
+		}
+
+		$this->meta = $meta;
+		if (empty($this->meta['thumbnail'])) {
+			$this->meta['thumbnail'] = $this->getThumbnail();
+		}
+		if (empty($this->meta['thumbnailHeight']) || empty($this->meta['thumbnailWidth'])) {
+			list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
+
+			$this->meta['thumbnailHeight'] = $height;
+			$this->meta['thumbnailWidth'] = $width;
+		}
+		if (empty($this->meta['url'])) {
+			$this->meta['url'] = $this->getUrl();
+		}
 	}
 
 	/**
@@ -99,7 +123,7 @@ class Image
 	public function delete() : void
 	{
 		Filesystem::deleteFile($this->id);
-		Filesystem::deleteFile($this->thumbnailPath);
+		Filesystem::deleteFile(self::getThumbnailPath($this->id));
 		$this->deleteFromCache();
 	}
 
@@ -128,7 +152,9 @@ class Image
 		if (empty($data['data'][$id])) {
 			return null;
 		}
-		return new self($id, $data['data'][$id]['attributes']['title']);
+		$attributes = !empty($data['data'][$id]['attributes']) ? $data['data'][$id]['attributes'] : [];
+		$meta = !empty($data['data'][$id]['meta']) ? $data['data'][$id]['meta'] : [];
+		return new self($id, $attributes, $meta);
 	}
 
 	/**
@@ -138,39 +164,23 @@ class Image
 	 */
 	public function json() : array
 	{
-		list($width, $height) = getimagesize($this->thumbnailAbsolutePath());
-
-		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
-		$pathinfo = pathinfo($this->id);
-
-		// TODO: This info should come from the cache.
 		return [
 			'id' => $this->id,
-			'attributes' => [
-				'title'           => $this->title,
-				'filename'        => $pathinfo['basename'],
-				'folder'          => $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'],
-				'thumbnail'       => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->thumbnailPath,
-				'thumbnailHeight' => $height,
-				'thumbnailWidth'  => $width,
-				'url'             => '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->id,
-			],
+			'attributes' => $this->attributes,
+			'meta' => $this->meta,
 		];
 	}
 
 	/**
 	 * Updates an existing image.
 	 *
-	 * @param  string $newId Eg. 'foo/bar.jpg'.
-	 * @param  string $title Eg. 'Example Title'.
+	 * @param  string $newId      Eg. 'foo/bar.jpg'.
+	 * @param  array  $attributes Eg. ['title' => 'Example Title'].
 	 * @return void
 	 */
-	public function update(string $newId, string $title) : void
+	public function update(string $newId, array $attributes) : void
 	{
-		if ($this->id === $newId && $this->title === $title) {
-			return;
-		}
-
+		$oldId = $this->id;
 		if ($this->id !== $newId) {
 			Filesystem::renameFile($this->id, $newId);
 
@@ -181,16 +191,19 @@ class Image
 			if (!Filesystem::folderExists($fullPath)) {
 				Filesystem::createFolder($fullPath);
 			}
-			Filesystem::renameFile($this->thumbnailPath, self::getThumbnailPath($newId));
+			Filesystem::renameFile(self::getThumbnailPath($this->id), self::getThumbnailPath($newId));
 
-			$oldId = $this->id;
 			$this->id = $newId;
-			$this->thumbnailPath = $this->getThumbnailPath($newId);
-			$this->title = $title;
-			$this->updateCache($oldId);
-		} elseif ($this->title !== $title) {
-			$this->title = $title;
+			$this->meta['thumbnail'] = $this->getThumbnail();
+			$this->meta['url'] = $this->getUrl();
+		}
+
+		$this->attributes = $attributes;
+
+		if ($oldId === $newId) {
 			$this->updateCache();
+		} else {
+			$this->updateCache($oldId);
 		}
 	}
 
@@ -217,20 +230,44 @@ class Image
 	 *
 	 * @param  string $oldFolderId
 	 * @param  string $newFolderId
-	 * @return void
+	 * @return array|null
 	 */
-	public static function updateFoldersInCache(string $oldFolderId, string $newFolderId) : void
+	public static function updateFoldersInCache(string $oldFolderId, string $newFolderId)
 	{
 		$filename = 'images.json';
 		$data = Cache::get($filename);
 		if (!empty($data['data'])) {
 			foreach ($data['data'] as $imageId => $image) {
-				if ($image['attributes']['folder'] === $oldFolderId) {
+				if (strpos($image['attributes']['folder'], $oldFolderId) === 0) {
 					$data['data'][$imageId]['attributes']['folder'] = $newFolderId;
 				}
+				$oldImageId = $image['id'];
+				if (strpos($oldImageId, $oldFolderId . '/') === 0) {
+					$newImageId = preg_replace('/^' . str_replace('/', '\/', $oldFolderId) . '\//', $newFolderId . '/', $image['id']);
+					$image['id'] = $newImageId;
+					$image['attributes']['folder'] = preg_replace(
+						'/^' . str_replace('/', '\/', $oldFolderId) . '(\/|$)/',
+						$newFolderId . '$1',
+						$image['attributes']['folder']
+					);
+					$image['meta']['thumbnail'] = preg_replace(
+						'/\/' . str_replace('/', '\/', $oldFolderId) . '\//',
+						'/' . $newFolderId . '/',
+						$image['meta']['thumbnail']
+					);
+					$image['meta']['url'] = preg_replace(
+						'/\/' . str_replace('/', '\/', $oldFolderId) . '\//',
+						'/' . $newFolderId . '/',
+						$image['meta']['url']
+					);
+					$data['data'][$newImageId] = $image;
+					unset($data['data'][$oldImageId]);
+				}
 			}
+			ksort($data['data']);
 		}
 		Cache::set($filename, $data);
+		return $data;
 	}
 
 	/**
@@ -312,6 +349,22 @@ class Image
 	}
 
 	/**
+	 * @return string
+	 */
+	protected function getThumbnail() : string
+	{
+		return '/' . Constant::get('UPLOADS_FOLDER') . '/' . self::getThumbnailPath($this->id);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getUrl() : string
+	{
+		return '/' . Constant::get('UPLOADS_FOLDER') . '/' . $this->id;
+	}
+
+	/**
 	 * @param  string $id
 	 * @return string
 	 */
@@ -329,7 +382,7 @@ class Image
 	 */
 	public function thumbnailAbsolutePath() : string
 	{
-		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $this->thumbnailPath;
+		$fullPath = Constant::get('UPLOADS_PATH') . '/' . self::getThumbnailPath($this->id);
 		if (!Filesystem::fileExists($fullPath)) {
 			return '';
 		}

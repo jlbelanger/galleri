@@ -143,7 +143,12 @@ export default class RobroyFolder {
 	}
 
 	static showEditForm() {
-		const $form = RobroyFolder.form(window.ROBROY.lang.titleEditFolder, 'put', RobroyFolder.submitEditFormCallback);
+		const $form = RobroyFolder.form(
+			window.ROBROY.lang.titleEditFolder,
+			'put',
+			RobroyFolder.submitEditFormCallback,
+			window.ROBROY.currentFolder.id,
+		);
 
 		const $parentInput = $form.querySelector('#robroy-input-parent');
 		if ($parentInput) {
@@ -181,9 +186,13 @@ export default class RobroyFolder {
 		);
 	}
 
-	static form(title, method, callback) {
+	static form(title, method, callback, id = '') {
 		const $form = document.createElement('form');
-		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=folders`);
+		let action = `${window.ROBROY.args.apiPath}?type=folders`;
+		if (id) {
+			action += `&id=${id}`;
+		}
+		$form.setAttribute('action', action);
 		$form.setAttribute('id', 'robroy-folder-form');
 		$form.setAttribute('method', method);
 		$form.addEventListener('submit', callback);
@@ -259,7 +268,7 @@ export default class RobroyFolder {
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
-			json: json,
+			json,
 			callback: (response) => {
 				RobroyFolder.createRequestCallback(response);
 			},
@@ -309,12 +318,17 @@ export default class RobroyFolder {
 
 		const formData = new FormData($form);
 		let json = {};
+		let oldJson = {};
 		formData.forEach((value, key) => {
 			json[key] = value;
+			if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
+				oldJson[key] = window.ROBROY.currentFolder.attributes[key];
+			} else {
+				oldJson[key] = '';
+			}
 		});
 		json = JSON.stringify(json);
-
-		const oldJson = JSON.stringify(window.ROBROY.currentFolder.attributes);
+		oldJson = JSON.stringify(oldJson);
 
 		if (json === oldJson) {
 			RobroyToast.show(window.ROBROY.lang.nothingToSave);
@@ -324,8 +338,8 @@ export default class RobroyFolder {
 
 		RobroyApi.request({
 			method: $form.getAttribute('method'),
-			url: `${$form.getAttribute('action')}&id=${window.ROBROY.currentFolder.id}`,
-			json: json,
+			url: $form.getAttribute('action'),
+			json,
 			callback: (response) => {
 				RobroyFolder.editRequestCallback(response);
 			},

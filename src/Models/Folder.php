@@ -111,7 +111,8 @@ class Folder
 		if (empty($data['data'][$id])) {
 			return null;
 		}
-		return new self($id, $data['data'][$id]['attributes']);
+		$attributes = !empty($data['data'][$id]['attributes']) ? $data['data'][$id]['attributes'] : [];
+		return new self($id, $attributes);
 	}
 
 	/**
@@ -148,7 +149,7 @@ class Folder
 		if ($oldId === $newId) {
 			$this->updateCache();
 		} else {
-			$this->updateCache($oldId, $newId);
+			$this->updateCache($oldId);
 		}
 	}
 
@@ -156,10 +157,9 @@ class Folder
 	 * Updates a folder in the cache.
 	 *
 	 * @param  string $oldId
-	 * @param  string $newId
-	 * @return void
+	 * @return array
 	 */
-	public function updateCache(string $oldId = '', string $newId = '') : void
+	public function updateCache(string $oldId = '') : array
 	{
 		$filename = 'folders.json';
 		$data = Cache::get($filename);
@@ -168,7 +168,7 @@ class Folder
 			unset($data['data'][$oldId]);
 			foreach ($data['data'] as $id => $value) {
 				if (strpos($id, $oldId . '/') === 0) {
-					$newChildId = preg_replace('/^' . str_replace('/', '\/', $oldId) . '\//', $newId . '/', $id);
+					$newChildId = preg_replace('/^' . str_replace('/', '\/', $oldId) . '\//', $this->id . '/', $id);
 					$value['id'] = $newChildId;
 					$data['data'][$newChildId] = $value;
 					unset($data['data'][$id]);
@@ -177,6 +177,7 @@ class Folder
 		}
 		ksort($data['data']);
 		Cache::set($filename, $data);
+		return $data;
 	}
 
 	/**

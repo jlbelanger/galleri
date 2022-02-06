@@ -1,0 +1,38 @@
+.robroy-button-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $robroy-padding-mobile;
+
+	.robroy-button {
+		flex: 1 1 auto;
+	}
+
+	figure & {
+		bottom: 0;
+		left: 0;
+		position: absolute;
+		right: 0;
+	}
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		gap: $robroy-padding-desktop;
+	}
+}
+
+.robroy-is-admin {
+	margin-bottom: #{$robroy-button-height + ($robroy-padding-mobile * 2)};
+}
+
+#robroy-admin {
+	background: $robroy-darkest;
+	bottom: 0;
+	left: 0;
+	padding: $robroy-padding-mobile;
+	position: fixed;
+	right: 0;
+	z-index: $robroy-admin-zindex;
+}
+
+.robroy-button-authenticate {
+	width: 100px;
+}

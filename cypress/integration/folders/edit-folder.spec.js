@@ -181,8 +181,8 @@ describe('edit folder', () => {
 				});
 
 				// Shows the images.
-				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
-				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+				cy.get('[data-path="new-name/400x400.png"]').should('be.visible');
+				cy.get('[data-path="new-name/400x500.png"]').should('be.visible');
 			});
 		});
 
@@ -259,8 +259,8 @@ describe('edit folder', () => {
 				});
 
 				// Shows the images.
-				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
-				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+				cy.get('[data-path="folders-only/images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="folders-only/images-and-folders/400x500.png"]').should('be.visible');
 			});
 		});
 

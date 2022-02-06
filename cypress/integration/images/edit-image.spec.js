@@ -344,5 +344,79 @@ describe('edit image', () => {
 				cy.get('[data-path="folders-only/new-filename.png"]').should('exist');
 			});
 		});
+
+		describe('when adding, changing, removing the title', () => {
+			it('updates the alt', () => {
+				cy.visit('/dark.html?folder=images-only');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+				cy.contains('Log In').click();
+
+				// Adding title.
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-title').type('Example');
+				cy.get('#robroy-modal-close').click();
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Image updated successfully.');
+
+				// Hides the modal.
+				cy.get('.robroy-modal').should('not.exist');
+
+				// Updates the alt.
+				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Example');
+
+				// Shows the new alt after a refresh.
+				cy.reload();
+				cy.wait('@getFolders');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Example');
+
+				// Changing title.
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-title').clear().type('Foo');
+				cy.get('#robroy-modal-close').click();
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Image updated successfully.');
+
+				// Hides the modal.
+				cy.get('.robroy-modal').should('not.exist');
+
+				// Updates the alt.
+				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Foo');
+
+				// Shows the new alt after a refresh.
+				cy.reload();
+				cy.wait('@getFolders');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Foo');
+
+				// Removing title.
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('#robroy-input-title').clear();
+				cy.get('#robroy-modal-close').click();
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Image updated successfully.');
+
+				// Hides the modal.
+				cy.get('.robroy-modal').should('not.exist');
+
+				// Updates the alt.
+				cy.get('[data-path="images-only/400x500.png"] img').should('not.have.attr', 'alt');
+
+				// Shows the new alt after a refresh.
+				cy.reload();
+				cy.wait('@getFolders');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+				cy.get('[data-path="images-only/400x500.png"] img').should('not.have.attr', 'alt');
+			});
+		});
 	});
 });

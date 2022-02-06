@@ -1,5 +1,6 @@
 @import '../node_modules/normalize.css/normalize';
 @import 'utilities/variables';
+@import 'base/admin';
 @import 'base/breadcrumb';
 @import 'base/button';
 @import 'base/error';
@@ -22,39 +23,4 @@
 	@media screen and (min-width: $robroy-breakpoint) {
 		margin: #{$robroy-padding-desktop - $robroy-folder-item-margin} $robroy-padding-desktop #{-1 * $robroy-folder-item-margin};
 	}
-}
-
-.robroy-button-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: $robroy-padding-mobile;
-
-	.robroy-button {
-		flex: 1 1 auto;
-	}
-
-	figure & {
-		bottom: 0;
-		left: 0;
-		position: absolute;
-		right: 0;
-	}
-
-	@media screen and (min-width: $robroy-breakpoint) {
-		gap: $robroy-padding-desktop;
-	}
-}
-
-#robroy-admin {
-	margin: $robroy-padding-mobile;
-	width: calc(100% - #{$robroy-padding-mobile * 2});
-
-	@media screen and (min-width: $robroy-breakpoint) {
-		margin: $robroy-padding-desktop;
-		width: calc(100% - #{$robroy-padding-desktop * 2});
-	}
-}
-
-.robroy-button-authenticate {
-	width: 100px;
 }
