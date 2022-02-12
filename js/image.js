@@ -132,7 +132,7 @@ export default class RobroyImage {
 		const $label = document.createElement('label');
 		$label.setAttribute('class', 'robroy-label');
 		$label.setAttribute('for', 'robroy-input-upload');
-		$label.innerText = 'Images';
+		$label.innerText = window.ROBROY.lang.fieldImageImages;
 		$div.appendChild($label);
 
 		const $fileContainer = document.createElement('div');

@@ -50,6 +50,7 @@ export default class Robroy {
 		lang.errorStatus = lang.errorStatus || 'The server returned a %s error.';
 		lang.fieldFolderName = lang.fieldFolderName || 'Name';
 		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
+		lang.fieldImageImages = lang.fieldImageImages || 'Images';
 		lang.fieldImageFilename = lang.fieldImageFilename || 'Filename';
 		lang.fieldImageTitle = lang.fieldImageTitle || 'Title';
 		lang.fieldImageFolder = lang.fieldImageFolder || 'Folder';
