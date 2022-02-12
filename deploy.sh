@@ -16,4 +16,3 @@ deploy_git
 deploy_env "demo/.env.example" "demo/.env"
 deploy_env "demo/public/.htaccess.example" "demo/public/.htaccess"
 deploy_composer "/demo"
-link_csp "/demo/public"
