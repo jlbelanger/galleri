@@ -8,6 +8,7 @@ export default class RobroyApi {
 		args.method = args.method || 'GET';
 
 		const $spinner = RobroySpinner.show();
+		window.ROBROY.state.numRequestsInProgress += 1;
 
 		const req = new XMLHttpRequest();
 		req.onreadystatechange = () => {
@@ -15,7 +16,10 @@ export default class RobroyApi {
 				return;
 			}
 
-			RobroySpinner.hide($spinner);
+			window.ROBROY.state.numRequestsInProgress -= 1;
+			if (window.ROBROY.state.numRequestsInProgress <= 0) {
+				RobroySpinner.hide($spinner);
+			}
 
 			let response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {

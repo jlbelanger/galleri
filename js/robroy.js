@@ -93,6 +93,7 @@ export default class Robroy {
 		this.state = {
 			isLoadingFolder: false,
 			isLoadingImages: false,
+			numRequestsInProgress: 0,
 		};
 		this.currentFolder = null;
 		this.currentImage = null;
