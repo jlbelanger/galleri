@@ -1,7 +1,7 @@
 export default class RobroyUtilities {
 	static addField($container, name, label, type = 'text') {
 		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-field');
+		$div.setAttribute('class', `robroy-field robroy-field--${type}`);
 		$div.setAttribute('id', `robroy-field-${name}`);
 		$container.appendChild($div);
 

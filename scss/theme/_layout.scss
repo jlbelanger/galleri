@@ -10,7 +10,7 @@ $robroy-header-text-color: $robroy-lightest !default;
 
 $robroy-paragraph-margin: 20px !default;
 
-$robroy-max-width: 1600px !default;
+$robroy-max-width: (($robroy-image-width + $robroy-padding-desktop) * 3) + $robroy-image-width + ($robroy-padding-desktop * 2) !default;
 
 * {
 	box-sizing: border-box;

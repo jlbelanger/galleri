@@ -7,11 +7,14 @@
 
 	&.robroy-grid {
 		grid-auto-rows: 1px;
-		grid-template-columns: repeat(auto-fill, minmax($robroy-image-width, 1fr));
 	}
 
 	&:empty {
 		display: none;
+	}
+
+	@media screen and (max-width: #{($robroy-image-width * 2) + ($robroy-padding-mobile * 3)}) {
+		justify-content: center;
 	}
 
 	@media screen and (min-width: $robroy-breakpoint) {
@@ -21,12 +24,9 @@
 }
 
 .robroy-figure {
+	background: $robroy-darker;
 	margin: 0;
 	position: relative;
-
-	.robroy-grid & {
-		opacity: 0;
-	}
 }
 
 .robroy-link {
@@ -39,8 +39,15 @@
 		background-size: cover;
 		bottom: 0;
 		left: 0;
+		opacity: 0;
+		position: absolute;
 		right: 0;
 		top: 0;
+		transition: opacity 200ms ease-in-out;
+	}
+
+	&.robroy-show {
+		opacity: 1;
 	}
 }
 
