@@ -3,7 +3,7 @@
 namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Helpers\Api;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
@@ -20,20 +20,7 @@ class Images
 	 */
 	public static function get() : array
 	{
-		$parent = Input::get('parent', ['default' => null]);
-		if ($parent === null) {
-			$images = Image::all();
-		} else {
-			Folder::validateId($parent, 'Parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $parent)) {
-				throw new ApiException('This folder does not exist.');
-			}
-			$images = Image::allInFolder($parent);
-		}
-		$number = Input::get(['page', 'number'], ['default' => 1, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
-		$size = Input::get(['page', 'size'], ['default' => 10, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
-
-		return Api::paginate($images, $number, $size);
+		return Image::all();
 	}
 
 	/**
@@ -53,7 +40,7 @@ class Images
 			$tempPath = Input::file(['upload', 'tmp_name', $i]);
 			$error = Input::file(['upload', 'error', $i], ['default' => 0, 'filter' => FILTER_SANITIZE_NUMBER_INT]);
 
-			$image = Image::upload($folder, $name, $tempPath, $error);
+			$image = Image::create($folder, $name, $tempPath, $error);
 			$images[] = $image->json();
 		}
 
@@ -61,7 +48,7 @@ class Images
 	}
 
 	/**
-	 * Updates an existing folder.
+	 * Updates an existing image.
 	 *
 	 * @return array
 	 */
@@ -73,26 +60,38 @@ class Images
 		}
 		Image::validateId($id, 'ID');
 
-		$input = Input::json();
+		$image = Image::get($id);
+		if (!$image) {
+			throw new ApiException('Image "' . $id . '" does not exist.');
+		}
+
+		$input = Input::json(['filter' => ['title' => false]]);
+
 		if (empty($input['filename'])) {
-			throw new ApiException('Filename is required.');
+			throw ValidationException::new(['filename' => ['This field is required.']]);
 		}
 		if (strpos($input['filename'], '/') !== false) {
-			throw new ApiException('Filename cannot contain slashes.');
+			throw ValidationException::new(['filename' => ['Filename cannot contain slashes.']]);
 		}
 		$input['filename'] = Utilities::normalizeFilename($input['filename']);
-		Image::validateId($input['filename'], 'Filename');
+		Image::validateId($input['filename'], 'Filename', 'filename');
+
 		if (!isset($input['folder'])) {
 			$input['folder'] = '';
 		}
-		Folder::validateId($input['folder'], 'Folder');
+		Folder::validateId($input['folder'], 'Folder', 'folder');
 		if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['folder'])) {
-			throw new ApiException('Folder "' . $input['folder'] . '" does not exist.');
+			throw ValidationException::new(['folder' => ['Folder "' . $input['folder'] . '" does not exist.']]);
+		}
+
+		if (!isset($input['title'])) {
+			$input['title'] = '';
+		} else {
+			$input['title'] = trim($input['title']);
 		}
 
 		$newName = trim($input['folder'] . '/' . $input['filename'], '/');
-		$image = new Image($id);
-		$image->rename($newName);
+		$image->update($newName, $input);
 
 		return ['data' => $image->json()];
 	}
@@ -104,13 +103,13 @@ class Images
 	 */
 	public static function delete() : void
 	{
-		$path = Input::get('path');
-		if (!$path) {
-			throw new ApiException('Path is required.');
+		$id = Input::get('id');
+		if (!$id) {
+			throw new ApiException('ID is required.');
 		}
-		Image::validateId($path, 'Path');
+		Image::validateId($id, 'ID');
 
-		$image = new Image($path);
+		$image = new Image($id);
 		$image->delete();
 	}
 }

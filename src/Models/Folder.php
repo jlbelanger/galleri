@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Models;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Cache;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
@@ -12,16 +13,25 @@ class Folder
 {
 	private $id;
 
-	private $name;
+	private $attributes;
 
 	/**
-	 * @param string $id   Eg. 'foo/bar/example-name'.
-	 * @param string $name Eg. 'Example Name'.
+	 * @param string $id         Eg. 'foo/bar/example-name'.
+	 * @param array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 */
-	public function __construct(string $id, string $name = '')
+	public function __construct(string $id, array $attributes = [])
 	{
 		$this->id = trim($id, '/');
-		$this->name = $name ? $name : Utilities::pathToName($id);
+
+		$this->attributes = $attributes;
+		if (empty($this->attributes['name'])) {
+			$this->attributes['name'] = Utilities::pathToName($this->id);
+		}
+
+		if (empty($this->attributes['parent'])) {
+			$pathinfo = pathinfo($this->id);
+			$this->attributes['parent'] = $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'];
+		}
 	}
 
 	/**
@@ -32,39 +42,41 @@ class Folder
 	 */
 	public static function all(bool $useCache = true) : array
 	{
-		$folder = Constant::get('JSON_PATH');
 		$filename = 'folders.json';
-		$output = $useCache ? Cache::get($folder, $filename) : null;
+		$output = $useCache ? Cache::get($filename) : null;
 		if ($output === null) {
-			$folders = Filesystem::getFolders();
-			ksort($folders);
-			$output = ['data' => $folders];
-			Cache::set($folder, $filename, $output);
+			$rows = Filesystem::getFolders();
+			ksort($rows);
+			$output = ['data' => $rows];
+			Cache::set($filename, $output);
 		}
 		return $output;
 	}
 
 	/**
-	 * @param  string $id       Eg. 'example-name'.
-	 * @param  string $name     Eg. 'Example Name'.
-	 * @param  string $parentId Eg. 'foo/bar'.
+	 * Creates a new folder.
+	 *
+	 * @param  string $id         Eg. 'example-name'.
+	 * @param  array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 * @return Folder
 	 */
-	public static function create(string $id, string $name, string $parentId) : self
+	public static function create(string $id, array $attributes) : self
 	{
-		$fullId = trim($parentId . '/' . $id, '/');
+		$fullId = trim($attributes['parent'] . '/' . $id, '/');
 		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $fullId;
 
 		Filesystem::createFolder($fullPath);
 		Filesystem::createFolder($fullPath . '/' . Constant::get('THUMBNAILS_FOLDER'));
 
-		$folder = new self($fullId, $name);
+		$folder = new self($fullId, $attributes);
 		$folder->updateCache();
 
 		return $folder;
 	}
 
 	/**
+	 * Deletes an existing folder.
+	 *
 	 * @return void
 	 */
 	public function delete() : void
@@ -75,6 +87,21 @@ class Folder
 	}
 
 	/**
+	 * Deletes a folder from the cache.
+	 *
+	 * @return void
+	 */
+	public function deleteFromCache() : void
+	{
+		$filename = 'folders.json';
+		$data = Cache::get($filename);
+		unset($data['data'][$this->id]);
+		Cache::set($filename, $data);
+	}
+
+	/**
+	 * Gets an existing folder's data.
+	 *
 	 * @param  string $id
 	 * @return Folder|null
 	 */
@@ -84,69 +111,64 @@ class Folder
 		if (empty($data['data'][$id])) {
 			return null;
 		}
-		return new self($id, $data['data'][$id]['attributes']['name']);
+		$attributes = !empty($data['data'][$id]['attributes']) ? $data['data'][$id]['attributes'] : [];
+		return new self($id, $attributes);
 	}
 
 	/**
-	 * @return void
+	 * Returns all data about this folder.
+	 *
+	 * @return array
 	 */
-	public static function refreshCache() : void
+	public function json() : array
 	{
-		self::all(false);
+		return [
+			'id' => $this->id,
+			'attributes' => $this->attributes,
+		];
 	}
 
 	/**
-	 * @param  string $parentId Eg. 'foo/bar'.
-	 * @param  string $name     Eg. 'Example'.
+	 * Updates an existing folder.
+	 *
+	 * @param  string $newId      Eg. 'foo/bar/example-name'.
+	 * @param  array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
 	 * @return void
 	 */
-	public function rename(string $parentId, string $name) : void
+	public function update(string $newId, array $attributes) : void
 	{
-		$newId = trim($parentId . '/' . Utilities::nameToSlug($name), '/');
-		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException('Name cannot be the same as the thumbnails folder.');
-		}
-
+		$oldId = $this->id;
 		if ($this->id !== $newId) {
 			Filesystem::renameFolder($this->id, $newId);
-			$oldId = $this->id;
 			$this->id = $newId;
-			$this->name = $name;
-			$this->updateCache($oldId, $newId);
-		} elseif ($this->name !== $name) {
-			$this->name = $name;
+			Image::updateFoldersInCache($oldId, $newId);
+		}
+
+		$this->attributes = $attributes;
+
+		if ($oldId === $newId) {
 			$this->updateCache();
+		} else {
+			$this->updateCache($oldId);
 		}
 	}
 
 	/**
-	 * @return void
-	 */
-	public function deleteFromCache() : void
-	{
-		$folder = Constant::get('JSON_PATH');
-		$filename = 'folders.json';
-		$data = Cache::get($folder, $filename);
-		unset($data['data'][$this->id]);
-		Cache::set($folder, $filename, $data);
-	}
-
-	/**
+	 * Updates a folder in the cache.
+	 *
 	 * @param  string $oldId
-	 * @param  string $newId
-	 * @return void
+	 * @return array
 	 */
-	public function updateCache(string $oldId = '', string $newId = '') : void
+	public function updateCache(string $oldId = '') : array
 	{
-		$folder = Constant::get('JSON_PATH');
 		$filename = 'folders.json';
-		$data = Cache::get($folder, $filename);
+		$data = Cache::get($filename);
 		$data['data'][$this->id] = $this->json();
 		if ($oldId) {
 			unset($data['data'][$oldId]);
 			foreach ($data['data'] as $id => $value) {
 				if (strpos($id, $oldId . '/') === 0) {
-					$newChildId = preg_replace('/^' . str_replace('/', '\/', $oldId) . '\//', $newId . '/', $id);
+					$newChildId = preg_replace('/^' . str_replace('/', '\/', $oldId) . '\//', $this->id . '/', $id);
 					$value['id'] = $newChildId;
 					$data['data'][$newChildId] = $value;
 					unset($data['data'][$id]);
@@ -154,43 +176,41 @@ class Folder
 			}
 		}
 		ksort($data['data']);
-		Cache::set($folder, $filename, $data);
+		Cache::set($filename, $data);
+		return $data;
 	}
 
 	/**
-	 * @return array
-	 */
-	public function json() : array
-	{
-		return [
-			'id' => $this->id,
-			'attributes' => [
-				'name' => $this->name,
-			],
-		];
-	}
-
-	/**
+	 * Checks if the given ID is valid.
+	 *
 	 * @param  string $id
 	 * @param  string $type
+	 * @param  string $attribute
 	 * @return void
 	 */
-	public static function validateId(string $id, string $type = 'Folder') : void
+	public static function validateId(string $id, string $type = 'Folder', string $attribute = '') : void
 	{
 		if ($id === '') {
 			return;
 		}
+
+		$message = '';
 		if (trim($id, '/') !== $id) {
-			throw new ApiException($type . ' cannot begin or end with slashes.');
+			$message = $type . ' cannot begin or end with slashes.';
+		} elseif ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			$message = $type . ' cannot be the same as the thumbnails folder.';
+		} elseif (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
+			$message = $type . ' cannot end in the thumbnails folder.';
+		} elseif (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
+			$message = $type . ' contains invalid characters.';
 		}
-		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException($type . ' cannot be the same as the thumbnails folder.');
-		}
-		if (!preg_match('/^[a-z0-9\/-]+$/', $id)) {
-			throw new ApiException($type . ' contains invalid characters.');
-		}
-		if (preg_match('/(^|\/)' . str_replace('/', '\/', Constant::get('THUMBNAILS_FOLDER')) . '$/', $id)) {
-			throw new ApiException($type . ' cannot end in the thumbnails folder.');
+
+		if ($message) {
+			if ($attribute) {
+				throw ValidationException::new([$attribute => [$message]]);
+			} else {
+				throw new ApiException($message);
+			}
 		}
 	}
 }

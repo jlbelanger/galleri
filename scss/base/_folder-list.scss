@@ -1,0 +1,27 @@
+#robroy-folders {
+	display: flex;
+	flex-wrap: wrap;
+	line-height: 1;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	&:empty {
+		display: none;
+	}
+}
+
+.robroy-folder {
+	margin: $robroy-folder-item-margin 0;
+
+	&::after {
+		color: $robroy-folder-item-dot-color;
+		content: $robroy-folder-item-dot-icon;
+		margin: 0 $robroy-folder-item-margin;
+	}
+
+	&:last-of-type::after {
+		content: '';
+		margin: 0;
+	}
+}

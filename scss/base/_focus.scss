@@ -1,0 +1,15 @@
+.robroy-button,
+.robroy-input,
+.robroy-link,
+.robroy-select {
+	&:focus {
+		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+		outline: none;
+	}
+}
+
+.robroy-file-container {
+	&:focus-within {
+		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+	}
+}

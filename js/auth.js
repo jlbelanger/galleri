@@ -1,5 +1,4 @@
 import RobroyApi from './api';
-import RobroyEmpty from './empty';
 import RobroyFolder from './folder';
 import RobroyImage from './image';
 import RobroyModal from './modal';
@@ -7,10 +6,10 @@ import RobroyUtilities from './utilities';
 
 export default class RobroyAuth {
 	static init() {
-		if (!window.ROBROY.auth) {
+		if (!window.ROBROY.elements.$authenticateButton) {
 			return;
 		}
-		window.ROBROY.auth.addEventListener('click', () => { RobroyAuth.authenticate(); });
+		window.ROBROY.elements.$authenticateButton.addEventListener('click', () => { RobroyAuth.authenticate(); });
 		RobroyAuth.handleAuthentication();
 	}
 
@@ -25,8 +24,7 @@ export default class RobroyAuth {
 	static logout() {
 		if (window.navigator.userAgent.indexOf('Safari') > -1) {
 			// Safari shows the login screen again if we try to make an invalid request.
-			window.localStorage.clear();
-			RobroyAuth.handleLogout();
+			RobroyAuth.logoutCallback();
 			return;
 		}
 
@@ -38,13 +36,20 @@ export default class RobroyAuth {
 		].join('');
 		RobroyApi.request({
 			method: 'DELETE',
-			url: url,
+			url,
 			noParse: true,
 			callback: () => {
-				window.localStorage.clear();
-				RobroyAuth.handleLogout();
+				RobroyAuth.logoutCallback();
+			},
+			errorCallback: () => {
+				RobroyAuth.logoutCallback();
 			},
 		});
+	}
+
+	static logoutCallback() {
+		window.localStorage.clear();
+		RobroyAuth.handleLogout();
 	}
 
 	static login() {
@@ -54,10 +59,10 @@ export default class RobroyAuth {
 			noParse: true,
 			callback: (_response, status) => {
 				if (status !== 204) {
-					RobroyModal.show('Error: Invalid username or password.');
+					RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorInvalidUsername);
 					return;
 				}
-				window.localStorage.setItem('authenticated', true);
+				window.localStorage.setItem(window.ROBROY.args.localStorageKey, true);
 				this.handleLogin();
 			},
 		});
@@ -72,42 +77,83 @@ export default class RobroyAuth {
 	}
 
 	static handleLogin() {
-		window.ROBROY.auth.innerText = 'Log Out';
+		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logOut;
 
-		const images = RobroyEmpty.getImages();
-		images.forEach((container) => {
-			RobroyImage.addEditControls(container);
+		document.body.classList.add('robroy-is-admin');
+
+		RobroyAuth.addAdminBar();
+
+		RobroyImage.getImages().forEach(($container) => {
+			RobroyImage.addAdminControls($container);
 		});
 
-		RobroyImage.addCreateControl();
-		RobroyFolder.addCreateControl();
-
-		if (window.ROBROY.currentFolderId) {
-			RobroyFolder.addEditControls();
-		}
-
-		let $parentInput = document.getElementById('robroy-create-folder-parent');
-		if ($parentInput) {
-			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolderId);
-		}
-
-		$parentInput = document.getElementById('robroy-edit-folder-parent');
-		if ($parentInput) {
-			RobroyFolder.addFolderOptions($parentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
-		}
+		RobroyUtilities.callback('afterLogin');
 	}
 
 	static handleLogout() {
-		window.ROBROY.auth.innerText = 'Log In';
+		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logIn;
+
+		document.body.classList.remove('robroy-is-admin');
 
 		let $elems = document.querySelectorAll('.robroy-admin');
 		$elems.forEach((elem) => {
-			elem.parentNode.removeChild(elem);
+			elem.remove();
 		});
 
-		$elems = document.querySelectorAll('.robroy-link');
-		$elems.forEach((elem) => {
-			elem.style.pointerEvents = '';
-		});
+		if (window.ROBROY.args.removePointerEventsOnLogin) {
+			$elems = document.querySelectorAll('.robroy-link');
+			$elems.forEach(($elem) => {
+				$elem.removeAttribute('tabindex');
+				$elem.style.pointerEvents = '';
+			});
+		}
+
+		RobroyUtilities.callback('afterLogout');
+	}
+
+	static addAdminBar() {
+		const $div = document.createElement('div');
+		$div.setAttribute('class', 'robroy-admin robroy-button-container');
+		$div.setAttribute('id', 'robroy-admin');
+		window.ROBROY.elements.$container.prepend($div);
+
+		const $uploadButton = document.createElement('button');
+		$uploadButton.setAttribute('class', 'robroy-button');
+		$uploadButton.setAttribute('id', 'robroy-create-image');
+		$uploadButton.setAttribute('type', 'button');
+		$uploadButton.innerText = window.ROBROY.lang.uploadImage;
+		$uploadButton.addEventListener('click', RobroyImage.showCreateForm);
+		$div.append($uploadButton);
+
+		const $createButton = document.createElement('button');
+		$createButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+		$createButton.setAttribute('id', 'robroy-create-folder');
+		$createButton.setAttribute('type', 'button');
+		$createButton.innerText = window.ROBROY.lang.createFolder;
+		$createButton.addEventListener('click', RobroyFolder.showCreateForm);
+		$div.append($createButton);
+
+		if (window.ROBROY.currentFolder.id) {
+			const $editButton = document.createElement('button');
+			$editButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+			$editButton.setAttribute('id', 'robroy-edit-folder');
+			$editButton.setAttribute('type', 'button');
+			$editButton.innerText = window.ROBROY.lang.editFolder;
+			$editButton.addEventListener('click', RobroyFolder.showEditForm);
+			$div.append($editButton);
+
+			const $deleteButton = document.createElement('button');
+			$deleteButton.setAttribute('class', 'robroy-button robroy-button--danger');
+			$deleteButton.setAttribute('id', 'robroy-delete-folder');
+			$deleteButton.setAttribute('type', 'button');
+			$deleteButton.innerText = window.ROBROY.lang.deleteFolder;
+			if (!RobroyUtilities.isEmpty()) {
+				$deleteButton.style.display = 'none';
+			}
+			$deleteButton.addEventListener('click', RobroyFolder.delete);
+			$div.append($deleteButton);
+		}
+
+		RobroyUtilities.modifier('adminBar', { element: $div });
 	}
 }

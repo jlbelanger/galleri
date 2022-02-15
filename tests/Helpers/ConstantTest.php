@@ -65,7 +65,7 @@ class ConstantTest extends TestCase
 	{
 		if (!empty($args['expectedMessage'])) {
 			$this->expectException(ApiException::class);
-			$this->expectExceptionMessage($args['expectedMessage']);
+			$this->expectExceptionMessageSame($args['expectedMessage']);
 		} else {
 			$this->expectNotToPerformAssertions();
 		}

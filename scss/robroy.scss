@@ -1,42 +1,26 @@
 @import '../node_modules/normalize.css/normalize';
 @import 'utilities/variables';
+@import 'base/admin';
 @import 'base/breadcrumb';
 @import 'base/button';
-@import 'base/list';
+@import 'base/error';
+@import 'base/file';
+@import 'base/focus';
+@import 'base/folder-list';
+@import 'base/heading';
+@import 'base/image-list';
+@import 'base/input';
+@import 'base/label';
 @import 'base/modal';
 @import 'base/spinner';
-@import 'base/upload';
+@import 'base/toast';
 
-.robroy-fields {
-	.robroy-label {
-		display: inline-block;
-		margin-right: 0;
-		margin-top: 20px;
+// TODO: Clean up.
+
+#robroy-folders {
+	margin: #{$robroy-padding-mobile - $robroy-folder-item-margin} $robroy-padding-mobile;
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin: #{$robroy-padding-desktop - $robroy-folder-item-margin} $robroy-padding-desktop #{-1 * $robroy-folder-item-margin};
 	}
-
-	.robroy-select,
-	.robroy-input {
-		background: $modal-input-background-color;
-		display: block;
-		margin-right: 0;
-		margin-top: 8px;
-		width: 100%;
-	}
-}
-
-.robroy-error {
-	color: $red;
-	display: block;
-	font-size: 16px;
-	margin-top: 8px;
-}
-
-.robroy-has-error {
-	box-shadow: 0 0 0 2px $red;
-}
-
-#robroy-create-folder-name,
-#robroy-edit-folder-name,
-#robroy-edit-folder-form {
-	width: 100%;
 }

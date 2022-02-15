@@ -1,20 +1,19 @@
 .robroy-button {
 	appearance: none;
-	background-color: $button-background-color;
+	background-color: $robroy-button-background-color;
 	border: 0;
-	color: $button-text-color;
+	color: $robroy-button-text-color;
 	cursor: pointer;
 	display: block;
-	font-size: $button-font-size;
+	font-size: $robroy-button-font-size;
 	line-height: 1;
 	margin: 0;
-	padding: $button-padding;
-	white-space: nowrap;
+	padding: $robroy-button-padding;
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $button-background-color-hover;
+		background-color: $robroy-button-background-color-hover;
 	}
 
 	.robroy-figure & {
@@ -23,32 +22,23 @@
 }
 
 .robroy-button--danger {
-	background-color: $button-danger-background-color;
-	color: $button-danger-text-color;
+	background-color: $robroy-button-danger-background-color;
+	color: $robroy-button-danger-text-color;
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $button-danger-background-color-hover;
+		background-color: $robroy-button-danger-background-color-hover;
 	}
 }
 
 .robroy-button--secondary {
-	background-color: $button-secondary-background-color;
-	color: $button-secondary-text-color;
+	background-color: $robroy-button-secondary-background-color;
+	color: $robroy-button-secondary-text-color;
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $button-secondary-background-color-hover;
+		background-color: $robroy-button-secondary-background-color-hover;
 	}
-}
-
-.robroy-button-container {
-	bottom: 0;
-	display: flex;
-	justify-content: space-between;
-	left: 0;
-	position: absolute;
-	right: 0;
 }

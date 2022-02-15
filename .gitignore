@@ -1,6 +1,5 @@
 .DS_Store
 .phpunit.result.cache
-csp.php
 cypress/fixtures/current
 cypress.env.json
 cypress.json

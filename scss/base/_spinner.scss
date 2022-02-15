@@ -2,6 +2,7 @@
 	align-items: center;
 	bottom: 0;
 	display: flex;
+	font-size: 0;
 	justify-content: center;
 	left: 0;
 	position: fixed;
@@ -10,14 +11,14 @@
 
 	&::after {
 		animation: robroy-spin 2s infinite linear;
-		border-color: $spinner-color $spinner-color $spinner-color $spinner-color-alternate;
+		border-color: $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color-alternate;
 		border-radius: 1000px;
 		border-style: solid;
-		border-width: 12px;
+		border-width: $robroy-spinner-thickness;
 		content: '';
 		display: block;
-		height: 60px;
-		width: 60px;
+		height: $robroy-spinner-size;
+		width: $robroy-spinner-size;
 	}
 }
 

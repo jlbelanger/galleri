@@ -12,8 +12,8 @@
 		<main>
 			<header id="header">
 				<div class="contain" id="header-inner">
-					<h1 id="title">Robroy Photo Gallery Demo - By Date</h1>
-					<button class="robroy-button robroy-button--secondary" data-action="authenticate" type="button"></button>
+					<a href="/all.html" id="title">Robroy Photo Gallery Demo - By Date</a>
+					<button class="robroy-button robroy-button--secondary robroy-button-authenticate" data-action="authenticate" type="button"></button>
 				</div>
 			</header>
 			<article>
@@ -25,53 +25,44 @@
 				</div>
 			</footer>
 		</main>
+		<div class="robroy-spinner" role="alert">Loading...</div>
 		<script src="/robroy.min.js"></script>
 		<script src="https://unpkg.com/fslightbox@3.1.0/index.js" integrity="sha384-HpFPRJTv1hMt/0XGUpq+/fMLpT+t4E8MwBd77nggUDvbEuBGnv5TV+ZIxW0TvHfX" crossorigin="anonymous"></script>
 		<script>
 		Robroy.default.init({
-			// Required. The selector for the element where the images will be loaded.
-			selector: '#robroy',
-
-			// Optional. Specify an alternate path for the API PHP file.
-			apiPath: '/api.php',
-			apiFoldersPath: '/json/folders.json',
-
-			// Optional. Add additional attributes to image elements. (eg. The fslightbox plugin requires an attribute on the link elements.)
-			attributes: {
-				a: {
-					'data-fslightbox': '',
-				},
-				figure: {},
-				img: {},
-			},
-
-			// Optional. If you want something to happen after an image has been added or removed from the grid, use a callback function.
 			callbacks: {
-				afterCreateImage: () => { refreshFsLightbox(); },
-				afterCreateFolder: () => {},
-				afterDeleteImage: () => { refreshFsLightbox(); },
-				afterDeleteFolder: () => {},
-				afterEditFolder: () => {},
-				afterEditImage: () => { refreshFsLightbox(); },
-				afterLoadImage: () => { refreshFsLightbox(); },
-				afterLoadFolder: () => {},
+				afterCreateImage: ({ image }) => { refreshFsLightbox(); },
+				afterCreateFolder: ({ folder }) => {},
+				afterDeleteImage: ({ id }) => { refreshFsLightbox(); },
+				afterDeleteFolder: ({ id }) => {},
+				afterEditFolder: ({ folder }) => {},
+				afterEditImage: ({ image }) => { refreshFsLightbox(); },
+				afterLoadImage: ({ element }) => {},
+				afterLoadImages: ({ images }) => { refreshFsLightbox(); },
+				afterLoadFolder: ({ folder }) => {},
+				afterLogin: () => {},
+				afterLogout: () => {},
+				afterUpdateImage: ({ element, image }) => {},
 			},
 
-			// Optional.
-			metaTitleSeparator: ' | ',
+			enableGrid: true,
 
-			// Optional.
+			modifiers: {
+				breadcrumbList: ({ element }) => {},
+				breadcrumbItem: ({ element, folder }) => {},
+				folderItem: ({ element }) => {},
+				folderForm: ({ element }) => {},
+				folderCreateForm: ({ element }) => {},
+				folderEditForm: ({ element }) => {},
+				imageEditForm: ({ element }) => {},
+				imageItem: ({ element }) => {
+					element.querySelector('a').setAttribute('data-fslightbox', true);
+				},
+				modal: ({ element }) => {},
+				spinner: ({ element }) => {},
+			},
+
 			showAllImages: true,
-
-			// Optional. The top-level folder name shown in the breadcrumb.
-			rootFolderName: 'Home',
-
-			// Optional. The number of images to load each time the user reaches the end of the list.
-			pageSize: 8,
-
-			// Optional. The text used for displaying the number of images on each page.
-			singularImageText: 'image',
-			pluralImageText: 'images',
 		});
 		</script>
 	</body>

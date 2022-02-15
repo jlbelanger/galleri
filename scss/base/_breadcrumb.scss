@@ -1,20 +1,28 @@
 .robroy-breadcrumb {
 	display: flex;
 	flex-wrap: wrap;
+	line-height: 1;
 	list-style: none;
-	margin: $padding-mobile;
+	margin: 0 $robroy-padding-mobile;
 	padding: 0;
 
-	@media screen and (min-width: $breakpoint) {
-		margin: $padding-desktop;
+	@media screen and (min-width: $robroy-breakpoint) {
+		margin: 0 $robroy-padding-desktop;
 	}
 }
 
-.robroy-breadcrumb-item + .robroy-breadcrumb-item {
-	&::before {
-		color: $breadcrumb-item-arrow-color;
-		content: '\203a'; // &rsaquo;
-		margin-left: 8px;
-		margin-right: 8px;
+.robroy-breadcrumb-item {
+	margin: $robroy-breadcrumb-item-margin 0;
+
+	&::after {
+		color: $robroy-breadcrumb-item-arrow-color;
+		content: $robroy-breadcrumb-icon;
+		margin-left: $robroy-breadcrumb-padding;
+		margin-right: $robroy-breadcrumb-padding;
+	}
+
+	&:last-of-type::after {
+		content: '';
+		margin: 0;
 	}
 }

@@ -51,6 +51,7 @@
 		<exclude name="Squiz.Files.FileExtension.ClassFound" />
 		<exclude name="Squiz.Formatting.OperatorBracket.MissingBrackets" />
 		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace" />
+		<exclude name="Squiz.Objects.ObjectInstantiation.NotAssigned" />
 		<exclude name="Squiz.Operators.ComparisonOperatorUsage.ImplicitTrue" />
 		<exclude name="Squiz.Operators.ComparisonOperatorUsage.NotAllowed" />
 		<exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedBool" />
@@ -102,6 +103,10 @@
 	</rule>
 
 	<rule ref="Generic.Arrays.ArrayIndent.CloseBraceNotNewLine">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic.Files.LineLength.MaxExceeded">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 

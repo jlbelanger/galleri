@@ -13,15 +13,32 @@ describe('edit folder', () => {
 		cy.resetPaths();
 	});
 
-	describe('when not making any changes', () => {
-		it('shows an error', () => {
+	describe('when clicking the cancel button', () => {
+		it('closes the popup', () => {
 			cy.visit('/dark.html?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
-			cy.wait('@getImagesSubfolder');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
 			cy.contains('Log In').click();
-			cy.get('#robroy-edit-submit').click();
-			cy.get('.robroy-modal-text').should('have.text', 'Nothing to update.');
+			cy.get('#robroy-edit-folder').click();
+			cy.get('#robroy-modal-cancel').click();
+			cy.get('.robroy-modal').should('not.exist');
+		});
+	});
+
+	describe('when not making any changes', () => {
+		it('closes the popup', () => {
+			cy.visit('/dark.html?folder=folders-only/subfolder');
+			cy.wait('@getFolders');
+			cy.wait('@getFolders2');
+			cy.wait('@getImages');
+			cy.wait('@getImages2');
+			cy.contains('Log In').click();
+			cy.get('#robroy-edit-folder').click();
+			cy.get('#robroy-modal-close').click();
+			cy.get('.robroy-modal').should('not.exist');
+			cy.get('.robroy-toast-text').should('have.text', 'Nothing to save.');
 		});
 	});
 
@@ -31,11 +48,14 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear();
-				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Please enter a name.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear();
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -44,12 +64,15 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear();
-				cy.get('#robroy-edit-folder-parent').select('');
-				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Please enter a name.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear();
+				cy.get('#robroy-input-parent').select('');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -58,11 +81,30 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('Subfolder 2');
-				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "folders-only/subfolder-2" already exists.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('Subfolder 2');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "folders-only/subfolder-2" already exists.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
+			});
+		});
+
+		describe('when changing the name to the thumbnails folder', () => {
+			it('shows an error', () => {
+				cy.visit('/dark.html?folder=folders-only/subfolder');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+				cy.contains('Log In').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('Thumbnails');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Name cannot be the same as the thumbnails folder.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 
@@ -71,11 +113,14 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
-				cy.get('.robroy-modal-text').should('have.text', 'Error: Folder "images-and-folders/subfolder" already exists.');
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
+				cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "images-and-folders/subfolder" already exists.');
+				cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 			});
 		});
 	});
@@ -90,14 +135,54 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('New Name');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-modal-close').click();
 
 				// Redirects.
 				cy.location('pathname').should('eq', '/dark.html');
 				cy.location('search').should('eq', '?folder=folders-only/new-name');
+			});
+		});
+
+		describe('when changing the name for a folder with images and folders', () => {
+			it('redirects to the new URL', () => {
+				cy.visit('/dark.html?folder=images-and-folders');
+				cy.wait('@getFolders');
+				cy.wait('@getFolders2');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
+
+				// Shows the folders.
+				const items = ['Subfolder'];
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+
+				cy.contains('Log In').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-modal-close').click();
+
+				// Redirects.
+				cy.location('pathname').should('eq', '/dark.html');
+				cy.location('search').should('eq', '?folder=new-name');
+
+				// Shows the folders.
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="new-name/400x400.png"]').should('be.visible');
+				cy.get('[data-path="new-name/400x500.png"]').should('be.visible');
 			});
 		});
 
@@ -107,10 +192,12 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
@@ -125,10 +212,12 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
@@ -143,14 +232,35 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=images-and-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
+				cy.wait('@getImages2');
+
+				// Shows the folders.
+				const items = ['Subfolder'];
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="images-and-folders/400x500.png"]').should('be.visible');
+
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-parent').select('Folders Only');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-parent').select('Folders Only');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
 				cy.location('pathname').should('eq', '/dark.html');
 				cy.location('search').should('eq', '?folder=folders-only/images-and-folders');
+				// Shows the folders.
+				cy.get('.robroy-folder-link').each((item, index) => {
+					cy.wrap(item).should('have.text', items[index]);
+				});
+
+				// Shows the images.
+				cy.get('[data-path="folders-only/images-and-folders/400x400.png"]').should('be.visible');
+				cy.get('[data-path="folders-only/images-and-folders/400x500.png"]').should('be.visible');
 			});
 		});
 
@@ -160,11 +270,13 @@ describe('edit folder', () => {
 				cy.visit('/dark.html?folder=folders-only/subfolder-2');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
-				cy.wait('@getImagesSubfolder');
+				cy.wait('@getImages');
+				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('#robroy-edit-folder-name').clear().type('New Name');
-				cy.get('#robroy-edit-folder-parent').select('Images And Folders');
-				cy.get('#robroy-edit-submit').click();
+				cy.get('#robroy-edit-folder').click();
+				cy.get('#robroy-input-name').clear().type('New Name');
+				cy.get('#robroy-input-parent').select('Images And Folders');
+				cy.get('#robroy-modal-close').click();
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.

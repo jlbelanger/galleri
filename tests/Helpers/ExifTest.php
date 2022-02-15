@@ -7,6 +7,11 @@ use Tests\TestCase;
 
 class ExifTest extends TestCase
 {
+	public function testGet() : void
+	{
+		$this->markTestIncomplete();
+	}
+
 	public function existsProvider() : array
 	{
 		return [

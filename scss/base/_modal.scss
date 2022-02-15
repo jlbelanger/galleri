@@ -1,6 +1,6 @@
 .robroy-modal {
 	align-items: center;
-	background: $modal-container-background-color;
+	background-color: $robroy-modal-container-background-color;
 	bottom: 0;
 	display: flex;
 	justify-content: center;
@@ -8,14 +8,15 @@
 	position: fixed;
 	right: 0;
 	top: 0;
+	z-index: $robroy-modal-zindex;
 }
 
 .robroy-modal-box {
-	background: $modal-background-color;
-	color: $modal-text-color;
-	margin: 32px;
-	max-width: 800px;
-	padding: 32px;
+	background-color: $robroy-modal-background-color;
+	color: $robroy-modal-text-color;
+	margin: $robroy-modal-margin;
+	max-width: $robroy-modal-max-width;
+	padding: $robroy-modal-padding;
 	width: 100%;
 }
 
@@ -26,9 +27,13 @@
 .robroy-modal-options {
 	display: flex;
 	justify-content: center;
-	margin: 20px auto 0;
+	margin: $robroy-modal-button-margin-top auto 0;
 
 	button + button {
-		margin-left: 8px;
+		margin-left: $robroy-modal-button-margin-side;
+	}
+
+	form + & {
+		margin-top: $robroy-field-margin-top;
 	}
 }

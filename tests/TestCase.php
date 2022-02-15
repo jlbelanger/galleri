@@ -43,10 +43,25 @@ abstract class TestCase extends BaseTestCase
 		$this->mocks[] = $mock;
 	}
 
+	protected function callPrivate($obj, string $name, array $args = [])
+	{
+		$class = new \ReflectionClass($obj);
+		$method = $class->getMethod($name);
+		$method->setAccessible(true);
+		return $method->invokeArgs($obj, $args);
+	}
+
+	protected function expectExceptionMessageSame(string $value)
+	{
+		$value = preg_quote($value);
+		$value = str_replace('/', '\/', $value);
+		$this->expectExceptionMessageMatches('/^' . $value . '$/');
+	}
+
 	protected function setupTest(array $args) : void // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 	{
 		if (!empty($args['variables']['_ENV'])) {
-			$_ENV = $args['variables']['_ENV'];
+			$_ENV = array_merge($this->originalEnv, $args['variables']['_ENV']);
 		} else {
 			$_ENV = $this->originalEnv;
 		}
@@ -79,6 +94,9 @@ abstract class TestCase extends BaseTestCase
 			'Jlbelanger\Robroy\Helpers' => [
 				'file_exists' => function ($path) use ($args) {
 					if ($path === '/var/www/robroy/tests/data/folders.json' && !isset($args['folders.json'])) {
+						return false;
+					}
+					if ($path === '/var/www/robroy/tests/data/images.json' && !isset($args['images.json'])) {
 						return false;
 					}
 					return strpos($path, 'does-not-exist') === false;
@@ -118,8 +136,14 @@ abstract class TestCase extends BaseTestCase
 				if ($path === '/var/www/robroy/tests/data/folders.json' && isset($args['folders.json'])) {
 					return $args['folders.json'];
 				}
+				if ($path === '/var/www/robroy/tests/data/images.json' && isset($args['images.json'])) {
+					return $args['images.json'];
+				}
 				if ($path === 'php://input' && isset($args['body'])) {
 					return $args['body'];
+				}
+				if (!empty($args['file_get_contents'])) {
+					return $args['file_get_contents'];
 				}
 				return '';
 			}

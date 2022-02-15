@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Helpers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Models\Folder;
 use Jlbelanger\Robroy\Models\Image;
@@ -10,15 +11,17 @@ use Jlbelanger\Robroy\Models\Image;
 class Filesystem
 {
 	/**
-	 * Returns true if folder exists.
+	 * Copies a file from one location to another.
 	 *
 	 * @param  string $oldPath Eg. '/var/www/foo.png'.
 	 * @param  string $newPath Eg. '/var/www/bar.png'.
-	 * @return boolean
+	 * @return void
 	 */
-	public static function copyFile(string $oldPath, string $newPath) : bool
+	public static function copyFile(string $oldPath, string $newPath) : void
 	{
-		return copy($oldPath, $newPath);
+		if (!copy($oldPath, $newPath)) {
+			throw new ApiException('File "' . basename($oldPath) . '" could not be duplicated.', 500);
+		}
 	}
 
 	/**
@@ -31,7 +34,7 @@ class Filesystem
 	{
 		$folder = basename($path);
 		if (self::fileExists($path)) {
-			throw new ApiException('Folder "' . $folder . '" already exists.');
+			throw ValidationException::new(['name' => ['Folder "' . $folder . '" already exists.']]);
 		}
 
 		if (!mkdir($path)) {
@@ -49,7 +52,7 @@ class Filesystem
 	{
 		$fullPath = Constant::get('UPLOADS_PATH') . '/' . $filename;
 		if (!self::fileExists($fullPath)) {
-			throw new ApiException('File "' . $filename . '" does not exist.');
+			return;
 		}
 
 		if (!unlink($fullPath)) {
@@ -126,6 +129,8 @@ class Filesystem
 	}
 
 	/**
+	 * Returns a list of files in a folder.
+	 *
 	 * @param  string  $parent
 	 * @param  boolean $isRecursive
 	 * @return array
@@ -138,6 +143,7 @@ class Filesystem
 		}
 
 		$output = [];
+		$thumbnailsFolder = Constant::get('THUMBNAILS_FOLDER');
 
 		if ($handle = opendir($fullParentPath)) {
 			while (($filename = readdir($handle)) !== false) {
@@ -145,29 +151,31 @@ class Filesystem
 					continue;
 				}
 				if (self::folderExists($fullParentPath . '/' . $filename)) {
+					if ($filename === $thumbnailsFolder) {
+						continue;
+					}
 					if ($isRecursive) {
 						$output = array_merge($output, self::getFilesInFolder($parent . '/' . $filename, $isRecursive));
+						continue;
 					} else {
 						continue;
 					}
 				}
 
-				$fullPath = trim($parent . '/' . $filename, '/');
-				$image = new Image($fullPath);
-				if (!$image->thumbnailAbsolutePath()) {
-					continue;
-				}
-				$output[$fullPath] = $image;
+				$id = trim($parent . '/' . $filename, '/');
+				$image = new Image($id);
+				$output[$id] = $image->json();
 			}
 
 			closedir($handle);
 		}
 
-		ksort($output);
-		return array_reverse(array_values($output));
+		return $output;
 	}
 
 	/**
+	 * Returns a list of all folders.
+	 *
 	 * @param  string $parent
 	 * @return array
 	 */
@@ -202,16 +210,27 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a file from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
-	 * @return boolean
+	 * @return void
 	 */
-	public static function moveFile(string $oldPath, string $newPath) : bool
+	public static function moveFile(string $oldPath, string $newPath) : void
 	{
-		return move_uploaded_file($oldPath, Constant::get('UPLOADS_PATH') . '/' . $newPath);
+		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
+		if (self::fileExists($fullNewPath)) {
+			throw ValidationException::new(['upload' => ['File "' . basename($fullNewPath) . '" already exists.']]);
+		}
+
+		if (!move_uploaded_file($oldPath, $fullNewPath)) {
+			throw new ApiException('File "' . basename($oldPath) . '" could not be moved.', 500);
+		}
 	}
 
 	/**
+	 * Reads the contents of a file.
+	 *
 	 * @param  string $path
 	 * @return mixed
 	 */
@@ -222,41 +241,48 @@ class Filesystem
 	}
 
 	/**
+	 * Moves a file from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @return void
 	 */
 	public static function renameFile(string $oldPath, string $newPath) : void
 	{
-		self::rename($oldPath, $newPath, 'File');
+		self::rename($oldPath, $newPath, 'File', 'filename');
 	}
 
 	/**
+	 * Moves a folder from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @return void
 	 */
 	public static function renameFolder(string $oldPath, string $newPath) : void
 	{
-		self::rename($oldPath, $newPath, 'Folder');
+		self::rename($oldPath, $newPath, 'Folder', 'name');
 	}
 
 	/**
+	 * Moves a file or folder from one location to another.
+	 *
 	 * @param  string $oldPath
 	 * @param  string $newPath
 	 * @param  string $type
+	 * @param  string $key
 	 * @return void
 	 */
-	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder') : void
+	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder', string $key = 'folder') : void
 	{
 		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
 		if (!self::fileExists($fullOldPath)) {
-			throw new ApiException($type . ' "' . $oldPath . '" does not exist.');
+			throw ValidationException::new([$key => [$type . ' "' . $newPath . '" does not exist.']]);
 		}
 
 		$fullNewPath = Constant::get('UPLOADS_PATH') . '/' . $newPath;
 		if (self::fileExists($fullNewPath)) {
-			throw new ApiException($type . ' "' . $newPath . '" already exists.');
+			throw ValidationException::new([$key => [$type . ' "' . $newPath . '" already exists.']]);
 		}
 
 		if (!rename($fullOldPath, $fullNewPath)) {
@@ -265,6 +291,8 @@ class Filesystem
 	}
 
 	/**
+	 * Writes contents to a file.
+	 *
 	 * @param  string $path
 	 * @param  mixed  $data
 	 * @return boolean

@@ -3,6 +3,7 @@
 namespace Jlbelanger\Robroy\Controllers;
 
 use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Constant;
 use Jlbelanger\Robroy\Helpers\Filesystem;
 use Jlbelanger\Robroy\Helpers\Input;
@@ -31,14 +32,14 @@ class Folders
 		$input = Input::json(['filter' => ['name' => false]]);
 
 		if (empty($input['name'])) {
-			throw new ApiException('Name is required.');
+			throw ValidationException::new(['name' => ['This field is required.']]);
 		}
 		$input['name'] = trim($input['name']);
 
 		if (isset($input['parent'])) {
-			Folder::validateId($input['parent'], 'Parent');
+			Folder::validateId($input['parent'], 'Parent', 'parent');
 			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
-				throw new ApiException('Parent "' . $input['parent'] . '" does not exist.');
+				throw ValidationException::new(['parent' => ['Parent "' . $input['parent'] . '" does not exist.']]);
 			}
 		} else {
 			$input['parent'] = '';
@@ -46,10 +47,10 @@ class Folders
 
 		$id = Utilities::nameToSlug($input['name']);
 		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
-			throw new ApiException('Name cannot be the same as the thumbnails folder.');
+			throw ValidationException::new(['name' => ['Name cannot be the same as the thumbnails folder.']]);
 		}
 
-		$folder = Folder::create($id, $input['name'], $input['parent']);
+		$folder = Folder::create($id, $input);
 
 		return ['data' => $folder->json()];
 	}
@@ -75,26 +76,32 @@ class Folders
 		$input = Input::json(['filter' => ['name' => false]]);
 
 		if (empty($input['name'])) {
-			throw new ApiException('Name is required.');
+			throw ValidationException::new(['name' => ['This field is required.']]);
 		}
 		$input['name'] = trim($input['name']);
 
 		if (isset($input['parent'])) {
-			Folder::validateId($input['parent'], 'Parent');
+			Folder::validateId($input['parent'], 'Parent', 'parent');
 			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
-				throw new ApiException('Parent "' . $input['parent'] . '" does not exist.');
+				throw ValidationException::new(['parent' => ['Parent "' . $input['parent'] . '" does not exist.']]);
 			}
 			if ($input['parent'] === $id) {
-				throw new ApiException('Name and parent cannot be the same.');
+				throw ValidationException::new(['parent' => ['Name and parent cannot be the same.']]);
 			}
 			if (strpos($input['parent'], $id) === 0) {
-				throw new ApiException('Parent cannot be a descendant of name.');
+				throw ValidationException::new(['parent' => ['Parent cannot be a descendant of name.']]);
 			}
 		} else {
 			$input['parent'] = '';
 		}
 
-		$folder->rename($input['parent'], $input['name']);
+		$newId = Utilities::nameToSlug($input['name']);
+		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
+			throw ValidationException::new(['name' => ['Name cannot be the same as the thumbnails folder.']]);
+		}
+
+		$newId = trim($input['parent'] . '/' . $newId, '/');
+		$folder->update($newId, $input);
 
 		return ['data' => $folder->json()];
 	}

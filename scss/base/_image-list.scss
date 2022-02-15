@@ -1,0 +1,61 @@
+#robroy-images {
+	display: grid;
+	grid-gap: $robroy-padding-mobile;
+	grid-template-columns: repeat(auto-fill, $robroy-image-width);
+	justify-content: space-between;
+	margin: $robroy-padding-mobile;
+
+	&.robroy-grid {
+		grid-auto-rows: 1px;
+	}
+
+	&:empty {
+		display: none;
+	}
+
+	@media screen and (max-width: #{($robroy-image-width * 2) + ($robroy-padding-mobile * 3)}) {
+		justify-content: center;
+	}
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		grid-gap: $robroy-padding-desktop;
+		margin: $robroy-padding-desktop;
+	}
+}
+
+.robroy-figure {
+	background: $robroy-darker;
+	margin: 0;
+	position: relative;
+}
+
+.robroy-link {
+	display: block;
+	font-size: 0;
+
+	.robroy-grid & {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		bottom: 0;
+		left: 0;
+		opacity: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transition: opacity 200ms ease-in-out;
+	}
+
+	&.robroy-show {
+		opacity: 1;
+	}
+}
+
+.robroy-img {
+	height: auto;
+	width: 100%;
+
+	.robroy-grid & {
+		opacity: 0;
+	}
+}
