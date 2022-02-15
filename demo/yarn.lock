@@ -1877,7 +1877,7 @@ isstream@~0.1.2:
 
 jlbelanger-robroy@jlbelanger/robroy#master:
   version "1.0.2"
-  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/f070188b4a062ecb4f7a4f09b6472d21c9ec45be"
+  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/bc5676246689677bc32aed15b69c3db73d3fc99b"
   dependencies:
     normalize.css "^8.0.1"
 
