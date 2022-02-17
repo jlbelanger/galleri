@@ -223,6 +223,7 @@ class Image
 			unset($data['data'][$oldId]);
 		}
 		ksort($data['data']);
+		$data['data'] = array_reverse($data['data']);
 		Cache::set($filename, $data);
 	}
 
@@ -266,6 +267,7 @@ class Image
 				}
 			}
 			ksort($data['data']);
+			$data['data'] = array_reverse($data['data']);
 		}
 		Cache::set($filename, $data);
 		return $data;
