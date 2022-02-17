@@ -65,6 +65,7 @@ class Image
 		if ($output === null) {
 			$rows = Filesystem::getFilesInFolder('', true);
 			ksort($rows);
+			$rows = array_reverse($rows);
 			$output = ['data' => $rows];
 			Cache::set($filename, $output);
 		}
