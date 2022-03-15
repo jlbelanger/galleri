@@ -2,6 +2,7 @@
 .env
 .env.bak
 .htpasswd
-public/.htaccess
+*.log
+/vendor
 node_modules
-vendor
+public/.htaccess

@@ -1,10 +1,12 @@
 .DS_Store
+.eslintcache
 .phpunit.result.cache
-cypress/fixtures/current
+*.log
+/vendor
 cypress.env.json
 cypress.json
+cypress/fixtures/current
 demo/public/images2
 demo/public/json2
 node_modules
-/vendor
 TODO.md

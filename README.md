@@ -14,7 +14,7 @@ https://robroy.jennybelanger.com/
 - automatically resizes images
 - loads images with infinite scroll
 
-## Dependencies
+## Requirements
 
 - Apache (other servers would presumably work too, but I've only tested with Apache)
 - PHP (tested with version 7.4)
@@ -142,18 +142,29 @@ yarn build
 
 ## Development
 
-If you want to contibute to the Robroy Photo Gallery repo, the following commands may come in handy.
+## Requirements
 
-The following commands should be run in the top-level `robroy` directory.
+- [Composer](https://getcomposer.org/)
+- [Git](https://git-scm.com/)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
-### Install
+### Setup
 
 ``` bash
+# Clone the repo
+git clone https://github.com/jlbelanger/robroy.git
+cd robroy
+
+# Configure the environment settings
+cp cypress.example.json cypress.json
+cp cypress.env.example.json cypress.env.json
+
+# Install dependencies
 yarn install
 composer install
 ```
 
-### Compile CSS/JS
+### Run
 
 ``` bash
 yarn watch
@@ -163,7 +174,6 @@ yarn watch
 
 ``` bash
 ./vendor/bin/phpcs
-
 yarn lint
 ```
 
@@ -171,13 +181,10 @@ yarn lint
 
 ``` bash
 ./vendor/bin/phpunit
-
-cp cypress.example.json cypress.json
-cp cypress.env.example.json cypress.env.json
 yarn test:cypress
 ```
 
-### Deploy
+## Deployment
 
 Note: The deploy script included in this repo depends on other scripts that only exist in my private repos. If you want to deploy this repo, you'll have to create your own script.
 
