@@ -142,11 +142,12 @@ yarn build
 
 ## Development
 
-## Requirements
+### Requirements
 
 - [Composer](https://getcomposer.org/)
 - [Git](https://git-scm.com/)
 - [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- Web server with PHP
 
 ### Setup
 
