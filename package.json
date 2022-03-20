@@ -1,5 +1,5 @@
 {
-	"name": "jlbelanger-robroy",
+	"name": "@jlbelanger/robroy",
 	"version": "1.0.2",
 	"description": "Databaseless vanilla JS photo gallery.",
 	"license": "GPL-3.0-only",

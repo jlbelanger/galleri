@@ -23,6 +23,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@jlbelanger/robroy@jlbelanger/robroy#main":
+  version "1.0.2"
+  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/561be23b2b3bd9a4e1276ea84bbbc67be6f6ad2a"
+  dependencies:
+    normalize.css "^8.0.1"
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
@@ -1874,12 +1880,6 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
-
-jlbelanger-robroy@jlbelanger/robroy#master:
-  version "1.0.2"
-  resolved "https://codeload.github.com/jlbelanger/robroy/tar.gz/bc5676246689677bc32aed15b69c3db73d3fc99b"
-  dependencies:
-    normalize.css "^8.0.1"
 
 js-base64@^2.1.8:
   version "2.6.2"
