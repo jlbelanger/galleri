@@ -116,7 +116,7 @@ class Filesystem
 	 */
 	public static function isEmpty(string $path) : bool
 	{
-		if ($handle = opendir($path)) {
+		if ($handle = opendir($path)) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 			while (($filename = readdir($handle)) !== false) {
 				if ($filename !== '.' && $filename !== '..' && $filename !== '.DS_Store') {
 					closedir($handle);
@@ -145,7 +145,7 @@ class Filesystem
 		$output = [];
 		$thumbnailsFolder = Constant::get('THUMBNAILS_FOLDER');
 
-		if ($handle = opendir($fullParentPath)) {
+		if ($handle = opendir($fullParentPath)) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 			while (($filename = readdir($handle)) !== false) {
 				if (strpos($filename, '.') === 0) {
 					continue;
@@ -188,7 +188,7 @@ class Filesystem
 
 		$output = [];
 
-		if ($handle = opendir($fullParentPath)) {
+		if ($handle = opendir($fullParentPath)) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 			while (($folderName = readdir($handle)) !== false) {
 				if (strpos($folderName, '.') === 0
 					|| $folderName === Constant::get('THUMBNAILS_FOLDER')
