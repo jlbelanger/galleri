@@ -9,5 +9,3 @@ AuthUserFile /path/to/robroy/demo/.htpasswd
 <Limit POST PUT DELETE>
 	Require valid-user
 </Limit>
-
-Redirect 301 /favicon.ico /favicon.svg
