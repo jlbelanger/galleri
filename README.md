@@ -79,7 +79,7 @@ Then, if you visit `index.html` on an Apache server running PHP, you should now 
 In the HTML file, you need to include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
 
 ``` html
-<link rel="stylesheet" type="text/css" href="robroy.min.css">
+<link rel="stylesheet" href="robroy.min.css">
 <div id="robroy"></div>
 <script src="robroy.min.js"></script>
 <script>Robroy.default.init({ selector: '#robroy' });</script>
