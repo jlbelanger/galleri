@@ -36,9 +36,9 @@ export default class RobroyUtilities {
 
 	static debounce(func, wait, immediate, ...args) {
 		let timeout;
-		return function () {
+		return () => {
 			const context = this;
-			const later = function () {
+			const later = () => {
 				timeout = null;
 				if (!immediate) {
 					func.apply(context, args);

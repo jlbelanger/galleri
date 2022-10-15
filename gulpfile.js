@@ -38,10 +38,6 @@ gulp.task('default', () => {
 
 gulp.task('css', () => css());
 
-gulp.task('dist:css', function () {
-	return distCss();
-});
+gulp.task('dist:css', () => distCss());
 
-gulp.task('dist:js', function () {
-	return distJs();
-});
+gulp.task('dist:js', () => distJs());

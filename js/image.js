@@ -174,7 +174,7 @@ export default class RobroyImage {
 				},
 				closeButtonText: window.ROBROY.lang.upload,
 				showCancel: true,
-			},
+			}
 		);
 	}
 
@@ -224,7 +224,7 @@ export default class RobroyImage {
 				},
 				closeButtonText: window.ROBROY.lang.save,
 				showCancel: true,
-			},
+			}
 		);
 	}
 
@@ -240,7 +240,7 @@ export default class RobroyImage {
 					RobroyImage.deleteCallback(id);
 					RobroyModal.hide();
 				},
-			},
+			}
 		);
 	}
 

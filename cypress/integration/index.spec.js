@@ -23,7 +23,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
 					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
@@ -65,7 +65,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
 					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
@@ -107,7 +107,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
 					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
@@ -149,7 +149,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
 					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
 
@@ -196,7 +196,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
 					cy.title().should('eq', 'Folders Only | Robroy Photo Gallery Demo - Dark Theme');
 
@@ -241,7 +241,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
 					cy.title().should('eq', 'Images Only | Robroy Photo Gallery Demo - Dark Theme');
 
@@ -286,7 +286,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
 					cy.title().should('eq', 'Images And Folders | Robroy Photo Gallery Demo - Dark Theme');
 
@@ -331,7 +331,7 @@ describe('index', () => {
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
 
-				for (let i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
 					cy.title().should('eq', 'No Images Or Folders | Robroy Photo Gallery Demo - Dark Theme');
 
@@ -377,7 +377,7 @@ describe('index', () => {
 			cy.wait('@getImages2');
 			cy.contains('Log In').click();
 
-			for (let i = 0; i < 2; i++) {
+			for (let i = 0; i < 2; i += 1) {
 				// Sets the meta title.
 				cy.title().should('eq', 'Subfolder | Robroy Photo Gallery Demo - Dark Theme');
 

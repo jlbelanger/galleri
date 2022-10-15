@@ -138,7 +138,7 @@ export default class RobroyFolder {
 				},
 				closeButtonText: window.ROBROY.lang.save,
 				showCancel: true,
-			},
+			}
 		);
 	}
 
@@ -147,7 +147,7 @@ export default class RobroyFolder {
 			window.ROBROY.lang.titleEditFolder,
 			'put',
 			RobroyFolder.submitEditFormCallback,
-			window.ROBROY.currentFolder.id,
+			window.ROBROY.currentFolder.id
 		);
 
 		const $parentInput = $form.querySelector('#robroy-input-parent');
@@ -182,7 +182,7 @@ export default class RobroyFolder {
 				},
 				closeButtonText: window.ROBROY.lang.save,
 				showCancel: true,
-			},
+			}
 		);
 	}
 
@@ -226,7 +226,7 @@ export default class RobroyFolder {
 					RobroyFolder.deleteCallback(id);
 					RobroyModal.hide();
 				},
-			},
+			}
 		);
 	}
 
@@ -240,7 +240,7 @@ export default class RobroyFolder {
 				const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
 				window.location = window.location.href.replace(
 					RobroyFolder.url(window.ROBROY.currentFolder),
-					parentId ? RobroyFolder.url(window.ROBROY.folders[parentId]) : '',
+					parentId ? RobroyFolder.url(window.ROBROY.folders[parentId]) : ''
 				);
 			},
 		});
@@ -354,7 +354,7 @@ export default class RobroyFolder {
 
 		window.location = window.location.href.replace(
 			RobroyFolder.url(window.ROBROY.currentFolder),
-			RobroyFolder.url(response.data),
+			RobroyFolder.url(response.data)
 		);
 	}
 
@@ -369,7 +369,7 @@ export default class RobroyFolder {
 		const $li = window.ROBROY.elements.$folderList.children;
 		const num = $li.length;
 		let $previousItem;
-		for (i = 0; i < num; i++) {
+		for (i = 0; i < num; i += 1) {
 			if ($li[i].getAttribute('data-path') < item.id) {
 				$previousItem = $li[i];
 			} else {
@@ -421,7 +421,7 @@ export default class RobroyFolder {
 
 		const folderIds = Object.keys(window.ROBROY.folders).sort();
 		let folder;
-		folderIds.forEach(function (folderId) {
+		folderIds.forEach((folderId) => {
 			folder = window.ROBROY.folders[folderId];
 			$option = document.createElement('option');
 			$option.setAttribute('value', folder.id);
