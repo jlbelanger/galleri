@@ -34,9 +34,9 @@ export default class RobroyUtilities {
 		window.ROBROY.args.callbacks[name](args);
 	}
 
-	static debounce(func, wait, immediate, ...args) {
+	static debounce(func, wait, immediate) {
 		let timeout;
-		return () => {
+		return function (...args) { // eslint-disable-line func-names
 			const context = this;
 			const later = () => {
 				timeout = null;
