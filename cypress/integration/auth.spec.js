@@ -14,7 +14,7 @@ describe('auth', () => {
 	});
 
 	it('works', () => {
-		cy.visit('/dark.html');
+		cy.visit('/');
 		cy.wait('@getFolders');
 		cy.wait('@getFolders2');
 		cy.wait('@getImages');

@@ -6,6 +6,6 @@ module.exports = {
 	output: {
 		library: 'Robroy',
 		filename: 'robroy.min.js',
-		path: path.resolve(__dirname, 'demo/public'),
+		path: path.resolve(__dirname, 'dist/js'),
 	},
 };

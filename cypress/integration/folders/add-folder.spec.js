@@ -17,7 +17,7 @@ describe('add folder', () => {
 		describe('when the input is invalid', () => {
 			describe('when the name is blank', () => {
 				it('shows an error', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -31,7 +31,7 @@ describe('add folder', () => {
 
 			describe('when the folder already exists', () => {
 				it('shows an error', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -47,7 +47,7 @@ describe('add folder', () => {
 
 			describe('when the folder matches the thumbnails folder', () => {
 				it('shows an error', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -69,7 +69,7 @@ describe('add folder', () => {
 
 			describe('when the parent is the current folder', () => {
 				it('creates the folder', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -128,7 +128,7 @@ describe('add folder', () => {
 
 			describe('when the parent is another folder', () => {
 				it('creates the folder', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -177,7 +177,7 @@ describe('add folder', () => {
 					});
 
 					// Adds the folder to the subfolder.
-					cy.visit('/dark.html?folder=folders-only');
+					cy.visit('/?folder=folders-only');
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
 					cy.wait('@getImages2');
@@ -194,7 +194,7 @@ describe('add folder', () => {
 
 		describe('when the parent is the current folder', () => {
 			it('creates the folder', () => {
-				cy.visit('/dark.html?folder=no-images-or-folders');
+				cy.visit('/?folder=no-images-or-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -259,7 +259,7 @@ describe('add folder', () => {
 
 		describe('when the parent is another folder', () => {
 			it('creates the folder', () => {
-				cy.visit('/dark.html?folder=no-images-or-folders');
+				cy.visit('/?folder=no-images-or-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -310,7 +310,7 @@ describe('add folder', () => {
 				});
 
 				// Adds the folder to the subfolder.
-				cy.visit('/dark.html?folder=folders-only');
+				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');

@@ -15,7 +15,7 @@ describe('edit image', () => {
 
 	describe('when clicking the cancel button', () => {
 		it('closes the popup', () => {
-			cy.visit('/dark.html?folder=images-only');
+			cy.visit('/?folder=images-only');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -29,7 +29,7 @@ describe('edit image', () => {
 
 	describe('when not making any changes', () => {
 		it('closes the popup', () => {
-			cy.visit('/dark.html?folder=images-only');
+			cy.visit('/?folder=images-only');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -45,7 +45,7 @@ describe('edit image', () => {
 	describe('when the input is invalid', () => {
 		describe('when removing the filename', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -61,7 +61,7 @@ describe('edit image', () => {
 
 		describe('when removing the filename and folder', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -78,7 +78,7 @@ describe('edit image', () => {
 
 		describe('when changing the filename to one that already exists', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -94,7 +94,7 @@ describe('edit image', () => {
 
 		describe('when changing the folder to one where the filename already exists', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -110,7 +110,7 @@ describe('edit image', () => {
 
 		describe('when filename begins with a slash', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -126,7 +126,7 @@ describe('edit image', () => {
 
 		describe('when filename ends with a slash', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -142,7 +142,7 @@ describe('edit image', () => {
 
 		describe('when filename has a mid slash', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -158,7 +158,7 @@ describe('edit image', () => {
 
 		describe('when filename has no extension', () => {
 			it('shows an error', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -180,7 +180,7 @@ describe('edit image', () => {
 
 		describe('when changing the filename', () => {
 			it('updates the image', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -212,7 +212,7 @@ describe('edit image', () => {
 
 		describe('when changing the folder', () => {
 			it('removes the image', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -233,7 +233,7 @@ describe('edit image', () => {
 				cy.get('[data-path="folders-only/400x500.png"]').should('not.exist');
 
 				// Adds the image to the other folder.
-				cy.visit('/dark.html?folder=folders-only');
+				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
@@ -243,7 +243,7 @@ describe('edit image', () => {
 
 		describe('when removing the folder', () => {
 			it('removes the image', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -264,7 +264,7 @@ describe('edit image', () => {
 				cy.get('[data-path="400x500.png"]').should('not.exist');
 
 				// Adds the image to the root folder.
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
@@ -274,7 +274,7 @@ describe('edit image', () => {
 
 		describe('when adding a folder', () => {
 			it('removes the image', () => {
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -301,7 +301,7 @@ describe('edit image', () => {
 				cy.get('[data-path="folders-only/2020-01-01-12-00-00-500x500.jpg"]').should('not.exist');
 
 				// Adds the image to the other folder.
-				cy.visit('/dark.html?folder=folders-only');
+				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
@@ -311,7 +311,7 @@ describe('edit image', () => {
 
 		describe('when changing the filename and folder', () => {
 			it('removes the image', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -337,7 +337,7 @@ describe('edit image', () => {
 				cy.get('[data-path="folders-only/new-filename.png"]').should('not.exist');
 
 				// Adds the image to the other folder.
-				cy.visit('/dark.html?folder=folders-only');
+				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
@@ -347,7 +347,7 @@ describe('edit image', () => {
 
 		describe('when adding, changing, removing the title', () => {
 			it('updates the alt', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');

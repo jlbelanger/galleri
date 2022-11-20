@@ -16,7 +16,7 @@ describe('index', () => {
 		describe('with folders only', () => {
 			it('shows the correct elements', () => {
 				cy.setUploads('cypress/fixtures/current/folders-only');
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -25,7 +25,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Robroy Photo Gallery Demo');
 
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
@@ -58,7 +58,7 @@ describe('index', () => {
 		describe('with images only', () => {
 			it('shows the correct elements', () => {
 				cy.setUploads('cypress/fixtures/current/images-only');
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -67,7 +67,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Robroy Photo Gallery Demo');
 
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
@@ -100,7 +100,7 @@ describe('index', () => {
 		describe('with images and folders', () => {
 			it('shows the correct elements', () => {
 				cy.setUploads('cypress/fixtures/current/images-and-folders');
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -109,7 +109,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Robroy Photo Gallery Demo');
 
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
@@ -142,7 +142,7 @@ describe('index', () => {
 		describe('with no images or folders', () => {
 			it('shows the correct elements', () => {
 				cy.setUploads('cypress/fixtures/current/no-images-or-folders');
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -151,7 +151,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Robroy Photo Gallery Demo');
 
 					// Does not show the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('not.exist');
@@ -189,7 +189,7 @@ describe('index', () => {
 
 		describe('with folders only', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/dark.html?folder=folders-only');
+				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -198,7 +198,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Folders Only | Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Folders Only | Robroy Photo Gallery Demo');
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
@@ -234,7 +234,7 @@ describe('index', () => {
 
 		describe('with images only', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/dark.html?folder=images-only');
+				cy.visit('/?folder=images-only');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -243,7 +243,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Images Only | Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Images Only | Robroy Photo Gallery Demo');
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
@@ -279,7 +279,7 @@ describe('index', () => {
 
 		describe('with images and folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/dark.html?folder=images-and-folders');
+				cy.visit('/?folder=images-and-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -288,7 +288,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Images And Folders | Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'Images And Folders | Robroy Photo Gallery Demo');
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
@@ -324,7 +324,7 @@ describe('index', () => {
 
 		describe('with no images or folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/dark.html?folder=no-images-or-folders');
+				cy.visit('/?folder=no-images-or-folders');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -333,7 +333,7 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'No Images Or Folders | Robroy Photo Gallery Demo - Dark Theme');
+					cy.title().should('eq', 'No Images Or Folders | Robroy Photo Gallery Demo');
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
@@ -370,7 +370,7 @@ describe('index', () => {
 
 	describe('with a second-level folder', () => {
 		it('shows the correct elements', () => {
-			cy.visit('/dark.html?folder=folders-only/subfolder');
+			cy.visit('/?folder=folders-only/subfolder');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -379,7 +379,7 @@ describe('index', () => {
 
 			for (let i = 0; i < 2; i += 1) {
 				// Sets the meta title.
-				cy.title().should('eq', 'Subfolder | Robroy Photo Gallery Demo - Dark Theme');
+				cy.title().should('eq', 'Subfolder | Robroy Photo Gallery Demo');
 
 				// Shows the breadcrumb.
 				cy.get('.robroy-breadcrumb').should('be.visible');

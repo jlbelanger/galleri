@@ -26,28 +26,28 @@
 import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
 Cypress.Commands.add('setPaths', () => {
-	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/demo/public/images2|" demo/.env`);
-	cy.exec('sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images2|" demo/.env');
-	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/demo/public/json2|" demo/.env`);
+	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/public/images2|" ${Cypress.env('project_path')}/.env`);
+	cy.exec(`sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images2|" ${Cypress.env('project_path')}/.env`);
+	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/public/json2|" ${Cypress.env('project_path')}/.env`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {
-	cy.exec('mkdir -p demo/public/images2');
-	cy.exec('rm -r demo/public/images2');
-	cy.exec(`cp -r ${uploadsFolder} demo/public/images2`);
+	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/images2`);
+	cy.exec(`rm -r ${Cypress.env('project_path')}/public/images2`);
+	cy.exec(`cp -r ${uploadsFolder} ${Cypress.env('project_path')}/public/images2`);
 });
 
 Cypress.Commands.add('resetPaths', () => {
-	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/demo/public/images|" demo/.env`);
-	cy.exec('sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images|" demo/.env');
-	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/demo/public/json|" demo/.env`);
+	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/public/images|" ${Cypress.env('project_path')}/.env`);
+	cy.exec(`sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images|" ${Cypress.env('project_path')}/.env`);
+	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/public/json|" ${Cypress.env('project_path')}/.env`);
 });
 
 Cypress.Commands.add('resetJson', () => {
-	cy.exec('rm -f demo/public/json/folders.json');
-	cy.exec('rm -f demo/public/json/images.json');
-	cy.exec('rm -f demo/public/json2/folders.json');
-	cy.exec('rm -f demo/public/json2/images.json');
+	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/folders.json`);
+	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/images.json`);
+	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json2/folders.json`);
+	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json2/images.json`);
 });
 
 Cypress.Commands.add('setupApi', () => {

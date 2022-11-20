@@ -17,7 +17,7 @@ describe('add image', () => {
 		describe('when the input is invalid', () => {
 			describe('when no files are selected', () => {
 				it('shows an error', () => {
-					cy.visit('/dark.html');
+					cy.visit('/');
 					cy.wait('@getFolders');
 					cy.wait('@getFolders2');
 					cy.wait('@getImages');
@@ -36,7 +36,7 @@ describe('add image', () => {
 			});
 
 			it('adds the image to the list', () => {
-				cy.visit('/dark.html');
+				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -84,7 +84,7 @@ describe('add image', () => {
 		});
 
 		it('adds the image to the list', () => {
-			cy.visit('/dark.html?folder=no-images-or-folders');
+			cy.visit('/?folder=no-images-or-folders');
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
