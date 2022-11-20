@@ -161,7 +161,7 @@ export default class RobroyImage {
 		$parentInput.setAttribute('type', 'hidden');
 		$form.appendChild($parentInput);
 
-		RobroyUtilities.modifier('imageCreateForm', { element: $form });
+		RobroyUtilities.modifier('imageCreateForm', { addField: RobroyUtilities.addField, form: $form });
 
 		RobroyModal.show(
 			$form,
@@ -211,7 +211,7 @@ export default class RobroyImage {
 			}
 		});
 
-		RobroyUtilities.modifier('imageEditForm', { element: $form });
+		RobroyUtilities.modifier('imageEditForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
 
 		RobroyModal.show(
 			$form,

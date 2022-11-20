@@ -105,7 +105,7 @@ export default class RobroyFolder {
 		$a.innerText = data.attributes.name;
 		$li.appendChild($a);
 
-		RobroyUtilities.modifier('folderItem', { element: $li });
+		RobroyUtilities.modifier('folderItem', { element: $li, folder: data });
 
 		return $li;
 	}
@@ -125,7 +125,7 @@ export default class RobroyFolder {
 			$parentField.style.display = '';
 		}
 
-		RobroyUtilities.modifier('folderCreateForm', { element: $form });
+		RobroyUtilities.modifier('folderCreateForm', { addField: RobroyUtilities.addField, form: $form });
 
 		RobroyModal.show(
 			$form,
@@ -169,7 +169,7 @@ export default class RobroyFolder {
 			}
 		});
 
-		RobroyUtilities.modifier('folderEditForm', { element: $form });
+		RobroyUtilities.modifier('folderEditForm', { addField: RobroyUtilities.addField, form: $form });
 
 		RobroyModal.show(
 			$form,
@@ -209,7 +209,7 @@ export default class RobroyFolder {
 		RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
 		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
 
-		RobroyUtilities.modifier('folderForm', { element: $form });
+		RobroyUtilities.modifier('folderForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
 
 		return $form;
 	}
@@ -446,7 +446,7 @@ export default class RobroyFolder {
 
 		$ul.prepend(this.breadcrumbItem({ id: '', attributes: { name: window.ROBROY.lang.home } }));
 
-		RobroyUtilities.modifier('breadcrumbList', { element: $ul });
+		RobroyUtilities.modifier('breadcrumbList', { element: $ul, folder: window.ROBROY.currentFolder });
 	}
 
 	static breadcrumbItem(folder) {

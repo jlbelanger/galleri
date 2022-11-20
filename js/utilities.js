@@ -93,6 +93,8 @@ export default class RobroyUtilities {
 			window.ROBROY.elements.$numImages = document.createElement('small');
 			window.ROBROY.elements.$numImages.setAttribute('id', 'robroy-folder-num');
 			$title.appendChild(window.ROBROY.elements.$numImages);
+
+			RobroyUtilities.modifier('title', { element: $title, title });
 		}
 		$span.innerText = title;
 	}
