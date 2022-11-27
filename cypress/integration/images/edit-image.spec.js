@@ -1,16 +1,12 @@
 describe('edit image', () => {
 	before(() => {
 		cy.setUploads();
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	describe('when clicking the cancel button', () => {
@@ -21,7 +17,7 @@ describe('edit image', () => {
 			cy.wait('@getImages');
 			cy.wait('@getImages2');
 			cy.contains('Log In').click();
-			cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+			cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 			cy.get('#robroy-modal-cancel').click();
 			cy.get('.robroy-modal').should('not.exist');
 		});
@@ -35,7 +31,7 @@ describe('edit image', () => {
 			cy.wait('@getImages');
 			cy.wait('@getImages2');
 			cy.contains('Log In').click();
-			cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+			cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 			cy.get('#robroy-modal-close').click();
 			cy.get('.robroy-modal').should('not.exist');
 			cy.get('.robroy-toast-text').should('have.text', 'Nothing to save.');
@@ -51,7 +47,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear();
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: This field is required.');
@@ -67,7 +63,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear();
 				cy.get('#robroy-input-folder').select('');
 				cy.get('#robroy-modal-close').click();
@@ -84,7 +80,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('400x400.png');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: File "images-only/400x400.png" already exists.');
@@ -100,7 +96,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-folder').select('Images And Folders');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: File "images-and-folders/400x500.png" already exists.');
@@ -116,7 +112,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('/400x400.png');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
@@ -132,7 +128,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('400x400.png/');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
@@ -148,7 +144,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('400/400.png');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename cannot contain slashes.');
@@ -164,7 +160,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('400x400');
 				cy.get('#robroy-modal-close').click();
 				cy.get('#robroy-error-robroy-input-filename').should('have.text', 'Error: Filename is missing a file extension (eg. JPG, PNG).');
@@ -186,7 +182,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('new-filename.png');
 				cy.get('#robroy-modal-close').click();
 
@@ -204,7 +200,6 @@ describe('edit image', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
 				cy.get('[data-path="images-only/new-filename.png"]').should('exist');
 			});
@@ -218,7 +213,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-folder').select('Folders Only');
 				cy.get('#robroy-modal-close').click();
 
@@ -236,7 +231,6 @@ describe('edit image', () => {
 				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/400x500.png"]').should('exist');
 			});
 		});
@@ -249,7 +243,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-folder').select('');
 				cy.get('#robroy-modal-close').click();
 
@@ -267,7 +261,6 @@ describe('edit image', () => {
 				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="400x500.png"]').should('exist');
 			});
 		});
@@ -286,7 +279,7 @@ describe('edit image', () => {
 				cy.wait('@uploadImage').its('response.statusCode').should('equal', 200);
 				cy.get('#robroy-modal-cancel').click();
 				cy.get('.robroy-toast-close').click();
-				cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"] .robroy-button--secondary').click();
+				cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-folder').select('Folders Only');
 				cy.get('#robroy-modal-close').click();
 
@@ -304,7 +297,6 @@ describe('edit image', () => {
 				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/2020-01-01-12-00-00-500x500.jpg"]').should('exist');
 			});
 		});
@@ -317,7 +309,7 @@ describe('edit image', () => {
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
 				cy.contains('Log In').click();
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-filename').clear().type('new-filename.png');
 				cy.get('#robroy-input-folder').select('Folders Only');
 				cy.get('#robroy-modal-close').click();
@@ -340,7 +332,6 @@ describe('edit image', () => {
 				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="folders-only/new-filename.png"]').should('exist');
 			});
 		});
@@ -355,7 +346,7 @@ describe('edit image', () => {
 				cy.contains('Log In').click();
 
 				// Adding title.
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-title').type('Example');
 				cy.get('#robroy-modal-close').click();
 
@@ -372,11 +363,10 @@ describe('edit image', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Example');
 
 				// Changing title.
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-title').clear().type('Foo');
 				cy.get('#robroy-modal-close').click();
 
@@ -393,11 +383,10 @@ describe('edit image', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="images-only/400x500.png"] img').should('have.attr', 'alt', 'Foo');
 
 				// Removing title.
-				cy.get('[data-path="images-only/400x500.png"] .robroy-button--secondary').click();
+				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Edit').click();
 				cy.get('#robroy-input-title').clear();
 				cy.get('#robroy-modal-close').click();
 
@@ -414,7 +403,6 @@ describe('edit image', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('[data-path="images-only/400x500.png"] img').should('not.have.attr', 'alt');
 			});
 		});

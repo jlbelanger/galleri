@@ -100,10 +100,10 @@ export default class RobroyImage {
 
 		if (setSrc) {
 			RobroyImage.setSrc($img);
-		}
 
-		if (RobroyUtilities.isLoggedIn()) {
-			RobroyImage.addAdminControls($figure);
+			if (RobroyUtilities.isLoggedIn()) {
+				RobroyImage.addAdminControls($figure, data);
+			}
 		}
 
 		RobroyUtilities.modifier('imageItem', { element: $figure });
@@ -252,6 +252,70 @@ export default class RobroyImage {
 				RobroyToast.show(window.ROBROY.lang.deletedSuccessfullyImage, { class: 'robroy-toast--success' });
 				RobroyImage.removeImageFromList(id);
 				RobroyUtilities.callback('afterDeleteImage', { id });
+			},
+		});
+	}
+
+	static setThumbnail(e) {
+		if (e.target.getAttribute('data-current-thumbnail')) {
+			RobroyImage.removeThumbnail(e);
+		} else {
+			RobroyImage.makeThumbnail(e);
+		}
+	}
+
+	static makeThumbnail(e) {
+		const path = e.target.closest('[data-path]').getAttribute('data-path');
+		const image = window.ROBROY.currentImages[path];
+		const folderId = window.ROBROY.currentFolder.id;
+		const json = window.ROBROY.currentFolder.attributes;
+		json.thumbnail = image.meta.thumbnail;
+
+		RobroyApi.request({
+			method: 'PUT',
+			url: `${window.ROBROY.args.apiPath}?type=folders&id=${folderId}`,
+			json: JSON.stringify(json),
+			callback: () => {
+				RobroyToast.show(window.ROBROY.lang.updatedSuccessfullyThumbnail, { class: 'robroy-toast--success' });
+
+				const $thumbnailButton = document.querySelector('[data-current-thumbnail]');
+				if ($thumbnailButton) {
+					$thumbnailButton.innerText = window.ROBROY.lang.makeThumbnail;
+					$thumbnailButton.removeAttribute('data-current-thumbnail');
+				}
+
+				e.target.innerText = window.ROBROY.lang.removeThumbnail;
+				e.target.setAttribute('data-current-thumbnail', true);
+
+				RobroyUtilities.callback('afterMakeThumbnail', { folderId, image });
+			},
+			errorCallback: () => {
+				RobroyToast.show(window.ROBROY.lang.errorUpdatingThumbnail, { class: 'robroy-toast--error' });
+			},
+		});
+	}
+
+	static removeThumbnail(e) {
+		const path = e.target.closest('[data-path]').getAttribute('data-path');
+		const image = window.ROBROY.currentImages[path];
+		const folderId = window.ROBROY.currentFolder.id;
+		const json = window.ROBROY.currentFolder.attributes;
+		json.thumbnail = '';
+
+		RobroyApi.request({
+			method: 'PUT',
+			url: `${window.ROBROY.args.apiPath}?type=folders&id=${folderId}`,
+			json: JSON.stringify(json),
+			callback: () => {
+				RobroyToast.show(window.ROBROY.lang.removedSuccessfullyThumbnail, { class: 'robroy-toast--success' });
+
+				e.target.innerText = window.ROBROY.lang.makeThumbnail;
+				e.target.removeAttribute('data-current-thumbnail');
+
+				RobroyUtilities.callback('afterRemoveThumbnail', { folderId, image });
+			},
+			errorCallback: () => {
+				RobroyToast.show(window.ROBROY.lang.errorRemovingThumbnail, { class: 'robroy-toast--error' });
 			},
 		});
 	}
@@ -450,7 +514,7 @@ export default class RobroyImage {
 		return RobroyImage.getImages().length > 0;
 	}
 
-	static addAdminControls($container) {
+	static addAdminControls($container, data) {
 		if ($container.querySelector('.robroy-admin')) {
 			return;
 		}
@@ -472,6 +536,22 @@ export default class RobroyImage {
 		$editButton.innerText = window.ROBROY.lang.edit;
 		$editButton.addEventListener('click', RobroyImage.showEditForm);
 		$div.appendChild($editButton);
+
+		if (data.attributes.folder) {
+			const $thumbnailButton = document.createElement('button');
+			$thumbnailButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+			$thumbnailButton.setAttribute('href', 'button');
+			$thumbnailButton.setAttribute('data-thumbnail-button', true);
+			$thumbnailButton.addEventListener('click', RobroyImage.setThumbnail);
+			const folder = window.ROBROY.folders[data.attributes.folder];
+			if (folder && folder.attributes.thumbnail === data.meta.thumbnail) {
+				$thumbnailButton.setAttribute('data-current-thumbnail', true);
+				$thumbnailButton.innerText = window.ROBROY.lang.removeThumbnail;
+			} else {
+				$thumbnailButton.innerText = window.ROBROY.lang.makeThumbnail;
+			}
+			$div.appendChild($thumbnailButton);
+		}
 
 		const $deleteButton = document.createElement('button');
 		$deleteButton.setAttribute('class', 'robroy-button robroy-button--danger');

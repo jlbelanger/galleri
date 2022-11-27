@@ -1,53 +1,25 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
-Cypress.Commands.add('setPaths', () => {
-	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/public/images2|" ${Cypress.env('project_path')}/.env`);
-	cy.exec(`sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images2|" ${Cypress.env('project_path')}/.env`);
-	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/public/json2|" ${Cypress.env('project_path')}/.env`);
+Cypress.Commands.add('build', () => {
+	const cssFolder = `${Cypress.env('project_path')}/public/css`;
+	const jsFolder = `${Cypress.env('project_path')}/public/js`;
+	const minJsFile = `${Cypress.env('project_path')}/node_modules/@jlbelanger/robroy/dist/js/robroy.min.js`;
+	cy.exec(`mkdir -p ${cssFolder}`);
+	cy.exec(`mkdir -p ${jsFolder}`);
+	cy.exec(`if [! -f ${cssFolder}/dark.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi`);
+	cy.exec(`if [! -f ${jsFolder}/robroy.min.js]; then (ln ${minJsFile} ${jsFolder}); fi`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {
-	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/images2`);
-	cy.exec(`rm -r ${Cypress.env('project_path')}/public/images2`);
-	cy.exec(`cp -r ${uploadsFolder} ${Cypress.env('project_path')}/public/images2`);
-});
-
-Cypress.Commands.add('resetPaths', () => {
-	cy.exec(`sed -i.bak "s|UPLOADS_PATH=.*|UPLOADS_PATH=${Cypress.env('upload_path')}/public/images|" ${Cypress.env('project_path')}/.env`);
-	cy.exec(`sed -i.bak "s|UPLOADS_FOLDER=.*|UPLOADS_FOLDER=images|" ${Cypress.env('project_path')}/.env`);
-	cy.exec(`sed -i.bak "s|JSON_PATH=.*|JSON_PATH=${Cypress.env('upload_path')}/public/json|" ${Cypress.env('project_path')}/.env`);
+	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/images`);
+	cy.exec(`rm -r ${Cypress.env('project_path')}/public/images`);
+	cy.exec(`cp -r ${uploadsFolder} ${Cypress.env('project_path')}/public/images`);
 });
 
 Cypress.Commands.add('resetJson', () => {
+	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/json`);
 	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/folders.json`);
 	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/images.json`);
-	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json2/folders.json`);
-	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json2/images.json`);
 });
 
 Cypress.Commands.add('setupApi', () => {

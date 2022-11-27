@@ -84,7 +84,8 @@ export default class RobroyAuth {
 		RobroyAuth.addAdminBar();
 
 		RobroyImage.getImages().forEach(($container) => {
-			RobroyImage.addAdminControls($container);
+			const id = $container.getAttribute('data-path');
+			RobroyImage.addAdminControls($container, window.ROBROY.currentImages[id]);
 		});
 
 		RobroyUtilities.callback('afterLogin');

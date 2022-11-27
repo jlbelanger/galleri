@@ -1,16 +1,12 @@
 describe('delete image', () => {
 	before(() => {
 		cy.setUploads();
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	afterEach(() => {
@@ -89,7 +85,6 @@ describe('delete image', () => {
 			cy.reload();
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
-			cy.wait('@getImages2');
 			cy.get('[data-path="images-only/400x500.png"]').should('not.exist');
 			cy.get('[data-path="images-only/400x400.png"]').should('not.exist');
 		});
@@ -167,7 +162,6 @@ describe('delete image', () => {
 			cy.reload();
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
-			cy.wait('@getImages2');
 			cy.get('[data-path="images-and-folders/400x500.png"]').should('not.exist');
 			cy.get('[data-path="images-and-folders/400x400.png"]').should('not.exist');
 		});

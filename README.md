@@ -148,8 +148,9 @@ In the project folder's `package.json` file, change the robroy line in `dependen
 In the project folder, run:
 
 ``` bash
-yarn install
 composer update jlbelanger/robroy
+yarn install
+ln node_modules/@jlbelanger/robroy/dist/js/robroy.min.js public/js/robroy.min.js
 ```
 
 ### Run
@@ -157,7 +158,7 @@ composer update jlbelanger/robroy
 In the `robroy` folder, run:
 
 ``` bash
-yarn watch:js
+yarn watch
 ```
 
 In the project folder, run:

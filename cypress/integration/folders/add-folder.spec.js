@@ -1,16 +1,12 @@
 describe('add folder', () => {
 	before(() => {
 		cy.setUploads();
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	describe('with the root folder', () => {
@@ -121,7 +117,6 @@ describe('add folder', () => {
 					cy.reload();
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
-					cy.wait('@getImages2');
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 				});
 			});
@@ -180,7 +175,6 @@ describe('add folder', () => {
 					cy.visit('/?folder=folders-only');
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
-					cy.wait('@getImages2');
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 				});
 			});
@@ -252,7 +246,6 @@ describe('add folder', () => {
 				cy.reload();
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 			});
 		});
@@ -312,9 +305,7 @@ describe('add folder', () => {
 				// Adds the folder to the subfolder.
 				cy.visit('/?folder=folders-only');
 				cy.wait('@getFolders');
-				cy.wait('@getFolders2');
 				cy.wait('@getImages');
-				cy.wait('@getImages2');
 				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
 			});
 		});

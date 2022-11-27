@@ -1,16 +1,12 @@
 describe('add image', () => {
 	before(() => {
 		cy.setUploads();
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	describe('with the root folder', () => {

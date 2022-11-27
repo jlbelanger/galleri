@@ -1,16 +1,12 @@
 describe('delete folder', () => {
 	before(() => {
 		cy.setUploads();
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	afterEach(() => {
@@ -46,7 +42,6 @@ describe('delete folder', () => {
 			cy.location('search').should('eq', '');
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
-			cy.wait('@getImages2');
 
 			// Does not show the folder in the folder list.
 			const items = ['Folders Only', 'Images And Folders', 'Images Only'];
@@ -72,7 +67,6 @@ describe('delete folder', () => {
 			cy.location('search').should('eq', '?folder=folders-only');
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
-			cy.wait('@getImages2');
 
 			// Does not show the folder in the folder list.
 			const items = ['Subfolder 2'];

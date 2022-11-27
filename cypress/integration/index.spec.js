@@ -1,15 +1,11 @@
 describe('index', () => {
 	before(() => {
-		cy.setPaths();
+		cy.build();
 	});
 
 	beforeEach(() => {
 		cy.setupApi();
 		cy.resetJson();
-	});
-
-	after(() => {
-		cy.resetPaths();
 	});
 
 	describe('with the root folder', () => {

@@ -24,6 +24,11 @@
 	color: $robroy-toast-success-text-color;
 }
 
+.robroy-toast--error {
+	background-color: $robroy-toast-error-background-color;
+	color: $robroy-toast-error-text-color;
+}
+
 .robroy-toast-text {
 	margin: 0;
 	padding: $robroy-toast-padding;

@@ -102,8 +102,19 @@ export default class RobroyFolder {
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-folder-link');
 		$a.setAttribute('href', RobroyFolder.url(data));
-		$a.innerText = data.attributes.name;
 		$li.appendChild($a);
+
+		if (data.attributes.thumbnail) {
+			const $img = document.createElement('img');
+			$img.setAttribute('class', 'robroy-folder-img');
+			$img.setAttribute('src', data.attributes.thumbnail);
+			$a.appendChild($img);
+		}
+
+		const $name = document.createElement('div');
+		$name.setAttribute('class', 'robroy-folder-name');
+		$name.innerText = data.attributes.name;
+		$a.appendChild($name);
 
 		RobroyUtilities.modifier('folderItem', { element: $li, folder: data });
 
@@ -208,6 +219,7 @@ export default class RobroyFolder {
 
 		RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
 		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
+		RobroyUtilities.addField($container, 'thumbnail', window.ROBROY.lang.fieldFolderThumbnail);
 
 		RobroyUtilities.modifier('folderForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
 

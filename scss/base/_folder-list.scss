@@ -1,6 +1,8 @@
 #robroy-folders {
 	display: flex;
 	flex-wrap: wrap;
+	grid-gap: $robroy-padding-mobile;
+	justify-content: space-between;
 	line-height: 1;
 	list-style: none;
 	margin: 0;
@@ -9,19 +11,35 @@
 	&:empty {
 		display: none;
 	}
+
+	@media screen and (min-width: $robroy-breakpoint) {
+		grid-gap: $robroy-padding-desktop;
+	}
 }
 
 .robroy-folder {
 	margin: $robroy-folder-item-margin 0;
+}
 
-	&::after {
-		color: $robroy-folder-item-dot-color;
-		content: $robroy-folder-item-dot-icon;
-		margin: 0 $robroy-folder-item-margin;
-	}
+.robroy-folder-link {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	box-sizing: content-box;
+	display: block;
+	width: $robroy-folder-image-width;
+}
 
-	&:last-of-type::after {
-		content: '';
-		margin: 0;
+.robroy-folder-img {
+	height: auto;
+	width: $robroy-folder-image-width;
+
+	& + .robroy-folder-name {
+		margin-top: $robroy-folder-name-margin;
 	}
+}
+
+.robroy-folder-name {
+	line-height: 1.2;
+	text-align: center;
 }
