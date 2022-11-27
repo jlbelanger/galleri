@@ -112,10 +112,15 @@ export default class RobroyAuth {
 	}
 
 	static addAdminBar() {
+		const $container = document.createElement('div');
+		$container.setAttribute('id', 'robroy-admin');
+		$container.setAttribute('class', 'robroy-admin');
+		window.ROBROY.elements.$container.prepend($container);
+
 		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-admin robroy-button-container');
-		$div.setAttribute('id', 'robroy-admin');
-		window.ROBROY.elements.$container.prepend($div);
+		$div.setAttribute('class', 'robroy-button-container');
+		$div.setAttribute('id', 'robroy-admin-buttons');
+		$container.prepend($div);
 
 		const $uploadButton = document.createElement('button');
 		$uploadButton.setAttribute('class', 'robroy-button');

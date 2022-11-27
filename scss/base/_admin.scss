@@ -27,10 +27,13 @@
 	background: $robroy-darkest;
 	bottom: 0;
 	left: 0;
-	padding: $robroy-padding-mobile;
 	position: fixed;
 	right: 0;
 	z-index: $robroy-admin-zindex;
+}
+
+#robroy-admin-buttons {
+	padding: $robroy-padding-mobile;
 }
 
 .robroy-button-authenticate {
