@@ -51,9 +51,9 @@ Cypress.Commands.add('resetJson', () => {
 });
 
 Cypress.Commands.add('setupApi', () => {
-	cy.intercept('GET', '/json/folders.json').as('getFolders');
+	cy.intercept('GET', /\/json\/folders\.json\??/).as('getFolders');
 	cy.intercept('GET', '/api.php?type=folders').as('getFolders2');
-	cy.intercept('GET', '/json/images.json').as('getImages');
+	cy.intercept('GET', /\/json\/images\.json\??/).as('getImages');
 	cy.intercept('GET', '/api.php?type=images').as('getImages2');
 	cy.intercept('GET', '/api.php?type=images').as('getImagesSubfolder');
 	cy.intercept('POST', '/api.php?type=images').as('uploadImage');
