@@ -15,11 +15,14 @@ class Folder
 
 	private $attributes;
 
+	private $meta;
+
 	/**
 	 * @param string $id         Eg. 'foo/bar/example-name'.
 	 * @param array  $attributes Eg. ['name' => 'Example Name', 'parent' => 'foo/bar'].
+	 * @param array  $meta
 	 */
-	public function __construct(string $id, array $attributes = [])
+	public function __construct(string $id, array $attributes = [], array $meta = [])
 	{
 		$this->id = trim($id, '/');
 
@@ -31,6 +34,11 @@ class Folder
 		if (empty($this->attributes['parent'])) {
 			$pathinfo = pathinfo($this->id);
 			$this->attributes['parent'] = $pathinfo['dirname'] === '.' ? '' : $pathinfo['dirname'];
+		}
+
+		$this->meta = $meta;
+		if (empty($this->meta['num'])) {
+			$this->meta['num'] = $this->getNum();
 		}
 	}
 
@@ -116,6 +124,21 @@ class Folder
 	}
 
 	/**
+	 * @return integer
+	 */
+	protected function getNum() : int
+	{
+		$images = Image::all();
+		$num = 0;
+		foreach ($images['data'] as $image) {
+			if ($image['attributes']['folder'] === $this->id) {
+				$num++;
+			}
+		}
+		return $num;
+	}
+
+	/**
 	 * Returns all data about this folder.
 	 *
 	 * @return array
@@ -125,6 +148,7 @@ class Folder
 		return [
 			'id' => $this->id,
 			'attributes' => $this->attributes,
+			'meta' => $this->meta,
 		];
 	}
 
