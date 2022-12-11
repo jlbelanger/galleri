@@ -11,7 +11,8 @@ export default class Robroy {
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
 		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
-		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') && args.enableGrid;
+		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
+		args.enableRewrites = RobroyUtilities.propertyExists(args, 'enableRewrites') ? args.enableRewrites : true;
 		args.folderItemElement = args.folderItemElement || 'li';
 		args.folderSeparator = args.folderSeparator || ' > ';
 		args.imageItemElement = args.imageItemElement || 'figure';
@@ -21,7 +22,7 @@ export default class Robroy {
 		args.pageSize = args.pageSize || 8;
 		args.removePointerEventsOnLogin = RobroyUtilities.propertyExists(args, 'removePointerEventsOnLogin') ? args.removePointerEventsOnLogin : true;
 		args.selector = args.selector || '#robroy';
-		args.showAllImages = args.showAllImages || false;
+		args.showAllImages = RobroyUtilities.propertyExists(args, 'showAllImages') ? args.showAllImages : false;
 		this.args = args;
 
 		const $container = document.querySelector(args.selector);

@@ -1,3 +1,5 @@
+import { robroyAbsoluteUrl, robroyUrl } from '../../support/functions';
+
 describe('edit folder', () => {
 	before(() => {
 		cy.setUploads();
@@ -11,7 +13,7 @@ describe('edit folder', () => {
 
 	describe('when clicking the cancel button', () => {
 		it('closes the popup', () => {
-			cy.visit('/?folder=folders-only/subfolder');
+			cy.visit(robroyUrl('folders-only/subfolder'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -25,7 +27,7 @@ describe('edit folder', () => {
 
 	describe('when not making any changes', () => {
 		it('closes the popup', () => {
-			cy.visit('/?folder=folders-only/subfolder');
+			cy.visit(robroyUrl('folders-only/subfolder'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -41,7 +43,7 @@ describe('edit folder', () => {
 	describe('when the input is invalid', () => {
 		describe('when removing the name', () => {
 			it('shows an error', () => {
-				cy.visit('/?folder=folders-only/subfolder');
+				cy.visit(robroyUrl('folders-only/subfolder'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -57,7 +59,7 @@ describe('edit folder', () => {
 
 		describe('when removing the name and parent', () => {
 			it('shows an error', () => {
-				cy.visit('/?folder=folders-only/subfolder');
+				cy.visit(robroyUrl('folders-only/subfolder'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -74,7 +76,7 @@ describe('edit folder', () => {
 
 		describe('when changing the name to one that already exists', () => {
 			it('shows an error', () => {
-				cy.visit('/?folder=folders-only/subfolder');
+				cy.visit(robroyUrl('folders-only/subfolder'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -90,7 +92,7 @@ describe('edit folder', () => {
 
 		describe('when changing the name to the thumbnails folder', () => {
 			it('shows an error', () => {
-				cy.visit('/?folder=folders-only/subfolder');
+				cy.visit(robroyUrl('folders-only/subfolder'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -106,7 +108,7 @@ describe('edit folder', () => {
 
 		describe('when changing the parent to one where the folder already exists', () => {
 			it('shows an error', () => {
-				cy.visit('/?folder=folders-only/subfolder');
+				cy.visit(robroyUrl('folders-only/subfolder'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -128,7 +130,7 @@ describe('edit folder', () => {
 
 		describe('when changing the name', () => {
 			it('redirects to the new URL', () => {
-				cy.visit('/?folder=folders-only/subfolder-2');
+				cy.visit(robroyUrl('folders-only/subfolder-2'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -139,14 +141,13 @@ describe('edit folder', () => {
 				cy.get('#robroy-modal-close').click();
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=folders-only/new-name');
+				cy.location('href').should('eq', robroyAbsoluteUrl('folders-only/new-name'));
 			});
 		});
 
 		describe('when changing the name for a folder with images and folders', () => {
 			it('redirects to the new URL', () => {
-				cy.visit('/?folder=images-and-folders');
+				cy.visit(robroyUrl('images-and-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -168,8 +169,7 @@ describe('edit folder', () => {
 				cy.get('#robroy-modal-close').click();
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=new-name');
+				cy.location('href').should('eq', robroyAbsoluteUrl('new-name'));
 
 				// Shows the folders.
 				cy.get('.robroy-folder-link').each((item, index) => {
@@ -185,7 +185,7 @@ describe('edit folder', () => {
 		describe('when changing the parent', () => {
 			it('redirects to the new URL', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=folders-only/subfolder-2').as('updateFolder');
-				cy.visit('/?folder=folders-only/subfolder-2');
+				cy.visit(robroyUrl('folders-only/subfolder-2'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -197,15 +197,14 @@ describe('edit folder', () => {
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=images-and-folders/subfolder-2');
+				cy.location('href').should('eq', robroyAbsoluteUrl('images-and-folders/subfolder-2'));
 			});
 		});
 
 		describe('when removing the parent', () => {
 			it('redirects to the new URL', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=folders-only/subfolder-2').as('updateFolder');
-				cy.visit('/?folder=folders-only/subfolder-2');
+				cy.visit(robroyUrl('folders-only/subfolder-2'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -217,15 +216,14 @@ describe('edit folder', () => {
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=subfolder-2');
+				cy.location('href').should('eq', robroyAbsoluteUrl('subfolder-2'));
 			});
 		});
 
 		describe('when adding a parent', () => {
 			it('redirects to the new URL', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=images-and-folders').as('updateFolder');
-				cy.visit('/?folder=images-and-folders');
+				cy.visit(robroyUrl('images-and-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.wait('@getImages2');
@@ -247,8 +245,7 @@ describe('edit folder', () => {
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=folders-only/images-and-folders');
+				cy.location('href').should('eq', robroyAbsoluteUrl('folders-only/images-and-folders'));
 				// Shows the folders.
 				cy.get('.robroy-folder-link').each((item, index) => {
 					cy.wrap(item).should('have.text', items[index]);
@@ -263,7 +260,7 @@ describe('edit folder', () => {
 		describe('when changing the name and parent', () => {
 			it('redirects to the new URL', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=folders-only/subfolder-2').as('updateFolder');
-				cy.visit('/?folder=folders-only/subfolder-2');
+				cy.visit(robroyUrl('folders-only/subfolder-2'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -276,8 +273,7 @@ describe('edit folder', () => {
 				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
 
 				// Redirects.
-				cy.location('pathname').should('eq', '/');
-				cy.location('search').should('eq', '?folder=images-and-folders/new-name');
+				cy.location('href').should('eq', robroyAbsoluteUrl('images-and-folders/new-name'));
 			});
 		});
 	});

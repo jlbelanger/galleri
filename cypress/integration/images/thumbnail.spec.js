@@ -1,3 +1,5 @@
+import { robroyUrl } from '../../support/functions';
+
 describe('add image', () => {
 	before(() => {
 		cy.setUploads();
@@ -38,7 +40,7 @@ describe('add image', () => {
 
 	describe('with a non-root folder', () => {
 		it('shows thumbnail buttons', () => {
-			cy.visit('/?folder=images-only');
+			cy.visit(robroyUrl('images-only'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -61,7 +63,7 @@ describe('add image', () => {
 				cy.contains('Log In').click();
 
 				// Make thumbnail.
-				cy.visit('/?folder=images-only');
+				cy.visit(robroyUrl('images-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Make Thumbnail').click();
@@ -75,7 +77,7 @@ describe('add image', () => {
 				cy.get('[data-path="images-only"] [src="/images/images-only/thumbnails/400x500.png"]').should('be.visible');
 
 				// Change thumbnail.
-				cy.visit('/?folder=images-only');
+				cy.visit(robroyUrl('images-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x400.png"] .robroy-button').contains('Make Thumbnail').click();
@@ -91,7 +93,7 @@ describe('add image', () => {
 				cy.get('[data-path="images-only"] [src="/images/images-only/thumbnails/400x400.png"]').should('be.visible');
 
 				// Remove thumbnail.
-				cy.visit('/?folder=images-only');
+				cy.visit(robroyUrl('images-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x400.png"] .robroy-button').contains('Remove Thumbnail').click();

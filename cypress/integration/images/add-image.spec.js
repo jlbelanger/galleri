@@ -1,3 +1,5 @@
+import { robroyUrl } from '../../support/functions';
+
 describe('add image', () => {
 	before(() => {
 		cy.setUploads();
@@ -80,7 +82,7 @@ describe('add image', () => {
 		});
 
 		it('adds the image to the list', () => {
-			cy.visit('/?folder=no-images-or-folders');
+			cy.visit(robroyUrl('no-images-or-folders'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');

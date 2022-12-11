@@ -1,3 +1,5 @@
+import { robroyUrl } from '../../support/functions';
+
 describe('delete image', () => {
 	before(() => {
 		cy.setUploads();
@@ -17,7 +19,7 @@ describe('delete image', () => {
 		it('works', () => {
 			cy.intercept('DELETE', '/api.php?type=images&id=images-only/400x500.png').as('deleteImage1');
 			cy.intercept('DELETE', '/api.php?type=images&id=images-only/400x500.png').as('deleteImage2');
-			cy.visit('/?folder=images-only');
+			cy.visit(robroyUrl('images-only'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -94,7 +96,7 @@ describe('delete image', () => {
 		it('works', () => {
 			cy.intercept('DELETE', '/api.php?type=images&id=images-and-folders/400x500.png').as('deleteImage1');
 			cy.intercept('DELETE', '/api.php?type=images&id=images-and-folders/400x500.png').as('deleteImage2');
-			cy.visit('/?folder=images-and-folders');
+			cy.visit(robroyUrl('images-and-folders'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');

@@ -33,9 +33,16 @@ export default class RobroyFolder {
 		});
 	}
 
+	static getCurrentFolderId() {
+		if (!window.ROBROY.args.enableRewrites) {
+			const urlSearchParams = new URLSearchParams(window.location.search);
+			return urlSearchParams.get('folder') || '';
+		}
+		return window.location.pathname.replace(/^\/+/, '');
+	}
+
 	static loadFolderCallback(response) {
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const currentFolderId = urlSearchParams.get('folder') || '';
+		const currentFolderId = RobroyFolder.getCurrentFolderId();
 
 		window.ROBROY.folders = response.data;
 
@@ -91,7 +98,10 @@ export default class RobroyFolder {
 	}
 
 	static url(folder) {
-		return `?folder=${folder.id}`;
+		if (!window.ROBROY.args.enableRewrites) {
+			return `/?folder=${folder.id}`;
+		}
+		return `/${folder.id}`;
 	}
 
 	static element(data) {

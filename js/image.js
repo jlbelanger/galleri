@@ -35,8 +35,7 @@ export default class RobroyImage {
 	}
 
 	static getImagesCallback(response) {
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const currentFolderId = urlSearchParams.get('folder') || '';
+		const currentFolderId = RobroyFolder.getCurrentFolderId();
 		let images = Object.values(response.data);
 
 		if (!window.ROBROY.args.showAllImages) {

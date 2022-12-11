@@ -1,3 +1,5 @@
+import { robroyUrl } from '../support/functions';
+
 describe('index', () => {
 	before(() => {
 		cy.build();
@@ -185,7 +187,7 @@ describe('index', () => {
 
 		describe('with folders only', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/?folder=folders-only');
+				cy.visit(robroyUrl('folders-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -230,7 +232,7 @@ describe('index', () => {
 
 		describe('with images only', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/?folder=images-only');
+				cy.visit(robroyUrl('images-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -275,7 +277,7 @@ describe('index', () => {
 
 		describe('with images and folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/?folder=images-and-folders');
+				cy.visit(robroyUrl('images-and-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -320,7 +322,7 @@ describe('index', () => {
 
 		describe('with no images or folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit('/?folder=no-images-or-folders');
+				cy.visit(robroyUrl('no-images-or-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -366,7 +368,7 @@ describe('index', () => {
 
 	describe('with a second-level folder', () => {
 		it('shows the correct elements', () => {
-			cy.visit('/?folder=folders-only/subfolder');
+			cy.visit(robroyUrl('folders-only/subfolder'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');

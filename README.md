@@ -32,6 +32,18 @@ composer create-project jlbelanger/robroy-project gallery2 --repository '{"type"
 
 The setup script will prompt you to configure various settings.
 
+Also add the following to your Apache configuration (eg. create a file `public/.htaccess`):
+
+```
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ /index.html [L]
+```
+
+If you cannot change your Apache configuration, or you are using a different server than Apache, then set `enableRewrites` to `false` in the `<script>` section in `public/index.html`.
+
 ## How it works
 
 In the HTML file, you need to include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.

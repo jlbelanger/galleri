@@ -1,3 +1,5 @@
+import { robroyUrl } from '../../support/functions';
+
 describe('add folder', () => {
 	before(() => {
 		cy.setUploads();
@@ -172,7 +174,7 @@ describe('add folder', () => {
 					});
 
 					// Adds the folder to the subfolder.
-					cy.visit('/?folder=folders-only');
+					cy.visit(robroyUrl('folders-only'));
 					cy.wait('@getFolders');
 					cy.wait('@getImages');
 					cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');
@@ -188,7 +190,7 @@ describe('add folder', () => {
 
 		describe('when the parent is the current folder', () => {
 			it('creates the folder', () => {
-				cy.visit('/?folder=no-images-or-folders');
+				cy.visit(robroyUrl('no-images-or-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -252,7 +254,7 @@ describe('add folder', () => {
 
 		describe('when the parent is another folder', () => {
 			it('creates the folder', () => {
-				cy.visit('/?folder=no-images-or-folders');
+				cy.visit(robroyUrl('no-images-or-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -303,7 +305,7 @@ describe('add folder', () => {
 				});
 
 				// Adds the folder to the subfolder.
-				cy.visit('/?folder=folders-only');
+				cy.visit(robroyUrl('folders-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('.robroy-folder-link').contains('New Folder').should('be.visible');

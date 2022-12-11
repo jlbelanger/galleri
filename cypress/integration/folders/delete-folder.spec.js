@@ -1,3 +1,5 @@
+import { robroyAbsoluteUrl, robroyUrl } from '../../support/functions';
+
 describe('delete folder', () => {
 	before(() => {
 		cy.setUploads();
@@ -15,7 +17,7 @@ describe('delete folder', () => {
 
 	describe('with a top-level folder', () => {
 		it('redirects to the index', () => {
-			cy.visit('/?folder=no-images-or-folders');
+			cy.visit(robroyUrl('no-images-or-folders'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -30,16 +32,14 @@ describe('delete folder', () => {
 			cy.get('.robroy-modal').should('not.exist');
 
 			// Does not redirect.
-			cy.location('pathname').should('eq', '/');
-			cy.location('search').should('eq', '?folder=no-images-or-folders');
+			cy.location('href').should('eq', robroyAbsoluteUrl('no-images-or-folders'));
 
 			// When deleting the folder.
 			cy.get('#robroy-delete-folder').click();
 			cy.get('#robroy-modal-close').click();
 
 			// Redirects.
-			cy.location('pathname').should('eq', '/');
-			cy.location('search').should('eq', '');
+			cy.location('href').should('eq', robroyAbsoluteUrl('/'));
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
 
@@ -53,7 +53,7 @@ describe('delete folder', () => {
 
 	describe('with a second-level folder', () => {
 		it('redirects to the parent folder', () => {
-			cy.visit('/?folder=folders-only/subfolder');
+			cy.visit(robroyUrl('folders-only/subfolder'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -63,8 +63,7 @@ describe('delete folder', () => {
 			cy.get('#robroy-modal-close').click();
 
 			// Redirects.
-			cy.location('pathname').should('eq', '/');
-			cy.location('search').should('eq', '?folder=folders-only');
+			cy.location('href').should('eq', robroyAbsoluteUrl('folders-only'));
 			cy.wait('@getFolders');
 			cy.wait('@getImages');
 
