@@ -107,7 +107,7 @@ export default class RobroyImage {
 			}
 		}
 
-		RobroyUtilities.modifier('imageItem', { element: $figure });
+		RobroyUtilities.modifier('imageItem', { element: $figure, image: data });
 
 		return $figure;
 	}
