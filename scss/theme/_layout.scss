@@ -10,6 +10,7 @@ $robroy-header-text-color: $robroy-lightest !default;
 
 $robroy-paragraph-margin: 20px !default;
 
+// stylelint-disable-next-line max-line-length
 $robroy-max-width: (($robroy-image-width + $robroy-padding-desktop) * 3) + $robroy-image-width + ($robroy-image-border-width * 2) + ($robroy-padding-desktop * 2) !default;
 
 * {
