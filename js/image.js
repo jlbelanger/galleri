@@ -42,6 +42,8 @@ export default class RobroyImage {
 			images = images.filter((image) => (image.attributes.folder === currentFolderId));
 		}
 
+		RobroyUtilities.modifier('images', { images });
+
 		images.forEach((image) => {
 			window.ROBROY.currentImages[image.id] = image;
 		});
