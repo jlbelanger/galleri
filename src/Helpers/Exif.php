@@ -47,7 +47,7 @@ class Exif
 	 */
 	public static function camera(array $exif) : string
 	{
-		return !empty($exif['Model']) ? ucwords(strtolower($exif['Model'])) : '';
+		return !empty($exif['Model']) ? $exif['Model'] : '';
 	}
 
 	/**
