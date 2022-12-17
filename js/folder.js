@@ -183,6 +183,11 @@ export default class RobroyFolder {
 			$parentField.style.display = '';
 		}
 
+		const $idInput = $form.querySelector('#robroy-input-id');
+		if ($idInput) {
+			$idInput.value = window.ROBROY.currentFolder.id.replace(/^.+\/([^/]+)$/, '$1');
+		}
+
 		Object.keys(window.ROBROY.currentFolder.attributes).forEach((key) => {
 			const $input = $form.querySelector(`#robroy-input-${key}`);
 			if ($input) {
@@ -227,9 +232,18 @@ export default class RobroyFolder {
 		$container.setAttribute('class', 'robroy-fields');
 		$form.appendChild($container);
 
-		RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
+		const $nameInput = RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
+		const $idInput = RobroyUtilities.addField($container, 'id', window.ROBROY.lang.fieldFolderId);
 		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
 		RobroyUtilities.addField($container, 'thumbnail', window.ROBROY.lang.fieldFolderThumbnail);
+
+		$nameInput.addEventListener('keyup', (e) => {
+			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+		});
+
+		$nameInput.addEventListener('change', (e) => {
+			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+		});
 
 		RobroyUtilities.modifier('folderForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
 
@@ -280,10 +294,23 @@ export default class RobroyFolder {
 			return;
 		}
 
+		const $idInput = document.getElementById('robroy-input-id');
+		if (!$idInput.value) {
+			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			return;
+		}
+
 		const formData = new FormData($form);
-		let json = {};
+		let json = {
+			id: null,
+			attributes: {},
+		};
 		formData.forEach((value, key) => {
-			json[key] = value;
+			if (key === 'id') {
+				json[key] = value;
+			} else {
+				json.attributes[key] = value;
+			}
 		});
 		json = JSON.stringify(json);
 
@@ -314,6 +341,7 @@ export default class RobroyFolder {
 		}
 
 		document.getElementById('robroy-input-name').value = '';
+		document.getElementById('robroy-input-id').value = '';
 
 		window.ROBROY.folders[response.data.id] = response.data;
 
@@ -338,15 +366,36 @@ export default class RobroyFolder {
 			return;
 		}
 
+		const $idInput = document.getElementById('robroy-input-id');
+		if (!$idInput.value) {
+			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			return;
+		}
+
 		const formData = new FormData($form);
-		let json = {};
-		let oldJson = {};
+		let json = {
+			attributes: {},
+		};
+		let oldJson = {
+			attributes: {},
+		};
 		formData.forEach((value, key) => {
-			json[key] = value;
-			if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
-				oldJson[key] = window.ROBROY.currentFolder.attributes[key];
+			if (key === 'id') {
+				json[key] = value;
+
+				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder, key)) {
+					oldJson[key] = window.ROBROY.currentFolder[key].replace(/^.+\/([^/]+)$/, '$1');
+				} else {
+					oldJson[key] = '';
+				}
 			} else {
-				oldJson[key] = '';
+				json.attributes[key] = value;
+
+				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
+					oldJson.attributes[key] = window.ROBROY.currentFolder.attributes[key];
+				} else {
+					oldJson.attributes[key] = '';
+				}
 			}
 		});
 		json = JSON.stringify(json);

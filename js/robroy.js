@@ -51,6 +51,7 @@ export default class Robroy {
 		lang.errorUpdatingThumbnail = lang.errorUpdatingThumbnail || 'Error updating thumbnail.';
 		lang.errorRemovingThumbnail = lang.errorRemovingThumbnail || 'Error removing thumbnail.';
 		lang.errorStatus = lang.errorStatus || 'The server returned a %s error.';
+		lang.fieldFolderId = lang.fieldFolderId || 'ID';
 		lang.fieldFolderName = lang.fieldFolderName || 'Name';
 		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
 		lang.fieldFolderThumbnail = lang.fieldFolderThumbnail || 'Thumbnail';

@@ -269,8 +269,11 @@ export default class RobroyImage {
 		const path = e.target.closest('[data-path]').getAttribute('data-path');
 		const image = window.ROBROY.currentImages[path];
 		const folderId = window.ROBROY.currentFolder.id;
-		const json = window.ROBROY.currentFolder.attributes;
-		json.thumbnail = image.meta.thumbnail;
+		const json = {
+			id: folderId,
+			attributes: window.ROBROY.currentFolder.attributes,
+		};
+		json.attributes.thumbnail = image.meta.thumbnail;
 
 		RobroyApi.request({
 			method: 'PUT',
@@ -300,8 +303,11 @@ export default class RobroyImage {
 		const path = e.target.closest('[data-path]').getAttribute('data-path');
 		const image = window.ROBROY.currentImages[path];
 		const folderId = window.ROBROY.currentFolder.id;
-		const json = window.ROBROY.currentFolder.attributes;
-		json.thumbnail = '';
+		const json = {
+			id: folderId,
+			attributes: window.ROBROY.currentFolder.attributes,
+		};
+		json.attributes.thumbnail = '';
 
 		RobroyApi.request({
 			method: 'PUT',

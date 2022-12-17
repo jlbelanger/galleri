@@ -29,28 +29,31 @@ class Folders
 	 */
 	public static function post() : array
 	{
-		$input = Input::json(['filter' => ['name' => false]]);
+		$input = Input::json(['filter' => ['attributes.name' => false]]);
 
-		if (empty($input['name'])) {
+		if (empty($input['id'])) {
+			throw ValidationException::new(['id' => ['This field is required.']]);
+		}
+		$id = Utilities::nameToSlug($input['id']);
+		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
+			throw ValidationException::new(['id' => ['ID cannot be the same as the thumbnails folder.']]);
+		}
+
+		if (empty($input['attributes']['name'])) {
 			throw ValidationException::new(['name' => ['This field is required.']]);
 		}
-		$input['name'] = trim($input['name']);
+		$input['attributes']['name'] = trim($input['attributes']['name']);
 
-		if (isset($input['parent'])) {
-			Folder::validateId($input['parent'], 'Parent', 'parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
-				throw ValidationException::new(['parent' => ['Parent "' . $input['parent'] . '" does not exist.']]);
+		if (isset($input['attributes']['parent'])) {
+			Folder::validateId($input['attributes']['parent'], 'Parent', 'parent');
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['attributes']['parent'])) {
+				throw ValidationException::new(['parent' => ['Parent "' . $input['attributes']['parent'] . '" does not exist.']]);
 			}
 		} else {
-			$input['parent'] = '';
+			$input['attributes']['parent'] = '';
 		}
 
-		$id = Utilities::nameToSlug($input['name']);
-		if ($id === Constant::get('THUMBNAILS_FOLDER')) {
-			throw ValidationException::new(['name' => ['Name cannot be the same as the thumbnails folder.']]);
-		}
-
-		$folder = Folder::create($id, $input);
+		$folder = Folder::create($id, $input['attributes']);
 
 		return ['data' => $folder->json()];
 	}
@@ -73,35 +76,38 @@ class Folders
 			throw new ApiException('Folder "' . $id . '" does not exist.');
 		}
 
-		$input = Input::json(['filter' => ['name' => false]]);
+		$input = Input::json(['filter' => ['attributes.name' => false]]);
 
-		if (empty($input['name'])) {
+		if (empty($input['id'])) {
+			throw ValidationException::new(['id' => ['This field is required.']]);
+		}
+		$newId = Utilities::nameToSlug($input['id']);
+		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
+			throw ValidationException::new(['id' => ['ID cannot be the same as the thumbnails folder.']]);
+		}
+
+		if (empty($input['attributes']['name'])) {
 			throw ValidationException::new(['name' => ['This field is required.']]);
 		}
-		$input['name'] = trim($input['name']);
+		$input['attributes']['name'] = trim($input['attributes']['name']);
 
-		if (isset($input['parent'])) {
-			Folder::validateId($input['parent'], 'Parent', 'parent');
-			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['parent'])) {
-				throw ValidationException::new(['parent' => ['Parent "' . $input['parent'] . '" does not exist.']]);
+		if (isset($input['attributes']['parent'])) {
+			Folder::validateId($input['attributes']['parent'], 'Parent', 'parent');
+			if (!Filesystem::folderExists(Constant::get('UPLOADS_PATH') . '/' . $input['attributes']['parent'])) {
+				throw ValidationException::new(['parent' => ['Parent "' . $input['attributes']['parent'] . '" does not exist.']]);
 			}
-			if ($input['parent'] === $id) {
+			if ($input['attributes']['parent'] === $id) {
 				throw ValidationException::new(['parent' => ['Name and parent cannot be the same.']]);
 			}
-			if (strpos($input['parent'], $id) === 0) {
+			if (strpos($input['attributes']['parent'], $id) === 0) {
 				throw ValidationException::new(['parent' => ['Parent cannot be a descendant of name.']]);
 			}
 		} else {
-			$input['parent'] = '';
+			$input['attributes']['parent'] = '';
 		}
 
-		$newId = Utilities::nameToSlug($input['name']);
-		if ($newId === Constant::get('THUMBNAILS_FOLDER')) {
-			throw ValidationException::new(['name' => ['Name cannot be the same as the thumbnails folder.']]);
-		}
-
-		$newId = trim($input['parent'] . '/' . $newId, '/');
-		$folder->update($newId, $input);
+		$newId = trim($input['attributes']['parent'] . '/' . $newId, '/');
+		$folder->update($newId, $input['attributes']);
 
 		return ['data' => $folder->json()];
 	}

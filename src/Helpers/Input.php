@@ -116,10 +116,35 @@ class Input
 		if (!$body) {
 			return [];
 		}
-		$output = json_decode($body, true);
-		foreach ($output as $key => $value) {
+		$values = json_decode($body, true);
+		$values = self::flatten($values);
+		$output = [];
+		foreach ($values as $key => $value) {
 			$filter = isset($args['filter'][$key]) ? $args['filter'][$key] : FILTER_SANITIZE_STRING;
-			$output[$key] = self::filter(self::value($key, $output), $filter);
+			$value = self::filter(self::value($key, $values), $filter);
+
+			if (strpos($key, 'attributes.') === 0) {
+				$cleanKey = substr($key, strlen('attributes.'));
+				if (!array_key_exists('attributes', $output)) {
+					$output['attributes'] = [];
+				}
+				$output['attributes'][$cleanKey] = $value;
+			} else {
+				$output[$key] = $value;
+			}
+		}
+		return $output;
+	}
+
+	public static function flatten(array $a, string $prefix = '') : array
+	{
+		$output = [];
+		foreach ($a as $key => $value) {
+			if (is_array($value)) {
+				$output = array_merge($output, self::flatten($value, $prefix . $key . '.'));
+			} else {
+				$output[$prefix . $key] = $value;
+			}
 		}
 		return $output;
 	}

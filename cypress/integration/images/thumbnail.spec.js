@@ -52,7 +52,8 @@ describe('add image', () => {
 		});
 
 		describe('when clicking thumbnail button', () => {
-			it('sets folder thumbnail', () => {
+			it.only('sets folder thumbnail', () => {
+				cy.intercept('PUT', '/api.php?type=folders&id=images-only').as('updateFolder');
 				cy.visit('/');
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
@@ -67,6 +68,10 @@ describe('add image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Make Thumbnail').click();
+				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Thumbnail updated successfully.');
 
 				// Changes button label.
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Remove Thumbnail').should('be.visible');
@@ -81,6 +86,10 @@ describe('add image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x400.png"] .robroy-button').contains('Make Thumbnail').click();
+				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Thumbnail updated successfully.');
 
 				// Changes button label.
 				cy.get('[data-path="images-only/400x500.png"] .robroy-button').contains('Make Thumbnail').should('be.visible');
@@ -97,6 +106,10 @@ describe('add image', () => {
 				cy.wait('@getFolders');
 				cy.wait('@getImages');
 				cy.get('[data-path="images-only/400x400.png"] .robroy-button').contains('Remove Thumbnail').click();
+				cy.wait('@updateFolder').its('response.statusCode').should('equal', 200);
+
+				// Shows a toast.
+				cy.get('.robroy-toast-text').should('have.text', 'Thumbnail removed successfully.');
 
 				// Removes folder thumbnail.
 				cy.visit('/');

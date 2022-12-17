@@ -22,8 +22,44 @@ describe('add folder', () => {
 					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-id').clear().type('new-folder');
 					cy.get('#robroy-modal-close').click();
 					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+					cy.get('#robroy-error-robroy-input-id').should('not.exist');
+					cy.get('#robroy-error-robroy-input-parent').should('not.exist');
+				});
+			});
+
+			describe('when the ID is blank', () => {
+				it('shows an error', () => {
+					cy.visit('/');
+					cy.wait('@getFolders');
+					cy.wait('@getFolders2');
+					cy.wait('@getImages');
+					cy.wait('@getImages2');
+					cy.contains('Log In').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-input-name').clear().type('New Folder');
+					cy.get('#robroy-input-id').clear();
+					cy.get('#robroy-modal-close').click();
+					cy.get('#robroy-error-robroy-input-name').should('not.exist');
+					cy.get('#robroy-error-robroy-input-id').should('have.text', 'Error: This field is required.');
+					cy.get('#robroy-error-robroy-input-parent').should('not.exist');
+				});
+			});
+			describe('when the name and ID are blank', () => {
+				it('shows an error', () => {
+					cy.visit('/');
+					cy.wait('@getFolders');
+					cy.wait('@getFolders2');
+					cy.wait('@getImages');
+					cy.wait('@getImages2');
+					cy.contains('Log In').click();
+					cy.get('#robroy-create-folder').click();
+					cy.get('#robroy-modal-close').click();
+					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: This field is required.');
+					cy.get('#robroy-error-robroy-input-id').should('not.exist');
+					cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 				});
 			});
 
@@ -36,10 +72,13 @@ describe('add folder', () => {
 					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
-					cy.get('#robroy-input-name').clear().type('Folders Only');
+					cy.get('#robroy-input-name').clear().type('New Folder');
+					cy.get('#robroy-input-id').clear().type('folders-only');
 					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 422);
-					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Folder "folders-only" already exists.');
+					cy.get('#robroy-error-robroy-input-name').should('not.exist');
+					cy.get('#robroy-error-robroy-input-id').should('have.text', 'Error: Folder "folders-only" already exists.');
+					cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 				});
 			});
 
@@ -52,10 +91,13 @@ describe('add folder', () => {
 					cy.wait('@getImages2');
 					cy.contains('Log In').click();
 					cy.get('#robroy-create-folder').click();
-					cy.get('#robroy-input-name').clear().type('Thumbnails');
+					cy.get('#robroy-input-name').clear().type('New Folder');
+					cy.get('#robroy-input-id').clear().type('thumbnails');
 					cy.get('#robroy-modal-close').click();
 					cy.wait('@createFolder').its('response.statusCode').should('equal', 422);
-					cy.get('#robroy-error-robroy-input-name').should('have.text', 'Error: Name cannot be the same as the thumbnails folder.');
+					cy.get('#robroy-error-robroy-input-name').should('not.exist');
+					cy.get('#robroy-error-robroy-input-id').should('have.text', 'Error: ID cannot be the same as the thumbnails folder.');
+					cy.get('#robroy-error-robroy-input-parent').should('not.exist');
 				});
 			});
 		});
@@ -81,8 +123,9 @@ describe('add folder', () => {
 					// Shows a toast.
 					cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
 
-					// Clears the name field.
+					// Clears the name and ID fields.
 					cy.get('#robroy-input-name').invoke('val').should('equal', '');
+					cy.get('#robroy-input-id').invoke('val').should('equal', '');
 
 					// Does not clear the parent field.
 					cy.get('#robroy-input-parent option:selected').should('have.text', '');
@@ -140,8 +183,9 @@ describe('add folder', () => {
 					// Shows a toast.
 					cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
 
-					// Clears the name field.
+					// Clears the name and ID fields.
 					cy.get('#robroy-input-name').invoke('val').should('equal', '');
+					cy.get('#robroy-input-id').invoke('val').should('equal', '');
 
 					// Does not clear the parent field.
 					cy.get('#robroy-input-parent option:selected').should('have.text', 'Folders Only');
@@ -204,8 +248,9 @@ describe('add folder', () => {
 				// Shows a toast.
 				cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
 
-				// Clears the name field.
+				// Clears the name and ID fields.
 				cy.get('#robroy-input-name').invoke('val').should('equal', '');
+				cy.get('#robroy-input-id').invoke('val').should('equal', '');
 
 				// Does not clear the parent field.
 				cy.get('#robroy-input-parent option:selected').should('have.text', 'No Images Or Folders');
@@ -269,8 +314,9 @@ describe('add folder', () => {
 				// Shows a toast.
 				cy.get('.robroy-toast-text').should('have.text', 'Folder created successfully.');
 
-				// Clears the name field.
+				// Clears the name and ID fields.
 				cy.get('#robroy-input-name').invoke('val').should('equal', '');
+				cy.get('#robroy-input-id').invoke('val').should('equal', '');
 
 				// Does not clear the parent field.
 				cy.get('#robroy-input-parent option:selected').should('have.text', 'Folders Only');
