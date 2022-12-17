@@ -200,9 +200,13 @@ describe('index', () => {
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
-					const items = ['Home', 'Folders Only'];
+					const items = [
+						{ text: 'Home', href: '/' },
+						{ text: 'Folders Only', href: '/folders-only' },
+					];
 					cy.get('.robroy-breadcrumb-link').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', items[index].text);
+						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
@@ -245,9 +249,13 @@ describe('index', () => {
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
-					const items = ['Home', 'Images Only'];
+					const items = [
+						{ text: 'Home', href: '/' },
+						{ text: 'Images Only', href: '/images-only' },
+					];
 					cy.get('.robroy-breadcrumb-link').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', items[index].text);
+						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
@@ -290,9 +298,13 @@ describe('index', () => {
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
-					const items = ['Home', 'Images And Folders'];
+					const items = [
+						{ text: 'Home', href: '/' },
+						{ text: 'Images And Folders', href: '/images-and-folders' },
+					];
 					cy.get('.robroy-breadcrumb-link').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', items[index].text);
+						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
@@ -335,9 +347,13 @@ describe('index', () => {
 
 					// Shows the breadcrumb.
 					cy.get('.robroy-breadcrumb').should('be.visible');
-					const items = ['Home', 'No Images Or Folders'];
+					const items = [
+						{ text: 'Home', href: '/' },
+						{ text: 'No Images Or Folders', href: '/no-images-or-folders' },
+					];
 					cy.get('.robroy-breadcrumb-link').each((item, index) => {
-						cy.wrap(item).should('have.text', items[index]);
+						cy.wrap(item).should('have.text', items[index].text);
+						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
@@ -381,9 +397,14 @@ describe('index', () => {
 
 				// Shows the breadcrumb.
 				cy.get('.robroy-breadcrumb').should('be.visible');
-				const items = ['Home', 'Folders Only', 'Subfolder'];
+				const items = [
+					{ text: 'Home', href: '/' },
+					{ text: 'Folders Only', href: '/folders-only' },
+					{ text: 'Subfolder', href: '/folders-only/subfolder' },
+				];
 				cy.get('.robroy-breadcrumb-link').each((item, index) => {
-					cy.wrap(item).should('have.text', items[index]);
+					cy.wrap(item).should('have.text', items[index].text);
+					cy.wrap(item).should('have.attr', 'href', items[index].href);
 				});
 
 				// Shows the edit folder form.

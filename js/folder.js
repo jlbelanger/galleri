@@ -480,7 +480,7 @@ export default class RobroyFolder {
 		} else {
 			const $a = document.createElement('a');
 			$a.setAttribute('class', 'robroy-breadcrumb-link');
-			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : window.location.pathname);
+			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : '/');
 			$a.innerText = folder.attributes.name;
 			$li.prepend($a);
 		}
