@@ -229,7 +229,7 @@ class FoldersTest extends TestCase
 				'variables' => [
 					'_GET' => ['id' => 'foo'],
 				],
-				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"name"}]',
+				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"id"}]',
 			]],
 			'when id is valid, name is valid, parent has a leading slash' => [[
 				'folders.json' => $json,
