@@ -114,7 +114,7 @@ abstract class TestCase extends BaseTestCase
 				'unlink' => true,
 			],
 			'Jlbelanger\Robroy\Models' => [
-				'getimagesize' => [500, 500],
+				'getimagesize' => [500, 500, IMAGETYPE_JPEG],
 			],
 		];
 		if (!empty($args['mocks']['Jlbelanger\Robroy\Helpers'])) {
