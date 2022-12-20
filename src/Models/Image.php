@@ -48,9 +48,23 @@ class Image
 			$this->meta['thumbnailHeight'] = $height;
 			$this->meta['thumbnailWidth'] = $width;
 		}
+		if (empty($this->meta['height']) || empty($this->meta['width'])) {
+			list($width, $height) = getimagesize($this->absolutePath());
+
+			$this->meta['height'] = $height;
+			$this->meta['width'] = $width;
+		}
 		if (empty($this->meta['url'])) {
 			$this->meta['url'] = $this->getUrl();
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function absolutePath() : string
+	{
+		return Constant::get('UPLOADS_PATH') . '/' . $this->id;
 	}
 
 	/**
@@ -358,7 +372,7 @@ class Image
 			'title' => '',
 			'keywords' => [],
 		];
-		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
+		$path = $this->absolutePath();
 		list($w, $h, $fileType) = getimagesize($path, $info);
 		if (Exif::exists($fileType)) {
 			$exif = Exif::get($path);
@@ -380,7 +394,7 @@ class Image
 	 */
 	protected function getExif() : array
 	{
-		$path = Constant::get('UPLOADS_PATH') . '/' . $this->id;
+		$path = $this->absolutePath();
 		list($w, $h, $fileType) = getimagesize($path, $info);
 		if (Exif::exists($fileType)) {
 			$exif = Exif::get($path);
