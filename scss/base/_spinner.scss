@@ -9,6 +9,10 @@
 	right: 0;
 	top: 0;
 
+	.no-js & {
+		display: none;
+	}
+
 	&::after {
 		animation: robroy-spin 2s infinite linear;
 		border-color: $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color-alternate;
