@@ -127,7 +127,7 @@ git clone https://github.com/jlbelanger/robroy.git
 cd robroy
 
 # Configure the environment settings
-cp cypress.example.json cypress.json
+cp cypress.config.example.js cypress.config.js
 cp cypress.env.example.json cypress.env.json
 
 # Install dependencies
