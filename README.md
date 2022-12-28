@@ -4,17 +4,19 @@ Robroy Photo Gallery is a databaseless vanilla JavaScript and vanilla PHP photo 
 
 ## Demo
 
-https://robroy.jennybelanger.com/
+https://www.brendabelanger.com/
 
 ## Features
 
 - upload and delete images from a web interface
 - group images into folders and subfolders
-- create thumbnails automatically
+- create image thumbnails automatically
 - watermark images automatically
 - resize images automatically
 - load images with infinite scroll
+- view images in a lightbox
 - specify image alt tags
+- add arbitrary data to images and folders
 
 ## Requirements
 
@@ -27,12 +29,12 @@ https://robroy.jennybelanger.com/
 Run:
 
 ``` bash
-composer create-project jlbelanger/robroy-project gallery2 --repository '{"type":"vcs","url":"git@github.com:jlbelanger/robroy-project.git"}' --stability dev
+composer create-project jlbelanger/robroy-project my-gallery --repository '{"type":"vcs","url":"git@github.com:jlbelanger/robroy-project.git"}' --stability dev
 ```
 
 The setup script will prompt you to configure various settings.
 
-Also add the following to your Apache configuration (eg. create a file `public/.htaccess`):
+Also add the following to your Apache configuration (eg. create a file called `.htaccess` in the `public` folder with the following contents):
 
 ```
 RewriteEngine On
@@ -42,45 +44,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /index.html [L]
 ```
 
-If you cannot change your Apache configuration, or you are using a different server than Apache, then set `enableRewrites` to `false` in the `<script>` section in `public/index.html`.
-
-## How it works
-
-In the HTML file, you need to include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
-
-``` html
-<link rel="stylesheet" href="robroy.min.css">
-<div id="robroy"></div>
-<script src="robroy.min.js"></script>
-<script>Robroy.default.init({ selector: '#robroy' });</script>
-```
-
-If you want to enable authentication and allow managing images from the frontend, you'll also need a `<button>` with the attribute `data-action="authenticate"`.
-
-``` html
-<button data-action="authenticate" type="button"></button>
-```
-
-You'll also need a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
-
-``` php
-<?php
-
-require_once realpath(__DIR__ . '/../vendor/autoload.php');
-
-// Optional: You can set the environment variables another way if you choose.
-// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
-$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
-$dotenv->load();
-
-Jlbelanger\Robroy\Router::load();
-```
+If you cannot change your Apache configuration, or if you are using a different server than Apache, then set `enableRewrites` to `false` in the `<script>` section in `public/index.html`.
 
 ## Configuration
 
 ### PHP
 
-PHP configuration options are defined in [`.env.example`](https://github.com/jlbelanger/robroy-project/blob/main/.env.example). Make your changes in the `.env` file created by the setup script (rather than in `.env.example`).
+PHP configuration options are defined in [`.env.example`](https://github.com/jlbelanger/robroy-project/blob/main/.env.example). Make your changes in the `.env` file created by the setup script; changes made in `.env.example` will have no effect.
 
 ### JS
 
@@ -88,9 +58,7 @@ JS configuration options are defined in [`public/index.html`](https://github.com
 
 ### SCSS
 
-SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/robroy/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in the SCSS file in the `scss` folder.
-
-Follow the instructions below to compile the SCSS changes.
+SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/robroy/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in the SCSS file in the `scss` folder, then follow the instructions below to compile the SCSS changes.
 
 In your project directory, run the following command to install SCSS dependencies:
 
@@ -98,19 +66,21 @@ In your project directory, run the following command to install SCSS dependencie
 yarn install
 ```
 
-Then, to re-compile the `public/*.min.css` file whenever there are changes in `scss/*.scss`, run the following command:
+Then, to re-compile the `public/*.min.css` file whenever changes are made to the `scss/*.scss` files, run the following command:
 
 ``` bash
 yarn watch
 ```
 
-Alternately, to re-compile the `public/*.min.css` file without watching for changes, run:
+Alternately, to re-compile the `public/*.min.css` file once, without watching for changes, run:
 
 ``` bash
 yarn build
 ```
 
 ## Development
+
+If you want to make changes to the base robroy package (rather than just changing configuration settings):
 
 ### Requirements
 
@@ -135,7 +105,7 @@ yarn install
 composer install
 ```
 
-Create a Robroy project using the regular setup steps above. Then, in the project folder's `composer.json` file, change `repositories`:
+Create a Robroy project using the regular [setup](#setup). Then, in the project folder's `composer.json` file, change `repositories`:
 
 ``` json
 "repositories": [
@@ -152,9 +122,9 @@ Create a Robroy project using the regular setup steps above. Then, in the projec
 In the project folder's `package.json` file, change the robroy line in `dependencies`:
 
 ``` json
-	"dependencies": {
-		"@jlbelanger/robroy": "link:../robroy"
-	}
+"dependencies": {
+	"@jlbelanger/robroy": "link:../robroy"
+}
 ```
 
 In the project folder, run:
@@ -203,6 +173,40 @@ In the `robroy` folder, run:
 
 ``` bash
 yarn build
+```
+
+## Minimal setup
+
+Create an HTML file. Include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
+
+``` html
+<link rel="stylesheet" href="robroy.min.css">
+<div id="robroy"></div>
+<script src="robroy.min.js"></script>
+<script>Robroy.default.init({ selector: '#robroy' });</script>
+```
+
+To enable authentication and allow images to be managed from the frontend, also include a `<button>` with the attribute `data-action="authenticate"`.
+
+``` html
+<button data-action="authenticate" type="button"></button>
+```
+
+Create a `composer.json` file and add `jlbelanger/robroy` as a dependency.
+
+Create a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
+
+``` php
+<?php
+
+require_once realpath(__DIR__ . '/../vendor/autoload.php');
+
+// Optional: You can set the environment variables another way if you choose.
+// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
+$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
+$dotenv->load();
+
+Jlbelanger\Robroy\Router::load();
 ```
 
 ## Credits
