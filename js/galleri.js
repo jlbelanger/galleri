@@ -1,18 +1,18 @@
-import RobroyAuth from './auth';
-import RobroyGrid from './grid';
-import RobroyFolder from './folder';
-import RobroyImage from './image';
-import RobroyUtilities from './utilities';
+import GalleriAuth from './auth';
+import GalleriGrid from './grid';
+import GalleriFolder from './folder';
+import GalleriImage from './image';
+import GalleriUtilities from './utilities';
 
-export default class Robroy {
+export default class Galleri {
 	constructor(args) {
 		args = args || {};
 		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
 		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
-		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
-		args.enableRewrites = RobroyUtilities.propertyExists(args, 'enableRewrites') ? args.enableRewrites : true;
+		args.enableGrid = GalleriUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
+		args.enableRewrites = GalleriUtilities.propertyExists(args, 'enableRewrites') ? args.enableRewrites : true;
 		args.folderItemElement = args.folderItemElement || 'li';
 		args.folderSeparator = args.folderSeparator || ' > ';
 		args.imageItemElement = args.imageItemElement || 'figure';
@@ -20,9 +20,10 @@ export default class Robroy {
 		args.metaTitleSeparator = args.metaTitleSeparator || ' | ';
 		args.modifiers = args.modifiers || {};
 		args.pageSize = args.pageSize || 8;
-		args.removePointerEventsOnLogin = RobroyUtilities.propertyExists(args, 'removePointerEventsOnLogin') ? args.removePointerEventsOnLogin : true;
-		args.selector = args.selector || '#robroy';
-		args.showAllImages = RobroyUtilities.propertyExists(args, 'showAllImages') ? args.showAllImages : false;
+		args.removePointerEventsOnLogin = GalleriUtilities.propertyExists(args, 'removePointerEventsOnLogin')
+			? args.removePointerEventsOnLogin : true;
+		args.selector = args.selector || '#galleri';
+		args.showAllImages = GalleriUtilities.propertyExists(args, 'showAllImages') ? args.showAllImages : false;
 		this.args = args;
 
 		const $container = document.querySelector(args.selector);
@@ -86,11 +87,11 @@ export default class Robroy {
 		this.lang = lang;
 
 		const $folderList = document.createElement('ul');
-		$folderList.setAttribute('id', 'robroy-folders');
+		$folderList.setAttribute('id', 'galleri-folders');
 		$container.appendChild($folderList);
 
 		const $imageList = document.createElement('div');
-		$imageList.setAttribute('id', 'robroy-images');
+		$imageList.setAttribute('id', 'galleri-images');
 		$container.appendChild($imageList);
 
 		this.elements = {
@@ -112,25 +113,25 @@ export default class Robroy {
 	}
 
 	static init(args) {
-		if (!RobroyUtilities.propertyExists(window, 'ROBROY')) {
-			window.ROBROY = new Robroy(args);
-			if (!window.ROBROY.elements.$imageList) {
+		if (!GalleriUtilities.propertyExists(window, 'GALLERI')) {
+			window.GALLERI = new Galleri(args);
+			if (!window.GALLERI.elements.$imageList) {
 				return null;
 			}
-			RobroyFolder.load();
-			RobroyImage.load();
+			GalleriFolder.load();
+			GalleriImage.load();
 			if (args.enableGrid) {
-				window.ROBROY.grid = new RobroyGrid();
+				window.GALLERI.grid = new GalleriGrid();
 			}
 			let int = setInterval(() => {
-				if (!window.ROBROY.state.isLoadingFolder && !window.ROBROY.state.isLoadingImages) {
-					RobroyAuth.init();
-					RobroyUtilities.setNumImages();
+				if (!window.GALLERI.state.isLoadingFolder && !window.GALLERI.state.isLoadingImages) {
+					GalleriAuth.init();
+					GalleriUtilities.setNumImages();
 					clearInterval(int);
 					int = null;
 				}
 			}, 250);
 		}
-		return window.ROBROY;
+		return window.GALLERI;
 	}
 }

@@ -1,7 +1,7 @@
-#robroy-folders {
+#galleri-folders {
 	display: flex;
 	flex-wrap: wrap;
-	grid-gap: $robroy-padding-mobile;
+	grid-gap: $galleri-padding-mobile;
 	justify-content: space-between;
 	line-height: 1;
 	list-style: none;
@@ -12,34 +12,34 @@
 		display: none;
 	}
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		grid-gap: $robroy-padding-desktop;
+	@media screen and (min-width: $galleri-breakpoint) {
+		grid-gap: $galleri-padding-desktop;
 	}
 }
 
-.robroy-folder {
-	margin: $robroy-folder-item-margin 0;
+.galleri-folder {
+	margin: $galleri-folder-item-margin 0;
 }
 
-.robroy-folder-link {
+.galleri-folder-link {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	box-sizing: content-box;
 	display: block;
-	width: $robroy-folder-image-width;
+	width: $galleri-folder-image-width;
 }
 
-.robroy-folder-img {
+.galleri-folder-img {
 	height: auto;
-	width: $robroy-folder-image-width;
+	width: $galleri-folder-image-width;
 
-	& + .robroy-folder-name {
-		margin-top: $robroy-folder-name-margin;
+	& + .galleri-folder-name {
+		margin-top: $galleri-folder-name-margin;
 	}
 }
 
-.robroy-folder-name {
+.galleri-folder-name {
 	line-height: 1.2;
 	text-align: center;
 }

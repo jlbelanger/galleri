@@ -1,9 +1,9 @@
 <?php
 
-namespace Jlbelanger\Robroy\Helpers;
+namespace Jlbelanger\Galleri\Helpers;
 
-use Jlbelanger\Robroy\Helpers\Input;
-use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Galleri\Helpers\Input;
+use Jlbelanger\Galleri\Exceptions\ApiException;
 
 class Constant
 {

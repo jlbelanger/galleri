@@ -1,32 +1,32 @@
-import RobroyApi from './api';
-import RobroyErrors from './errors';
-import RobroyModal from './modal';
-import RobroyToast from './toast';
-import RobroyUtilities from './utilities';
+import GalleriApi from './api';
+import GalleriErrors from './errors';
+import GalleriModal from './modal';
+import GalleriToast from './toast';
+import GalleriUtilities from './utilities';
 
-export default class RobroyFolder {
+export default class GalleriFolder {
 	static load() {
-		window.ROBROY.state.isLoadingFolder = true;
+		window.GALLERI.state.isLoadingFolder = true;
 
-		RobroyApi.request({
-			url: window.ROBROY.args.apiFoldersPath,
+		GalleriApi.request({
+			url: window.GALLERI.args.apiFoldersPath,
 			callback: (response) => {
 				if (response) {
-					RobroyFolder.loadFolderCallback(response);
+					GalleriFolder.loadFolderCallback(response);
 				} else {
-					RobroyApi.request({
-						url: `${window.ROBROY.args.apiPath}?type=folders`,
+					GalleriApi.request({
+						url: `${window.GALLERI.args.apiPath}?type=folders`,
 						callback: (response2) => {
-							RobroyFolder.loadFolderCallback(response2);
+							GalleriFolder.loadFolderCallback(response2);
 						},
 					});
 				}
 			},
 			errorCallback: () => {
-				RobroyApi.request({
-					url: `${window.ROBROY.args.apiPath}?type=folders`,
+				GalleriApi.request({
+					url: `${window.GALLERI.args.apiPath}?type=folders`,
 					callback: (response) => {
-						RobroyFolder.loadFolderCallback(response);
+						GalleriFolder.loadFolderCallback(response);
 					},
 				});
 			},
@@ -34,7 +34,7 @@ export default class RobroyFolder {
 	}
 
 	static getCurrentFolderId() {
-		if (!window.ROBROY.args.enableRewrites) {
+		if (!window.GALLERI.args.enableRewrites) {
 			const urlSearchParams = new URLSearchParams(window.location.search);
 			return urlSearchParams.get('folder') || '';
 		}
@@ -42,9 +42,9 @@ export default class RobroyFolder {
 	}
 
 	static loadFolderCallback(response) {
-		const currentFolderId = RobroyFolder.getCurrentFolderId();
+		const currentFolderId = GalleriFolder.getCurrentFolderId();
 
-		window.ROBROY.folders = response.data;
+		window.GALLERI.folders = response.data;
 
 		let folder;
 		if (currentFolderId === '') {
@@ -56,157 +56,157 @@ export default class RobroyFolder {
 				},
 			};
 		} else {
-			folder = window.ROBROY.folders[currentFolderId];
+			folder = window.GALLERI.folders[currentFolderId];
 		}
 
 		if (!folder) {
-			RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorFolderDoesNotExist);
+			GalleriModal.show(window.GALLERI.lang.error + window.GALLERI.lang.errorFolderDoesNotExist);
 			return;
 		}
 
-		window.ROBROY.currentFolder = folder;
+		window.GALLERI.currentFolder = folder;
 
-		if (window.ROBROY.currentFolder.id !== '') {
-			RobroyFolder.initBreadcrumb();
+		if (window.GALLERI.currentFolder.id !== '') {
+			GalleriFolder.initBreadcrumb();
 		}
 
 		if (folder.attributes.name) {
-			RobroyUtilities.setMetaTitle(folder.attributes.name);
+			GalleriUtilities.setMetaTitle(folder.attributes.name);
 		}
 
-		RobroyUtilities.setPageTitle(folder.attributes.name ? folder.attributes.name : window.ROBROY.lang.home);
+		GalleriUtilities.setPageTitle(folder.attributes.name ? folder.attributes.name : window.GALLERI.lang.home);
 
 		let childFolders;
-		if (window.ROBROY.currentFolder.id === '') {
-			childFolders = Object.values(window.ROBROY.folders).filter((f) => (!f.id.includes('/')));
+		if (window.GALLERI.currentFolder.id === '') {
+			childFolders = Object.values(window.GALLERI.folders).filter((f) => (!f.id.includes('/')));
 		} else {
-			const numSlashes = window.ROBROY.currentFolder.id.split('/').length + 1;
-			childFolders = Object.values(window.ROBROY.folders).filter((f) => {
-				if (!f.id.startsWith(`${window.ROBROY.currentFolder.id}/`)) {
+			const numSlashes = window.GALLERI.currentFolder.id.split('/').length + 1;
+			childFolders = Object.values(window.GALLERI.folders).filter((f) => {
+				if (!f.id.startsWith(`${window.GALLERI.currentFolder.id}/`)) {
 					return false;
 				}
 				return numSlashes === f.id.split('/').length;
 			});
 		}
 		if (childFolders.length > 0) {
-			RobroyFolder.appendItems(childFolders);
+			GalleriFolder.appendItems(childFolders);
 		}
 
-		window.ROBROY.state.isLoadingFolder = false;
+		window.GALLERI.state.isLoadingFolder = false;
 
-		RobroyUtilities.callback('afterLoadFolder', { folder });
+		GalleriUtilities.callback('afterLoadFolder', { folder });
 	}
 
 	static url(folder) {
-		if (!window.ROBROY.args.enableRewrites) {
+		if (!window.GALLERI.args.enableRewrites) {
 			return `/?folder=${folder.id}`;
 		}
 		return `/${folder.id}`;
 	}
 
 	static element(data) {
-		const $li = document.createElement(window.ROBROY.args.folderItemElement);
-		$li.setAttribute('class', 'robroy-folder');
+		const $li = document.createElement(window.GALLERI.args.folderItemElement);
+		$li.setAttribute('class', 'galleri-folder');
 		$li.setAttribute('data-path', data.id);
 
 		const $a = document.createElement('a');
-		$a.setAttribute('class', 'robroy-folder-link');
-		$a.setAttribute('href', RobroyFolder.url(data));
+		$a.setAttribute('class', 'galleri-folder-link');
+		$a.setAttribute('href', GalleriFolder.url(data));
 		$li.appendChild($a);
 
 		if (data.attributes.thumbnail) {
 			const $img = document.createElement('img');
-			$img.setAttribute('class', 'robroy-folder-img');
+			$img.setAttribute('class', 'galleri-folder-img');
 			$img.setAttribute('src', data.attributes.thumbnail);
 			$a.appendChild($img);
 		}
 
 		const $name = document.createElement('div');
-		$name.setAttribute('class', 'robroy-folder-name');
+		$name.setAttribute('class', 'galleri-folder-name');
 		$name.innerText = data.attributes.name;
 		$a.appendChild($name);
 
-		RobroyUtilities.modifier('folderItem', { element: $li, folder: data });
+		GalleriUtilities.modifier('folderItem', { element: $li, folder: data });
 
 		return $li;
 	}
 
 	static showCreateForm() {
-		const $form = RobroyFolder.form(window.ROBROY.lang.titleCreateFolder, 'post', RobroyFolder.submitCreateFormCallback);
+		const $form = GalleriFolder.form(window.GALLERI.lang.titleCreateFolder, 'post', GalleriFolder.submitCreateFormCallback);
 
-		const $parentInput = $form.querySelector('#robroy-input-parent');
+		const $parentInput = $form.querySelector('#galleri-input-parent');
 		if ($parentInput) {
-			RobroyFolder.addFolderOptions($parentInput, window.ROBROY.currentFolder.id);
+			GalleriFolder.addFolderOptions($parentInput, window.GALLERI.currentFolder.id);
 		}
 
-		const $parentField = $form.querySelector('#robroy-field-parent');
-		if (Object.keys(window.ROBROY.folders).length <= 0) {
+		const $parentField = $form.querySelector('#galleri-field-parent');
+		if (Object.keys(window.GALLERI.folders).length <= 0) {
 			$parentField.style.display = 'none';
 		} else {
 			$parentField.style.display = '';
 		}
 
-		RobroyUtilities.modifier('folderCreateForm', { addField: RobroyUtilities.addField, form: $form });
+		GalleriUtilities.modifier('folderCreateForm', { addField: GalleriUtilities.addField, form: $form });
 
-		RobroyModal.show(
+		GalleriModal.show(
 			$form,
 			{
 				append: true,
-				callback: RobroyFolder.submitCreateFormCallback,
+				callback: GalleriFolder.submitCreateFormCallback,
 				closeButtonAttributes: {
-					form: 'robroy-folder-form',
+					form: 'galleri-folder-form',
 					type: 'submit',
 				},
-				closeButtonText: window.ROBROY.lang.save,
+				closeButtonText: window.GALLERI.lang.save,
 				showCancel: true,
 			}
 		);
 	}
 
 	static showEditForm() {
-		const $form = RobroyFolder.form(
-			window.ROBROY.lang.titleEditFolder,
+		const $form = GalleriFolder.form(
+			window.GALLERI.lang.titleEditFolder,
 			'put',
-			RobroyFolder.submitEditFormCallback,
-			window.ROBROY.currentFolder.id
+			GalleriFolder.submitEditFormCallback,
+			window.GALLERI.currentFolder.id
 		);
 
-		const $parentInput = $form.querySelector('#robroy-input-parent');
+		const $parentInput = $form.querySelector('#galleri-input-parent');
 		if ($parentInput) {
-			RobroyFolder.addFolderOptions($parentInput, RobroyFolder.getParentId(window.ROBROY.currentFolder.id));
+			GalleriFolder.addFolderOptions($parentInput, GalleriFolder.getParentId(window.GALLERI.currentFolder.id));
 		}
 
-		const $parentField = $form.querySelector('#robroy-field-parent');
-		if (Object.keys(window.ROBROY.folders).length <= 0) {
+		const $parentField = $form.querySelector('#galleri-field-parent');
+		if (Object.keys(window.GALLERI.folders).length <= 0) {
 			$parentField.style.display = 'none';
 		} else {
 			$parentField.style.display = '';
 		}
 
-		const $idInput = $form.querySelector('#robroy-input-id');
+		const $idInput = $form.querySelector('#galleri-input-id');
 		if ($idInput) {
-			$idInput.value = window.ROBROY.currentFolder.id.replace(/^.+\/([^/]+)$/, '$1');
+			$idInput.value = window.GALLERI.currentFolder.id.replace(/^.+\/([^/]+)$/, '$1');
 		}
 
-		Object.keys(window.ROBROY.currentFolder.attributes).forEach((key) => {
-			const $input = $form.querySelector(`#robroy-input-${key}`);
+		Object.keys(window.GALLERI.currentFolder.attributes).forEach((key) => {
+			const $input = $form.querySelector(`#galleri-input-${key}`);
 			if ($input) {
-				$input.setAttribute('value', window.ROBROY.currentFolder.attributes[key]);
+				$input.setAttribute('value', window.GALLERI.currentFolder.attributes[key]);
 			}
 		});
 
-		RobroyUtilities.modifier('folderEditForm', { addField: RobroyUtilities.addField, form: $form });
+		GalleriUtilities.modifier('folderEditForm', { addField: GalleriUtilities.addField, form: $form });
 
-		RobroyModal.show(
+		GalleriModal.show(
 			$form,
 			{
 				append: true,
-				callback: RobroyFolder.submitEditFormCallback,
+				callback: GalleriFolder.submitEditFormCallback,
 				closeButtonAttributes: {
-					form: 'robroy-folder-form',
+					form: 'galleri-folder-form',
 					type: 'submit',
 				},
-				closeButtonText: window.ROBROY.lang.save,
+				closeButtonText: window.GALLERI.lang.save,
 				showCancel: true,
 			}
 		);
@@ -214,69 +214,69 @@ export default class RobroyFolder {
 
 	static form(title, method, callback, id = '') {
 		const $form = document.createElement('form');
-		let action = `${window.ROBROY.args.apiPath}?type=folders`;
+		let action = `${window.GALLERI.args.apiPath}?type=folders`;
 		if (id) {
 			action += `&id=${id}`;
 		}
 		$form.setAttribute('action', action);
-		$form.setAttribute('id', 'robroy-folder-form');
+		$form.setAttribute('id', 'galleri-folder-form');
 		$form.setAttribute('method', method);
 		$form.addEventListener('submit', callback);
 
 		const $heading = document.createElement('h2');
-		$heading.setAttribute('class', 'robroy-heading');
+		$heading.setAttribute('class', 'galleri-heading');
 		$heading.innerText = title;
 		$form.appendChild($heading);
 
 		const $container = document.createElement('div');
-		$container.setAttribute('class', 'robroy-fields');
+		$container.setAttribute('class', 'galleri-fields');
 		$form.appendChild($container);
 
-		const $nameInput = RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
-		const $idInput = RobroyUtilities.addField($container, 'id', window.ROBROY.lang.fieldFolderId);
-		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
-		RobroyUtilities.addField($container, 'thumbnail', window.ROBROY.lang.fieldFolderThumbnail);
+		const $nameInput = GalleriUtilities.addField($container, 'name', window.GALLERI.lang.fieldFolderName);
+		const $idInput = GalleriUtilities.addField($container, 'id', window.GALLERI.lang.fieldFolderId);
+		GalleriUtilities.addField($container, 'parent', window.GALLERI.lang.fieldFolderParent, 'select');
+		GalleriUtilities.addField($container, 'thumbnail', window.GALLERI.lang.fieldFolderThumbnail);
 
 		$nameInput.addEventListener('keyup', (e) => {
-			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+			$idInput.value = GalleriUtilities.toSlug(e.target.value);
 		});
 
 		$nameInput.addEventListener('change', (e) => {
-			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+			$idInput.value = GalleriUtilities.toSlug(e.target.value);
 		});
 
-		RobroyUtilities.modifier('folderForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
+		GalleriUtilities.modifier('folderForm', { addField: GalleriUtilities.addField, container: $container, form: $form });
 
 		return $form;
 	}
 
 	static delete() {
-		const id = window.ROBROY.currentFolder.id;
-		RobroyModal.show(
-			RobroyUtilities.sprintf(window.ROBROY.lang.confirmDeleteFolder, window.ROBROY.currentFolder.attributes.name),
+		const id = window.GALLERI.currentFolder.id;
+		GalleriModal.show(
+			GalleriUtilities.sprintf(window.GALLERI.lang.confirmDeleteFolder, window.GALLERI.currentFolder.attributes.name),
 			{
-				closeButtonText: window.ROBROY.lang.delete,
-				closeButtonClass: 'robroy-button--danger',
+				closeButtonText: window.GALLERI.lang.delete,
+				closeButtonClass: 'galleri-button--danger',
 				showCancel: true,
 				callback: () => {
-					RobroyFolder.deleteCallback(id);
-					RobroyModal.hide();
+					GalleriFolder.deleteCallback(id);
+					GalleriModal.hide();
 				},
 			}
 		);
 	}
 
 	static deleteCallback(id) {
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'DELETE',
-			url: `${window.ROBROY.args.apiPath}?type=folders&id=${id}`,
+			url: `${window.GALLERI.args.apiPath}?type=folders&id=${id}`,
 			callback: () => {
-				RobroyUtilities.callback('afterDeleteFolder', { id });
+				GalleriUtilities.callback('afterDeleteFolder', { id });
 
-				const parentId = RobroyFolder.getParentId(window.ROBROY.currentFolder.id);
+				const parentId = GalleriFolder.getParentId(window.GALLERI.currentFolder.id);
 				window.location = window.location.href.replace(
-					RobroyFolder.url(window.ROBROY.currentFolder),
-					parentId ? RobroyFolder.url(window.ROBROY.folders[parentId]) : ''
+					GalleriFolder.url(window.GALLERI.currentFolder),
+					parentId ? GalleriFolder.url(window.GALLERI.folders[parentId]) : ''
 				);
 			},
 		});
@@ -285,18 +285,18 @@ export default class RobroyFolder {
 	static submitCreateFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-folder-form');
-		RobroyErrors.clear($form);
+		const $form = document.getElementById('galleri-folder-form');
+		GalleriErrors.clear($form);
 
-		const $nameInput = document.getElementById('robroy-input-name');
+		const $nameInput = document.getElementById('galleri-input-name');
 		if (!$nameInput.value) {
-			RobroyErrors.add($nameInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($nameInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
-		const $idInput = document.getElementById('robroy-input-id');
+		const $idInput = document.getElementById('galleri-input-id');
 		if (!$idInput.value) {
-			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($idInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
@@ -314,61 +314,61 @@ export default class RobroyFolder {
 		});
 		json = JSON.stringify(json);
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
 			json,
 			callback: (response) => {
-				RobroyFolder.createRequestCallback(response);
+				GalleriFolder.createRequestCallback(response);
 			},
 			errorCallback: (response, status) => {
-				RobroyErrors.show(response, status);
+				GalleriErrors.show(response, status);
 			},
 		});
 	}
 
 	static createRequestCallback(response) {
-		RobroyToast.show(window.ROBROY.lang.createdSuccessfullyFolder, { class: 'robroy-toast--success' });
+		GalleriToast.show(window.GALLERI.lang.createdSuccessfullyFolder, { class: 'galleri-toast--success' });
 
-		const parentId = RobroyFolder.getParentId(response.data.id);
-		if ((parentId && parentId === window.ROBROY.currentFolder.id) || (!parentId && !window.ROBROY.currentFolder.id)) {
-			RobroyFolder.addToList(response.data);
+		const parentId = GalleriFolder.getParentId(response.data.id);
+		if ((parentId && parentId === window.GALLERI.currentFolder.id) || (!parentId && !window.GALLERI.currentFolder.id)) {
+			GalleriFolder.addToList(response.data);
 
-			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+			const $deleteFolderButton = document.getElementById('galleri-delete-folder');
 			if ($deleteFolderButton) {
 				$deleteFolderButton.style.display = 'none';
 			}
 		}
 
-		document.getElementById('robroy-input-name').value = '';
-		document.getElementById('robroy-input-id').value = '';
+		document.getElementById('galleri-input-name').value = '';
+		document.getElementById('galleri-input-id').value = '';
 
-		window.ROBROY.folders[response.data.id] = response.data;
+		window.GALLERI.folders[response.data.id] = response.data;
 
-		const $createParentInput = document.getElementById('robroy-input-parent');
-		RobroyFolder.addFolderOptions($createParentInput, $createParentInput.value);
+		const $createParentInput = document.getElementById('galleri-input-parent');
+		GalleriFolder.addFolderOptions($createParentInput, $createParentInput.value);
 
-		const $parentField = document.getElementById('robroy-field-parent');
+		const $parentField = document.getElementById('galleri-field-parent');
 		$parentField.style.display = '';
 
-		RobroyUtilities.callback('afterCreateFolder', { folder: response.data });
+		GalleriUtilities.callback('afterCreateFolder', { folder: response.data });
 	}
 
 	static submitEditFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-folder-form');
-		RobroyErrors.clear($form);
+		const $form = document.getElementById('galleri-folder-form');
+		GalleriErrors.clear($form);
 
-		const $nameInput = document.getElementById('robroy-input-name');
+		const $nameInput = document.getElementById('galleri-input-name');
 		if (!$nameInput.value) {
-			RobroyErrors.add($nameInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($nameInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
-		const $idInput = document.getElementById('robroy-input-id');
+		const $idInput = document.getElementById('galleri-input-id');
 		if (!$idInput.value) {
-			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($idInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
@@ -383,16 +383,16 @@ export default class RobroyFolder {
 			if (key === 'id') {
 				json[key] = value;
 
-				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder, key)) {
-					oldJson[key] = window.ROBROY.currentFolder[key].replace(/^.+\/([^/]+)$/, '$1');
+				if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentFolder, key)) {
+					oldJson[key] = window.GALLERI.currentFolder[key].replace(/^.+\/([^/]+)$/, '$1');
 				} else {
 					oldJson[key] = '';
 				}
 			} else {
 				json.attributes[key] = value;
 
-				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
-					oldJson.attributes[key] = window.ROBROY.currentFolder.attributes[key];
+				if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentFolder.attributes, key)) {
+					oldJson.attributes[key] = window.GALLERI.currentFolder.attributes[key];
 				} else {
 					oldJson.attributes[key] = '';
 				}
@@ -402,42 +402,42 @@ export default class RobroyFolder {
 		oldJson = JSON.stringify(oldJson);
 
 		if (json === oldJson) {
-			RobroyToast.show(window.ROBROY.lang.nothingToSave);
-			RobroyModal.hide(e);
+			GalleriToast.show(window.GALLERI.lang.nothingToSave);
+			GalleriModal.hide(e);
 			return;
 		}
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
 			json,
 			callback: (response) => {
-				RobroyFolder.editRequestCallback(response);
+				GalleriFolder.editRequestCallback(response);
 			},
 			errorCallback: (response, status) => {
-				RobroyErrors.show(response, status);
+				GalleriErrors.show(response, status);
 			},
 		});
 	}
 
 	static editRequestCallback(response) {
-		RobroyUtilities.callback('afterEditFolder', { folder: response.data });
+		GalleriUtilities.callback('afterEditFolder', { folder: response.data });
 
 		window.location = window.location.href.replace(
-			RobroyFolder.url(window.ROBROY.currentFolder),
-			RobroyFolder.url(response.data)
+			GalleriFolder.url(window.GALLERI.currentFolder),
+			GalleriFolder.url(response.data)
 		);
 	}
 
 	static appendItems(folders) {
 		folders.forEach((folder) => {
-			window.ROBROY.elements.$folderList.appendChild(RobroyFolder.element(folder));
+			window.GALLERI.elements.$folderList.appendChild(GalleriFolder.element(folder));
 		});
 	}
 
 	static addToList(item) {
 		let i;
-		const $li = window.ROBROY.elements.$folderList.children;
+		const $li = window.GALLERI.elements.$folderList.children;
 		const num = $li.length;
 		let $previousItem;
 		for (i = 0; i < num; i += 1) {
@@ -449,25 +449,25 @@ export default class RobroyFolder {
 		}
 
 		if ($previousItem) {
-			$previousItem.after(RobroyFolder.element(item));
+			$previousItem.after(GalleriFolder.element(item));
 		} else {
-			window.ROBROY.elements.$folderList.prepend(RobroyFolder.element(item));
+			window.GALLERI.elements.$folderList.prepend(GalleriFolder.element(item));
 		}
 	}
 
 	static getFullName(folder) {
 		const output = [folder.attributes.name];
-		let parentId = RobroyFolder.getParentId(folder.id);
+		let parentId = GalleriFolder.getParentId(folder.id);
 		while (parentId) {
-			if (window.ROBROY.folders[parentId]) {
-				folder = window.ROBROY.folders[parentId];
+			if (window.GALLERI.folders[parentId]) {
+				folder = window.GALLERI.folders[parentId];
 			} else {
 				break;
 			}
 			output.push(folder.attributes.name);
-			parentId = RobroyFolder.getParentId(folder.id);
+			parentId = GalleriFolder.getParentId(folder.id);
 		}
-		return output.reverse().join(window.ROBROY.args.folderSeparator);
+		return output.reverse().join(window.GALLERI.args.folderSeparator);
 	}
 
 	static getParentId(id) {
@@ -476,11 +476,11 @@ export default class RobroyFolder {
 	}
 
 	static getFolders() {
-		return document.querySelectorAll(`#robroy-folders > ${window.ROBROY.args.folderItemElement}`);
+		return document.querySelectorAll(`#galleri-folders > ${window.GALLERI.args.folderItemElement}`);
 	}
 
 	static hasFolders() {
-		return RobroyFolder.getFolders().length > 0;
+		return GalleriFolder.getFolders().length > 0;
 	}
 
 	static addFolderOptions(select, selectedValue) {
@@ -490,13 +490,13 @@ export default class RobroyFolder {
 		$option.setAttribute('value', '');
 		select.appendChild($option);
 
-		const folderIds = Object.keys(window.ROBROY.folders).sort();
+		const folderIds = Object.keys(window.GALLERI.folders).sort();
 		let folder;
 		folderIds.forEach((folderId) => {
-			folder = window.ROBROY.folders[folderId];
+			folder = window.GALLERI.folders[folderId];
 			$option = document.createElement('option');
 			$option.setAttribute('value', folder.id);
-			$option.innerText = RobroyFolder.getFullName(window.ROBROY.folders[folder.id]);
+			$option.innerText = GalleriFolder.getFullName(window.GALLERI.folders[folder.id]);
 			if (folder.id === selectedValue) {
 				$option.setAttribute('selected', 'selected');
 			}
@@ -506,35 +506,35 @@ export default class RobroyFolder {
 
 	static initBreadcrumb() {
 		const $ul = document.createElement('ul');
-		$ul.setAttribute('class', 'robroy-breadcrumb');
-		window.ROBROY.elements.$container.prepend($ul);
+		$ul.setAttribute('class', 'galleri-breadcrumb');
+		window.GALLERI.elements.$container.prepend($ul);
 
-		let folder = window.ROBROY.currentFolder;
+		let folder = window.GALLERI.currentFolder;
 		do {
 			$ul.prepend(this.breadcrumbItem(folder));
-			folder = window.ROBROY.folders[RobroyFolder.getParentId(folder.id)];
+			folder = window.GALLERI.folders[GalleriFolder.getParentId(folder.id)];
 		} while (folder);
 
-		$ul.prepend(this.breadcrumbItem({ id: '', attributes: { name: window.ROBROY.lang.home } }));
+		$ul.prepend(this.breadcrumbItem({ id: '', attributes: { name: window.GALLERI.lang.home } }));
 
-		RobroyUtilities.modifier('breadcrumbList', { element: $ul, folder: window.ROBROY.currentFolder });
+		GalleriUtilities.modifier('breadcrumbList', { element: $ul, folder: window.GALLERI.currentFolder });
 	}
 
 	static breadcrumbItem(folder) {
 		const $li = document.createElement('li');
-		$li.setAttribute('class', 'robroy-breadcrumb-item');
+		$li.setAttribute('class', 'galleri-breadcrumb-item');
 
-		if (folder.id === window.ROBROY.currentFolder.id) {
+		if (folder.id === window.GALLERI.currentFolder.id) {
 			$li.innerText = folder.attributes.name;
 		} else {
 			const $a = document.createElement('a');
-			$a.setAttribute('class', 'robroy-breadcrumb-link');
-			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : '/');
+			$a.setAttribute('class', 'galleri-breadcrumb-link');
+			$a.setAttribute('href', folder.id ? GalleriFolder.url(folder) : '/');
 			$a.innerText = folder.attributes.name;
 			$li.prepend($a);
 		}
 
-		RobroyUtilities.modifier('breadcrumbItem', { element: $li, folder });
+		GalleriUtilities.modifier('breadcrumbItem', { element: $li, folder });
 
 		return $li;
 	}

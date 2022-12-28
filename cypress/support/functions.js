@@ -1,11 +1,11 @@
-export function robroyUrl(id) {
+export function galleriUrl(id) {
 	if (!Cypress.env('enable_rewrites')) {
 		return `/?folder=${id}`;
 	}
 	return `/${id.replace(/^\/+/, '')}`;
 }
 
-export function robroyAbsoluteUrl(id) {
+export function galleriAbsoluteUrl(id) {
 	if (!Cypress.env('enable_rewrites')) {
 		if (id === '/') {
 			return `${window.location.origin}/`;

@@ -1,4 +1,4 @@
-.robroy-spinner {
+.galleri-spinner {
 	align-items: center;
 	bottom: 0;
 	display: flex;
@@ -14,19 +14,19 @@
 	}
 
 	&::after {
-		animation: robroy-spin 2s infinite linear;
-		border-color: $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color $robroy-spinner-color-alternate;
+		animation: galleri-spin 2s infinite linear;
+		border-color: $galleri-spinner-color $galleri-spinner-color $galleri-spinner-color $galleri-spinner-color-alternate;
 		border-radius: 1000px;
 		border-style: solid;
-		border-width: $robroy-spinner-thickness;
+		border-width: $galleri-spinner-thickness;
 		content: '';
 		display: block;
-		height: $robroy-spinner-size;
-		width: $robroy-spinner-size;
+		height: $galleri-spinner-size;
+		width: $galleri-spinner-size;
 	}
 }
 
-@keyframes robroy-spin {
+@keyframes galleri-spin {
 	0% {
 		transform: rotate(0deg);
 	}

@@ -1,13 +1,13 @@
 <?php
 
-namespace Jlbelanger\Robroy\Models;
+namespace Jlbelanger\Galleri\Models;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Exceptions\ValidationException;
-use Jlbelanger\Robroy\Helpers\Cache;
-use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\Filesystem;
-use Jlbelanger\Robroy\Helpers\Utilities;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Exceptions\ValidationException;
+use Jlbelanger\Galleri\Helpers\Cache;
+use Jlbelanger\Galleri\Helpers\Constant;
+use Jlbelanger\Galleri\Helpers\Filesystem;
+use Jlbelanger\Galleri\Helpers\Utilities;
 
 class Folder
 {

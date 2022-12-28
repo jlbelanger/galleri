@@ -1,11 +1,11 @@
 <?php
 
-namespace Jlbelanger\Robroy;
+namespace Jlbelanger\Galleri;
 
 use Exception;
-use Jlbelanger\Robroy\Exceptions\ValidationException;
-use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\Input;
+use Jlbelanger\Galleri\Exceptions\ValidationException;
+use Jlbelanger\Galleri\Helpers\Constant;
+use Jlbelanger\Galleri\Helpers\Input;
 
 class Router
 {
@@ -71,45 +71,45 @@ class Router
 	{
 		return [
 			'GET images' => [
-				'Jlbelanger\Robroy\Controllers\Images',
+				'Jlbelanger\Galleri\Controllers\Images',
 				'get',
 			],
 			'POST images' => [
-				'Jlbelanger\Robroy\Controllers\Images',
+				'Jlbelanger\Galleri\Controllers\Images',
 				'post',
 			],
 			'PUT images' => [
-				'Jlbelanger\Robroy\Controllers\Images',
+				'Jlbelanger\Galleri\Controllers\Images',
 				'put',
 			],
 			'DELETE images' => [
-				'Jlbelanger\Robroy\Controllers\Images',
+				'Jlbelanger\Galleri\Controllers\Images',
 				'delete',
 			],
 
 			'GET folders' => [
-				'Jlbelanger\Robroy\Controllers\Folders',
+				'Jlbelanger\Galleri\Controllers\Folders',
 				'get',
 			],
 			'POST folders' => [
-				'Jlbelanger\Robroy\Controllers\Folders',
+				'Jlbelanger\Galleri\Controllers\Folders',
 				'post',
 			],
 			'PUT folders' => [
-				'Jlbelanger\Robroy\Controllers\Folders',
+				'Jlbelanger\Galleri\Controllers\Folders',
 				'put',
 			],
 			'DELETE folders' => [
-				'Jlbelanger\Robroy\Controllers\Folders',
+				'Jlbelanger\Galleri\Controllers\Folders',
 				'delete',
 			],
 
 			'POST sessions' => [
-				'Jlbelanger\Robroy\Controllers\Sessions',
+				'Jlbelanger\Galleri\Controllers\Sessions',
 				'post',
 			],
 			'DELETE sessions' => [
-				'Jlbelanger\Robroy\Controllers\Sessions',
+				'Jlbelanger\Galleri\Controllers\Sessions',
 				'delete',
 			],
 		];

@@ -1,8 +1,8 @@
 <?php
 
-namespace Jlbelanger\Robroy\Exceptions;
+namespace Jlbelanger\Galleri\Exceptions;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Galleri\Exceptions\ApiException;
 
 class ValidationException extends ApiException
 {

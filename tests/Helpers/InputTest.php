@@ -2,7 +2,7 @@
 
 namespace Tests\Helpers;
 
-use Jlbelanger\Robroy\Helpers\Input;
+use Jlbelanger\Galleri\Helpers\Input;
 use Tests\TestCase;
 
 class InputTest extends TestCase

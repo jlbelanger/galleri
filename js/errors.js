@@ -1,29 +1,29 @@
-import RobroyModal from './modal';
-import RobroyUtilities from './utilities';
+import GalleriModal from './modal';
+import GalleriUtilities from './utilities';
 
-export default class RobroyErrors {
+export default class GalleriErrors {
 	static add($input, message) {
 		$input.setAttribute('aria-invalid', true);
 
-		const $field = $input.closest('.robroy-field');
-		$field.classList.add('robroy-has-error');
+		const $field = $input.closest('.galleri-field');
+		$field.classList.add('galleri-has-error');
 
 		const $span = document.createElement('span');
-		$span.setAttribute('class', 'robroy-error');
-		$span.setAttribute('id', `robroy-error-${$input.getAttribute('id')}`);
+		$span.setAttribute('class', 'galleri-error');
+		$span.setAttribute('id', `galleri-error-${$input.getAttribute('id')}`);
 		$span.innerText = message;
 		$field.append($span);
 	}
 
 	static clear($form) {
-		let $elems = $form.querySelectorAll('.robroy-error');
+		let $elems = $form.querySelectorAll('.galleri-error');
 		$elems.forEach(($elem) => {
 			$elem.remove();
 		});
 
-		$elems = $form.querySelectorAll('.robroy-has-error');
+		$elems = $form.querySelectorAll('.galleri-has-error');
 		$elems.forEach(($elem) => {
-			$elem.classList.remove('robroy-has-error');
+			$elem.classList.remove('galleri-has-error');
 			$elem.removeAttribute('aria-invalid');
 		});
 	}
@@ -33,9 +33,9 @@ export default class RobroyErrors {
 			const errors = [];
 			response.errors.forEach((error) => {
 				if (error.pointer) {
-					const $input = document.getElementById(`robroy-input-${error.pointer}`);
+					const $input = document.getElementById(`galleri-input-${error.pointer}`);
 					if ($input) {
-						RobroyErrors.add($input, window.ROBROY.lang.error + error.title);
+						GalleriErrors.add($input, window.GALLERI.lang.error + error.title);
 					} else {
 						errors.push(error.title);
 					}
@@ -44,10 +44,10 @@ export default class RobroyErrors {
 				}
 			});
 			if (errors.length > 0) {
-				RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.error + errors.join(' '), status));
+				GalleriModal.show(GalleriUtilities.sprintf(window.GALLERI.lang.error + errors.join(' '), status));
 			}
 		} else {
-			RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.error + window.ROBROY.lang.errorStatus, status));
+			GalleriModal.show(GalleriUtilities.sprintf(window.GALLERI.lang.error + window.GALLERI.lang.errorStatus, status));
 		}
 	}
 }

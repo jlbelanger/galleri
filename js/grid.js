@@ -1,19 +1,19 @@
-import RobroyUtilities from './utilities';
+import GalleriUtilities from './utilities';
 
-export default class RobroyGrid {
+export default class GalleriGrid {
 	constructor() {
-		window.ROBROY.elements.$imageList.classList.add('robroy-grid');
+		window.GALLERI.elements.$imageList.classList.add('galleri-grid');
 
 		this.calculate();
 
-		window.addEventListener('resize', RobroyUtilities.debounce(() => {
+		window.addEventListener('resize', GalleriUtilities.debounce(() => {
 			this.calculate();
 			this.resizeAllItems();
 		}, 100));
 	}
 
 	calculate() {
-		const gridStyle = window.getComputedStyle(window.ROBROY.elements.$imageList);
+		const gridStyle = window.getComputedStyle(window.GALLERI.elements.$imageList);
 		this.gridRowHeight = parseInt(gridStyle.getPropertyValue('grid-auto-rows'), 10);
 		this.gridRowGap = parseInt(gridStyle.getPropertyValue('grid-row-gap'), 10);
 	}
@@ -24,7 +24,7 @@ export default class RobroyGrid {
 		$img.onload = () => {
 			this.resizeItem($figure, $img);
 			const $a = $figure.querySelector('a');
-			$a.classList.add('robroy-show');
+			$a.classList.add('galleri-show');
 		};
 	}
 
@@ -35,7 +35,7 @@ export default class RobroyGrid {
 	}
 
 	resizeAllItems() {
-		const $figures = document.getElementsByClassName('robroy-figure');
+		const $figures = document.getElementsByClassName('galleri-figure');
 		[...$figures].forEach(($figure) => { this.checkResizeItem($figure); });
 	}
 }

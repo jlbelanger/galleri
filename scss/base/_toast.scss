@@ -1,54 +1,54 @@
-#robroy-toast-container {
+#galleri-toast-container {
 	align-items: flex-end;
 	bottom: 100%;
 	display: flex;
 	flex-direction: column;
 	position: absolute;
 	right: 0;
-	z-index: $robroy-toast-zindex;
+	z-index: $galleri-toast-zindex;
 }
 
-.robroy-toast {
+.galleri-toast {
 	align-items: center;
 	animation-fill-mode: forwards;
-	animation-name: robroy-slide-in-out;
-	background-color: $robroy-toast-background-color;
-	color: $robroy-toast-text-color;
+	animation-name: galleri-slide-in-out;
+	background-color: $galleri-toast-background-color;
+	color: $galleri-toast-text-color;
 	display: flex;
-	margin: $robroy-toast-margin;
+	margin: $galleri-toast-margin;
 	max-width: 90vw;
 }
 
-.robroy-toast--success {
-	background-color: $robroy-toast-success-background-color;
-	color: $robroy-toast-success-text-color;
+.galleri-toast--success {
+	background-color: $galleri-toast-success-background-color;
+	color: $galleri-toast-success-text-color;
 }
 
-.robroy-toast--error {
-	background-color: $robroy-toast-error-background-color;
-	color: $robroy-toast-error-text-color;
+.galleri-toast--error {
+	background-color: $galleri-toast-error-background-color;
+	color: $galleri-toast-error-text-color;
 }
 
-.robroy-toast-text {
+.galleri-toast-text {
 	margin: 0;
-	padding: $robroy-toast-padding;
+	padding: $galleri-toast-padding;
 }
 
-.robroy-toast-close {
+.galleri-toast-close {
 	background: transparent;
 	border: 0;
 	cursor: pointer;
 	font-size: 0;
-	height: $robroy-toast-close-size;
-	margin: 0 $robroy-toast-close-margin-left 0 0;
+	height: $galleri-toast-close-size;
+	margin: 0 $galleri-toast-close-margin-left 0 0;
 	padding: 0;
-	width: $robroy-toast-close-size;
+	width: $galleri-toast-close-size;
 
 	&::after {
-		color: $robroy-toast-text-color;
-		content: $robroy-toast-close-icon;
+		color: $galleri-toast-text-color;
+		content: $galleri-toast-close-icon;
 		display: inline-block;
-		font-size: $robroy-toast-close-font-size;
+		font-size: $galleri-toast-close-font-size;
 	}
 
 	&:hover,
@@ -58,7 +58,7 @@
 	}
 }
 
-@keyframes robroy-slide-in-out {
+@keyframes galleri-slide-in-out {
 	0% {
 		transform: translateX(200%) translateZ(0);
 	}

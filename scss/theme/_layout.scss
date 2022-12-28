@@ -1,27 +1,27 @@
 // TODO: Clean up.
 
-$robroy-body-background-color: $robroy-darkest !default;
-$robroy-body-font-family: helvetica, sans-serif !default;
-$robroy-body-font-size: 18px !default;
-$robroy-body-text-color: $robroy-lightest !default;
+$galleri-body-background-color: $galleri-darkest !default;
+$galleri-body-font-family: helvetica, sans-serif !default;
+$galleri-body-font-size: 18px !default;
+$galleri-body-text-color: $galleri-lightest !default;
 
-$robroy-header-background-color: $robroy-darker !default;
-$robroy-header-text-color: $robroy-lightest !default;
+$galleri-header-background-color: $galleri-darker !default;
+$galleri-header-text-color: $galleri-lightest !default;
 
-$robroy-paragraph-margin: 20px !default;
+$galleri-paragraph-margin: 20px !default;
 
 // stylelint-disable-next-line max-line-length
-$robroy-max-width: (($robroy-image-width + $robroy-padding-desktop) * 3) + $robroy-image-width + ($robroy-image-border-width * 2) + ($robroy-padding-desktop * 2) !default;
+$galleri-max-width: (($galleri-image-width + $galleri-padding-desktop) * 3) + $galleri-image-width + ($galleri-image-border-width * 2) + ($galleri-padding-desktop * 2) !default;
 
 * {
 	box-sizing: border-box;
 }
 
 body {
-	background-color: $robroy-body-background-color;
-	color: $robroy-body-text-color;
-	font-family: $robroy-body-font-family;
-	font-size: $robroy-body-font-size;
+	background-color: $galleri-body-background-color;
+	color: $galleri-body-text-color;
+	font-family: $galleri-body-font-family;
+	font-size: $galleri-body-font-size;
 	margin: 0;
 }
 
@@ -33,16 +33,16 @@ main {
 
 #header,
 #footer {
-	background-color: $robroy-header-background-color;
-	color: $robroy-header-text-color;
+	background-color: $galleri-header-background-color;
+	color: $galleri-header-text-color;
 }
 
 #header-inner,
 #footer-inner {
-	padding: $robroy-padding-mobile;
+	padding: $galleri-padding-mobile;
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		padding: $robroy-padding-desktop;
+	@media screen and (min-width: $galleri-breakpoint) {
+		padding: $galleri-padding-desktop;
 	}
 }
 
@@ -50,10 +50,10 @@ main {
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
-	min-height: #{$robroy-button-height + ($robroy-padding-mobile * 2)};
+	min-height: #{$galleri-button-height + ($galleri-padding-mobile * 2)};
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		min-height: #{$robroy-button-height + ($robroy-padding-desktop * 2)};
+	@media screen and (min-width: $galleri-breakpoint) {
+		min-height: #{$galleri-button-height + ($galleri-padding-desktop * 2)};
 	}
 }
 
@@ -63,39 +63,39 @@ main {
 	margin: 0;
 	text-decoration: none;
 
-	@media screen and (min-width: $robroy-breakpoint) {
+	@media screen and (min-width: $galleri-breakpoint) {
 		font-size: 44px;
 	}
 }
 
-#robroy-folder-title {
+#galleri-folder-title {
 	font-size: 24px;
 	font-weight: normal;
-	margin: $robroy-padding-mobile $robroy-padding-mobile 0;
+	margin: $galleri-padding-mobile $galleri-padding-mobile 0;
 
-	@media screen and (min-width: $robroy-breakpoint) {
+	@media screen and (min-width: $galleri-breakpoint) {
 		font-size: 36px;
-		margin: $robroy-padding-desktop $robroy-padding-desktop 0;
+		margin: $galleri-padding-desktop $galleri-padding-desktop 0;
 	}
 }
 
-#robroy-folder-num {
+#galleri-folder-num {
 	font-size: 20px;
 	margin-left: 8px;
 }
 
 #content-inner {
-	margin: $robroy-padding-mobile auto;
-	padding: 0 $robroy-padding-mobile;
+	margin: $galleri-padding-mobile auto;
+	padding: 0 $galleri-padding-mobile;
 
 	h2,
 	p {
-		margin: $robroy-paragraph-margin 0 0;
+		margin: $galleri-paragraph-margin 0 0;
 	}
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		margin: $robroy-padding-desktop auto;
-		padding: 0 $robroy-padding-desktop;
+	@media screen and (min-width: $galleri-breakpoint) {
+		margin: $galleri-padding-desktop auto;
+		padding: 0 $galleri-padding-desktop;
 	}
 }
 
@@ -111,6 +111,6 @@ article {
 
 .contain {
 	margin: 0 auto;
-	max-width: $robroy-max-width;
+	max-width: $galleri-max-width;
 	width: 100%;
 }

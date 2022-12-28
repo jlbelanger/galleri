@@ -1,9 +1,9 @@
 <?php
 
-namespace Jlbelanger\Robroy\Helpers;
+namespace Jlbelanger\Galleri\Helpers;
 
-use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\Filesystem;
+use Jlbelanger\Galleri\Helpers\Constant;
+use Jlbelanger\Galleri\Helpers\Filesystem;
 
 class Cache
 {

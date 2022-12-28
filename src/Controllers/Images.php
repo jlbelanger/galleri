@@ -1,15 +1,15 @@
 <?php
 
-namespace Jlbelanger\Robroy\Controllers;
+namespace Jlbelanger\Galleri\Controllers;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Exceptions\ValidationException;
-use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\Filesystem;
-use Jlbelanger\Robroy\Helpers\Input;
-use Jlbelanger\Robroy\Helpers\Utilities;
-use Jlbelanger\Robroy\Models\Folder;
-use Jlbelanger\Robroy\Models\Image;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Exceptions\ValidationException;
+use Jlbelanger\Galleri\Helpers\Constant;
+use Jlbelanger\Galleri\Helpers\Filesystem;
+use Jlbelanger\Galleri\Helpers\Input;
+use Jlbelanger\Galleri\Helpers\Utilities;
+use Jlbelanger\Galleri\Models\Folder;
+use Jlbelanger\Galleri\Models\Image;
 
 class Images
 {

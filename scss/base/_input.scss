@@ -1,41 +1,41 @@
-.robroy-field {
-	margin-top: $robroy-field-margin-top;
+.galleri-field {
+	margin-top: $galleri-field-margin-top;
 }
 
-.robroy-field--select {
+.galleri-field--select {
 	position: relative;
 
 	&::after {
-		border-color: $robroy-input-text-color transparent transparent transparent;
+		border-color: $galleri-input-text-color transparent transparent transparent;
 		border-style: solid;
 		border-width: 5px;
-		bottom: $robroy-input-padding;
+		bottom: $galleri-input-padding;
 		content: '';
 		display: block;
 		height: 0;
 		pointer-events: none;
 		position: absolute;
-		right: $robroy-input-padding;
+		right: $galleri-input-padding;
 		width: 0;
 	}
 }
 
-.robroy-input,
-.robroy-select {
+.galleri-input,
+.galleri-select {
 	appearance: none;
-	background-color: $robroy-input-background-color;
+	background-color: $galleri-input-background-color;
 	border: 0;
 	border-radius: 0;
-	color: $robroy-input-text-color;
-	margin-top: $robroy-input-margin-top;
-	padding: $robroy-input-padding;
+	color: $galleri-input-text-color;
+	margin-top: $galleri-input-margin-top;
+	padding: $galleri-input-padding;
 	width: 100%;
 
-	.robroy-modal & {
-		background-color: $robroy-modal-input-background-color;
+	.galleri-modal & {
+		background-color: $galleri-modal-input-background-color;
 	}
 
-	.robroy-has-error & {
-		box-shadow: 0 0 0 $robroy-error-border-width $robroy-error-border-color;
+	.galleri-has-error & {
+		box-shadow: 0 0 0 $galleri-error-border-width $galleri-error-border-color;
 	}
 }

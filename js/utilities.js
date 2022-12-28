@@ -1,26 +1,26 @@
-export default class RobroyUtilities {
+export default class GalleriUtilities {
 	static addField($container, name, label, type = 'text') {
 		const $div = document.createElement('div');
-		$div.setAttribute('class', `robroy-field robroy-field--${type}`);
-		$div.setAttribute('id', `robroy-field-${name}`);
+		$div.setAttribute('class', `galleri-field galleri-field--${type}`);
+		$div.setAttribute('id', `galleri-field-${name}`);
 		$container.appendChild($div);
 
 		const $label = document.createElement('label');
-		$label.setAttribute('class', 'robroy-label');
-		$label.setAttribute('for', `robroy-input-${name}`);
+		$label.setAttribute('class', 'galleri-label');
+		$label.setAttribute('for', `galleri-input-${name}`);
 		$label.innerText = label;
 		$div.appendChild($label);
 
 		let $input;
 		if (type === 'select') {
 			$input = document.createElement('select');
-			$input.setAttribute('class', 'robroy-select');
+			$input.setAttribute('class', 'galleri-select');
 		} else {
 			$input = document.createElement('input');
-			$input.setAttribute('class', 'robroy-input');
+			$input.setAttribute('class', 'galleri-input');
 			$input.setAttribute('type', type);
 		}
-		$input.setAttribute('id', `robroy-input-${name}`);
+		$input.setAttribute('id', `galleri-input-${name}`);
 		$input.setAttribute('name', name);
 		$div.appendChild($input);
 
@@ -28,10 +28,10 @@ export default class RobroyUtilities {
 	}
 
 	static callback(name, args) {
-		if (!window.ROBROY.args.callbacks[name]) {
+		if (!window.GALLERI.args.callbacks[name]) {
 			return;
 		}
-		window.ROBROY.args.callbacks[name](args);
+		window.GALLERI.args.callbacks[name](args);
 	}
 
 	static debounce(func, wait, immediate) {
@@ -54,20 +54,20 @@ export default class RobroyUtilities {
 	}
 
 	static isEmpty() {
-		const imageListStyle = window.getComputedStyle(window.ROBROY.elements.$imageList);
-		const folderListStyle = window.getComputedStyle(window.ROBROY.elements.$folderList);
+		const imageListStyle = window.getComputedStyle(window.GALLERI.elements.$imageList);
+		const folderListStyle = window.getComputedStyle(window.GALLERI.elements.$folderList);
 		return imageListStyle.display === 'none' && folderListStyle.display === 'none';
 	}
 
 	static isLoggedIn() {
-		return window.localStorage.getItem(window.ROBROY.args.localStorageKey);
+		return window.localStorage.getItem(window.GALLERI.args.localStorageKey);
 	}
 
 	static modifier(name, args) {
-		if (!window.ROBROY.args.modifiers[name]) {
+		if (!window.GALLERI.args.modifiers[name]) {
 			return;
 		}
-		window.ROBROY.args.modifiers[name](args);
+		window.GALLERI.args.modifiers[name](args);
 	}
 
 	static propertyExists(object, property) {
@@ -76,32 +76,32 @@ export default class RobroyUtilities {
 
 	static setMetaTitle(title) {
 		const $title = document.querySelector('title');
-		$title.innerText = title + window.ROBROY.args.metaTitleSeparator + $title.innerText;
+		$title.innerText = title + window.GALLERI.args.metaTitleSeparator + $title.innerText;
 	}
 
 	static setPageTitle(title) {
-		let $span = document.getElementById('robroy-folder-title-text');
+		let $span = document.getElementById('galleri-folder-title-text');
 		if (!$span) {
 			const $title = document.createElement('h1');
-			$title.setAttribute('id', 'robroy-folder-title');
-			window.ROBROY.elements.$container.prepend($title);
+			$title.setAttribute('id', 'galleri-folder-title');
+			window.GALLERI.elements.$container.prepend($title);
 
 			$span = document.createElement('span');
-			$span.setAttribute('id', 'robroy-folder-title-text');
+			$span.setAttribute('id', 'galleri-folder-title-text');
 			$title.appendChild($span);
 
-			window.ROBROY.elements.$numImages = document.createElement('small');
-			window.ROBROY.elements.$numImages.setAttribute('id', 'robroy-folder-num');
-			$title.appendChild(window.ROBROY.elements.$numImages);
+			window.GALLERI.elements.$numImages = document.createElement('small');
+			window.GALLERI.elements.$numImages.setAttribute('id', 'galleri-folder-num');
+			$title.appendChild(window.GALLERI.elements.$numImages);
 
-			RobroyUtilities.modifier('title', { element: $title, title });
+			GalleriUtilities.modifier('title', { element: $title, title });
 		}
 		$span.innerText = title;
 	}
 
 	static setNumImages() {
-		const label = window.ROBROY.currentNumImages === 1 ? window.ROBROY.lang.singularImageText : window.ROBROY.lang.pluralImageText;
-		window.ROBROY.elements.$numImages.innerText = `(${window.ROBROY.currentNumImages.toLocaleString()} ${label})`;
+		const label = window.GALLERI.currentNumImages === 1 ? window.GALLERI.lang.singularImageText : window.GALLERI.lang.pluralImageText;
+		window.GALLERI.elements.$numImages.innerText = `(${window.GALLERI.currentNumImages.toLocaleString()} ${label})`;
 	}
 
 	static sprintf(s, ...args) {

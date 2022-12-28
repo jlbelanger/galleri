@@ -1,11 +1,11 @@
-#robroy-images {
+#galleri-images {
 	display: grid;
-	grid-gap: $robroy-padding-mobile;
-	grid-template-columns: repeat(auto-fill, #{$robroy-image-width + ($robroy-image-border-width * 2)});
+	grid-gap: $galleri-padding-mobile;
+	grid-template-columns: repeat(auto-fill, #{$galleri-image-width + ($galleri-image-border-width * 2)});
 	justify-content: space-between;
-	margin: $robroy-padding-mobile;
+	margin: $galleri-padding-mobile;
 
-	&.robroy-grid {
+	&.galleri-grid {
 		grid-auto-rows: 1px;
 	}
 
@@ -13,30 +13,30 @@
 		display: none;
 	}
 
-	@media screen and (max-width: #{($robroy-image-width * 2) + ($robroy-image-border-width * 2) + ($robroy-padding-mobile * 3)}) {
+	@media screen and (max-width: #{($galleri-image-width * 2) + ($galleri-image-border-width * 2) + ($galleri-padding-mobile * 3)}) {
 		justify-content: center;
 	}
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		grid-gap: $robroy-padding-desktop;
-		margin: $robroy-padding-desktop;
+	@media screen and (min-width: $galleri-breakpoint) {
+		grid-gap: $galleri-padding-desktop;
+		margin: $galleri-padding-desktop;
 	}
 }
 
-.robroy-figure {
-	background: $robroy-figure-background-color;
+.galleri-figure {
+	background: $galleri-figure-background-color;
 	margin: 0;
 	position: relative;
 }
 
-.robroy-link {
-	border-color: $robroy-image-border-color;
+.galleri-link {
+	border-color: $galleri-image-border-color;
 	border-style: solid;
-	border-width: $robroy-image-border-width;
+	border-width: $galleri-image-border-width;
 	display: block;
 	font-size: 0;
 
-	.robroy-grid & {
+	.galleri-grid & {
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -49,16 +49,16 @@
 		transition: opacity 200ms ease-in-out;
 	}
 
-	&.robroy-show {
+	&.galleri-show {
 		opacity: 1;
 	}
 }
 
-.robroy-img {
+.galleri-img {
 	height: auto;
 	width: 100%;
 
-	.robroy-grid & {
+	.galleri-grid & {
 		opacity: 0;
 	}
 }

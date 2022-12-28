@@ -17,22 +17,22 @@ describe('auth', () => {
 		cy.wait('@getImages2');
 
 		// Hides admin controls initially.
-		cy.get('.robroy-admin').should('not.exist');
+		cy.get('.galleri-admin').should('not.exist');
 
 		cy.contains('Log In').click();
 
 		// Shows admin controls after login.
-		cy.get('.robroy-admin').should('be.visible');
+		cy.get('.galleri-admin').should('be.visible');
 
 		cy.contains('Log Out').click();
 
 		// Hide admin controls after logout.
-		cy.get('.robroy-admin').should('not.exist');
+		cy.get('.galleri-admin').should('not.exist');
 
 		cy.contains('Log In').click();
 		cy.reload();
 
 		// Shows admin controls initially if logged in.
-		cy.get('.robroy-admin').should('be.visible');
+		cy.get('.galleri-admin').should('be.visible');
 	});
 });

@@ -1,14 +1,14 @@
-import RobroyModal from './modal';
-import RobroySpinner from './spinner';
-import RobroyUtilities from './utilities';
+import GalleriModal from './modal';
+import GalleriSpinner from './spinner';
+import GalleriUtilities from './utilities';
 
-export default class RobroyApi {
+export default class GalleriApi {
 	static request(args) {
 		args = args || {};
 		args.method = args.method || 'GET';
 
-		const $spinner = RobroySpinner.show();
-		window.ROBROY.state.numRequestsInProgress += 1;
+		const $spinner = GalleriSpinner.show();
+		window.GALLERI.state.numRequestsInProgress += 1;
 
 		const req = new XMLHttpRequest();
 		req.onreadystatechange = () => {
@@ -16,14 +16,14 @@ export default class RobroyApi {
 				return;
 			}
 
-			window.ROBROY.state.numRequestsInProgress -= 1;
-			if (window.ROBROY.state.numRequestsInProgress <= 0) {
-				RobroySpinner.hide($spinner);
+			window.GALLERI.state.numRequestsInProgress -= 1;
+			if (window.GALLERI.state.numRequestsInProgress <= 0) {
+				GalleriSpinner.hide($spinner);
 			}
 
 			let response = req.responseText;
 			if (!response && (req.status < 200 || req.status > 299)) {
-				RobroyApi.error(args, response, req);
+				GalleriApi.error(args, response, req);
 				return;
 			}
 
@@ -31,13 +31,13 @@ export default class RobroyApi {
 				try {
 					response = JSON.parse(response);
 				} catch (e) {
-					RobroyApi.error(args, response, req);
+					GalleriApi.error(args, response, req);
 					return;
 				}
 			}
 
 			if (req.status < 200 || req.status > 299) {
-				RobroyApi.error(args, response, req);
+				GalleriApi.error(args, response, req);
 				return;
 			}
 
@@ -45,7 +45,7 @@ export default class RobroyApi {
 		};
 
 		let url = args.url;
-		if (args.url.endsWith('.json') && RobroyUtilities.isLoggedIn()) {
+		if (args.url.endsWith('.json') && GalleriUtilities.isLoggedIn()) {
 			url += `?t=${Date.now()}`;
 		}
 		req.open(args.method, url, true);
@@ -62,7 +62,7 @@ export default class RobroyApi {
 		if (args.errorCallback) {
 			args.errorCallback(response, req.status);
 		} else {
-			RobroyModal.show(RobroyUtilities.sprintf(window.ROBROY.lang.error + window.ROBROY.lang.errorStatus, req.status));
+			GalleriModal.show(GalleriUtilities.sprintf(window.GALLERI.lang.error + window.GALLERI.lang.errorStatus, req.status));
 		}
 	}
 }

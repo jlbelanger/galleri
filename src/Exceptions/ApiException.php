@@ -1,6 +1,6 @@
 <?php
 
-namespace Jlbelanger\Robroy\Exceptions;
+namespace Jlbelanger\Galleri\Exceptions;
 
 use Exception;
 

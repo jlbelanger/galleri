@@ -2,8 +2,8 @@
 
 namespace Tests\Helpers;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Helpers\Constant;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Helpers\Constant;
 use Tests\TestCase;
 
 class ConstantTest extends TestCase

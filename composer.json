@@ -1,5 +1,5 @@
 {
-	"name": "jlbelanger/robroy",
+	"name": "jlbelanger/galleri",
 	"description": "Databaseless vanilla PHP photo gallery.",
 	"version": "1.0.1",
 	"type": "project",
@@ -18,7 +18,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Jlbelanger\\Robroy\\": "src/"
+			"Jlbelanger\\Galleri\\": "src/"
 		}
 	},
 	"autoload-dev": {

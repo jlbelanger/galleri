@@ -2,7 +2,7 @@
 
 namespace Tests\Helpers;
 
-use Jlbelanger\Robroy\Helpers\Utilities;
+use Jlbelanger\Galleri\Helpers\Utilities;
 use Tests\TestCase;
 
 class UtilitiesTest extends TestCase

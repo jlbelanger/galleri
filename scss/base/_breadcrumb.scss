@@ -1,24 +1,24 @@
-.robroy-breadcrumb {
+.galleri-breadcrumb {
 	display: flex;
 	flex-wrap: wrap;
 	line-height: 1;
 	list-style: none;
-	margin: 0 $robroy-padding-mobile;
+	margin: 0 $galleri-padding-mobile;
 	padding: 0;
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		margin: 0 $robroy-padding-desktop;
+	@media screen and (min-width: $galleri-breakpoint) {
+		margin: 0 $galleri-padding-desktop;
 	}
 }
 
-.robroy-breadcrumb-item {
-	margin: $robroy-breadcrumb-item-margin 0;
+.galleri-breadcrumb-item {
+	margin: $galleri-breadcrumb-item-margin 0;
 
 	&::after {
-		color: $robroy-breadcrumb-item-arrow-color;
-		content: $robroy-breadcrumb-icon;
-		margin-left: $robroy-breadcrumb-padding;
-		margin-right: $robroy-breadcrumb-padding;
+		color: $galleri-breadcrumb-item-arrow-color;
+		content: $galleri-breadcrumb-icon;
+		margin-left: $galleri-breadcrumb-padding;
+		margin-right: $galleri-breadcrumb-padding;
 	}
 
 	&:last-of-type::after {

@@ -91,12 +91,12 @@ abstract class TestCase extends BaseTestCase
 		}
 
 		$mocks = [
-			'Jlbelanger\Robroy\Helpers' => [
+			'Jlbelanger\Galleri\Helpers' => [
 				'file_exists' => function ($path) use ($args) {
-					if ($path === '/var/www/robroy/tests/data/folders.json' && !isset($args['folders.json'])) {
+					if ($path === '/var/www/galleri/tests/data/folders.json' && !isset($args['folders.json'])) {
 						return false;
 					}
-					if ($path === '/var/www/robroy/tests/data/images.json' && !isset($args['images.json'])) {
+					if ($path === '/var/www/galleri/tests/data/images.json' && !isset($args['images.json'])) {
 						return false;
 					}
 					return strpos($path, 'does-not-exist') === false;
@@ -113,15 +113,15 @@ abstract class TestCase extends BaseTestCase
 				'rmdir' => true,
 				'unlink' => true,
 			],
-			'Jlbelanger\Robroy\Models' => [
+			'Jlbelanger\Galleri\Models' => [
 				'getimagesize' => [500, 500, IMAGETYPE_JPEG],
 			],
 		];
-		if (!empty($args['mocks']['Jlbelanger\Robroy\Helpers'])) {
-			$mocks['Jlbelanger\Robroy\Helpers'] = array_merge($mocks['Jlbelanger\Robroy\Helpers'], $args['mocks']['Jlbelanger\Robroy\Helpers']);
+		if (!empty($args['mocks']['Jlbelanger\Galleri\Helpers'])) {
+			$mocks['Jlbelanger\Galleri\Helpers'] = array_merge($mocks['Jlbelanger\Galleri\Helpers'], $args['mocks']['Jlbelanger\Galleri\Helpers']);
 		}
-		if (!empty($args['mocks']['Jlbelanger\Robroy\Models'])) {
-			$mocks['Jlbelanger\Robroy\Models'] = array_merge($mocks['Jlbelanger\Robroy\Models'], $args['mocks']['Jlbelanger\Robroy\Models']);
+		if (!empty($args['mocks']['Jlbelanger\Galleri\Models'])) {
+			$mocks['Jlbelanger\Galleri\Models'] = array_merge($mocks['Jlbelanger\Galleri\Models'], $args['mocks']['Jlbelanger\Galleri\Models']);
 		}
 		foreach ($mocks as $class => $functions) {
 			foreach ($functions as $function => $value) {
@@ -130,13 +130,13 @@ abstract class TestCase extends BaseTestCase
 		}
 
 		$this->addMock(
-			'Jlbelanger\Robroy\Helpers',
+			'Jlbelanger\Galleri\Helpers',
 			'file_get_contents',
 			function ($path) use ($args) {
-				if ($path === '/var/www/robroy/tests/data/folders.json' && isset($args['folders.json'])) {
+				if ($path === '/var/www/galleri/tests/data/folders.json' && isset($args['folders.json'])) {
 					return $args['folders.json'];
 				}
-				if ($path === '/var/www/robroy/tests/data/images.json' && isset($args['images.json'])) {
+				if ($path === '/var/www/galleri/tests/data/images.json' && isset($args['images.json'])) {
 					return $args['images.json'];
 				}
 				if ($path === 'php://input' && isset($args['body'])) {

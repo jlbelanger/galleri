@@ -1,22 +1,22 @@
-.robroy-file-container {
+.galleri-file-container {
 	align-items: center;
-	color: $robroy-file-input-text-color;
+	color: $galleri-file-input-text-color;
 	display: flex;
 	flex: 1 1 auto;
-	height: $robroy-file-input-height;
+	height: $galleri-file-input-height;
 	justify-content: center;
-	margin-top: $robroy-input-margin-top;
+	margin-top: $galleri-input-margin-top;
 	overflow: hidden;
-	padding: 0 $robroy-file-input-padding;
+	padding: 0 $galleri-file-input-padding;
 	position: relative;
 
-	.robroy-has-error & {
-		box-shadow: 0 0 0 $robroy-error-border-width $robroy-error-border-color;
+	.galleri-has-error & {
+		box-shadow: 0 0 0 $galleri-error-border-width $galleri-error-border-color;
 	}
 }
 
-.robroy-file-input {
-	background-color: $robroy-file-input-background-color;
+.galleri-file-input {
+	background-color: $galleri-file-input-background-color;
 	border: 0;
 	bottom: 0;
 	cursor: pointer;
@@ -34,15 +34,15 @@
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $robroy-file-input-background-color-hover;
+		background-color: $galleri-file-input-background-color-hover;
 	}
 
-	.robroy-modal & {
-		background-color: $robroy-modal-input-background-color;
+	.galleri-modal & {
+		background-color: $galleri-modal-input-background-color;
 	}
 }
 
-.robroy-file-text {
+.galleri-file-text {
 	pointer-events: none;
 	position: relative;
 }

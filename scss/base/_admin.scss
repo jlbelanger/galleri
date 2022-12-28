@@ -1,9 +1,9 @@
-.robroy-button-container {
+.galleri-button-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: $robroy-button-container-gap;
+	gap: $galleri-button-container-gap;
 
-	.robroy-button {
+	.galleri-button {
 		flex: 1 1 auto;
 		padding-left: 0;
 		padding-right: 0;
@@ -17,24 +17,24 @@
 	}
 }
 
-.robroy-is-admin {
-	margin-bottom: #{$robroy-button-height + ($robroy-padding-mobile * 2)};
+.galleri-is-admin {
+	margin-bottom: #{$galleri-button-height + ($galleri-padding-mobile * 2)};
 }
 
-#robroy-admin {
-	background: $robroy-darkest;
+#galleri-admin {
+	background: $galleri-darkest;
 	bottom: 0;
 	left: 0;
 	position: fixed;
 	right: 0;
-	z-index: $robroy-admin-zindex;
+	z-index: $galleri-admin-zindex;
 }
 
-#robroy-admin-buttons {
-	padding: $robroy-padding-mobile;
+#galleri-admin-buttons {
+	padding: $galleri-padding-mobile;
 }
 
-.robroy-button-authenticate {
+.galleri-button-authenticate {
 	white-space: nowrap;
 	width: 100px;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jlbelanger\Robroy\Controllers;
+namespace Jlbelanger\Galleri\Controllers;
 
 class Sessions
 {

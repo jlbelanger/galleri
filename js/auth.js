@@ -1,30 +1,30 @@
-import RobroyApi from './api';
-import RobroyFolder from './folder';
-import RobroyImage from './image';
-import RobroyModal from './modal';
-import RobroyUtilities from './utilities';
+import GalleriApi from './api';
+import GalleriFolder from './folder';
+import GalleriImage from './image';
+import GalleriModal from './modal';
+import GalleriUtilities from './utilities';
 
-export default class RobroyAuth {
+export default class GalleriAuth {
 	static init() {
-		if (!window.ROBROY.elements.$authenticateButton) {
+		if (!window.GALLERI.elements.$authenticateButton) {
 			return;
 		}
-		window.ROBROY.elements.$authenticateButton.addEventListener('click', () => { RobroyAuth.authenticate(); });
-		RobroyAuth.handleAuthentication();
+		window.GALLERI.elements.$authenticateButton.addEventListener('click', () => { GalleriAuth.authenticate(); });
+		GalleriAuth.handleAuthentication();
 	}
 
 	static authenticate() {
-		if (RobroyUtilities.isLoggedIn()) {
-			RobroyAuth.logout();
+		if (GalleriUtilities.isLoggedIn()) {
+			GalleriAuth.logout();
 		} else {
-			RobroyAuth.login();
+			GalleriAuth.login();
 		}
 	}
 
 	static logout() {
 		if (window.navigator.userAgent.indexOf('Safari') > -1) {
 			// Safari shows the login screen again if we try to make an invalid request.
-			RobroyAuth.logoutCallback();
+			GalleriAuth.logoutCallback();
 			return;
 		}
 
@@ -32,134 +32,134 @@ export default class RobroyAuth {
 			window.location.protocol,
 			'//log:out@',
 			window.location.host,
-			`${window.ROBROY.args.apiPath}?type=sessions`,
+			`${window.GALLERI.args.apiPath}?type=sessions`,
 		].join('');
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'DELETE',
 			url,
 			noParse: true,
 			callback: () => {
-				RobroyAuth.logoutCallback();
+				GalleriAuth.logoutCallback();
 			},
 			errorCallback: () => {
-				RobroyAuth.logoutCallback();
+				GalleriAuth.logoutCallback();
 			},
 		});
 	}
 
 	static logoutCallback() {
 		window.localStorage.clear();
-		RobroyAuth.handleLogout();
+		GalleriAuth.handleLogout();
 	}
 
 	static login() {
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'POST',
-			url: `${window.ROBROY.args.apiPath}?type=sessions`,
+			url: `${window.GALLERI.args.apiPath}?type=sessions`,
 			noParse: true,
 			callback: (_response, status) => {
 				if (status !== 204) {
-					RobroyModal.show(window.ROBROY.lang.error + window.ROBROY.lang.errorInvalidUsername);
+					GalleriModal.show(window.GALLERI.lang.error + window.GALLERI.lang.errorInvalidUsername);
 					return;
 				}
-				window.localStorage.setItem(window.ROBROY.args.localStorageKey, true);
+				window.localStorage.setItem(window.GALLERI.args.localStorageKey, true);
 				this.handleLogin();
 			},
 		});
 	}
 
 	static handleAuthentication() {
-		if (RobroyUtilities.isLoggedIn()) {
-			RobroyAuth.handleLogin();
+		if (GalleriUtilities.isLoggedIn()) {
+			GalleriAuth.handleLogin();
 		} else {
-			RobroyAuth.handleLogout();
+			GalleriAuth.handleLogout();
 		}
 	}
 
 	static handleLogin() {
-		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logOut;
+		window.GALLERI.elements.$authenticateButton.innerText = window.GALLERI.lang.logOut;
 
-		document.body.classList.add('robroy-is-admin');
+		document.body.classList.add('galleri-is-admin');
 
-		RobroyAuth.addAdminBar();
+		GalleriAuth.addAdminBar();
 
-		RobroyImage.getImages().forEach(($container) => {
+		GalleriImage.getImages().forEach(($container) => {
 			const id = $container.getAttribute('data-path');
-			RobroyImage.addAdminControls($container, window.ROBROY.currentImages[id]);
+			GalleriImage.addAdminControls($container, window.GALLERI.currentImages[id]);
 		});
 
-		RobroyUtilities.callback('afterLogin');
+		GalleriUtilities.callback('afterLogin');
 	}
 
 	static handleLogout() {
-		window.ROBROY.elements.$authenticateButton.innerText = window.ROBROY.lang.logIn;
+		window.GALLERI.elements.$authenticateButton.innerText = window.GALLERI.lang.logIn;
 
-		document.body.classList.remove('robroy-is-admin');
+		document.body.classList.remove('galleri-is-admin');
 
-		let $elems = document.querySelectorAll('.robroy-admin');
+		let $elems = document.querySelectorAll('.galleri-admin');
 		$elems.forEach((elem) => {
 			elem.remove();
 		});
 
-		if (window.ROBROY.args.removePointerEventsOnLogin) {
-			$elems = document.querySelectorAll('.robroy-link');
+		if (window.GALLERI.args.removePointerEventsOnLogin) {
+			$elems = document.querySelectorAll('.galleri-link');
 			$elems.forEach(($elem) => {
 				$elem.removeAttribute('tabindex');
 				$elem.style.pointerEvents = '';
 			});
 		}
 
-		RobroyUtilities.callback('afterLogout');
+		GalleriUtilities.callback('afterLogout');
 	}
 
 	static addAdminBar() {
 		const $container = document.createElement('div');
-		$container.setAttribute('id', 'robroy-admin');
-		$container.setAttribute('class', 'robroy-admin');
-		window.ROBROY.elements.$container.prepend($container);
+		$container.setAttribute('id', 'galleri-admin');
+		$container.setAttribute('class', 'galleri-admin');
+		window.GALLERI.elements.$container.prepend($container);
 
 		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-button-container');
-		$div.setAttribute('id', 'robroy-admin-buttons');
+		$div.setAttribute('class', 'galleri-button-container');
+		$div.setAttribute('id', 'galleri-admin-buttons');
 		$container.prepend($div);
 
 		const $uploadButton = document.createElement('button');
-		$uploadButton.setAttribute('class', 'robroy-button');
-		$uploadButton.setAttribute('id', 'robroy-create-image');
+		$uploadButton.setAttribute('class', 'galleri-button');
+		$uploadButton.setAttribute('id', 'galleri-create-image');
 		$uploadButton.setAttribute('type', 'button');
-		$uploadButton.innerText = window.ROBROY.lang.uploadImage;
-		$uploadButton.addEventListener('click', RobroyImage.showCreateForm);
+		$uploadButton.innerText = window.GALLERI.lang.uploadImage;
+		$uploadButton.addEventListener('click', GalleriImage.showCreateForm);
 		$div.append($uploadButton);
 
 		const $createButton = document.createElement('button');
-		$createButton.setAttribute('class', 'robroy-button robroy-button--secondary');
-		$createButton.setAttribute('id', 'robroy-create-folder');
+		$createButton.setAttribute('class', 'galleri-button galleri-button--secondary');
+		$createButton.setAttribute('id', 'galleri-create-folder');
 		$createButton.setAttribute('type', 'button');
-		$createButton.innerText = window.ROBROY.lang.createFolder;
-		$createButton.addEventListener('click', RobroyFolder.showCreateForm);
+		$createButton.innerText = window.GALLERI.lang.createFolder;
+		$createButton.addEventListener('click', GalleriFolder.showCreateForm);
 		$div.append($createButton);
 
-		if (window.ROBROY.currentFolder.id) {
+		if (window.GALLERI.currentFolder.id) {
 			const $editButton = document.createElement('button');
-			$editButton.setAttribute('class', 'robroy-button robroy-button--secondary');
-			$editButton.setAttribute('id', 'robroy-edit-folder');
+			$editButton.setAttribute('class', 'galleri-button galleri-button--secondary');
+			$editButton.setAttribute('id', 'galleri-edit-folder');
 			$editButton.setAttribute('type', 'button');
-			$editButton.innerText = window.ROBROY.lang.editFolder;
-			$editButton.addEventListener('click', RobroyFolder.showEditForm);
+			$editButton.innerText = window.GALLERI.lang.editFolder;
+			$editButton.addEventListener('click', GalleriFolder.showEditForm);
 			$div.append($editButton);
 
 			const $deleteButton = document.createElement('button');
-			$deleteButton.setAttribute('class', 'robroy-button robroy-button--danger');
-			$deleteButton.setAttribute('id', 'robroy-delete-folder');
+			$deleteButton.setAttribute('class', 'galleri-button galleri-button--danger');
+			$deleteButton.setAttribute('id', 'galleri-delete-folder');
 			$deleteButton.setAttribute('type', 'button');
-			$deleteButton.innerText = window.ROBROY.lang.deleteFolder;
-			if (!RobroyUtilities.isEmpty()) {
+			$deleteButton.innerText = window.GALLERI.lang.deleteFolder;
+			if (!GalleriUtilities.isEmpty()) {
 				$deleteButton.style.display = 'none';
 			}
-			$deleteButton.addEventListener('click', RobroyFolder.delete);
+			$deleteButton.addEventListener('click', GalleriFolder.delete);
 			$div.append($deleteButton);
 		}
 
-		RobroyUtilities.modifier('adminBar', { element: $div });
+		GalleriUtilities.modifier('adminBar', { element: $div });
 	}
 }

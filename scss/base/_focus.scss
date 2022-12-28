@@ -1,15 +1,15 @@
-.robroy-button,
-.robroy-input,
-.robroy-link,
-.robroy-select {
+.galleri-button,
+.galleri-input,
+.galleri-link,
+.galleri-select {
 	&:focus {
-		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
 		outline: none;
 	}
 }
 
-.robroy-file-container {
+.galleri-file-container {
 	&:focus-within {
-		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
 	}
 }

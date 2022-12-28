@@ -1,8 +1,8 @@
-.robroy-modal-open {
+.galleri-modal-open {
 	overflow: hidden;
 }
 
-.robroy-modal {
+.galleri-modal {
 	align-items: center;
 	background: transparent;
 	border: 0;
@@ -14,36 +14,36 @@
 	position: fixed;
 	right: 0;
 	top: 0;
-	z-index: $robroy-modal-zindex;
+	z-index: $galleri-modal-zindex;
 }
 
-.robroy-modal::backdrop {
-	background-color: $robroy-modal-container-background-color;
+.galleri-modal::backdrop {
+	background-color: $galleri-modal-container-background-color;
 }
 
-.robroy-modal-box {
-	background-color: $robroy-modal-background-color;
-	color: $robroy-modal-text-color;
-	margin: $robroy-modal-margin;
-	max-width: $robroy-modal-max-width;
-	padding: $robroy-modal-padding;
+.galleri-modal-box {
+	background-color: $galleri-modal-background-color;
+	color: $galleri-modal-text-color;
+	margin: $galleri-modal-margin;
+	max-width: $galleri-modal-max-width;
+	padding: $galleri-modal-padding;
 	width: 100%;
 }
 
-.robroy-modal-text {
+.galleri-modal-text {
 	margin: 0;
 }
 
-.robroy-modal-options {
+.galleri-modal-options {
 	display: flex;
 	justify-content: center;
-	margin: $robroy-modal-button-margin-top auto 0;
+	margin: $galleri-modal-button-margin-top auto 0;
 
 	button + button {
-		margin-left: $robroy-modal-button-margin-side;
+		margin-left: $galleri-modal-button-margin-side;
 	}
 
 	form + & {
-		margin-top: $robroy-field-margin-top;
+		margin-top: $galleri-field-margin-top;
 	}
 }

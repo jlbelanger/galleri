@@ -1,12 +1,12 @@
 <?php
 
-namespace Jlbelanger\Robroy\Helpers;
+namespace Jlbelanger\Galleri\Helpers;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Exceptions\ValidationException;
-use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Models\Folder;
-use Jlbelanger\Robroy\Models\Image;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Exceptions\ValidationException;
+use Jlbelanger\Galleri\Helpers\Constant;
+use Jlbelanger\Galleri\Models\Folder;
+use Jlbelanger\Galleri\Models\Image;
 
 class Filesystem
 {

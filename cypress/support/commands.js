@@ -3,11 +3,11 @@ import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-depend
 Cypress.Commands.add('build', () => {
 	const cssFolder = `${Cypress.env('project_path')}/public/css`;
 	const jsFolder = `${Cypress.env('project_path')}/public/js`;
-	const minJsFile = `${Cypress.env('project_path')}/node_modules/@jlbelanger/robroy/dist/js/robroy.min.js`;
+	const minJsFile = `${Cypress.env('project_path')}/node_modules/@jlbelanger/galleri/dist/js/galleri.min.js`;
 	cy.exec(`mkdir -p ${cssFolder}`);
 	cy.exec(`mkdir -p ${jsFolder}`);
 	cy.exec(`if [! -f ${cssFolder}/dark.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi`);
-	cy.exec(`if [! -f ${jsFolder}/robroy.min.js]; then (ln ${minJsFile} ${jsFolder}); fi`);
+	cy.exec(`if [! -f ${jsFolder}/galleri.min.js]; then (ln ${minJsFile} ${jsFolder}); fi`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {

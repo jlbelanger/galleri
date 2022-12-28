@@ -17,10 +17,10 @@
 
 // TODO: Clean up.
 
-#robroy-folders {
-	margin: #{$robroy-padding-mobile - $robroy-folder-item-margin} $robroy-padding-mobile;
+#galleri-folders {
+	margin: #{$galleri-padding-mobile - $galleri-folder-item-margin} $galleri-padding-mobile;
 
-	@media screen and (min-width: $robroy-breakpoint) {
-		margin: #{$robroy-padding-desktop - $robroy-folder-item-margin} $robroy-padding-desktop #{-1 * $robroy-folder-item-margin};
+	@media screen and (min-width: $galleri-breakpoint) {
+		margin: #{$galleri-padding-desktop - $galleri-folder-item-margin} $galleri-padding-desktop #{-1 * $galleri-folder-item-margin};
 	}
 }

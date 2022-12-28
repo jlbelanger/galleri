@@ -1,7 +1,7 @@
-$robroy-link-text-color: $robroy-lightest !default;
+$galleri-link-text-color: $galleri-lightest !default;
 
 a {
-	color: $robroy-link-text-color;
+	color: $galleri-link-text-color;
 
 	&:hover,
 	&:active,
@@ -10,7 +10,7 @@ a {
 	}
 
 	&:focus {
-		box-shadow: 0 0 0 $robroy-focus-border-width $robroy-focus-border-color;
+		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
 		outline: none;
 	}
 }

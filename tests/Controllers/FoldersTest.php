@@ -2,8 +2,8 @@
 
 namespace Tests\Controllers;
 
-use Jlbelanger\Robroy\Controllers\Folders;
-use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Galleri\Controllers\Folders;
+use Jlbelanger\Galleri\Exceptions\ApiException;
 use Tests\TestCase;
 
 class FoldersTest extends TestCase
@@ -311,9 +311,9 @@ class FoldersTest extends TestCase
 			]],
 			'when id is valid, name is valid, parent is valid' => [[
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
-							if ($path === '/var/www/robroy/tests/assets/bar/foo') {
+							if ($path === '/var/www/galleri/tests/assets/bar/foo') {
 								return false;
 							}
 							return true;

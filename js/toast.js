@@ -1,39 +1,39 @@
-import RobroyUtilities from './utilities';
+import GalleriUtilities from './utilities';
 
-export default class RobroyToast {
+export default class GalleriToast {
 	static show(message, args = {}) {
 		args.class = args.class || '';
 		args.closeButtonClass = args.closeButtonText || '';
-		args.closeButtonText = args.closeButtonText || window.ROBROY.lang.close;
+		args.closeButtonText = args.closeButtonText || window.GALLERI.lang.close;
 		args.duration = args.duration || 3000;
 
-		let $container = document.getElementById('robroy-toast-container');
+		let $container = document.getElementById('galleri-toast-container');
 		if (!$container) {
 			$container = document.createElement('div');
-			$container.setAttribute('id', 'robroy-toast-container');
-			document.getElementById('robroy-admin').append($container);
+			$container.setAttribute('id', 'galleri-toast-container');
+			document.getElementById('galleri-admin').append($container);
 		}
 
-		const id = `robroy-toast-${new Date().getTime()}`;
+		const id = `galleri-toast-${new Date().getTime()}`;
 		const $div = document.createElement('div');
-		$div.setAttribute('class', `robroy-toast ${args.class}`.trim());
+		$div.setAttribute('class', `galleri-toast ${args.class}`.trim());
 		$div.setAttribute('id', id);
 		$div.setAttribute('role', 'alert');
 		$div.style.animationDuration = `${args.duration}ms`;
 		$container.appendChild($div);
 
 		const $p = document.createElement('p');
-		$p.setAttribute('class', 'robroy-toast-text');
+		$p.setAttribute('class', 'galleri-toast-text');
 		$p.innerText = message;
 		$div.appendChild($p);
 
 		if (!args.hideClose) {
 			const callback = (e) => {
-				RobroyToast.hide(e);
+				GalleriToast.hide(e);
 			};
 
 			const $closeButton = document.createElement('button');
-			$closeButton.setAttribute('class', `robroy-toast-close ${args.closeButtonClass}`.trim());
+			$closeButton.setAttribute('class', `galleri-toast-close ${args.closeButtonClass}`.trim());
 			$closeButton.setAttribute('type', 'button');
 			if (args.closeButtonAttributes) {
 				Object.keys(args.closeButtonAttributes).forEach((property) => {
@@ -45,7 +45,7 @@ export default class RobroyToast {
 			$div.appendChild($closeButton);
 		}
 
-		RobroyUtilities.modifier('toast', { element: $div });
+		GalleriUtilities.modifier('toast', { element: $div });
 
 		setTimeout(() => {
 			$div.remove();
@@ -55,6 +55,6 @@ export default class RobroyToast {
 	}
 
 	static hide(e) {
-		e.target.closest('.robroy-toast').remove();
+		e.target.closest('.galleri-toast').remove();
 	}
 }

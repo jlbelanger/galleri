@@ -2,7 +2,7 @@
 
 namespace Tests\Helpers;
 
-use Jlbelanger\Robroy\Helpers\Exif;
+use Jlbelanger\Galleri\Helpers\Exif;
 use Tests\TestCase;
 
 class ExifTest extends TestCase

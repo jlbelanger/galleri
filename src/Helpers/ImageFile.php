@@ -1,9 +1,9 @@
 <?php
 
-namespace Jlbelanger\Robroy\Helpers;
+namespace Jlbelanger\Galleri\Helpers;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Helpers\Constant;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Helpers\Constant;
 
 class ImageFile
 {

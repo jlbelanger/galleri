@@ -1,33 +1,33 @@
-import RobroyApi from './api';
-import RobroyErrors from './errors';
-import RobroyFolder from './folder';
-import RobroyModal from './modal';
-import RobroyToast from './toast';
-import RobroyUtilities from './utilities';
+import GalleriApi from './api';
+import GalleriErrors from './errors';
+import GalleriFolder from './folder';
+import GalleriModal from './modal';
+import GalleriToast from './toast';
+import GalleriUtilities from './utilities';
 
-export default class RobroyImage {
+export default class GalleriImage {
 	static load() {
-		window.ROBROY.state.isLoadingImages = true;
+		window.GALLERI.state.isLoadingImages = true;
 
-		RobroyApi.request({
-			url: window.ROBROY.args.apiImagesPath,
+		GalleriApi.request({
+			url: window.GALLERI.args.apiImagesPath,
 			callback: (response) => {
 				if (response) {
-					RobroyImage.getImagesCallback(response);
+					GalleriImage.getImagesCallback(response);
 				} else {
-					RobroyApi.request({
-						url: `${window.ROBROY.args.apiPath}?type=images`,
+					GalleriApi.request({
+						url: `${window.GALLERI.args.apiPath}?type=images`,
 						callback: (response2) => {
-							RobroyImage.getImagesCallback(response2);
+							GalleriImage.getImagesCallback(response2);
 						},
 					});
 				}
 			},
 			errorCallback: () => {
-				RobroyApi.request({
-					url: `${window.ROBROY.args.apiPath}?type=images`,
+				GalleriApi.request({
+					url: `${window.GALLERI.args.apiPath}?type=images`,
 					callback: (response) => {
-						RobroyImage.getImagesCallback(response);
+						GalleriImage.getImagesCallback(response);
 					},
 				});
 			},
@@ -35,57 +35,57 @@ export default class RobroyImage {
 	}
 
 	static getImagesCallback(response) {
-		const currentFolderId = RobroyFolder.getCurrentFolderId();
+		const currentFolderId = GalleriFolder.getCurrentFolderId();
 		let images = Object.values(response.data);
 
-		if (!window.ROBROY.args.showAllImages) {
+		if (!window.GALLERI.args.showAllImages) {
 			images = images.filter((image) => (image.attributes.folder === currentFolderId));
 		}
 
-		RobroyUtilities.modifier('images', { images });
+		GalleriUtilities.modifier('images', { images });
 
 		images.forEach((image) => {
-			window.ROBROY.currentImages[image.id] = image;
+			window.GALLERI.currentImages[image.id] = image;
 		});
 
-		RobroyImage.appendItems(images);
-		if (window.ROBROY.grid) {
-			window.ROBROY.grid.resizeAllItems();
+		GalleriImage.appendItems(images);
+		if (window.GALLERI.grid) {
+			window.GALLERI.grid.resizeAllItems();
 		}
 
-		window.ROBROY.state.allPagesLoaded = true;
+		window.GALLERI.state.allPagesLoaded = true;
 
-		window.ROBROY.currentNumImages = images.length;
+		window.GALLERI.currentNumImages = images.length;
 
 		if (images.length <= 0) {
-			if (!RobroyFolder.hasFolders()) {
-				const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+			if (!GalleriFolder.hasFolders()) {
+				const $deleteFolderButton = document.getElementById('galleri-delete-folder');
 				if ($deleteFolderButton) {
 					$deleteFolderButton.style.display = '';
 				}
 			}
 		} else {
-			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+			const $deleteFolderButton = document.getElementById('galleri-delete-folder');
 			if ($deleteFolderButton) {
 				$deleteFolderButton.style.display = 'none';
 			}
 		}
 
-		window.ROBROY.state.isLoadingImages = false;
+		window.GALLERI.state.isLoadingImages = false;
 
-		RobroyImage.onScroll();
-		window.addEventListener('scroll', RobroyUtilities.debounce(() => { RobroyImage.onScroll(); }, 100));
+		GalleriImage.onScroll();
+		window.addEventListener('scroll', GalleriUtilities.debounce(() => { GalleriImage.onScroll(); }, 100));
 
-		RobroyUtilities.callback('afterLoadImages', { images });
+		GalleriUtilities.callback('afterLoadImages', { images });
 	}
 
 	static element(data, setSrc = false) {
-		const $figure = document.createElement(window.ROBROY.args.imageItemElement);
-		$figure.setAttribute('class', 'robroy-figure');
+		const $figure = document.createElement(window.GALLERI.args.imageItemElement);
+		$figure.setAttribute('class', 'galleri-figure');
 		$figure.setAttribute('data-path', data.id);
 
 		const $a = document.createElement('a');
-		$a.setAttribute('class', 'robroy-link');
+		$a.setAttribute('class', 'galleri-link');
 		$a.setAttribute('href', data.meta.url);
 		$figure.appendChild($a);
 
@@ -93,87 +93,87 @@ export default class RobroyImage {
 		if (data.attributes.title) {
 			$img.setAttribute('alt', data.attributes.title);
 		}
-		$img.setAttribute('class', 'robroy-img');
+		$img.setAttribute('class', 'galleri-img');
 		$img.setAttribute('data-src', data.meta.thumbnail);
 		$img.setAttribute('height', data.meta.thumbnailHeight);
 		$img.setAttribute('width', data.meta.thumbnailWidth);
 		$a.appendChild($img);
 
 		if (setSrc) {
-			RobroyImage.setSrc($img);
+			GalleriImage.setSrc($img);
 
-			if (RobroyUtilities.isLoggedIn()) {
-				RobroyImage.addAdminControls($figure, data);
+			if (GalleriUtilities.isLoggedIn()) {
+				GalleriImage.addAdminControls($figure, data);
 			}
 		}
 
-		RobroyUtilities.modifier('imageItem', { element: $figure, image: data });
+		GalleriUtilities.modifier('imageItem', { element: $figure, image: data });
 
 		return $figure;
 	}
 
 	static showCreateForm() {
 		const $form = document.createElement('form');
-		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=images`);
+		$form.setAttribute('action', `${window.GALLERI.args.apiPath}?type=images`);
 		$form.setAttribute('enctype', 'multipart/form-data');
-		$form.setAttribute('id', 'robroy-image-form');
+		$form.setAttribute('id', 'galleri-image-form');
 		$form.setAttribute('method', 'post');
-		$form.addEventListener('submit', RobroyImage.submitCreateFormCallback);
+		$form.addEventListener('submit', GalleriImage.submitCreateFormCallback);
 
 		const $heading = document.createElement('h2');
-		$heading.setAttribute('class', 'robroy-heading');
-		$heading.innerText = window.ROBROY.lang.uploadImage;
+		$heading.setAttribute('class', 'galleri-heading');
+		$heading.innerText = window.GALLERI.lang.uploadImage;
 		$form.appendChild($heading);
 
 		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-field');
-		$div.setAttribute('id', 'robroy-field-upload');
+		$div.setAttribute('class', 'galleri-field');
+		$div.setAttribute('id', 'galleri-field-upload');
 		$form.appendChild($div);
 
 		const $label = document.createElement('label');
-		$label.setAttribute('class', 'robroy-label');
-		$label.setAttribute('for', 'robroy-input-upload');
-		$label.innerText = window.ROBROY.lang.fieldImageImages;
+		$label.setAttribute('class', 'galleri-label');
+		$label.setAttribute('for', 'galleri-input-upload');
+		$label.innerText = window.GALLERI.lang.fieldImageImages;
 		$div.appendChild($label);
 
 		const $fileContainer = document.createElement('div');
-		$fileContainer.setAttribute('class', 'robroy-file-container');
+		$fileContainer.setAttribute('class', 'galleri-file-container');
 		$div.appendChild($fileContainer);
 
 		const $fileInput = document.createElement('input');
 		$fileInput.setAttribute('accept', 'image/*');
-		$fileInput.setAttribute('class', 'robroy-file-input');
-		$fileInput.setAttribute('id', 'robroy-input-upload');
+		$fileInput.setAttribute('class', 'galleri-file-input');
+		$fileInput.setAttribute('id', 'galleri-input-upload');
 		$fileInput.setAttribute('name', 'upload[]');
 		$fileInput.setAttribute('multiple', 'multiple');
 		$fileInput.setAttribute('type', 'file');
-		$fileInput.addEventListener('change', RobroyImage.onChange);
+		$fileInput.addEventListener('change', GalleriImage.onChange);
 		$fileContainer.appendChild($fileInput);
 
 		const $text = document.createElement('div');
-		$text.setAttribute('class', 'robroy-file-text');
-		$text.setAttribute('id', 'robroy-create-image-text');
-		$text.innerText = window.ROBROY.lang.dragImagesOrClickHereToUpload;
+		$text.setAttribute('class', 'galleri-file-text');
+		$text.setAttribute('id', 'galleri-create-image-text');
+		$text.innerText = window.GALLERI.lang.dragImagesOrClickHereToUpload;
 		$fileContainer.appendChild($text);
 
 		const $parentInput = document.createElement('input');
 		$parentInput.setAttribute('name', 'folder');
-		$parentInput.setAttribute('value', window.ROBROY.currentFolder.id);
+		$parentInput.setAttribute('value', window.GALLERI.currentFolder.id);
 		$parentInput.setAttribute('type', 'hidden');
 		$form.appendChild($parentInput);
 
-		RobroyUtilities.modifier('imageCreateForm', { addField: RobroyUtilities.addField, form: $form });
+		GalleriUtilities.modifier('imageCreateForm', { addField: GalleriUtilities.addField, form: $form });
 
-		RobroyModal.show(
+		GalleriModal.show(
 			$form,
 			{
 				append: true,
-				callback: RobroyImage.submitCreateFormCallback,
+				callback: GalleriImage.submitCreateFormCallback,
 				closeButtonAttributes: {
-					form: 'robroy-image-form',
+					form: 'galleri-image-form',
 					type: 'submit',
 				},
-				closeButtonText: window.ROBROY.lang.upload,
+				closeButtonText: window.GALLERI.lang.upload,
 				showCancel: true,
 			}
 		);
@@ -181,49 +181,49 @@ export default class RobroyImage {
 
 	static showEditForm(e) {
 		const path = e.target.closest('[data-path]').getAttribute('data-path');
-		window.ROBROY.currentImage = window.ROBROY.currentImages[path];
+		window.GALLERI.currentImage = window.GALLERI.currentImages[path];
 
 		const $form = document.createElement('form');
-		$form.setAttribute('action', `${window.ROBROY.args.apiPath}?type=images&id=${window.ROBROY.currentImage.id}`);
-		$form.setAttribute('id', 'robroy-image-form');
+		$form.setAttribute('action', `${window.GALLERI.args.apiPath}?type=images&id=${window.GALLERI.currentImage.id}`);
+		$form.setAttribute('id', 'galleri-image-form');
 		$form.setAttribute('method', 'PUT');
-		$form.addEventListener('submit', RobroyImage.submitEditFormCallback);
+		$form.addEventListener('submit', GalleriImage.submitEditFormCallback);
 
 		const $heading = document.createElement('h2');
-		$heading.setAttribute('class', 'robroy-heading');
-		$heading.innerText = window.ROBROY.lang.titleEditImage;
+		$heading.setAttribute('class', 'galleri-heading');
+		$heading.innerText = window.GALLERI.lang.titleEditImage;
 		$form.appendChild($heading);
 
 		const $container = document.createElement('div');
-		$container.setAttribute('class', 'robroy-fields');
+		$container.setAttribute('class', 'galleri-fields');
 		$form.appendChild($container);
 
-		RobroyUtilities.addField($container, 'filename', window.ROBROY.lang.fieldImageFilename);
+		GalleriUtilities.addField($container, 'filename', window.GALLERI.lang.fieldImageFilename);
 
-		const $folderInput = RobroyUtilities.addField($container, 'folder', window.ROBROY.lang.fieldImageFolder, 'select');
-		RobroyFolder.addFolderOptions($folderInput, window.ROBROY.currentImage.attributes.folder);
+		const $folderInput = GalleriUtilities.addField($container, 'folder', window.GALLERI.lang.fieldImageFolder, 'select');
+		GalleriFolder.addFolderOptions($folderInput, window.GALLERI.currentImage.attributes.folder);
 
-		RobroyUtilities.addField($container, 'title', window.ROBROY.lang.fieldImageTitle);
+		GalleriUtilities.addField($container, 'title', window.GALLERI.lang.fieldImageTitle);
 
-		Object.keys(window.ROBROY.currentImage.attributes).forEach((key) => {
-			const $input = $form.querySelector(`#robroy-input-${key}`);
-			if ($input && Object.prototype.hasOwnProperty.call(window.ROBROY.currentImage.attributes, key)) {
-				$input.setAttribute('value', window.ROBROY.currentImage.attributes[key]);
+		Object.keys(window.GALLERI.currentImage.attributes).forEach((key) => {
+			const $input = $form.querySelector(`#galleri-input-${key}`);
+			if ($input && Object.prototype.hasOwnProperty.call(window.GALLERI.currentImage.attributes, key)) {
+				$input.setAttribute('value', window.GALLERI.currentImage.attributes[key]);
 			}
 		});
 
-		RobroyUtilities.modifier('imageEditForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
+		GalleriUtilities.modifier('imageEditForm', { addField: GalleriUtilities.addField, container: $container, form: $form });
 
-		RobroyModal.show(
+		GalleriModal.show(
 			$form,
 			{
 				append: true,
-				callback: RobroyImage.submitEditFormCallback,
+				callback: GalleriImage.submitEditFormCallback,
 				closeButtonAttributes: {
-					form: 'robroy-image-form',
+					form: 'galleri-image-form',
 					type: 'submit',
 				},
-				closeButtonText: window.ROBROY.lang.save,
+				closeButtonText: window.GALLERI.lang.save,
 				showCancel: true,
 			}
 		);
@@ -231,98 +231,98 @@ export default class RobroyImage {
 
 	static delete(e) {
 		const id = e.target.closest('[data-path]').getAttribute('data-path');
-		RobroyModal.show(
-			RobroyUtilities.sprintf(window.ROBROY.lang.confirmDeleteImage, id),
+		GalleriModal.show(
+			GalleriUtilities.sprintf(window.GALLERI.lang.confirmDeleteImage, id),
 			{
-				closeButtonText: window.ROBROY.lang.delete,
-				closeButtonClass: 'robroy-button--danger',
+				closeButtonText: window.GALLERI.lang.delete,
+				closeButtonClass: 'galleri-button--danger',
 				showCancel: true,
 				callback: () => {
-					RobroyImage.deleteCallback(id);
-					RobroyModal.hide();
+					GalleriImage.deleteCallback(id);
+					GalleriModal.hide();
 				},
 			}
 		);
 	}
 
 	static deleteCallback(id) {
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'DELETE',
-			url: `${window.ROBROY.args.apiPath}?type=images&id=${id}`,
+			url: `${window.GALLERI.args.apiPath}?type=images&id=${id}`,
 			callback: () => {
-				RobroyToast.show(window.ROBROY.lang.deletedSuccessfullyImage, { class: 'robroy-toast--success' });
-				RobroyImage.removeImageFromList(id);
-				RobroyUtilities.callback('afterDeleteImage', { id });
+				GalleriToast.show(window.GALLERI.lang.deletedSuccessfullyImage, { class: 'galleri-toast--success' });
+				GalleriImage.removeImageFromList(id);
+				GalleriUtilities.callback('afterDeleteImage', { id });
 			},
 		});
 	}
 
 	static setThumbnail(e) {
 		if (e.target.getAttribute('data-current-thumbnail')) {
-			RobroyImage.removeThumbnail(e);
+			GalleriImage.removeThumbnail(e);
 		} else {
-			RobroyImage.makeThumbnail(e);
+			GalleriImage.makeThumbnail(e);
 		}
 	}
 
 	static makeThumbnail(e) {
 		const path = e.target.closest('[data-path]').getAttribute('data-path');
-		const image = window.ROBROY.currentImages[path];
-		const folderId = window.ROBROY.currentFolder.id;
+		const image = window.GALLERI.currentImages[path];
+		const folderId = window.GALLERI.currentFolder.id;
 		const json = {
 			id: folderId,
-			attributes: window.ROBROY.currentFolder.attributes,
+			attributes: window.GALLERI.currentFolder.attributes,
 		};
 		json.attributes.thumbnail = image.meta.thumbnail;
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'PUT',
-			url: `${window.ROBROY.args.apiPath}?type=folders&id=${folderId}`,
+			url: `${window.GALLERI.args.apiPath}?type=folders&id=${folderId}`,
 			json: JSON.stringify(json),
 			callback: () => {
-				RobroyToast.show(window.ROBROY.lang.updatedSuccessfullyThumbnail, { class: 'robroy-toast--success' });
+				GalleriToast.show(window.GALLERI.lang.updatedSuccessfullyThumbnail, { class: 'galleri-toast--success' });
 
 				const $thumbnailButton = document.querySelector('[data-current-thumbnail]');
 				if ($thumbnailButton) {
-					$thumbnailButton.innerText = window.ROBROY.lang.makeThumbnail;
+					$thumbnailButton.innerText = window.GALLERI.lang.makeThumbnail;
 					$thumbnailButton.removeAttribute('data-current-thumbnail');
 				}
 
-				e.target.innerText = window.ROBROY.lang.removeThumbnail;
+				e.target.innerText = window.GALLERI.lang.removeThumbnail;
 				e.target.setAttribute('data-current-thumbnail', true);
 
-				RobroyUtilities.callback('afterMakeThumbnail', { folderId, image });
+				GalleriUtilities.callback('afterMakeThumbnail', { folderId, image });
 			},
 			errorCallback: () => {
-				RobroyToast.show(window.ROBROY.lang.errorUpdatingThumbnail, { class: 'robroy-toast--error' });
+				GalleriToast.show(window.GALLERI.lang.errorUpdatingThumbnail, { class: 'galleri-toast--error' });
 			},
 		});
 	}
 
 	static removeThumbnail(e) {
 		const path = e.target.closest('[data-path]').getAttribute('data-path');
-		const image = window.ROBROY.currentImages[path];
-		const folderId = window.ROBROY.currentFolder.id;
+		const image = window.GALLERI.currentImages[path];
+		const folderId = window.GALLERI.currentFolder.id;
 		const json = {
 			id: folderId,
-			attributes: window.ROBROY.currentFolder.attributes,
+			attributes: window.GALLERI.currentFolder.attributes,
 		};
 		json.attributes.thumbnail = '';
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: 'PUT',
-			url: `${window.ROBROY.args.apiPath}?type=folders&id=${folderId}`,
+			url: `${window.GALLERI.args.apiPath}?type=folders&id=${folderId}`,
 			json: JSON.stringify(json),
 			callback: () => {
-				RobroyToast.show(window.ROBROY.lang.removedSuccessfullyThumbnail, { class: 'robroy-toast--success' });
+				GalleriToast.show(window.GALLERI.lang.removedSuccessfullyThumbnail, { class: 'galleri-toast--success' });
 
-				e.target.innerText = window.ROBROY.lang.makeThumbnail;
+				e.target.innerText = window.GALLERI.lang.makeThumbnail;
 				e.target.removeAttribute('data-current-thumbnail');
 
-				RobroyUtilities.callback('afterRemoveThumbnail', { folderId, image });
+				GalleriUtilities.callback('afterRemoveThumbnail', { folderId, image });
 			},
 			errorCallback: () => {
-				RobroyToast.show(window.ROBROY.lang.errorRemovingThumbnail, { class: 'robroy-toast--error' });
+				GalleriToast.show(window.GALLERI.lang.errorRemovingThumbnail, { class: 'galleri-toast--error' });
 			},
 		});
 	}
@@ -330,66 +330,66 @@ export default class RobroyImage {
 	static submitCreateFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-image-form');
-		RobroyErrors.clear($form);
+		const $form = document.getElementById('galleri-image-form');
+		GalleriErrors.clear($form);
 
-		const $uploadInput = document.getElementById('robroy-input-upload');
+		const $uploadInput = document.getElementById('galleri-input-upload');
 		if ($uploadInput.files.length <= 0) {
-			RobroyErrors.add($uploadInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($uploadInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
 		const formData = new FormData($form);
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
 			formData,
 			callback: (response) => {
-				RobroyImage.createRequestCallback(response);
+				GalleriImage.createRequestCallback(response);
 			},
 			errorCallback: (response, status) => {
-				RobroyErrors.show(response, status);
+				GalleriErrors.show(response, status);
 			},
 		});
 	}
 
 	static createRequestCallback(response) {
-		RobroyToast.show(window.ROBROY.lang.createdSuccessfullyImage, { class: 'robroy-toast--success' });
+		GalleriToast.show(window.GALLERI.lang.createdSuccessfullyImage, { class: 'galleri-toast--success' });
 
-		RobroyImage.prependItems(response.data);
+		GalleriImage.prependItems(response.data);
 
-		if (window.ROBROY.grid) {
-			window.ROBROY.grid.resizeAllItems();
+		if (window.GALLERI.grid) {
+			window.GALLERI.grid.resizeAllItems();
 		}
 
 		response.data.forEach((image) => {
-			window.ROBROY.currentImages[image.id] = image;
+			window.GALLERI.currentImages[image.id] = image;
 		});
 
-		window.ROBROY.currentNumImages += response.data.length;
-		RobroyUtilities.setNumImages();
+		window.GALLERI.currentNumImages += response.data.length;
+		GalleriUtilities.setNumImages();
 
-		document.getElementById('robroy-input-upload').value = '';
-		document.getElementById('robroy-create-image-text').innerText = window.ROBROY.lang.dragImagesOrClickHereToUpload;
+		document.getElementById('galleri-input-upload').value = '';
+		document.getElementById('galleri-create-image-text').innerText = window.GALLERI.lang.dragImagesOrClickHereToUpload;
 
-		const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+		const $deleteFolderButton = document.getElementById('galleri-delete-folder');
 		if ($deleteFolderButton) {
 			$deleteFolderButton.style.display = 'none';
 		}
 
-		RobroyUtilities.callback('afterCreateImage', { image: response.data });
+		GalleriUtilities.callback('afterCreateImage', { image: response.data });
 	}
 
 	static submitEditFormCallback(e) {
 		e.preventDefault();
 
-		const $form = document.getElementById('robroy-image-form');
-		RobroyErrors.clear($form);
+		const $form = document.getElementById('galleri-image-form');
+		GalleriErrors.clear($form);
 
-		const $filenameInput = document.getElementById('robroy-input-filename');
+		const $filenameInput = document.getElementById('galleri-input-filename');
 		if (!$filenameInput.value) {
-			RobroyErrors.add($filenameInput, window.ROBROY.lang.validationRequired);
+			GalleriErrors.add($filenameInput, window.GALLERI.lang.validationRequired);
 			return;
 		}
 
@@ -398,8 +398,8 @@ export default class RobroyImage {
 		let oldJson = {};
 		formData.forEach((value, key) => {
 			json[key] = value;
-			if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentImage.attributes, key)) {
-				oldJson[key] = window.ROBROY.currentImage.attributes[key];
+			if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentImage.attributes, key)) {
+				oldJson[key] = window.GALLERI.currentImage.attributes[key];
 			} else {
 				oldJson[key] = '';
 			}
@@ -408,51 +408,51 @@ export default class RobroyImage {
 		oldJson = JSON.stringify(oldJson);
 
 		if (json === oldJson) {
-			RobroyToast.show(window.ROBROY.lang.nothingToSave);
-			RobroyModal.hide(e);
+			GalleriToast.show(window.GALLERI.lang.nothingToSave);
+			GalleriModal.hide(e);
 			return;
 		}
 
-		RobroyApi.request({
+		GalleriApi.request({
 			method: $form.getAttribute('method'),
 			url: $form.getAttribute('action'),
 			json,
 			callback: (response) => {
-				RobroyImage.editRequestCallback(e, response);
+				GalleriImage.editRequestCallback(e, response);
 			},
 			errorCallback: (response, status) => {
-				RobroyErrors.show(response, status);
+				GalleriErrors.show(response, status);
 			},
 		});
 	}
 
 	static editRequestCallback(e, response) {
-		RobroyToast.show(window.ROBROY.lang.updatedSuccessfullyImage, { class: 'robroy-toast--success' });
+		GalleriToast.show(window.GALLERI.lang.updatedSuccessfullyImage, { class: 'galleri-toast--success' });
 
-		const $folderInput = document.getElementById('robroy-input-folder');
-		const hasFolderChanged = $folderInput.value !== window.ROBROY.currentImage.attributes.folder;
+		const $folderInput = document.getElementById('galleri-input-folder');
+		const hasFolderChanged = $folderInput.value !== window.GALLERI.currentImage.attributes.folder;
 		if (hasFolderChanged) {
-			RobroyImage.removeImageFromList(window.ROBROY.currentImage.id);
+			GalleriImage.removeImageFromList(window.GALLERI.currentImage.id);
 		} else {
-			RobroyImage.updateImage(window.ROBROY.currentImage.id, response.data);
+			GalleriImage.updateImage(window.GALLERI.currentImage.id, response.data);
 		}
 
-		delete window.ROBROY.currentImages[window.ROBROY.currentImage.id];
-		window.ROBROY.currentImages[response.data.id] = response.data;
-		window.ROBROY.currentImage = null;
+		delete window.GALLERI.currentImages[window.GALLERI.currentImage.id];
+		window.GALLERI.currentImages[response.data.id] = response.data;
+		window.GALLERI.currentImage = null;
 
-		RobroyModal.hide(e);
-		RobroyUtilities.callback('afterEditImage', { image: response.data });
+		GalleriModal.hide(e);
+		GalleriUtilities.callback('afterEditImage', { image: response.data });
 	}
 
 	static appendItems(images) {
-		const elements = images.map((image) => RobroyImage.element(image));
-		window.ROBROY.elements.$imageList.append(...elements);
+		const elements = images.map((image) => GalleriImage.element(image));
+		window.GALLERI.elements.$imageList.append(...elements);
 	}
 
 	static prependItems(items) {
 		items.forEach((item) => {
-			window.ROBROY.elements.$imageList.prepend(RobroyImage.element(item, true));
+			window.GALLERI.elements.$imageList.prepend(GalleriImage.element(item, true));
 		});
 	}
 
@@ -467,18 +467,18 @@ export default class RobroyImage {
 		}
 		$container.remove();
 
-		window.ROBROY.currentNumImages -= 1;
-		RobroyUtilities.setNumImages();
+		window.GALLERI.currentNumImages -= 1;
+		GalleriUtilities.setNumImages();
 
-		if (RobroyImage.hasImages()) {
-			if (window.ROBROY.grid) {
-				window.ROBROY.grid.resizeAllItems();
+		if (GalleriImage.hasImages()) {
+			if (window.GALLERI.grid) {
+				window.GALLERI.grid.resizeAllItems();
 			}
 			if ($nextLink) {
 				$nextLink.focus();
 			}
-		} else if (!RobroyFolder.hasFolders()) {
-			const $deleteFolderButton = document.getElementById('robroy-delete-folder');
+		} else if (!GalleriFolder.hasFolders()) {
+			const $deleteFolderButton = document.getElementById('galleri-delete-folder');
 			if ($deleteFolderButton) {
 				$deleteFolderButton.style.display = '';
 			}
@@ -489,86 +489,86 @@ export default class RobroyImage {
 		const files = [...e.target.files];
 		const filenames = files.map((file) => file.name);
 
-		document.getElementById('robroy-create-image-text').innerText = filenames.join(', ');
+		document.getElementById('galleri-create-image-text').innerText = filenames.join(', ');
 	}
 
 	static updateImage(path, image) {
 		const $container = document.querySelector(`[data-path="${path}"]`);
 		$container.setAttribute('data-path', image.id);
 
-		const $a = $container.querySelector('.robroy-link');
+		const $a = $container.querySelector('.galleri-link');
 		$a.setAttribute('href', image.meta.url);
 
-		const $img = $container.querySelector('.robroy-img');
+		const $img = $container.querySelector('.galleri-img');
 		if (image.attributes.title) {
 			$img.setAttribute('alt', image.attributes.title);
 		} else {
 			$img.removeAttribute('alt');
 		}
 
-		RobroyUtilities.callback('afterUpdateImage', { image, element: $container });
+		GalleriUtilities.callback('afterUpdateImage', { image, element: $container });
 	}
 
 	static view(e) {
-		e.target.closest('[data-path]').querySelector('.robroy-link').click();
+		e.target.closest('[data-path]').querySelector('.galleri-link').click();
 	}
 
 	static getImages() {
-		return document.querySelectorAll(`#robroy-images > ${window.ROBROY.args.imageItemElement}`);
+		return document.querySelectorAll(`#galleri-images > ${window.GALLERI.args.imageItemElement}`);
 	}
 
 	static hasImages() {
-		return RobroyImage.getImages().length > 0;
+		return GalleriImage.getImages().length > 0;
 	}
 
 	static addAdminControls($container, data) {
-		if ($container.querySelector('.robroy-admin')) {
+		if ($container.querySelector('.galleri-admin')) {
 			return;
 		}
 
 		const $div = document.createElement('div');
-		$div.setAttribute('class', 'robroy-admin robroy-button-container');
+		$div.setAttribute('class', 'galleri-admin galleri-button-container');
 		$container.appendChild($div);
 
 		const $viewButton = document.createElement('button');
-		$viewButton.setAttribute('class', 'robroy-button');
+		$viewButton.setAttribute('class', 'galleri-button');
 		$viewButton.setAttribute('href', 'button');
-		$viewButton.innerText = window.ROBROY.lang.view;
-		$viewButton.addEventListener('click', RobroyImage.view);
+		$viewButton.innerText = window.GALLERI.lang.view;
+		$viewButton.addEventListener('click', GalleriImage.view);
 		$div.appendChild($viewButton);
 
 		const $editButton = document.createElement('button');
-		$editButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+		$editButton.setAttribute('class', 'galleri-button galleri-button--secondary');
 		$editButton.setAttribute('type', 'button');
-		$editButton.innerText = window.ROBROY.lang.edit;
-		$editButton.addEventListener('click', RobroyImage.showEditForm);
+		$editButton.innerText = window.GALLERI.lang.edit;
+		$editButton.addEventListener('click', GalleriImage.showEditForm);
 		$div.appendChild($editButton);
 
 		if (data.attributes.folder) {
 			const $thumbnailButton = document.createElement('button');
-			$thumbnailButton.setAttribute('class', 'robroy-button robroy-button--secondary');
+			$thumbnailButton.setAttribute('class', 'galleri-button galleri-button--secondary');
 			$thumbnailButton.setAttribute('href', 'button');
 			$thumbnailButton.setAttribute('data-thumbnail-button', true);
-			$thumbnailButton.addEventListener('click', RobroyImage.setThumbnail);
-			const folder = window.ROBROY.folders[data.attributes.folder];
+			$thumbnailButton.addEventListener('click', GalleriImage.setThumbnail);
+			const folder = window.GALLERI.folders[data.attributes.folder];
 			if (folder && folder.attributes.thumbnail === data.meta.thumbnail) {
 				$thumbnailButton.setAttribute('data-current-thumbnail', true);
-				$thumbnailButton.innerText = window.ROBROY.lang.removeThumbnail;
+				$thumbnailButton.innerText = window.GALLERI.lang.removeThumbnail;
 			} else {
-				$thumbnailButton.innerText = window.ROBROY.lang.makeThumbnail;
+				$thumbnailButton.innerText = window.GALLERI.lang.makeThumbnail;
 			}
 			$div.appendChild($thumbnailButton);
 		}
 
 		const $deleteButton = document.createElement('button');
-		$deleteButton.setAttribute('class', 'robroy-button robroy-button--danger');
+		$deleteButton.setAttribute('class', 'galleri-button galleri-button--danger');
 		$deleteButton.setAttribute('type', 'button');
-		$deleteButton.innerText = window.ROBROY.lang.delete;
-		$deleteButton.addEventListener('click', RobroyImage.delete);
+		$deleteButton.innerText = window.GALLERI.lang.delete;
+		$deleteButton.addEventListener('click', GalleriImage.delete);
 		$div.appendChild($deleteButton);
 
-		if (window.ROBROY.args.removePointerEventsOnLogin) {
-			const $link = $container.querySelector('.robroy-link');
+		if (window.GALLERI.args.removePointerEventsOnLogin) {
+			const $link = $container.querySelector('.galleri-link');
 			$link.style.pointerEvents = 'none';
 			$link.setAttribute('tabindex', -1);
 		}
@@ -584,7 +584,7 @@ export default class RobroyImage {
 		$images.forEach(($img) => {
 			const topOfImage = $img.getBoundingClientRect().top;
 			if (topOfImage <= max) {
-				RobroyImage.setSrc($img);
+				GalleriImage.setSrc($img);
 			}
 		});
 	}
@@ -594,8 +594,8 @@ export default class RobroyImage {
 		$img.setAttribute('src', src);
 		$img.removeAttribute('data-src');
 
-		$img.closest('.robroy-link').style.backgroundImage = `url("${src}")`;
+		$img.closest('.galleri-link').style.backgroundImage = `url("${src}")`;
 
-		RobroyUtilities.callback('afterLoadImage', { element: $img });
+		GalleriUtilities.callback('afterLoadImage', { element: $img });
 	}
 }

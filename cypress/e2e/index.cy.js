@@ -1,4 +1,4 @@
-import { robroyUrl } from '../support/functions';
+import { galleriUrl } from '../support/functions';
 
 describe('index', () => {
 	before(() => {
@@ -23,29 +23,29 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Galleri Demo');
 
 					// Does not show the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('not.exist');
+					cy.get('.galleri-breadcrumb').should('not.exist');
 
 					// Does not show the edit folder button.
-					cy.get('#robroy-edit-folder').should('not.exist');
+					cy.get('#galleri-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.exist');
+					cy.get('#galleri-delete-folder').should('not.exist');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Shows the folder list.
-					cy.get('#robroy-folders').should('be.visible');
+					cy.get('#galleri-folders').should('be.visible');
 
 					// Does not show the image list.
-					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
+					cy.get('#galleri-images').should('not.be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -65,29 +65,29 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Galleri Demo');
 
 					// Does not show the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('not.exist');
+					cy.get('.galleri-breadcrumb').should('not.exist');
 
 					// Does not show the edit folder button.
-					cy.get('#robroy-edit-folder').should('not.exist');
+					cy.get('#galleri-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.exist');
+					cy.get('#galleri-delete-folder').should('not.exist');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Does not show the folder list.
-					cy.get('#robroy-folders').should('not.be.visible');
+					cy.get('#galleri-folders').should('not.be.visible');
 
 					// Shows the image list.
-					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
+					cy.get('#galleri-images').should('be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -107,29 +107,29 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Galleri Demo');
 
 					// Does not show the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('not.exist');
+					cy.get('.galleri-breadcrumb').should('not.exist');
 
 					// Does not show the edit folder button.
-					cy.get('#robroy-editfolder').should('not.exist');
+					cy.get('#galleri-editfolder').should('not.exist');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.exist');
+					cy.get('#galleri-delete-folder').should('not.exist');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Shows the folder list.
-					cy.get('#robroy-folders').should('be.visible');
+					cy.get('#galleri-folders').should('be.visible');
 
 					// Shows the image list.
-					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
+					cy.get('#galleri-images').should('be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -149,29 +149,29 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// No meta title.
-					cy.title().should('eq', 'Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Galleri Demo');
 
 					// Does not show the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('not.exist');
+					cy.get('.galleri-breadcrumb').should('not.exist');
 
 					// Does not show the edit folder button.
-					cy.get('#robroy-edit-folder').should('not.exist');
+					cy.get('#galleri-edit-folder').should('not.exist');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.exist');
+					cy.get('#galleri-delete-folder').should('not.exist');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Does not show the folder list.
-					cy.get('#robroy-folders').should('not.be.visible');
+					cy.get('#galleri-folders').should('not.be.visible');
 
 					// Does not show the image list.
-					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
+					cy.get('#galleri-images').should('not.be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -187,7 +187,7 @@ describe('index', () => {
 
 		describe('with folders only', () => {
 			it('shows the correct elements', () => {
-				cy.visit(robroyUrl('folders-only'));
+				cy.visit(galleriUrl('folders-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -196,37 +196,37 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Folders Only | Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Folders Only | Galleri Demo');
 
 					// Shows the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('be.visible');
+					cy.get('.galleri-breadcrumb').should('be.visible');
 					const items = [
 						{ text: 'Home', href: '/' },
 						{ text: 'Folders Only', href: '/folders-only' },
 					];
-					cy.get('.robroy-breadcrumb-link').each((item, index) => {
+					cy.get('.galleri-breadcrumb-link').each((item, index) => {
 						cy.wrap(item).should('have.text', items[index].text);
 						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
-					cy.get('#robroy-edit-folder').should('be.visible');
+					cy.get('#galleri-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.be.visible');
+					cy.get('#galleri-delete-folder').should('not.be.visible');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Shows the folder list.
-					cy.get('#robroy-folders').should('be.visible');
+					cy.get('#galleri-folders').should('be.visible');
 
 					// Does not show the image list.
-					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
+					cy.get('#galleri-images').should('not.be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -236,7 +236,7 @@ describe('index', () => {
 
 		describe('with images only', () => {
 			it('shows the correct elements', () => {
-				cy.visit(robroyUrl('images-only'));
+				cy.visit(galleriUrl('images-only'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -245,37 +245,37 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Images Only | Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Images Only | Galleri Demo');
 
 					// Shows the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('be.visible');
+					cy.get('.galleri-breadcrumb').should('be.visible');
 					const items = [
 						{ text: 'Home', href: '/' },
 						{ text: 'Images Only', href: '/images-only' },
 					];
-					cy.get('.robroy-breadcrumb-link').each((item, index) => {
+					cy.get('.galleri-breadcrumb-link').each((item, index) => {
 						cy.wrap(item).should('have.text', items[index].text);
 						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
-					cy.get('#robroy-edit-folder').should('be.visible');
+					cy.get('#galleri-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.be.visible');
+					cy.get('#galleri-delete-folder').should('not.be.visible');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Does not show the folder list.
-					cy.get('#robroy-folders').should('not.be.visible');
+					cy.get('#galleri-folders').should('not.be.visible');
 
 					// Shows the image list.
-					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
+					cy.get('#galleri-images').should('be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -285,7 +285,7 @@ describe('index', () => {
 
 		describe('with images and folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit(robroyUrl('images-and-folders'));
+				cy.visit(galleriUrl('images-and-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -294,37 +294,37 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'Images And Folders | Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'Images And Folders | Galleri Demo');
 
 					// Shows the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('be.visible');
+					cy.get('.galleri-breadcrumb').should('be.visible');
 					const items = [
 						{ text: 'Home', href: '/' },
 						{ text: 'Images And Folders', href: '/images-and-folders' },
 					];
-					cy.get('.robroy-breadcrumb-link').each((item, index) => {
+					cy.get('.galleri-breadcrumb-link').each((item, index) => {
 						cy.wrap(item).should('have.text', items[index].text);
 						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
-					cy.get('#robroy-edit-folder').should('be.visible');
+					cy.get('#galleri-edit-folder').should('be.visible');
 
 					// Does not show the delete folder button.
-					cy.get('#robroy-delete-folder').should('not.be.visible');
+					cy.get('#galleri-delete-folder').should('not.be.visible');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Show the folder list.
-					cy.get('#robroy-folders').should('be.visible');
+					cy.get('#galleri-folders').should('be.visible');
 
 					// Shows the image list.
-					cy.get('#robroy-images').should('be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(2 images)');
+					cy.get('#galleri-images').should('be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(2 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -334,7 +334,7 @@ describe('index', () => {
 
 		describe('with no images or folders', () => {
 			it('shows the correct elements', () => {
-				cy.visit(robroyUrl('no-images-or-folders'));
+				cy.visit(galleriUrl('no-images-or-folders'));
 				cy.wait('@getFolders');
 				cy.wait('@getFolders2');
 				cy.wait('@getImages');
@@ -343,37 +343,37 @@ describe('index', () => {
 
 				for (let i = 0; i < 2; i += 1) {
 					// Sets the meta title.
-					cy.title().should('eq', 'No Images Or Folders | Robroy Photo Gallery Demo');
+					cy.title().should('eq', 'No Images Or Folders | Galleri Demo');
 
 					// Shows the breadcrumb.
-					cy.get('.robroy-breadcrumb').should('be.visible');
+					cy.get('.galleri-breadcrumb').should('be.visible');
 					const items = [
 						{ text: 'Home', href: '/' },
 						{ text: 'No Images Or Folders', href: '/no-images-or-folders' },
 					];
-					cy.get('.robroy-breadcrumb-link').each((item, index) => {
+					cy.get('.galleri-breadcrumb-link').each((item, index) => {
 						cy.wrap(item).should('have.text', items[index].text);
 						cy.wrap(item).should('have.attr', 'href', items[index].href);
 					});
 
 					// Shows the edit folder button.
-					cy.get('#robroy-edit-folder').should('be.visible');
+					cy.get('#galleri-edit-folder').should('be.visible');
 
 					// Shows the delete folder button.
-					cy.get('#robroy-delete-folder').should('be.visible');
+					cy.get('#galleri-delete-folder').should('be.visible');
 
 					// Shows the create folder button.
-					cy.get('#robroy-create-folder').should('be.visible');
+					cy.get('#galleri-create-folder').should('be.visible');
 
 					// Shows the create image button.
-					cy.get('#robroy-create-image').should('be.visible');
+					cy.get('#galleri-create-image').should('be.visible');
 
 					// Does not show the folder list.
-					cy.get('#robroy-folders').should('not.be.visible');
+					cy.get('#galleri-folders').should('not.be.visible');
 
 					// Does not show the image list.
-					cy.get('#robroy-images').should('not.be.visible');
-					cy.get('#robroy-folder-num').should('have.text', '(0 images)');
+					cy.get('#galleri-images').should('not.be.visible');
+					cy.get('#galleri-folder-num').should('have.text', '(0 images)');
 
 					// Repeat assertions when already logged in.
 					cy.reload();
@@ -384,7 +384,7 @@ describe('index', () => {
 
 	describe('with a second-level folder', () => {
 		it('shows the correct elements', () => {
-			cy.visit(robroyUrl('folders-only/subfolder'));
+			cy.visit(galleriUrl('folders-only/subfolder'));
 			cy.wait('@getFolders');
 			cy.wait('@getFolders2');
 			cy.wait('@getImages');
@@ -393,38 +393,38 @@ describe('index', () => {
 
 			for (let i = 0; i < 2; i += 1) {
 				// Sets the meta title.
-				cy.title().should('eq', 'Subfolder | Robroy Photo Gallery Demo');
+				cy.title().should('eq', 'Subfolder | Galleri Demo');
 
 				// Shows the breadcrumb.
-				cy.get('.robroy-breadcrumb').should('be.visible');
+				cy.get('.galleri-breadcrumb').should('be.visible');
 				const items = [
 					{ text: 'Home', href: '/' },
 					{ text: 'Folders Only', href: '/folders-only' },
 					{ text: 'Subfolder', href: '/folders-only/subfolder' },
 				];
-				cy.get('.robroy-breadcrumb-link').each((item, index) => {
+				cy.get('.galleri-breadcrumb-link').each((item, index) => {
 					cy.wrap(item).should('have.text', items[index].text);
 					cy.wrap(item).should('have.attr', 'href', items[index].href);
 				});
 
 				// Shows the edit folder form.
-				cy.get('#robroy-edit-folder').should('be.visible');
+				cy.get('#galleri-edit-folder').should('be.visible');
 
 				// Shows the delete folder button.
-				cy.get('#robroy-delete-folder').should('be.visible');
+				cy.get('#galleri-delete-folder').should('be.visible');
 
 				// Shows the create folder form.
-				cy.get('#robroy-create-folder').should('be.visible');
+				cy.get('#galleri-create-folder').should('be.visible');
 
 				// Shows the create image form.
-				cy.get('#robroy-create-image').should('be.visible');
+				cy.get('#galleri-create-image').should('be.visible');
 
 				// Does not shows the folder list.
-				cy.get('#robroy-folders').should('not.be.visible');
+				cy.get('#galleri-folders').should('not.be.visible');
 
 				// Does not show the image list.
-				cy.get('#robroy-images').should('not.be.visible');
-				cy.get('#robroy-folder-num').should('have.text', '(0 images)');
+				cy.get('#galleri-images').should('not.be.visible');
+				cy.get('#galleri-folder-num').should('have.text', '(0 images)');
 
 				// Repeat assertions when already logged in.
 				cy.reload();

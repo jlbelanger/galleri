@@ -2,8 +2,8 @@
 
 namespace Tests\Helpers;
 
-use Jlbelanger\Robroy\Exceptions\ApiException;
-use Jlbelanger\Robroy\Helpers\Filesystem;
+use Jlbelanger\Galleri\Exceptions\ApiException;
+use Jlbelanger\Galleri\Helpers\Filesystem;
 use Tests\TestCase;
 
 class FilesystemTest extends TestCase
@@ -17,7 +17,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'bar.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'copy' => false,
 					],
 				],
@@ -29,7 +29,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'bar.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'copy' => true,
 					],
 				],
@@ -63,7 +63,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 					],
 				],
@@ -74,7 +74,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => false,
 						'mkdir' => false,
 					],
@@ -86,7 +86,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => false,
 						'mkdir' => true,
 					],
@@ -120,7 +120,7 @@ class FilesystemTest extends TestCase
 					'filename' => 'does-not-exist.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => false,
 					],
 				],
@@ -130,7 +130,7 @@ class FilesystemTest extends TestCase
 					'filename' => 'example.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'unlink' => false,
 					],
@@ -142,7 +142,7 @@ class FilesystemTest extends TestCase
 					'filename' => 'example.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'unlink' => true,
 					],
@@ -176,7 +176,7 @@ class FilesystemTest extends TestCase
 					'path' => 'does-not-exist',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => false,
 					],
 				],
@@ -186,7 +186,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'opendir' => true,
 						'closedir' => true,
@@ -201,7 +201,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'rmdir' => false,
 					],
@@ -213,7 +213,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'rmdir' => true,
 					],
@@ -247,7 +247,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => false,
 					],
 				],
@@ -258,7 +258,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 					],
 				],
@@ -285,7 +285,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'is_dir' => false,
 					],
 				],
@@ -296,7 +296,7 @@ class FilesystemTest extends TestCase
 					'path' => 'foo',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'is_dir' => true,
 					],
 				],
@@ -339,7 +339,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'bar.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => true,
 						'move_uploaded_file' => true,
 					],
@@ -352,7 +352,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'bar.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'foo.png') !== false) {
 								return true;
@@ -370,7 +370,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'bar.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'foo.png') !== false) {
 								return true;
@@ -448,7 +448,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'does-not-exist.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'rename' => false,
 					],
 				],
@@ -460,7 +460,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'does-not-exist.png',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'rename' => true,
 					],
 				],
@@ -508,7 +508,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'does-not-exist',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'rename' => false,
 					],
 				],
@@ -520,7 +520,7 @@ class FilesystemTest extends TestCase
 					'newPath' => 'does-not-exist',
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'rename' => true,
 					],
 				],
@@ -554,7 +554,7 @@ class FilesystemTest extends TestCase
 					'data' => ['foo' => 'bar'],
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_put_contents' => true,
 					],
 				],
@@ -566,7 +566,7 @@ class FilesystemTest extends TestCase
 					'data' => ['foo' => 'bar'],
 				],
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_put_contents' => false,
 					],
 				],

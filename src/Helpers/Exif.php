@@ -1,6 +1,6 @@
 <?php
 
-namespace Jlbelanger\Robroy\Helpers;
+namespace Jlbelanger\Galleri\Helpers;
 
 use Exception;
 

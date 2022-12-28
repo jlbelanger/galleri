@@ -1,18 +1,18 @@
-import RobroyUtilities from './utilities';
+import GalleriUtilities from './utilities';
 
-export default class RobroySpinner {
+export default class GalleriSpinner {
 	static show() {
-		let $spinner = document.querySelector('.robroy-spinner');
+		let $spinner = document.querySelector('.galleri-spinner');
 		if (!$spinner) {
 			$spinner = document.createElement('div');
-			$spinner.setAttribute('class', 'robroy-spinner');
+			$spinner.setAttribute('class', 'galleri-spinner');
 			$spinner.setAttribute('role', 'alert');
-			$spinner.innerText = window.ROBROY.lang.loading;
+			$spinner.innerText = window.GALLERI.lang.loading;
 			document.body.appendChild($spinner);
 		}
 		$spinner.style.display = '';
 
-		RobroyUtilities.modifier('spinner', { element: $spinner });
+		GalleriUtilities.modifier('spinner', { element: $spinner });
 
 		return $spinner;
 	}

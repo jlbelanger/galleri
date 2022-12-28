@@ -1,106 +1,107 @@
-$robroy-dark-mode: false !default;
-$robroy-multiply: if($robroy-dark-mode, 1, -1) !default;
+$galleri-dark-mode: false !default;
+$galleri-multiply: if($galleri-dark-mode, 1, -1) !default;
 
-$robroy-primary: #00bfff !default;
-$robroy-red: if($robroy-dark-mode, #900, #c00) !default;
-$robroy-green: #006800;
-$robroy-black: #000 !default;
-$robroy-darkest: scale-color($robroy-primary, $lightness: -90% * $robroy-multiply) !default;
-$robroy-darker: scale-color($robroy-primary, $lightness: -80% * $robroy-multiply) !default;
-$robroy-dark: scale-color($robroy-primary, $lightness: -50% * $robroy-multiply) !default;
-$robroy-light: scale-color($robroy-primary, $lightness: 30% * $robroy-multiply) !default;
-$robroy-lightest: scale-color($robroy-primary, $lightness: 90% * $robroy-multiply) !default;
-$robroy-white: #fff !default;
+$galleri-primary: #00bfff !default;
+$galleri-red: if($galleri-dark-mode, #900, #c00) !default;
+$galleri-green: #006800;
+$galleri-black: #000 !default;
+$galleri-darkest: scale-color($galleri-primary, $lightness: -90% * $galleri-multiply) !default;
+$galleri-darker: scale-color($galleri-primary, $lightness: -80% * $galleri-multiply) !default;
+$galleri-dark: scale-color($galleri-primary, $lightness: -50% * $galleri-multiply) !default;
+$galleri-light: scale-color($galleri-primary, $lightness: 30% * $galleri-multiply) !default;
+$galleri-lightest: scale-color($galleri-primary, $lightness: 90% * $galleri-multiply) !default;
+$galleri-white: #fff !default;
 
-$robroy-padding-desktop: 32px !default;
-$robroy-padding-mobile: 16px !default;
+$galleri-padding-desktop: 32px !default;
+$galleri-padding-mobile: 16px !default;
 
-$robroy-admin-zindex: 997 !default;
+$galleri-admin-zindex: 997 !default;
 
-$robroy-breadcrumb-icon: '\203a' !default; // &rsaquo;
-$robroy-breadcrumb-item-arrow-color: $robroy-dark !default;
-$robroy-breadcrumb-padding: 8px !default;
-$robroy-breadcrumb-item-margin: 12px !default;
+$galleri-breadcrumb-icon: '\203a' !default; // &rsaquo;
+$galleri-breadcrumb-item-arrow-color: $galleri-dark !default;
+$galleri-breadcrumb-padding: 8px !default;
+$galleri-breadcrumb-item-margin: 12px !default;
 
-$robroy-breakpoint: 1025px !default;
+$galleri-breakpoint: 1025px !default;
 
-$robroy-button-background-color: $robroy-primary !default;
-$robroy-button-background-color-hover: scale-color($robroy-button-background-color, $lightness: 20% * $robroy-multiply) !default;
-$robroy-button-font-size: 16px !default;
-$robroy-button-padding: 16px !default;
-$robroy-button-text-color: if($robroy-dark-mode, $robroy-darkest, $robroy-lightest) !default;
-$robroy-button-height: ($robroy-button-padding * 2) + $robroy-button-font-size !default;
+$galleri-button-background-color: $galleri-primary !default;
+$galleri-button-background-color-hover: scale-color($galleri-button-background-color, $lightness: 20% * $galleri-multiply) !default;
+$galleri-button-font-size: 16px !default;
+$galleri-button-padding: 16px !default;
+$galleri-button-text-color: if($galleri-dark-mode, $galleri-darkest, $galleri-lightest) !default;
+$galleri-button-height: ($galleri-button-padding * 2) + $galleri-button-font-size !default;
 
-$robroy-button-danger-background-color: $robroy-red !default;
-$robroy-button-danger-background-color-hover: scale-color($robroy-button-danger-background-color, $lightness: 5% * $robroy-multiply) !default;
-$robroy-button-danger-text-color: $robroy-white !default;
+$galleri-button-danger-background-color: $galleri-red !default;
+$galleri-button-danger-background-color-hover: scale-color($galleri-button-danger-background-color, $lightness: 5% * $galleri-multiply) !default;
+$galleri-button-danger-text-color: $galleri-white !default;
 
-$robroy-button-secondary-background-color: $robroy-darker !default;
-$robroy-button-secondary-background-color-hover: scale-color($robroy-button-secondary-background-color, $lightness: 5% * $robroy-multiply) !default;
-$robroy-button-secondary-text-color: $robroy-lightest !default;
+$galleri-button-secondary-background-color: $galleri-darker !default;
+// stylelint-disable-next-line max-line-length
+$galleri-button-secondary-background-color-hover: scale-color($galleri-button-secondary-background-color, $lightness: 5% * $galleri-multiply) !default;
+$galleri-button-secondary-text-color: $galleri-lightest !default;
 
-$robroy-button-container-gap: 1px !default;
+$galleri-button-container-gap: 1px !default;
 
-$robroy-error-border-color: $robroy-red !default;
-$robroy-error-border-width: 2px !default;
-$robroy-error-font-size: 16px !default;
-$robroy-error-margin-top: 8px !default;
-$robroy-error-text-color: $robroy-red !default;
+$galleri-error-border-color: $galleri-red !default;
+$galleri-error-border-width: 2px !default;
+$galleri-error-font-size: 16px !default;
+$galleri-error-margin-top: 8px !default;
+$galleri-error-text-color: $galleri-red !default;
 
-$robroy-focus-border-color: $robroy-lightest !default;
-$robroy-focus-border-width: 4px !default;
+$galleri-focus-border-color: $galleri-lightest !default;
+$galleri-focus-border-width: 4px !default;
 
-$robroy-image-border-color: $robroy-white !default;
-$robroy-image-border-width: 0 !default;
-$robroy-image-width: 300px !default;
+$galleri-image-border-color: $galleri-white !default;
+$galleri-image-border-width: 0 !default;
+$galleri-image-width: 300px !default;
 
-$robroy-folder-image-width: $robroy-image-width !default;
-$robroy-folder-item-margin: 12px !default;
-$robroy-folder-name-margin: 8px !default;
+$galleri-folder-image-width: $galleri-image-width !default;
+$galleri-folder-item-margin: 12px !default;
+$galleri-folder-name-margin: 8px !default;
 
-$robroy-field-margin-top: $robroy-padding-desktop !default;
+$galleri-field-margin-top: $galleri-padding-desktop !default;
 
-$robroy-figure-background-color: $robroy-darker !default;
+$galleri-figure-background-color: $galleri-darker !default;
 
-$robroy-input-background-color: $robroy-darker !default;
-$robroy-input-margin-top: 4px !default;
-$robroy-input-padding: 12px !default;
-$robroy-input-text-color: $robroy-lightest !default;
+$galleri-input-background-color: $galleri-darker !default;
+$galleri-input-margin-top: 4px !default;
+$galleri-input-padding: 12px !default;
+$galleri-input-text-color: $galleri-lightest !default;
 
-$robroy-file-input-background-color: $robroy-input-background-color !default;
-$robroy-file-input-background-color-hover: scale-color($robroy-file-input-background-color, $lightness: -10% * $robroy-multiply) !default;
-$robroy-file-input-text-color: $robroy-lightest !default;
-$robroy-file-input-height: 100px !default;
-$robroy-file-input-padding: 16px !default;
+$galleri-file-input-background-color: $galleri-input-background-color !default;
+$galleri-file-input-background-color-hover: scale-color($galleri-file-input-background-color, $lightness: -10% * $galleri-multiply) !default;
+$galleri-file-input-text-color: $galleri-lightest !default;
+$galleri-file-input-height: 100px !default;
+$galleri-file-input-padding: 16px !default;
 
-$robroy-modal-background-color: $robroy-darker !default;
-$robroy-modal-button-margin-side: 8px !default;
-$robroy-modal-button-margin-top: 20px !default;
-$robroy-modal-container-background-color: rgba($robroy-black, .4) !default;
-$robroy-modal-input-background-color: $robroy-darkest !default;
-$robroy-modal-margin: 32px !default;
-$robroy-modal-max-width: 800px !default;
-$robroy-modal-padding: 32px !default;
-$robroy-modal-text-color: $robroy-lightest !default;
-$robroy-modal-zindex: 998 !default;
+$galleri-modal-background-color: $galleri-darker !default;
+$galleri-modal-button-margin-side: 8px !default;
+$galleri-modal-button-margin-top: 20px !default;
+$galleri-modal-container-background-color: rgba($galleri-black, .4) !default;
+$galleri-modal-input-background-color: $galleri-darkest !default;
+$galleri-modal-margin: 32px !default;
+$galleri-modal-max-width: 800px !default;
+$galleri-modal-padding: 32px !default;
+$galleri-modal-text-color: $galleri-lightest !default;
+$galleri-modal-zindex: 998 !default;
 
-$robroy-spinner-color-alternate: $robroy-primary !default;
-$robroy-spinner-color: $robroy-darker !default;
-$robroy-spinner-size: 60px !default;
-$robroy-spinner-thickness: 12px !default;
+$galleri-spinner-color-alternate: $galleri-primary !default;
+$galleri-spinner-color: $galleri-darker !default;
+$galleri-spinner-size: 60px !default;
+$galleri-spinner-thickness: 12px !default;
 
-$robroy-toast-background-color: $robroy-dark !default;
-$robroy-toast-close-font-size: 18px !default;
-$robroy-toast-close-icon: '\00d7' !default; // &times;
-$robroy-toast-close-margin-left: 8px !default;
-$robroy-toast-close-size: 32px !default;
-$robroy-toast-margin: 16px !default;
-$robroy-toast-padding: 16px !default;
-$robroy-toast-text-color: $robroy-lightest !default;
-$robroy-toast-zindex: 999 !default;
+$galleri-toast-background-color: $galleri-dark !default;
+$galleri-toast-close-font-size: 18px !default;
+$galleri-toast-close-icon: '\00d7' !default; // &times;
+$galleri-toast-close-margin-left: 8px !default;
+$galleri-toast-close-size: 32px !default;
+$galleri-toast-margin: 16px !default;
+$galleri-toast-padding: 16px !default;
+$galleri-toast-text-color: $galleri-lightest !default;
+$galleri-toast-zindex: 999 !default;
 
-$robroy-toast-success-background-color: $robroy-green !default;
-$robroy-toast-success-text-color: $robroy-white !default;
+$galleri-toast-success-background-color: $galleri-green !default;
+$galleri-toast-success-text-color: $galleri-white !default;
 
-$robroy-toast-error-background-color: $robroy-red !default;
-$robroy-toast-error-text-color: $robroy-white !default;
+$galleri-toast-error-background-color: $galleri-red !default;
+$galleri-toast-error-text-color: $galleri-white !default;

@@ -2,8 +2,8 @@
 
 namespace Tests\Controllers;
 
-use Jlbelanger\Robroy\Controllers\Images;
-use Jlbelanger\Robroy\Exceptions\ApiException;
+use Jlbelanger\Galleri\Controllers\Images;
+use Jlbelanger\Galleri\Exceptions\ApiException;
 use Tests\TestCase;
 
 class ImagesTest extends TestCase
@@ -293,7 +293,7 @@ class ImagesTest extends TestCase
 			'when changing filename' => [[
 				'images.json' => $json,
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'new-filename.png') !== false) {
 								return false;
@@ -310,7 +310,7 @@ class ImagesTest extends TestCase
 			'when changing filename with invalid characters' => [[
 				'images.json' => $json,
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'new-filename.png') !== false) {
 								return false;
@@ -327,7 +327,7 @@ class ImagesTest extends TestCase
 			'when setting folder' => [[
 				'images.json' => $json,
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'new-folder/example.png') !== false || strpos($path, 'new-folder/thumbnails/example.png') !== false) {
 								return false;
@@ -344,7 +344,7 @@ class ImagesTest extends TestCase
 			'when changing folder' => [[
 				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'new-folder/example.png') !== false || strpos($path, 'new-folder/thumbnails/example.png') !== false) {
 								return false;
@@ -361,7 +361,7 @@ class ImagesTest extends TestCase
 			'when changing filename and folder' => [[
 				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'new-folder/new-filename.png') !== false) {
 								return false;
@@ -381,7 +381,7 @@ class ImagesTest extends TestCase
 			'when removing folder' => [[
 				'images.json' => '{"data":{"folder-with-image/example.png":{"id":"folder-with-image/example.png","attributes":{"title":"Foo"}}}}',
 				'mocks' => [
-					'Jlbelanger\Robroy\Helpers' => [
+					'Jlbelanger\Galleri\Helpers' => [
 						'file_exists' => function ($path) {
 							if (strpos($path, 'assets/example.png') !== false || strpos($path, 'assets/thumbnails/example.png') !== false) {
 								return false;
