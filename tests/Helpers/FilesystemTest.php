@@ -67,7 +67,7 @@ class FilesystemTest extends TestCase
 						'file_exists' => true,
 					],
 				],
-				'expectedMessage' => '[{"title":"Folder \"foo\" already exists.","status":422,"pointer":"name"}]',
+				'expectedMessage' => '[{"title":"Folder \"foo\" already exists.","status":422,"pointer":"id"}]',
 			]],
 			'when the folder does not exist and mkdir fails' => [[
 				'args' => [
@@ -493,14 +493,14 @@ class FilesystemTest extends TestCase
 					'oldPath' => 'does-not-exist',
 					'newPath' => 'new-does-not-exist',
 				],
-				'expectedMessage' => '[{"title":"Folder \"new-does-not-exist\" does not exist.","status":422,"pointer":"name"}]',
+				'expectedMessage' => '[{"title":"Folder \"new-does-not-exist\" does not exist.","status":422,"pointer":"id"}]',
 			]],
 			'when the new folder already exists' => [[
 				'args' => [
 					'oldPath' => 'foo',
 					'newPath' => 'bar',
 				],
-				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"name"}]',
+				'expectedMessage' => '[{"title":"Folder \"bar\" already exists.","status":422,"pointer":"id"}]',
 			]],
 			'when rename fails' => [[
 				'args' => [

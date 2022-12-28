@@ -11,7 +11,7 @@ export default class RobroyToast {
 		if (!$container) {
 			$container = document.createElement('div');
 			$container.setAttribute('id', 'robroy-toast-container');
-			document.body.append($container);
+			document.getElementById('robroy-admin').append($container);
 		}
 
 		const id = `robroy-toast-${new Date().getTime()}`;

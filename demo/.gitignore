@@ -1,8 +1,0 @@
-.DS_Store
-.env
-.env.bak
-.htpasswd
-*.log
-/vendor
-node_modules
-public/.htaccess

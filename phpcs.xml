@@ -5,7 +5,7 @@
 
 	<arg name="colors" />
 	<arg name="extensions" value="php" />
-	<arg name="ignore" value="demo/node_modules/*,demo/public/images/*,demo/public/images2/*,demo/public/json/*,demo/public/json2/*,demo/vendor/*,node_modules/*,public/uploads/*,vendor/*" />
+	<arg name="ignore" value="node_modules/*,vendor/*" />
 	<arg value="p" />
 	<arg value="s" />
 

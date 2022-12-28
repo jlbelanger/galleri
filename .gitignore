@@ -3,10 +3,8 @@
 .phpunit.result.cache
 *.log
 /vendor
+cypress.config.js
 cypress.env.json
-cypress.json
 cypress/fixtures/current
-demo/public/images2
-demo/public/json2
 node_modules
 TODO.md

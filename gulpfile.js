@@ -1,43 +1,18 @@
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const gulp = require('gulp');
-const livereload = require('gulp-livereload');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
-const sass = require('gulp-sass')(require('node-sass'));
+const sass = require('gulp-sass')(require('sass'));
 
 function css() {
-	return gulp.src(['./scss/*.scss', './demo/scss/*.scss'])
+	return gulp.src(['./scss/*.scss'])
 		.pipe(sass())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(postcss([autoprefixer(), cssnano()]))
-		.pipe(gulp.dest('demo/public'))
-		.pipe(livereload());
+		.pipe(gulp.dest('dist/css'));
 }
 
-function distCss() {
-	return gulp.src(['./demo/public/*.css'])
-		.pipe(gulp.dest('dist/css'))
-		.pipe(livereload());
-}
-
-function distJs() {
-	return gulp.src(['./demo/public/*.js'])
-		.pipe(gulp.dest('dist/js'))
-		.pipe(livereload());
-}
-
-gulp.task('default', () => {
-	(gulp.parallel('css', 'dist:css', 'dist:js')());
-	gulp.watch(['scss/**/*.scss', 'demo/scss/**/*.scss'], css);
-	gulp.watch(['demo/public/*.css'], distCss);
-	gulp.watch(['demo/public/*.js'], distJs);
-	livereload.listen();
-	gulp.watch(['demo/public/*.css']).on('change', livereload.changed);
-});
+gulp.task('default', () => css());
 
 gulp.task('css', () => css());
-
-gulp.task('dist:css', () => distCss());
-
-gulp.task('dist:js', () => distJs());

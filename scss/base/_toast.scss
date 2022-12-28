@@ -1,9 +1,9 @@
 #robroy-toast-container {
 	align-items: flex-end;
-	bottom: 0;
+	bottom: 100%;
 	display: flex;
 	flex-direction: column;
-	position: fixed;
+	position: absolute;
 	right: 0;
 	z-index: $robroy-toast-zindex;
 }
@@ -22,6 +22,11 @@
 .robroy-toast--success {
 	background-color: $robroy-toast-success-background-color;
 	color: $robroy-toast-success-text-color;
+}
+
+.robroy-toast--error {
+	background-color: $robroy-toast-error-background-color;
+	color: $robroy-toast-error-text-color;
 }
 
 .robroy-toast-text {

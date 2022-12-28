@@ -7,8 +7,9 @@ use Jlbelanger\Robroy\Exceptions\ApiException;
 use Jlbelanger\Robroy\Exceptions\ValidationException;
 use Jlbelanger\Robroy\Helpers\Cache;
 use Jlbelanger\Robroy\Helpers\Constant;
-use Jlbelanger\Robroy\Helpers\ImageFile;
+use Jlbelanger\Robroy\Helpers\Exif;
 use Jlbelanger\Robroy\Helpers\Filesystem;
+use Jlbelanger\Robroy\Helpers\ImageFile;
 use Jlbelanger\Robroy\Helpers\Utilities;
 
 class Image
@@ -47,9 +48,23 @@ class Image
 			$this->meta['thumbnailHeight'] = $height;
 			$this->meta['thumbnailWidth'] = $width;
 		}
+		if (empty($this->meta['height']) || empty($this->meta['width'])) {
+			list($width, $height) = getimagesize($this->absolutePath());
+
+			$this->meta['height'] = $height;
+			$this->meta['width'] = $width;
+		}
 		if (empty($this->meta['url'])) {
 			$this->meta['url'] = $this->getUrl();
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function absolutePath() : string
+	{
+		return Constant::get('UPLOADS_PATH') . '/' . $this->id;
 	}
 
 	/**
@@ -165,11 +180,18 @@ class Image
 	 */
 	public function json() : array
 	{
-		return [
+		$output = [
 			'id' => $this->id,
 			'attributes' => $this->attributes,
 			'meta' => $this->meta,
 		];
+		if (!isset($output['attributes']['title'])) {
+			$output['attributes'] = array_merge($output['attributes'], $this->getDefaultAttributes());
+		}
+		if (empty($output['meta']['exif'])) {
+			$output['meta']['exif'] = $this->getExif();
+		}
+		return $output;
 	}
 
 	/**
@@ -339,6 +361,63 @@ class Image
 			}
 			throw new ApiException('File "' . $name . '" could not be uploaded: ' . $error);
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getDefaultAttributes() : array
+	{
+		$attributes = [
+			'title' => '',
+			'keywords' => [],
+		];
+		$path = $this->absolutePath();
+		list($w, $h, $fileType) = getimagesize($path, $info);
+		if (Exif::exists($fileType)) {
+			$exif = Exif::get($path);
+			if (!empty($exif['ImageDescription'])) {
+				$attributes['title'] = $exif['ImageDescription'];
+			}
+		}
+		if (isset($info['APP13'])) {
+			$keywords = iptcparse($info['APP13']);
+			if (!empty($keywords['2#025'])) {
+				$attributes['keywords'] = $keywords['2#025'];
+			}
+		}
+		return $attributes;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getExif() : array
+	{
+		$path = $this->absolutePath();
+		list($w, $h, $fileType) = getimagesize($path, $info);
+		if (Exif::exists($fileType)) {
+			$exif = Exif::get($path);
+			if (!empty($exif)) {
+				return [
+					'aperture' => Exif::aperture($exif),
+					'camera' => Exif::camera($exif),
+					'date' => Exif::date($exif),
+					'exposure' => Exif::exposure($exif),
+					'flashMode' => Exif::flash($exif),
+					'focalLength' => Exif::focalLength($exif),
+					'iso' => Exif::iso($exif),
+					'latitude' => Exif::latitude($exif),
+					'lightSource' => Exif::lightSource($exif),
+					'longitude' => Exif::longitude($exif),
+					'mode' => Exif::mode($exif),
+					'orientation' => Exif::orientation($exif),
+					'shutterSpeed' => Exif::shutterSpeed($exif),
+					'whiteBalance' => Exif::whiteBalance($exif),
+				];
+			}
+		}
+		return [];
 	}
 
 	/**

@@ -5,11 +5,12 @@ export default class RobroyModal {
 		args.closeButtonText = args.closeButtonText || window.ROBROY.lang.ok;
 		args.closeButtonClass = args.closeButtonClass || '';
 
+		document.body.classList.add('robroy-modal-open');
+
 		const id = `robroy-modal-${new Date().getTime()}`;
-		const $container = document.createElement('div');
+		const $container = document.createElement('dialog');
 		$container.setAttribute('id', id);
 		$container.setAttribute('class', 'robroy-modal');
-		$container.setAttribute('role', 'alert');
 
 		const $innerContainer = document.createElement('div');
 		$innerContainer.setAttribute('class', 'robroy-modal-box');
@@ -70,8 +71,13 @@ export default class RobroyModal {
 		document.body.appendChild($container);
 
 		window.ROBROY.activeElement = document.activeElement;
-		$container.setAttribute('tabindex', '-1');
-		$container.focus();
+		$container.showModal();
+
+		if ($closeButton) {
+			$closeButton.focus();
+		} else {
+			$container.focus();
+		}
 
 		RobroyUtilities.modifier('modal', { element: $container });
 
@@ -86,6 +92,8 @@ export default class RobroyModal {
 	}
 
 	static hide(e) {
+		document.body.classList.remove('robroy-modal-open');
+
 		let $target;
 		if (e && e.target) {
 			$target = e.target;

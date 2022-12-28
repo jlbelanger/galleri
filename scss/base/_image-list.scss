@@ -1,7 +1,7 @@
 #robroy-images {
 	display: grid;
 	grid-gap: $robroy-padding-mobile;
-	grid-template-columns: repeat(auto-fill, $robroy-image-width);
+	grid-template-columns: repeat(auto-fill, #{$robroy-image-width + ($robroy-image-border-width * 2)});
 	justify-content: space-between;
 	margin: $robroy-padding-mobile;
 
@@ -13,7 +13,7 @@
 		display: none;
 	}
 
-	@media screen and (max-width: #{($robroy-image-width * 2) + ($robroy-padding-mobile * 3)}) {
+	@media screen and (max-width: #{($robroy-image-width * 2) + ($robroy-image-border-width * 2) + ($robroy-padding-mobile * 3)}) {
 		justify-content: center;
 	}
 
@@ -30,6 +30,9 @@
 }
 
 .robroy-link {
+	border-color: $robroy-image-border-color;
+	border-style: solid;
+	border-width: $robroy-image-border-width;
 	display: block;
 	font-size: 0;
 

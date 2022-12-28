@@ -33,9 +33,16 @@ export default class RobroyFolder {
 		});
 	}
 
+	static getCurrentFolderId() {
+		if (!window.ROBROY.args.enableRewrites) {
+			const urlSearchParams = new URLSearchParams(window.location.search);
+			return urlSearchParams.get('folder') || '';
+		}
+		return window.location.pathname.replace(/^\/+/, '');
+	}
+
 	static loadFolderCallback(response) {
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const currentFolderId = urlSearchParams.get('folder') || '';
+		const currentFolderId = RobroyFolder.getCurrentFolderId();
 
 		window.ROBROY.folders = response.data;
 
@@ -91,7 +98,10 @@ export default class RobroyFolder {
 	}
 
 	static url(folder) {
-		return `?folder=${folder.id}`;
+		if (!window.ROBROY.args.enableRewrites) {
+			return `/?folder=${folder.id}`;
+		}
+		return `/${folder.id}`;
 	}
 
 	static element(data) {
@@ -102,10 +112,21 @@ export default class RobroyFolder {
 		const $a = document.createElement('a');
 		$a.setAttribute('class', 'robroy-folder-link');
 		$a.setAttribute('href', RobroyFolder.url(data));
-		$a.innerText = data.attributes.name;
 		$li.appendChild($a);
 
-		RobroyUtilities.modifier('folderItem', { element: $li });
+		if (data.attributes.thumbnail) {
+			const $img = document.createElement('img');
+			$img.setAttribute('class', 'robroy-folder-img');
+			$img.setAttribute('src', data.attributes.thumbnail);
+			$a.appendChild($img);
+		}
+
+		const $name = document.createElement('div');
+		$name.setAttribute('class', 'robroy-folder-name');
+		$name.innerText = data.attributes.name;
+		$a.appendChild($name);
+
+		RobroyUtilities.modifier('folderItem', { element: $li, folder: data });
 
 		return $li;
 	}
@@ -125,7 +146,7 @@ export default class RobroyFolder {
 			$parentField.style.display = '';
 		}
 
-		RobroyUtilities.modifier('folderCreateForm', { element: $form });
+		RobroyUtilities.modifier('folderCreateForm', { addField: RobroyUtilities.addField, form: $form });
 
 		RobroyModal.show(
 			$form,
@@ -162,6 +183,11 @@ export default class RobroyFolder {
 			$parentField.style.display = '';
 		}
 
+		const $idInput = $form.querySelector('#robroy-input-id');
+		if ($idInput) {
+			$idInput.value = window.ROBROY.currentFolder.id.replace(/^.+\/([^/]+)$/, '$1');
+		}
+
 		Object.keys(window.ROBROY.currentFolder.attributes).forEach((key) => {
 			const $input = $form.querySelector(`#robroy-input-${key}`);
 			if ($input) {
@@ -169,7 +195,7 @@ export default class RobroyFolder {
 			}
 		});
 
-		RobroyUtilities.modifier('folderEditForm', { element: $form });
+		RobroyUtilities.modifier('folderEditForm', { addField: RobroyUtilities.addField, form: $form });
 
 		RobroyModal.show(
 			$form,
@@ -206,10 +232,20 @@ export default class RobroyFolder {
 		$container.setAttribute('class', 'robroy-fields');
 		$form.appendChild($container);
 
-		RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
+		const $nameInput = RobroyUtilities.addField($container, 'name', window.ROBROY.lang.fieldFolderName);
+		const $idInput = RobroyUtilities.addField($container, 'id', window.ROBROY.lang.fieldFolderId);
 		RobroyUtilities.addField($container, 'parent', window.ROBROY.lang.fieldFolderParent, 'select');
+		RobroyUtilities.addField($container, 'thumbnail', window.ROBROY.lang.fieldFolderThumbnail);
 
-		RobroyUtilities.modifier('folderForm', { element: $form });
+		$nameInput.addEventListener('keyup', (e) => {
+			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+		});
+
+		$nameInput.addEventListener('change', (e) => {
+			$idInput.value = RobroyUtilities.toSlug(e.target.value);
+		});
+
+		RobroyUtilities.modifier('folderForm', { addField: RobroyUtilities.addField, container: $container, form: $form });
 
 		return $form;
 	}
@@ -258,10 +294,23 @@ export default class RobroyFolder {
 			return;
 		}
 
+		const $idInput = document.getElementById('robroy-input-id');
+		if (!$idInput.value) {
+			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			return;
+		}
+
 		const formData = new FormData($form);
-		let json = {};
+		let json = {
+			id: null,
+			attributes: {},
+		};
 		formData.forEach((value, key) => {
-			json[key] = value;
+			if (key === 'id') {
+				json[key] = value;
+			} else {
+				json.attributes[key] = value;
+			}
 		});
 		json = JSON.stringify(json);
 
@@ -292,6 +341,7 @@ export default class RobroyFolder {
 		}
 
 		document.getElementById('robroy-input-name').value = '';
+		document.getElementById('robroy-input-id').value = '';
 
 		window.ROBROY.folders[response.data.id] = response.data;
 
@@ -316,15 +366,36 @@ export default class RobroyFolder {
 			return;
 		}
 
+		const $idInput = document.getElementById('robroy-input-id');
+		if (!$idInput.value) {
+			RobroyErrors.add($idInput, window.ROBROY.lang.validationRequired);
+			return;
+		}
+
 		const formData = new FormData($form);
-		let json = {};
-		let oldJson = {};
+		let json = {
+			attributes: {},
+		};
+		let oldJson = {
+			attributes: {},
+		};
 		formData.forEach((value, key) => {
-			json[key] = value;
-			if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
-				oldJson[key] = window.ROBROY.currentFolder.attributes[key];
+			if (key === 'id') {
+				json[key] = value;
+
+				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder, key)) {
+					oldJson[key] = window.ROBROY.currentFolder[key].replace(/^.+\/([^/]+)$/, '$1');
+				} else {
+					oldJson[key] = '';
+				}
 			} else {
-				oldJson[key] = '';
+				json.attributes[key] = value;
+
+				if (Object.prototype.hasOwnProperty.call(window.ROBROY.currentFolder.attributes, key)) {
+					oldJson.attributes[key] = window.ROBROY.currentFolder.attributes[key];
+				} else {
+					oldJson.attributes[key] = '';
+				}
 			}
 		});
 		json = JSON.stringify(json);
@@ -446,7 +517,7 @@ export default class RobroyFolder {
 
 		$ul.prepend(this.breadcrumbItem({ id: '', attributes: { name: window.ROBROY.lang.home } }));
 
-		RobroyUtilities.modifier('breadcrumbList', { element: $ul });
+		RobroyUtilities.modifier('breadcrumbList', { element: $ul, folder: window.ROBROY.currentFolder });
 	}
 
 	static breadcrumbItem(folder) {
@@ -458,7 +529,7 @@ export default class RobroyFolder {
 		} else {
 			const $a = document.createElement('a');
 			$a.setAttribute('class', 'robroy-breadcrumb-link');
-			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : window.location.pathname);
+			$a.setAttribute('href', folder.id ? RobroyFolder.url(folder) : '/');
 			$a.innerText = folder.attributes.name;
 			$li.prepend($a);
 		}

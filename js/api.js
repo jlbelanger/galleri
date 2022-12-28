@@ -43,7 +43,12 @@ export default class RobroyApi {
 
 			args.callback(response, req.status);
 		};
-		req.open(args.method, args.url, true);
+
+		let url = args.url;
+		if (args.url.endsWith('.json') && RobroyUtilities.isLoggedIn()) {
+			url += `?t=${Date.now()}`;
+		}
+		req.open(args.method, url, true);
 
 		if (args.json) {
 			req.setRequestHeader('Content-Type', 'application/json');

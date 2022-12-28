@@ -1,10 +1,12 @@
 .robroy-button-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: $robroy-padding-mobile;
+	gap: $robroy-button-container-gap;
 
 	.robroy-button {
 		flex: 1 1 auto;
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	figure & {
@@ -12,10 +14,6 @@
 		left: 0;
 		position: absolute;
 		right: 0;
-	}
-
-	@media screen and (min-width: $robroy-breakpoint) {
-		gap: $robroy-padding-desktop;
 	}
 }
 
@@ -27,10 +25,13 @@
 	background: $robroy-darkest;
 	bottom: 0;
 	left: 0;
-	padding: $robroy-padding-mobile;
 	position: fixed;
 	right: 0;
 	z-index: $robroy-admin-zindex;
+}
+
+#robroy-admin-buttons {
+	padding: $robroy-padding-mobile;
 }
 
 .robroy-button-authenticate {

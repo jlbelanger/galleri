@@ -11,7 +11,8 @@ export default class Robroy {
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
 		args.apiPath = args.apiPath || '/api.php';
 		args.callbacks = args.callbacks || {};
-		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') && args.enableGrid;
+		args.enableGrid = RobroyUtilities.propertyExists(args, 'enableGrid') ? args.enableGrid : true;
+		args.enableRewrites = RobroyUtilities.propertyExists(args, 'enableRewrites') ? args.enableRewrites : true;
 		args.folderItemElement = args.folderItemElement || 'li';
 		args.folderSeparator = args.folderSeparator || ' > ';
 		args.imageItemElement = args.imageItemElement || 'figure';
@@ -21,7 +22,7 @@ export default class Robroy {
 		args.pageSize = args.pageSize || 8;
 		args.removePointerEventsOnLogin = RobroyUtilities.propertyExists(args, 'removePointerEventsOnLogin') ? args.removePointerEventsOnLogin : true;
 		args.selector = args.selector || '#robroy';
-		args.showAllImages = args.showAllImages || false;
+		args.showAllImages = RobroyUtilities.propertyExists(args, 'showAllImages') ? args.showAllImages : false;
 		this.args = args;
 
 		const $container = document.querySelector(args.selector);
@@ -47,9 +48,13 @@ export default class Robroy {
 		lang.error = lang.error || 'Error: ';
 		lang.errorFolderDoesNotExist = lang.errorFolderDoesNotExist || 'This folder does not exist.';
 		lang.errorInvalidUsername = lang.errorInvalidUsername || 'Invalid username or password.';
+		lang.errorUpdatingThumbnail = lang.errorUpdatingThumbnail || 'Error updating thumbnail.';
+		lang.errorRemovingThumbnail = lang.errorRemovingThumbnail || 'Error removing thumbnail.';
 		lang.errorStatus = lang.errorStatus || 'The server returned a %s error.';
+		lang.fieldFolderId = lang.fieldFolderId || 'ID';
 		lang.fieldFolderName = lang.fieldFolderName || 'Name';
 		lang.fieldFolderParent = lang.fieldFolderParent || 'Parent';
+		lang.fieldFolderThumbnail = lang.fieldFolderThumbnail || 'Thumbnail';
 		lang.fieldImageImages = lang.fieldImageImages || 'Images';
 		lang.fieldImageFilename = lang.fieldImageFilename || 'Filename';
 		lang.fieldImageTitle = lang.fieldImageTitle || 'Title';
@@ -58,9 +63,12 @@ export default class Robroy {
 		lang.loading = lang.loading || 'Loading...';
 		lang.logIn = lang.logIn || 'Log In';
 		lang.logOut = lang.logOut || 'Log Out';
+		lang.makeThumbnail = lang.makeThumbnail || 'Make Thumbnail';
 		lang.nothingToSave = lang.nothingToSave || 'Nothing to save.';
 		lang.ok = lang.ok || 'OK';
 		lang.pluralImageText = lang.pluralImageText || 'images';
+		lang.removeThumbnail = lang.removeThumbnail || 'Remove Thumbnail';
+		lang.removedSuccessfullyThumbnail = lang.removedSuccessfullyThumbnail || 'Thumbnail removed successfully.';
 		lang.save = lang.save || 'Save';
 		lang.singularImageText = lang.singularImageText || 'image';
 		lang.submitCreateFolder = lang.submitCreateFolder || 'Create';
@@ -70,6 +78,7 @@ export default class Robroy {
 		lang.titleEditImage = lang.titleEditImage || 'Edit Image';
 		lang.updatedSuccessfullyImage = lang.updatedSuccessfullyImage || 'Image updated successfully.';
 		lang.updatedSuccessfullyFolder = lang.updatedSuccessfullyFolder || 'Folder updated successfully.';
+		lang.updatedSuccessfullyThumbnail = lang.updatedSuccessfullyThumbnail || 'Thumbnail updated successfully.';
 		lang.upload = lang.upload || 'Upload';
 		lang.uploadImage = lang.uploadImage || 'Upload Image';
 		lang.validationRequired = lang.validationRequired || 'Error: This field is required.';

@@ -34,7 +34,7 @@ class Filesystem
 	{
 		$folder = basename($path);
 		if (self::fileExists($path)) {
-			throw ValidationException::new(['name' => ['Folder "' . $folder . '" already exists.']]);
+			throw ValidationException::new(['id' => ['Folder "' . $folder . '" already exists.']]);
 		}
 
 		if (!mkdir($path)) {
@@ -261,7 +261,7 @@ class Filesystem
 	 */
 	public static function renameFolder(string $oldPath, string $newPath) : void
 	{
-		self::rename($oldPath, $newPath, 'Folder', 'name');
+		self::rename($oldPath, $newPath, 'Folder', 'id');
 	}
 
 	/**
@@ -273,7 +273,7 @@ class Filesystem
 	 * @param  string $key
 	 * @return void
 	 */
-	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder', string $key = 'folder') : void
+	protected static function rename(string $oldPath, string $newPath, string $type = 'Folder', string $key = 'id') : void
 	{
 		$fullOldPath = Constant::get('UPLOADS_PATH') . '/' . $oldPath;
 		if (!self::fileExists($fullOldPath)) {

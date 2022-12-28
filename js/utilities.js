@@ -93,6 +93,8 @@ export default class RobroyUtilities {
 			window.ROBROY.elements.$numImages = document.createElement('small');
 			window.ROBROY.elements.$numImages.setAttribute('id', 'robroy-folder-num');
 			$title.appendChild(window.ROBROY.elements.$numImages);
+
+			RobroyUtilities.modifier('title', { element: $title, title });
 		}
 		$span.innerText = title;
 	}
@@ -107,5 +109,19 @@ export default class RobroyUtilities {
 			s = s.replace('%s', a);
 		});
 		return s;
+	}
+
+	static toSlug(value) {
+		if (!value) {
+			return '';
+		}
+		return value.toLowerCase()
+			.replace(/ & /g, '-and-')
+			.replace(/<[^>]+>/g, '')
+			.replace(/['’.]/g, '')
+			.replace(/[^a-z0-9-]+/g, '-')
+			.replace(/^-+/, '')
+			.replace(/-+$/, '')
+			.replace(/--+/g, '-');
 	}
 }

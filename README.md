@@ -1,18 +1,22 @@
 # Robroy Photo Gallery
 
-Robroy Photo Gallery is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Image data is read from the filesystem, and authentication is handled through HTTP basic auth.
+Robroy Photo Gallery is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Image data is read from the filesystem and cached in JSON files, and authentication is handled through HTTP basic auth.
 
 ## Demo
 
-https://robroy.jennybelanger.com/
+https://www.brendabelanger.com/
 
 ## Features
 
-- allows uploading and deleting images from a web interface
-- automatically creates thumbnails
-- automatically watermarks images
-- automatically resizes images
-- loads images with infinite scroll
+- upload and delete images from a web interface
+- group images into folders and subfolders
+- create image thumbnails automatically
+- watermark images automatically
+- resize images automatically
+- load images with infinite scroll
+- view images in a lightbox
+- specify image alt tags
+- add arbitrary data to images and folders
 
 ## Requirements
 
@@ -22,125 +26,61 @@ https://robroy.jennybelanger.com/
 
 ## Setup
 
-Clone the Robroy repo (or download a ZIP of the code from Github):
+Run:
 
 ``` bash
-git clone https://github.com/jlbelanger/robroy.git
+composer create-project jlbelanger/robroy-project my-gallery --repository '{"type":"vcs","url":"git@github.com:jlbelanger/robroy-project.git"}' --stability dev
 ```
 
-Then, delete everything except the `demo` folder.
+The setup script will prompt you to configure various settings.
 
-You will also eventually want to delete the images in `demo/public/images`, but you can leave them for now to test if the code is working.
+Also add the following to your Apache configuration (eg. create a file called `.htaccess` in the `public` folder with the following contents):
 
-Choose one of the HTML to files to keep (either `public/dark.html`, `public/light.html`, or `public/minimal.html`), and then delete all other HTML files in `public` except `403.html` and `404.html`. Rename your chosen HTML file to `index.html`. You should also delete `public/dark.min.css` and `scss/dark.scss` and/or `public/light.min.css` and `scss/light.scss` if you aren't using their corresponding HTML files, and `public/robroy.min.css` if you aren't using `minimal.html`.
+```
+RewriteEngine On
 
-All the following commands should be run in the `demo` folder.
-
-To create a user, run the following command, replacing `USERNAME` with the username you want to use. You will be prompted to set a password for your new user.
-
-``` bash
-htpasswd -c .htpasswd USERNAME
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ /index.html [L]
 ```
 
-Optionally, you can run this command for each additional user you want to create:
-
-``` bash
-htpasswd .htpasswd ANOTHER_USERNAME
-```
-
-Note: To change a password, run the above command again.
-
-Make copies of the example settings files:
-
-``` bash
-cp .env.example .env
-cp public/.htaccess.example public/.htaccess
-rm public/.htaccess.example
-```
-
-Then update the settings in `demo/.env` and `demo/public/.htaccess`.
-
-Update the name in `demo/composer.json`.
-
-Update references to "Robroy Photo Gallery" to your own gallery title in `demo/public/403.html`, `demo/public/404.html`, and `demo/public/index.html`.
-
-Edit `demo/.gitignore` and remove the line `public/.htaccess`.
-
-Download the PHP dependencies:
-
-``` bash
-composer install
-```
-
-Then, if you visit `index.html` on an Apache server running PHP, you should now be able to upload images.
-
-## How it works
-
-In the HTML file, you need to include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
-
-``` html
-<link rel="stylesheet" href="robroy.min.css">
-<div id="robroy"></div>
-<script src="robroy.min.js"></script>
-<script>Robroy.default.init({ selector: '#robroy' });</script>
-```
-
-If you want to enable authentication and allow managing images from the frontend, you'll need a `<button>` with the attribute `data-action="authenticate"`.
-
-``` html
-<button data-action="authenticate" type="button"></button>
-```
-
-You'll also need a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
-
-``` php
-<?php
-
-require_once realpath(__DIR__ . '/../vendor/autoload.php');
-
-// Optional: You can set the environment variables another way if you choose.
-// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
-$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
-$dotenv->load();
-
-Jlbelanger\Robroy\Router::load();
-```
+If you cannot change your Apache configuration, or if you are using a different server than Apache, then set `enableRewrites` to `false` in the `<script>` section in `public/index.html`.
 
 ## Configuration
 
 ### PHP
 
-All available PHP configuration options are defined in `demo/.env.example`. However, you will need to copy this file to `demo/.env` (as described in the setup instruction) and make your changes in that file rather than in the example file.
+PHP configuration options are defined in [`.env.example`](https://github.com/jlbelanger/robroy-project/blob/main/.env.example). Make your changes in the `.env` file created by the setup script; changes made in `.env.example` will have no effect.
 
 ### JS
 
-All available JS configuration options are defined in `demo/public/dark.html` and `demo/public/light.html`.
+JS configuration options are defined in [`public/index.html`](https://github.com/jlbelanger/robroy-project/blob/main/public/index.html). Make your changes in the `public/index.html` file created by the setup script.
 
 ### SCSS
 
-All available SCSS configuration options are defined in `scss/utilities/_variables.scss`. However, to override these settings, you will need to re-define the variables in one of the SCSS files in `demo/scss`.
+SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/robroy/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in the SCSS file in the `scss` folder, then follow the instructions below to compile the SCSS changes.
 
-Follow the instructions below to compile the SCSS changes.
-
-In the `demo` directory, run the following command to install SCSS dependencies:
+In your project directory, run the following command to install SCSS dependencies:
 
 ``` bash
 yarn install
 ```
 
-Then, to re-compile the `demo/public/*.min.css` files whenever there are changes in `demo/scss/*.scss`, run the following command:
+Then, to re-compile the `public/*.min.css` file whenever changes are made to the `scss/*.scss` files, run the following command:
 
 ``` bash
 yarn watch
 ```
 
-Alternately, to compile the SCSS files without watching for changes, run:
+Alternately, to re-compile the `public/*.min.css` file once, without watching for changes, run:
 
 ``` bash
 yarn build
 ```
 
 ## Development
+
+If you want to make changes to the base robroy package (rather than just changing configuration settings):
 
 ### Requirements
 
@@ -157,7 +97,7 @@ git clone https://github.com/jlbelanger/robroy.git
 cd robroy
 
 # Configure the environment settings
-cp cypress.example.json cypress.json
+cp cypress.config.example.js cypress.config.js
 cp cypress.env.example.json cypress.env.json
 
 # Install dependencies
@@ -165,13 +105,53 @@ yarn install
 composer install
 ```
 
+Create a Robroy project using the regular [setup](#setup). Then, in the project folder's `composer.json` file, change `repositories`:
+
+``` json
+"repositories": [
+	{
+		"type": "path",
+		"url": "../robroy",
+		"options": {
+			"symlink": true
+		}
+	}
+]
+```
+
+In the project folder's `package.json` file, change the robroy line in `dependencies`:
+
+``` json
+"dependencies": {
+	"@jlbelanger/robroy": "link:../robroy"
+}
+```
+
+In the project folder, run:
+
+``` bash
+composer update jlbelanger/robroy
+yarn install
+ln node_modules/@jlbelanger/robroy/dist/js/robroy.min.js public/js/robroy.min.js
+```
+
 ### Run
+
+In the `robroy` folder, run:
+
+``` bash
+yarn watch
+```
+
+In the project folder, run:
 
 ``` bash
 yarn watch
 ```
 
 ### Lint
+
+In the `robroy` folder, run:
 
 ``` bash
 ./vendor/bin/phpcs
@@ -180,17 +160,53 @@ yarn lint
 
 ### Test
 
+In the `robroy` folder, run:
+
 ``` bash
 ./vendor/bin/phpunit
 yarn test:cypress
 ```
 
-## Deployment
+### Package
 
-Note: The deploy script included in this repo depends on other scripts that only exist in my private repos. If you want to deploy this repo, you'll have to create your own script.
+In the `robroy` folder, run:
 
 ``` bash
-./deploy.sh
+yarn build
+```
+
+## Minimal setup
+
+Create an HTML file. Include the Robroy CSS and JS files, an empty element, and a JS call to `Robroy.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
+
+``` html
+<link rel="stylesheet" href="robroy.min.css">
+<div id="robroy"></div>
+<script src="robroy.min.js"></script>
+<script>Robroy.default.init({ selector: '#robroy' });</script>
+```
+
+To enable authentication and allow images to be managed from the frontend, also include a `<button>` with the attribute `data-action="authenticate"`.
+
+``` html
+<button data-action="authenticate" type="button"></button>
+```
+
+Create a `composer.json` file and add `jlbelanger/robroy` as a dependency.
+
+Create a PHP file that calls `Jlbelanger\Robroy\Router::load()`.
+
+``` php
+<?php
+
+require_once realpath(__DIR__ . '/../vendor/autoload.php');
+
+// Optional: You can set the environment variables another way if you choose.
+// If you don't want to use a .env file, run `composer remove vlucas/phpdotenv` and remove the two lines below.
+$dotenv = Dotenv\Dotenv::createImmutable(realpath(__DIR__ . '/../'));
+$dotenv->load();
+
+Jlbelanger\Robroy\Router::load();
 ```
 
 ## Credits
@@ -200,4 +216,3 @@ Note: The deploy script included in this repo depends on other scripts that only
 - Lightbox: https://github.com/banthagroup/fslightbox
 - Masonry grid: https://medium.com/@andybarefoot/a-masonry-style-layout-using-css-grid-8c663d355ebb
 - Normalize: https://github.com/necolas/normalize.css
-- Placeholder images: https://placehold.it
