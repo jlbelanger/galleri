@@ -52,7 +52,7 @@ describe('add image', () => {
 		});
 
 		describe('when clicking thumbnail button', () => {
-			it.only('sets folder thumbnail', () => {
+			it('sets folder thumbnail', () => {
 				cy.intercept('PUT', '/api.php?type=folders&id=images-only').as('updateFolder');
 				cy.visit('/');
 				cy.wait('@getFolders');
