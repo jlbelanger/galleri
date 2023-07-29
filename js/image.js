@@ -577,7 +577,7 @@ export default class GalleriImage {
 	static onScroll() {
 		const $images = document.querySelectorAll('[data-src]');
 		const browserHeight = window.innerHeight;
-		const offsetFromTopOfPage = window.pageYOffset;
+		const offsetFromTopOfPage = window.scrollY;
 		const buffer = browserHeight;
 		const max = offsetFromTopOfPage + browserHeight + buffer;
 
