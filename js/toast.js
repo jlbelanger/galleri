@@ -3,7 +3,7 @@ import GalleriUtilities from './utilities';
 export default class GalleriToast {
 	static show(message, args = {}) {
 		args.class = args.class || '';
-		args.closeButtonClass = args.closeButtonText || '';
+		args.closeButtonClass = args.closeButtonClass || '';
 		args.closeButtonText = args.closeButtonText || window.GALLERI.lang.close;
 		args.duration = args.duration || 3000;
 
