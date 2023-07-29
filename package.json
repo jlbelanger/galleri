@@ -41,6 +41,7 @@
 		"gulp-postcss": "^9.0.1",
 		"gulp-rename": "^2.0.0",
 		"gulp-sass": "^5.1.0",
+		"postcss": "^8.4.25",
 		"sass": "^1.57.1",
 		"stylelint": "^14.16.0",
 		"stylelint-config-standard-scss": "^6.1.0",
