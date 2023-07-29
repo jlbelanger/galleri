@@ -22,7 +22,7 @@
 		"lint:php": "./vendor/bin/phpcs",
 		"test:php": "./vendor/bin/phpunit",
 		"test:cypress": "node_modules/.bin/cypress open",
-		"watch": "yarn watch:js",
+		"watch": "npx browserslist@latest --update-db && yarn watch:js",
 		"watch:js": "node_modules/.bin/webpack --config webpack-dev.config.js"
 	},
 	"dependencies": {
