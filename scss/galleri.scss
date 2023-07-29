@@ -20,7 +20,7 @@
 #galleri-folders {
 	margin: #{$galleri-padding-mobile - $galleri-folder-item-margin} $galleri-padding-mobile;
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		margin: #{$galleri-padding-desktop - $galleri-folder-item-margin} $galleri-padding-desktop #{-1 * $galleri-folder-item-margin};
 	}
 }

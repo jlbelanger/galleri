@@ -41,7 +41,7 @@ main {
 #footer-inner {
 	padding: $galleri-padding-mobile;
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		padding: $galleri-padding-desktop;
 	}
 }
@@ -52,7 +52,7 @@ main {
 	justify-content: space-between;
 	min-height: #{$galleri-button-height + ($galleri-padding-mobile * 2)};
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		min-height: #{$galleri-button-height + ($galleri-padding-desktop * 2)};
 	}
 }
@@ -63,7 +63,7 @@ main {
 	margin: 0;
 	text-decoration: none;
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		font-size: 44px;
 	}
 }
@@ -73,7 +73,7 @@ main {
 	font-weight: normal;
 	margin: $galleri-padding-mobile $galleri-padding-mobile 0;
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		font-size: 36px;
 		margin: $galleri-padding-desktop $galleri-padding-desktop 0;
 	}
@@ -93,7 +93,7 @@ main {
 		margin: $galleri-paragraph-margin 0 0;
 	}
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		margin: $galleri-padding-desktop auto;
 		padding: 0 $galleri-padding-desktop;
 	}

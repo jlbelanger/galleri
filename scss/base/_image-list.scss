@@ -13,11 +13,11 @@
 		display: none;
 	}
 
-	@media screen and (max-width: #{($galleri-image-width * 2) + ($galleri-image-border-width * 2) + ($galleri-padding-mobile * 3)}) {
+	@media (max-width: #{($galleri-image-width * 2) + ($galleri-image-border-width * 2) + ($galleri-padding-mobile * 3)}) {
 		justify-content: center;
 	}
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		grid-gap: $galleri-padding-desktop;
 		margin: $galleri-padding-desktop;
 	}

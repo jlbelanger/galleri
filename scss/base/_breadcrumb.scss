@@ -6,7 +6,7 @@
 	margin: 0 $galleri-padding-mobile;
 	padding: 0;
 
-	@media screen and (min-width: $galleri-breakpoint) {
+	@media (min-width: $galleri-breakpoint) {
 		margin: 0 $galleri-padding-desktop;
 	}
 }
