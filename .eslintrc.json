@@ -4,12 +4,6 @@
 		"browser": true,
 		"jest": true
 	},
-	"globals": {
-		"after": "readonly",
-		"before": "readonly",
-		"cy": "readonly",
-		"Cypress": "readonly"
-	},
 	"rules": {
 		"comma-dangle": ["error", {
 			"arrays": "always-multiline",
@@ -18,11 +12,19 @@
 			"exports": "always-multiline",
 			"functions": "never"
 		}],
+		"import/order": 0,
 		"indent": ["error", "tab", { "SwitchCase": 1 }],
 		"max-len": ["error", { "code": 150 }],
-		"no-tabs": 0,
-		"no-use-before-define": 0,
 		"no-param-reassign": 0,
-		"prefer-destructuring": 0
+		"no-tabs": 0,
+		"object-curly-newline": ["error", { "multiline": true, "consistent": true }],
+		"prefer-destructuring": 0,
+		"sort-imports": ["error", { "ignoreCase": true }]
+	},
+	"globals": {
+		"after": "readonly",
+		"before": "readonly",
+		"cy": "readonly",
+		"Cypress": "readonly"
 	}
 }

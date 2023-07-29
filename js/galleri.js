@@ -1,6 +1,6 @@
 import GalleriAuth from './auth';
-import GalleriGrid from './grid';
 import GalleriFolder from './folder';
+import GalleriGrid from './grid';
 import GalleriImage from './image';
 import GalleriUtilities from './utilities';
 
