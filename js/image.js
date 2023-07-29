@@ -294,7 +294,7 @@ export default class GalleriImage {
 				GalleriUtilities.callback('afterMakeThumbnail', { folderId, image });
 			},
 			errorCallback: () => {
-				GalleriToast.show(window.GALLERI.lang.errorUpdatingThumbnail, { class: 'galleri-toast--error' });
+				GalleriToast.show(window.GALLERI.lang.errorUpdatingThumbnail, { class: 'galleri-toast--danger' });
 			},
 		});
 	}
@@ -322,7 +322,7 @@ export default class GalleriImage {
 				GalleriUtilities.callback('afterRemoveThumbnail', { folderId, image });
 			},
 			errorCallback: () => {
-				GalleriToast.show(window.GALLERI.lang.errorRemovingThumbnail, { class: 'galleri-toast--error' });
+				GalleriToast.show(window.GALLERI.lang.errorRemovingThumbnail, { class: 'galleri-toast--danger' });
 			},
 		});
 	}
