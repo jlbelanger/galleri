@@ -36,6 +36,13 @@ The setup script will prompt you to configure various settings.
 
 If you are using nginx or a server other than Apache, you can delete `public/.htaccess`, and you will need to update your server's configuration to handle error pages, authentication, and redirects.
 
+Ensure the following folder permissions are set:
+
+``` bash
+chown -R www-data:www-data build/images
+chown -R www-data:www-data build/json
+```
+
 ## Configuration
 
 ### PHP
@@ -44,42 +51,24 @@ PHP configuration options are defined in [`.env.example`](https://github.com/jlb
 
 ### JS
 
-JS configuration options are defined in [`public/index.html`](https://github.com/jlbelanger/galleri-project/blob/main/public/index.html). Make your changes in the `public/index.html` file created by the setup script.
+JS configuration options are defined in [`js/main.php`](https://github.com/jlbelanger/galleri-project/blob/main/js/main.js). Make your changes in the `js/main.js` file created by the setup script.
 
 ### SCSS
 
 SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/galleri/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in the SCSS file in the `scss` folder, then follow the instructions below to compile the SCSS changes.
 
-In your project directory, run the following command to install SCSS dependencies:
-
-``` bash
-yarn install
-```
-
-Then, to re-compile the `public/*.min.css` file whenever changes are made to the `scss/*.scss` files, run the following command:
-
-``` bash
-yarn start
-```
-
-Alternately, to re-compile the `public/*.min.css` file once, without watching for changes, run:
-
-``` bash
-yarn build
-```
-
 ## Development
 
 If you want to make changes to the base Galleri package (rather than just changing configuration settings):
 
-### Requirements
+### Development requirements
 
 - [Composer](https://getcomposer.org/)
 - [Git](https://git-scm.com/)
 - [Yarn](https://classic.yarnpkg.com/en/docs/install)
 - Web server with PHP
 
-### Setup
+### Development setup
 
 ``` bash
 # Clone the repo
@@ -132,7 +121,7 @@ In the `galleri` folder, run:
 yarn start
 ```
 
-In the project folder, run:
+In another window, in the project folder, run:
 
 ``` bash
 yarn start
@@ -166,7 +155,7 @@ yarn build
 
 ## Minimal setup
 
-Create an HTML file. Include the Galleri CSS and JS files, an empty element, and a JS call to `Galleri.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
+Create an HTML file. Include the `galleri.min.css` and `galleri.min.js` files from the `dist` folder, an empty element, and a JS call to `Galleri.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
 
 ``` html
 <link rel="stylesheet" href="galleri.min.css">
