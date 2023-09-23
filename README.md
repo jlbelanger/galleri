@@ -14,7 +14,7 @@ https://www.brendabelanger.com/
 - watermark images automatically
 - resize images automatically
 - load images with infinite scroll
-- view images in a lightbox
+- (optional) view images in a lightbox
 - specify image alt tags
 - add arbitrary data to images and folders
 
@@ -34,17 +34,7 @@ composer create-project jlbelanger/galleri-project my-gallery --repository '{"ty
 
 The setup script will prompt you to configure various settings.
 
-Also add the following to your Apache configuration (eg. create a file called `.htaccess` in the `public` folder with the following contents):
-
-```
-RewriteEngine On
-
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ /index.html [L]
-```
-
-If you cannot change your Apache configuration, or if you are using a different server than Apache, then set `enableRewrites` to `false` in the `<script>` section in `public/index.html`.
+If you are using nginx or a server other than Apache, you can delete `public/.htaccess`, and you will need to update your server's configuration to handle error pages, authentication, and redirects.
 
 ## Configuration
 
@@ -69,7 +59,7 @@ yarn install
 Then, to re-compile the `public/*.min.css` file whenever changes are made to the `scss/*.scss` files, run the following command:
 
 ``` bash
-yarn watch
+yarn start
 ```
 
 Alternately, to re-compile the `public/*.min.css` file once, without watching for changes, run:
@@ -132,7 +122,6 @@ In the project folder, run:
 ``` bash
 composer update jlbelanger/galleri
 yarn install
-ln node_modules/@jlbelanger/galleri/dist/js/galleri.min.js public/js/galleri.min.js
 ```
 
 ### Run
@@ -140,13 +129,13 @@ ln node_modules/@jlbelanger/galleri/dist/js/galleri.min.js public/js/galleri.min
 In the `galleri` folder, run:
 
 ``` bash
-yarn watch
+yarn start
 ```
 
 In the project folder, run:
 
 ``` bash
-yarn watch
+yarn start
 ```
 
 ### Lint
@@ -177,13 +166,13 @@ yarn build
 
 ## Minimal setup
 
-Create an HTML file. Include the Galleri CSS and JS files, an empty element, and a JS call to `Galleri.default.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
+Create an HTML file. Include the Galleri CSS and JS files, an empty element, and a JS call to `Galleri.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
 
 ``` html
 <link rel="stylesheet" href="galleri.min.css">
 <div id="galleri"></div>
 <script src="galleri.min.js"></script>
-<script>Galleri.default.init({ selector: '#galleri' });</script>
+<script>Galleri.init({ selector: '#galleri' });</script>
 ```
 
 To enable authentication and allow images to be managed from the frontend, also include a `<button>` with the attribute `data-action="authenticate"`.
@@ -213,6 +202,5 @@ Jlbelanger\Galleri\Router::load();
 
 - Debounce: https://davidwalsh.name/javascript-debounce-function
 - Favicon: https://useiconic.com/open
-- Lightbox: https://github.com/banthagroup/fslightbox
 - Masonry grid: https://medium.com/@andybarefoot/a-masonry-style-layout-using-css-grid-8c663d355ebb
 - Normalize: https://github.com/necolas/normalize.css
