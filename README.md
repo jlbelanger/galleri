@@ -4,7 +4,7 @@ Galleri is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Imag
 
 ## Demo
 
-https://www.brendabelanger.com/
+https://galleri.jennybelanger.com/
 
 ## Features
 
