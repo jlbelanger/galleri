@@ -1,25 +1,20 @@
 import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
 Cypress.Commands.add('build', () => {
-	const cssFolder = `${Cypress.env('project_path')}/public/css`;
-	const jsFolder = `${Cypress.env('project_path')}/public/js`;
-	const minJsFile = `${Cypress.env('project_path')}/node_modules/@jlbelanger/galleri/dist/js/galleri.min.js`;
-	cy.exec(`mkdir -p ${cssFolder}`);
-	cy.exec(`mkdir -p ${jsFolder}`);
-	cy.exec(`if [! -f ${cssFolder}/dark.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi`);
-	cy.exec(`if [! -f ${jsFolder}/galleri.min.js]; then (ln ${minJsFile} ${jsFolder}); fi`);
+	const cssFolder = `${Cypress.env('project_path')}/build/css`;
+	cy.exec(`if [! -f ${cssFolder}/style.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {
-	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/images`);
-	cy.exec(`rm -r ${Cypress.env('project_path')}/public/images`);
-	cy.exec(`cp -r ${uploadsFolder} ${Cypress.env('project_path')}/public/images`);
+	cy.exec(`mkdir -p ${Cypress.env('project_path')}/build/images`);
+	cy.exec(`rm -r ${Cypress.env('project_path')}/build/images`);
+	cy.exec(`cp -r ${uploadsFolder} ${Cypress.env('project_path')}/build/images`);
 });
 
 Cypress.Commands.add('resetJson', () => {
-	cy.exec(`mkdir -p ${Cypress.env('project_path')}/public/json`);
-	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/folders.json`);
-	cy.exec(`rm -f ${Cypress.env('project_path')}/public/json/images.json`);
+	cy.exec(`mkdir -p ${Cypress.env('project_path')}/build/json`);
+	cy.exec(`rm -f ${Cypress.env('project_path')}/build/json/folders.json`);
+	cy.exec(`rm -f ${Cypress.env('project_path')}/build/json/images.json`);
 });
 
 Cypress.Commands.add('setupApi', () => {
