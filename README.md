@@ -1,30 +1,28 @@
 # Galleri
 
-Galleri is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Image data is read from the filesystem and cached in JSON files, and authentication is handled through HTTP basic auth.
-
-## Demo
-
-https://galleri.jennybelanger.com/
+Galleri is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Image data is read from the filesystem and cached in JSON files, and authentication is handled through HTTP basic auth. [View the demo](https://galleri.jennybelanger.com/).
 
 ## Features
 
-- upload and delete images from a web interface
-- group images into folders and subfolders
-- create image thumbnails automatically
-- watermark images automatically
-- resize images automatically
-- load images with infinite scroll
-- (optional) view images in a lightbox
-- specify image alt tags
-- add arbitrary data to images and folders
+- Upload and delete images from a web interface
+- Group images into folders and subfolders
+- Create image thumbnails automatically
+- Watermark images automatically
+- Resize images automatically
+- Load images with infinite scroll
+- View images in a lightbox
+- Specify image alt tags
+- Add arbitrary data to images and folders
 
 ## Requirements
 
 - Apache (other servers would presumably work too, but I've only tested with Apache)
-- PHP (tested with version 7.4)
+- PHP 7.4+
 - [Composer](https://getcomposer.org/)
 
-## Setup
+## Install
+
+**Warning: This package is still a work-in-progress. Use at your own risk.**
 
 Run:
 
@@ -34,7 +32,7 @@ composer create-project jlbelanger/galleri-project my-gallery --repository '{"ty
 
 The setup script will prompt you to configure various settings.
 
-If you are using nginx or a server other than Apache, you can delete `public/.htaccess`, and you will need to update your server's configuration to handle error pages, authentication, and redirects.
+If you are using a server other than Apache (eg. nginx), delete `public/.htaccess`. You will need to write your own server configuration to handle error pages, authentication, and redirects.
 
 Ensure the following folder permissions are set:
 
@@ -126,6 +124,8 @@ In another window, in the project folder, run:
 ``` bash
 yarn start
 ```
+
+Your browser should automatically open https://localhost:3000/
 
 ### Lint
 
