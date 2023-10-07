@@ -2,6 +2,7 @@ import GalleriAuth from './auth';
 import GalleriFolder from './folder';
 import GalleriGrid from './grid';
 import GalleriImage from './image';
+import GalleriSpinner from './spinner';
 import GalleriUtilities from './utilities';
 
 export default class Galleri {
@@ -122,6 +123,7 @@ export default class Galleri {
 			}
 			GalleriFolder.load();
 			GalleriImage.load();
+			GalleriSpinner.init(document.body, 'galleri-spinner');
 			if (args.enableGrid) {
 				window.GALLERI.grid = new GalleriGrid();
 			}

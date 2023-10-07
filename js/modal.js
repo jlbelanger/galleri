@@ -1,3 +1,4 @@
+import GalleriSpinner from './spinner';
 import GalleriUtilities from './utilities';
 
 export default class GalleriModal {
@@ -19,6 +20,9 @@ export default class GalleriModal {
 		$toastContainer.setAttribute('id', 'galleri-modal-toast-container');
 		$toastContainer.setAttribute('role', 'alert');
 		$container.appendChild($toastContainer);
+
+		const $spinner = GalleriSpinner.init($container, 'galleri-modal-spinner');
+		GalleriSpinner.hide($spinner);
 
 		const $innerContainer = document.createElement('div');
 		$innerContainer.setAttribute('class', 'galleri-modal-box');

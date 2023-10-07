@@ -15,7 +15,7 @@ $galleri-white: #fff !default;
 $galleri-padding-desktop: 32px !default;
 $galleri-padding-mobile: 16px !default;
 
-$galleri-admin-zindex: 997 !default;
+$galleri-admin-zindex: 996 !default;
 
 $galleri-breadcrumb-icon: '\203a' !default; // &rsaquo;
 $galleri-breadcrumb-item-arrow-color: $galleri-dark !default;
@@ -82,12 +82,13 @@ $galleri-modal-input-background-color: $galleri-darkest !default;
 $galleri-modal-max-width: 800px !default;
 $galleri-modal-padding: 32px !default;
 $galleri-modal-text-color: $galleri-lightest !default;
-$galleri-modal-zindex: 998 !default;
+$galleri-modal-zindex: 997 !default;
 
 $galleri-spinner-color-alternate: $galleri-primary !default;
 $galleri-spinner-color: $galleri-darker !default;
 $galleri-spinner-size: 60px !default;
 $galleri-spinner-thickness: 12px !default;
+$galleri-spinner-zindex: 998 !default;
 
 $galleri-toast-background-color: $galleri-dark !default;
 $galleri-toast-close-font-size: 18px !default;

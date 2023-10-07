@@ -8,9 +8,15 @@
 	position: fixed;
 	right: 0;
 	top: 0;
+	z-index: $galleri-spinner-zindex;
 
-	.no-js & {
+	.no-js &,
+	&.galleri-spinner--hide {
 		display: none;
+	}
+
+	.galleri-modal & {
+		position: absolute;
 	}
 
 	&::after {
