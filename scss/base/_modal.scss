@@ -3,17 +3,8 @@
 }
 
 .galleri-modal {
-	align-items: center;
-	background: transparent;
 	border: 0;
-	bottom: 0;
-	display: flex;
-	justify-content: center;
-	left: 0;
 	padding: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
 	z-index: $galleri-modal-zindex;
 }
 
@@ -24,7 +15,6 @@
 .galleri-modal-box {
 	background-color: $galleri-modal-background-color;
 	color: $galleri-modal-text-color;
-	margin: $galleri-modal-margin;
 	max-width: $galleri-modal-max-width;
 	padding: $galleri-modal-padding;
 	width: 100%;
@@ -36,6 +26,7 @@
 
 .galleri-modal-options {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	margin: $galleri-modal-button-margin-top auto 0;
 

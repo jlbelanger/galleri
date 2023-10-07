@@ -11,6 +11,7 @@ export default class GalleriModal {
 		const $container = document.createElement('dialog');
 		$container.setAttribute('id', id);
 		$container.setAttribute('class', 'galleri-modal');
+		$container.setAttribute('tabindex', '-1');
 
 		const $innerContainer = document.createElement('div');
 		$innerContainer.setAttribute('class', 'galleri-modal-box');
@@ -55,6 +56,7 @@ export default class GalleriModal {
 				$optionsContainer.appendChild($closeButton);
 
 				document.addEventListener('keydown', GalleriModal.keydownListener, false);
+				$container.addEventListener('click', GalleriModal.onClickDialog);
 			}
 
 			if (args.showCancel) {
@@ -73,11 +75,7 @@ export default class GalleriModal {
 		window.GALLERI.activeElement = document.activeElement;
 		$container.showModal();
 
-		if ($closeButton) {
-			$closeButton.focus();
-		} else {
-			$container.focus();
-		}
+		$container.focus();
 
 		GalleriUtilities.modifier('modal', { element: $container });
 
@@ -87,11 +85,18 @@ export default class GalleriModal {
 	static keydownListener(e) {
 		if (e.key === 'Escape') {
 			GalleriModal.hide();
-			document.removeEventListener('keydown', GalleriModal.keydownListener);
+		}
+	}
+
+	static onClickDialog(e) {
+		if (e.target.tagName === 'DIALOG') {
+			GalleriModal.hide();
 		}
 	}
 
 	static hide(e) {
+		document.removeEventListener('keydown', GalleriModal.keydownListener);
+
 		document.body.classList.remove('galleri-modal-open');
 
 		let $target;
