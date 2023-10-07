@@ -486,7 +486,23 @@ export default class GalleriImage {
 	}
 
 	static onChange(e) {
+		const $form = document.getElementById('galleri-image-form');
+		GalleriErrors.clear($form);
+
 		const files = [...e.target.files];
+		const maxSizeMegabytes = window.GALLERI.args.maxFileSizeMegabytes;
+		const maxSizeBytes = maxSizeMegabytes ? maxSizeMegabytes * 1000000 : 0;
+		const largeFiles = maxSizeBytes ? files.filter((file) => (file.size > maxSizeBytes)) : [];
+
+		if (largeFiles.length > 0) {
+			const $uploadInput = document.getElementById('galleri-input-upload');
+			largeFiles.forEach((file) => {
+				GalleriErrors.add($uploadInput, GalleriUtilities.sprintf(window.GALLERI.lang.errorFileSize, file.name, maxSizeMegabytes));
+			});
+			$uploadInput.value = null;
+			return;
+		}
+
 		const filenames = files.map((file) => file.name);
 
 		document.getElementById('galleri-create-image-text').innerText = filenames.join(', ');

@@ -17,6 +17,7 @@ export default class Galleri {
 		args.folderSeparator = args.folderSeparator || ' > ';
 		args.imageItemElement = args.imageItemElement || 'figure';
 		args.localStorageKey = args.localStorageKey || 'authenticated';
+		args.maxFileSizeMegabytes = args.maxFileSizeMegabytes || null;
 		args.metaTitleSeparator = args.metaTitleSeparator || ' | ';
 		args.modifiers = args.modifiers || {};
 		args.pageSize = args.pageSize || 8;
@@ -47,6 +48,7 @@ export default class Galleri {
 		lang.edit = lang.edit || 'Edit';
 		lang.editFolder = lang.editFolder || 'Edit Folder';
 		lang.error = lang.error || 'Error: ';
+		lang.errorFileSize = lang.errorFileSize || '%s is too large. (Maximum size is %s MB.)';
 		lang.errorFolderDoesNotExist = lang.errorFolderDoesNotExist || 'This folder does not exist.';
 		lang.errorInvalidUsername = lang.errorInvalidUsername || 'Invalid username or password.';
 		lang.errorUpdatingThumbnail = lang.errorUpdatingThumbnail || 'Error updating thumbnail.';
