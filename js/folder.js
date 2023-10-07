@@ -402,8 +402,8 @@ export default class GalleriFolder {
 		oldJson = JSON.stringify(oldJson);
 
 		if (json === oldJson) {
-			GalleriToast.show(window.GALLERI.lang.nothingToSave);
 			GalleriModal.hide(e);
+			GalleriToast.show(window.GALLERI.lang.nothingToSave);
 			return;
 		}
 

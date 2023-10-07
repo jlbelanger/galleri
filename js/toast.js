@@ -7,20 +7,11 @@ export default class GalleriToast {
 		args.closeButtonText = args.closeButtonText || window.GALLERI.lang.close;
 		args.duration = args.duration || 3000;
 
-		let $container = document.getElementById('galleri-toast-container');
-		if (!$container) {
-			$container = document.createElement('div');
-			$container.setAttribute('id', 'galleri-toast-container');
-			document.getElementById('galleri-admin').append($container);
-		}
-
 		const id = `galleri-toast-${new Date().getTime()}`;
 		const $div = document.createElement('div');
 		$div.setAttribute('class', `galleri-toast ${args.class}`.trim());
 		$div.setAttribute('id', id);
-		$div.setAttribute('role', 'alert');
 		$div.style.animationDuration = `${args.duration}ms`;
-		$container.appendChild($div);
 
 		const $p = document.createElement('p');
 		$p.setAttribute('class', 'galleri-toast-text');
@@ -33,6 +24,7 @@ export default class GalleriToast {
 			};
 
 			const $closeButton = document.createElement('button');
+			$closeButton.setAttribute('aria-label', args.closeButtonText);
 			$closeButton.setAttribute('class', `galleri-toast-close ${args.closeButtonClass}`.trim());
 			$closeButton.setAttribute('type', 'button');
 			if (args.closeButtonAttributes) {
@@ -40,10 +32,15 @@ export default class GalleriToast {
 					$closeButton.setAttribute(property, args.closeButtonAttributes[property]);
 				});
 			}
-			$closeButton.innerText = args.closeButtonText;
 			$closeButton.addEventListener('click', callback);
 			$div.appendChild($closeButton);
 		}
+
+		let $toastContainer = document.getElementById('galleri-modal-toast-container');
+		if (!$toastContainer) {
+			$toastContainer = document.getElementById('galleri-toast-container');
+		}
+		$toastContainer.appendChild($div);
 
 		GalleriUtilities.modifier('toast', { element: $div });
 

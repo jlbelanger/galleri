@@ -1,11 +1,20 @@
-#galleri-toast-container {
+.galleri-toast-container {
 	align-items: flex-end;
-	bottom: 100%;
 	display: flex;
 	flex-direction: column;
+	z-index: $galleri-toast-zindex;
+}
+
+#galleri-toast-container {
+	bottom: 100%;
 	position: absolute;
 	right: 0;
-	z-index: $galleri-toast-zindex;
+}
+
+#galleri-modal-toast-container {
+	bottom: 0;
+	position: fixed;
+	right: 0;
 }
 
 .galleri-toast {

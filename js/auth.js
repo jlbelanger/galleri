@@ -123,6 +123,13 @@ export default class GalleriAuth {
 		$div.setAttribute('id', 'galleri-admin-buttons');
 		$container.prepend($div);
 
+		const $toastContainer = document.createElement('div');
+		$toastContainer.setAttribute('aria-live', 'polite');
+		$toastContainer.setAttribute('class', 'galleri-toast-container');
+		$toastContainer.setAttribute('id', 'galleri-toast-container');
+		$toastContainer.setAttribute('role', 'alert');
+		$container.prepend($toastContainer);
+
 		const $uploadButton = document.createElement('button');
 		$uploadButton.setAttribute('class', 'galleri-button');
 		$uploadButton.setAttribute('id', 'galleri-create-image');

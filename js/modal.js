@@ -13,6 +13,13 @@ export default class GalleriModal {
 		$container.setAttribute('class', 'galleri-modal');
 		$container.setAttribute('tabindex', '-1');
 
+		const $toastContainer = document.createElement('div');
+		$toastContainer.setAttribute('aria-live', 'polite');
+		$toastContainer.setAttribute('class', 'galleri-toast-container');
+		$toastContainer.setAttribute('id', 'galleri-modal-toast-container');
+		$toastContainer.setAttribute('role', 'alert');
+		$container.appendChild($toastContainer);
+
 		const $innerContainer = document.createElement('div');
 		$innerContainer.setAttribute('class', 'galleri-modal-box');
 		$container.appendChild($innerContainer);
