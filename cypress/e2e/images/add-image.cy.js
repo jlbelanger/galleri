@@ -51,10 +51,10 @@ describe('add image', () => {
 				// Resets the upload form.
 				cy.get('#galleri-input-upload').invoke('val').should('equal', '');
 				cy.get('#galleri-create-image-text').should('have.text', 'Drag images or click here to upload.');
-				cy.get('#galleri-modal-cancel').click();
 
 				// Shows a toast.
 				cy.get('.galleri-toast-text').should('have.text', 'Image uploaded successfully.');
+				cy.get('#galleri-modal-cancel').click();
 
 				// Shows the image list.
 				cy.get('#galleri-images').should('be.visible');
@@ -99,10 +99,10 @@ describe('add image', () => {
 			// Resets the upload form.
 			cy.get('#galleri-input-upload').invoke('val').should('equal', '');
 			cy.get('#galleri-create-image-text').should('have.text', 'Drag images or click here to upload.');
-			cy.get('#galleri-modal-cancel').click();
 
 			// Shows a toast.
 			cy.get('.galleri-toast-text').should('have.text', 'Image uploaded successfully.');
+			cy.get('#galleri-modal-cancel').click();
 
 			// Shows the image list.
 			cy.get('#galleri-images').should('be.visible');

@@ -10,9 +10,9 @@ class Exif
 	 * Returns EXIF data for the given file.
 	 *
 	 * @param  string $path
-	 * @return array
+	 * @return array|false
 	 */
-	public static function get(string $path) : array
+	public static function get(string $path) : array|bool
 	{
 		try {
 			return exif_read_data($path);

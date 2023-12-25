@@ -1,13 +1,10 @@
 .galleri-spinner {
 	align-items: center;
-	bottom: 0;
 	display: flex;
 	font-size: 0;
+	inset: 0;
 	justify-content: center;
-	left: 0;
 	position: fixed;
-	right: 0;
-	top: 0;
 	z-index: $galleri-spinner-zindex;
 
 	.no-js &,

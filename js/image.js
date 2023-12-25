@@ -427,8 +427,6 @@ export default class GalleriImage {
 	}
 
 	static editRequestCallback(e, response) {
-		GalleriToast.show(window.GALLERI.lang.updatedSuccessfullyImage, { class: 'galleri-toast--success' });
-
 		const $folderInput = document.getElementById('galleri-input-folder');
 		const hasFolderChanged = $folderInput.value !== window.GALLERI.currentImage.attributes.folder;
 		if (hasFolderChanged) {
@@ -442,6 +440,7 @@ export default class GalleriImage {
 		window.GALLERI.currentImage = null;
 
 		GalleriModal.hide(e);
+		GalleriToast.show(window.GALLERI.lang.updatedSuccessfullyImage, { class: 'galleri-toast--success' });
 		GalleriUtilities.callback('afterEditImage', { image: response.data });
 	}
 

@@ -34,7 +34,7 @@ class Cache
 	 * @param  mixed  $value
 	 * @return boolean
 	 */
-	public static function set(string $filename, $value) : bool
+	public static function set(string $filename, mixed $value) : bool
 	{
 		Constant::verify('JSON_PATH');
 		$folder = Constant::get('JSON_PATH');

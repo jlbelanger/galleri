@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+	xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
 	colors="true"
-	convertDeprecationsToExceptions="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
 	executionOrder="random"
 >
-	<coverage processUncoveredFiles="true">
-		<include>
-			<directory suffix=".php">./src</directory>
-		</include>
-	</coverage>
 	<testsuites>
 		<testsuite name="Tests">
-			<directory suffix="Test.php">./tests</directory>
+			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
+	<source>
+		<include>
+			<directory>src</directory>
+		</include>
+	</source>
 	<php>
 		<env name="JSON_PATH" value="/var/www/galleri/tests/data"/>
 		<env name="UPLOADS_FOLDER" value="assets"/>

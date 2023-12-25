@@ -18,17 +18,14 @@
 .galleri-file-input {
 	background-color: $galleri-file-input-background-color;
 	border: 0;
-	bottom: 0;
 	cursor: pointer;
 	font-size: 0;
 	height: auto;
-	left: 0;
+	inset: -100% 0 0;
 	line-height: 1;
 	margin: 0;
 	padding: 0;
 	position: absolute;
-	right: 0;
-	top: -100%;
 	width: 100%;
 
 	&:hover,

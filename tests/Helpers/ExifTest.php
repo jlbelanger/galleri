@@ -12,7 +12,7 @@ class ExifTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function existsProvider() : array
+	public static function existsProvider() : array
 	{
 		return [
 			'with a GIF' => [[
@@ -45,7 +45,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function apertureProvider() : array
+	public static function apertureProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -76,7 +76,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function cameraProvider() : array
+	public static function cameraProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -105,7 +105,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function dateProvider() : array
+	public static function dateProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -134,7 +134,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function exposureProvider() : array
+	public static function exposureProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -171,7 +171,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function flashProvider() : array
+	public static function flashProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -208,7 +208,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function focalLengthProvider() : array
+	public static function focalLengthProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -257,7 +257,7 @@ class ExifTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function isoProvider() : array
+	public static function isoProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -286,7 +286,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function lightSourceProvider() : array
+	public static function lightSourceProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -323,7 +323,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function modeProvider() : array
+	public static function modeProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -352,7 +352,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function orientationProvider() : array
+	public static function orientationProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -421,7 +421,7 @@ class ExifTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function shutterSpeedProvider() : array
+	public static function shutterSpeedProvider() : array
 	{
 		return [
 			'with no value' => [[
@@ -458,7 +458,7 @@ class ExifTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function whiteBalanceProvider() : array
+	public static function whiteBalanceProvider() : array
 	{
 		return [
 			'with no value' => [[

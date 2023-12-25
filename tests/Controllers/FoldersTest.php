@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class FoldersTest extends TestCase
 {
-	public function getProvider() : array
+	public static function getProvider() : array
 	{
 		return [
 			'when folders.json exists' => [[
@@ -48,7 +48,7 @@ class FoldersTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function postProvider() : array
+	public static function postProvider() : array
 	{
 		return [
 			'when body is not set' => [[
@@ -127,7 +127,7 @@ class FoldersTest extends TestCase
 		Folders::post();
 	}
 
-	public function putProvider() : array
+	public static function putProvider() : array
 	{
 		$json = '{"data":{"foo":{"id":"foo","attributes":{"name":"Foo"}}}}';
 		return [
@@ -346,7 +346,7 @@ class FoldersTest extends TestCase
 		Folders::put();
 	}
 
-	public function deleteProvider() : array
+	public static function deleteProvider() : array
 	{
 		return [
 			'when id is not set' => [[

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class FilesystemTest extends TestCase
 {
-	public function copyFileProvider() : array
+	public static function copyFileProvider() : array
 	{
 		return [
 			'when copy fails' => [[
@@ -55,7 +55,7 @@ class FilesystemTest extends TestCase
 		Filesystem::copyFile(...array_values($args['args']));
 	}
 
-	public function createFolderProvider() : array
+	public static function createFolderProvider() : array
 	{
 		return [
 			'when the folder exists' => [[
@@ -112,7 +112,7 @@ class FilesystemTest extends TestCase
 		Filesystem::createFolder(...array_values($args['args']));
 	}
 
-	public function deleteFileProvider() : array
+	public static function deleteFileProvider() : array
 	{
 		return [
 			'when the file does not exist' => [[
@@ -168,7 +168,7 @@ class FilesystemTest extends TestCase
 		Filesystem::deleteFile(...array_values($args['args']));
 	}
 
-	public function deleteFolderProvider() : array
+	public static function deleteFolderProvider() : array
 	{
 		return [
 			'when the folder does not exist' => [[
@@ -239,7 +239,7 @@ class FilesystemTest extends TestCase
 		Filesystem::deleteFolder(...array_values($args['args']));
 	}
 
-	public function fileExistsProvider() : array
+	public static function fileExistsProvider() : array
 	{
 		return [
 			'when the file does not' => [[
@@ -277,7 +277,7 @@ class FilesystemTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function folderExistsProvider() : array
+	public static function folderExistsProvider() : array
 	{
 		return [
 			'when the folder does not' => [[
@@ -330,7 +330,7 @@ class FilesystemTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function moveFileProvider() : array
+	public static function moveFileProvider() : array
 	{
 		return [
 			'when the new file already exists' => [[
@@ -402,7 +402,7 @@ class FilesystemTest extends TestCase
 		Filesystem::moveFile(...array_values($args['args']));
 	}
 
-	public function readFileProvider() : array
+	public static function readFileProvider() : array
 	{
 		return [
 			[[
@@ -425,7 +425,7 @@ class FilesystemTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function renameFileProvider() : array
+	public static function renameFileProvider() : array
 	{
 		return [
 			'when the old file does not exist' => [[
@@ -485,7 +485,7 @@ class FilesystemTest extends TestCase
 		Filesystem::renameFile(...array_values($args['args']));
 	}
 
-	public function renameFolderProvider() : array
+	public static function renameFolderProvider() : array
 	{
 		return [
 			'when the old folder does not exist' => [[
@@ -545,7 +545,7 @@ class FilesystemTest extends TestCase
 		Filesystem::renameFolder(...array_values($args['args']));
 	}
 
-	public function writeFileProvider() : array
+	public static function writeFileProvider() : array
 	{
 		return [
 			'when file_put_contents succeeds' => [[

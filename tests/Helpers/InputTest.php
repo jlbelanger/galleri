@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class InputTest extends TestCase
 {
-	public function envProvider() : array
+	public static function envProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -53,7 +53,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function hasEnvProvider() : array
+	public static function hasEnvProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -99,7 +99,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function fileProvider() : array
+	public static function fileProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -145,7 +145,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function hasFileProvider() : array
+	public static function hasFileProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -191,7 +191,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function getProvider() : array
+	public static function getProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -237,7 +237,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function hasGetProvider() : array
+	public static function hasGetProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -283,7 +283,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function jsonProvider() : array
+	public static function jsonProvider() : array
 	{
 		return [
 			'when body is not set' => [[
@@ -312,7 +312,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function postProvider() : array
+	public static function postProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -358,7 +358,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function hasPostProvider() : array
+	public static function hasPostProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -404,7 +404,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function serverProvider() : array
+	public static function serverProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -450,7 +450,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function hasServerProvider() : array
+	public static function hasServerProvider() : array
 	{
 		return [
 			'when the string key is not set' => [[
@@ -496,7 +496,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function valueProvider() : array
+	public static function valueProvider() : array
 	{
 		return [
 			'with a string key and a string value' => [[
@@ -547,7 +547,7 @@ class InputTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function filterProvider() : array
+	public static function filterProvider() : array
 	{
 		return [
 			'with a string value' => [[

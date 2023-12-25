@@ -297,7 +297,7 @@ class Filesystem
 	 * @param  mixed  $data
 	 * @return boolean
 	 */
-	public static function writeFile(string $path, $data) : bool
+	public static function writeFile(string $path, mixed $data) : bool
 	{
 		$data = json_encode($data);
 		$result = file_put_contents($path, $data);

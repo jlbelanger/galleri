@@ -237,7 +237,7 @@ class Input
 	 * @param  integer $filter
 	 * @return mixed
 	 */
-	protected static function filter($s, int $filter = FILTER_SANITIZE_STRING)
+	protected static function filter(mixed $s, int $filter = FILTER_SANITIZE_STRING)
 	{
 		if (is_array($s)) {
 			$output = [];
@@ -249,7 +249,7 @@ class Input
 			return $output;
 		}
 		if ($filter === FILTER_SANITIZE_STRING) {
-			$s = trim(htmlspecialchars($s));
+			$s = trim(htmlspecialchars($s, ENT_COMPAT));
 		} elseif ($filter) {
 			$s = filter_var($s, $filter);
 		}

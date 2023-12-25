@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ImagesTest extends TestCase
 {
-	public function getProvider() : array
+	public static function getProvider() : array
 	{
 		return [
 			'when images.json exists' => [[
@@ -53,7 +53,7 @@ class ImagesTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function putProvider() : array
+	public static function putProvider() : array
 	{
 		$json = '{"data":{"example.png":{"id":"example.png","attributes":{"title":"Foo"}}}}';
 		return [
@@ -415,7 +415,7 @@ class ImagesTest extends TestCase
 		Images::put();
 	}
 
-	public function deleteProvider() : array
+	public static function deleteProvider() : array
 	{
 		return [
 			'when id is not set' => [[

@@ -36,7 +36,7 @@ $galleri-button-danger-background-color-hover: scale-color($galleri-button-dange
 $galleri-button-danger-text-color: $galleri-white !default;
 
 $galleri-button-secondary-background-color: $galleri-darker !default;
-// stylelint-disable-next-line max-line-length
+// stylelint-disable-next-line stylistic/max-line-length
 $galleri-button-secondary-background-color-hover: scale-color($galleri-button-secondary-background-color, $lightness: 5% * $galleri-multiply) !default;
 $galleri-button-secondary-text-color: $galleri-lightest !default;
 

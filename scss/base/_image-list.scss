@@ -13,11 +13,11 @@
 		display: none;
 	}
 
-	@media (max-width: #{($galleri-image-width * 2) + ($galleri-image-border-width * 2) + ($galleri-padding-mobile * 3)}) {
+	@media (width <= #{($galleri-image-width * 2) + ($galleri-image-border-width * 2) + ($galleri-padding-mobile * 3)}) {
 		justify-content: center;
 	}
 
-	@media (min-width: $galleri-breakpoint) {
+	@media (width >= $galleri-breakpoint) {
 		grid-gap: $galleri-padding-desktop;
 		margin: $galleri-padding-desktop;
 	}
@@ -40,12 +40,9 @@
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
-		bottom: 0;
-		left: 0;
+		inset: 0;
 		opacity: 0;
 		position: absolute;
-		right: 0;
-		top: 0;
 		transition: opacity 200ms ease-in-out;
 	}
 

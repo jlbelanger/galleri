@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ConstantTest extends TestCase
 {
-	public function getProvider() : array
+	public static function getProvider() : array
 	{
 		return [
 			'when the value is set in the environment' => [[
@@ -41,7 +41,7 @@ class ConstantTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function verifyProvider() : array
+	public static function verifyProvider() : array
 	{
 		return [
 			'when the value is set in the environment' => [[

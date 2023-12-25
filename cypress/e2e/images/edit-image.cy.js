@@ -279,8 +279,8 @@ describe('edit image', () => {
 				cy.get('#galleri-input-upload').attachFile('500x500.jpg');
 				cy.get('#galleri-modal-close').click();
 				cy.wait('@uploadImage').its('response.statusCode').should('equal', 200);
-				cy.get('#galleri-modal-cancel').click();
 				cy.get('.galleri-toast-close').click();
+				cy.get('#galleri-modal-cancel').click();
 				cy.get('[data-path="2020-01-01-12-00-00-500x500.jpg"] .galleri-button').contains('Edit').click();
 				cy.get('#galleri-input-folder').select('Folders Only');
 				cy.get('#galleri-modal-close').click();

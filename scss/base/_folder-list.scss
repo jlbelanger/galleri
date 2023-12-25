@@ -12,7 +12,7 @@
 		display: none;
 	}
 
-	@media (min-width: $galleri-breakpoint) {
+	@media (width >= $galleri-breakpoint) {
 		grid-gap: $galleri-padding-desktop;
 	}
 }

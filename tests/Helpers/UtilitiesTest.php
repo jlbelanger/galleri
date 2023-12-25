@@ -12,7 +12,7 @@ class UtilitiesTest extends TestCase
 		$this->markTestIncomplete();
 	}
 
-	public function combineArgsProvider() : array
+	public static function combineArgsProvider() : array
 	{
 		return [
 			[[
@@ -44,7 +44,7 @@ class UtilitiesTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function nameToSlugProvider() : array
+	public static function nameToSlugProvider() : array
 	{
 		return [
 			[[
@@ -65,7 +65,7 @@ class UtilitiesTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function normalizeFilenameProvider() : array
+	public static function normalizeFilenameProvider() : array
 	{
 		return [
 			'with a file extension' => [[
@@ -92,7 +92,7 @@ class UtilitiesTest extends TestCase
 		$this->assertSame($args['expected'], $output);
 	}
 
-	public function pathToNameProvider() : array
+	public static function pathToNameProvider() : array
 	{
 		return [
 			[[
