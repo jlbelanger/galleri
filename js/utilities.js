@@ -60,7 +60,7 @@ export default class GalleriUtilities {
 	}
 
 	static isLoggedIn() {
-		return window.localStorage.getItem(window.GALLERI.args.localStorageKey);
+		return window.localStorage.getItem(window.GALLERI.args.localStorageKey) || false;
 	}
 
 	static modifier(name, args) {

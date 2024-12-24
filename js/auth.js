@@ -48,7 +48,11 @@ export default class GalleriAuth {
 	}
 
 	static logoutCallback() {
-		window.localStorage.clear();
+		try {
+			window.localStorage.clear();
+		} catch (e) {
+			// If cookies are disabled, localStorage isn't available.
+		}
 		GalleriAuth.handleLogout();
 	}
 
@@ -62,7 +66,11 @@ export default class GalleriAuth {
 					GalleriModal.show(window.GALLERI.lang.error + window.GALLERI.lang.errorInvalidUsername);
 					return;
 				}
-				window.localStorage.setItem(window.GALLERI.args.localStorageKey, true);
+				try {
+					window.localStorage.setItem(window.GALLERI.args.localStorageKey, true);
+				} catch (e) {
+					// If cookies are disabled, localStorage isn't available.
+				}
 				this.handleLogin();
 			},
 		});
