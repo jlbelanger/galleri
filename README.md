@@ -17,7 +17,7 @@ Galleri is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Imag
 ## Requirements
 
 - Apache (other servers would presumably work too, but I've only tested with Apache)
-- PHP 7.4+
+- PHP 8.4+
 - [Composer](https://getcomposer.org/)
 
 ## Install
@@ -53,7 +53,7 @@ JS configuration options are defined in [`js/main.php`](https://github.com/jlbel
 
 ### SCSS
 
-SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/galleri/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in the SCSS file in the `scss` folder, then follow the instructions below to compile the SCSS changes.
+SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/galleri/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in `scss/style.css`, then follow the instructions below to compile the SCSS changes.
 
 ## Development
 

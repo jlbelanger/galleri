@@ -1,19 +1,19 @@
 .galleri-button {
 	appearance: none;
-	background-color: $galleri-button-background-color;
+	background-color: var(--galleri-button-background-color);
 	border: 0;
-	color: $galleri-button-text-color;
+	color: var(--galleri-button-text-color);
 	cursor: pointer;
 	display: block;
-	font-size: $galleri-button-font-size;
+	font-size: var(--galleri-button-font-size);
 	line-height: 1;
 	margin: 0;
-	padding: $galleri-button-padding;
+	padding: var(--galleri-button-padding);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $galleri-button-background-color-hover;
+		background-color: var(--galleri-button-background-color-hover);
 	}
 
 	.galleri-figure & {
@@ -22,23 +22,23 @@
 }
 
 .galleri-button--danger {
-	background-color: $galleri-button-danger-background-color;
-	color: $galleri-button-danger-text-color;
+	background-color: var(--galleri-button-danger-background-color);
+	color: var(--galleri-button-danger-text-color);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $galleri-button-danger-background-color-hover;
+		background-color: var(--galleri-button-danger-background-color-hover);
 	}
 }
 
 .galleri-button--secondary {
-	background-color: $galleri-button-secondary-background-color;
-	color: $galleri-button-secondary-text-color;
+	background-color: var(--galleri-button-secondary-background-color);
+	color: var(--galleri-button-secondary-text-color);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $galleri-button-secondary-background-color-hover;
+		background-color: var(--galleri-button-secondary-background-color-hover);
 	}
 }

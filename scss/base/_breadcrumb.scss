@@ -1,24 +1,26 @@
+@use '../utilities/variables';
+
 .galleri-breadcrumb {
 	display: flex;
 	flex-wrap: wrap;
 	line-height: 1;
 	list-style: none;
-	margin: 0 $galleri-padding-mobile;
+	margin: 0 variables.$galleri-padding-mobile;
 	padding: 0;
 
-	@media (width >= $galleri-breakpoint) {
-		margin: 0 $galleri-padding-desktop;
+	@media (width >= variables.$galleri-breakpoint) {
+		margin: 0 variables.$galleri-padding-desktop;
 	}
 }
 
 .galleri-breadcrumb-item {
-	margin: $galleri-breadcrumb-item-margin 0;
+	margin: var(--galleri-breadcrumb-item-margin) 0;
 
 	&::after {
-		color: $galleri-breadcrumb-item-arrow-color;
-		content: $galleri-breadcrumb-icon;
-		margin-left: $galleri-breadcrumb-padding;
-		margin-right: $galleri-breadcrumb-padding;
+		color: var(--galleri-breadcrumb-item-arrow-color);
+		content: var(--galleri-breadcrumb-icon);
+		margin-left: var(--galleri-breadcrumb-padding);
+		margin-right: var(--galleri-breadcrumb-padding);
 	}
 
 	&:last-of-type::after {

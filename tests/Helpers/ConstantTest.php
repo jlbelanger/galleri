@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use Jlbelanger\Galleri\Exceptions\ApiException;
 use Jlbelanger\Galleri\Helpers\Constant;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ConstantTest extends TestCase
@@ -32,9 +33,7 @@ class ConstantTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getProvider
-	 */
+	#[DataProvider('getProvider')]
 	public function testGet(array $args) : void
 	{
 		$output = Constant::get(...array_values($args['args']));
@@ -58,9 +57,7 @@ class ConstantTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider verifyProvider
-	 */
+	#[DataProvider('verifyProvider')]
 	public function testVerify(array $args) : void
 	{
 		if (!empty($args['expectedMessage'])) {

@@ -34,6 +34,7 @@
 		<exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
 		<exclude name="Generic.PHP.RequireStrictTypes.MissingDeclaration" />
 		<exclude name="Generic.PHP.UpperCaseConstant.Found" />
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsedHeredocCloser" />
 	</rule>
 
 	<rule ref="Squiz">

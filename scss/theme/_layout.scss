@@ -1,27 +1,34 @@
-// TODO: Clean up.
+@use '../utilities/variables';
 
-$galleri-body-background-color: $galleri-darkest !default;
-$galleri-body-font-family: helvetica, sans-serif !default;
-$galleri-body-font-size: 18px !default;
-$galleri-body-text-color: $galleri-lightest !default;
+/* TODO: Clean up. */
 
-$galleri-header-background-color: $galleri-darker !default;
-$galleri-header-text-color: $galleri-lightest !default;
+:root {
+	/* Body. */
+	--galleri-body-background-color: var(--galleri-darkest);
+	--galleri-body-font-family: helvetica, sans-serif;
+	--galleri-body-font-size: 18px;
+	--galleri-body-text-color: var(--galleri-lightest);
 
-$galleri-paragraph-margin: 20px !default;
+	/* Header. */
+	--galleri-header-background-color: var(--galleri-darker);
+	--galleri-header-text-color: var(--galleri-lightest);
 
-// stylelint-disable-next-line stylistic/max-line-length
-$galleri-max-width: (($galleri-image-width + $galleri-padding-desktop) * 3) + $galleri-image-width + ($galleri-image-border-width * 2) + ($galleri-padding-desktop * 2) !default;
+	/* Paragraphs. */
+	--galleri-paragraph-margin: 20px;
+}
+
+/* stylelint-disable-next-line @stylistic/max-line-length */
+$galleri-max-width: ((variables.$galleri-image-width + variables.$galleri-padding-desktop) * 3) + variables.$galleri-image-width + ((variables.$galleri-image-border-width + variables.$galleri-padding-desktop) * 2);
 
 * {
 	box-sizing: border-box;
 }
 
 body {
-	background-color: $galleri-body-background-color;
-	color: $galleri-body-text-color;
-	font-family: $galleri-body-font-family;
-	font-size: $galleri-body-font-size;
+	background-color: var(--galleri-body-background-color);
+	color: var(--galleri-body-text-color);
+	font-family: var(--galleri-body-font-family);
+	font-size: var(--galleri-body-font-size);
 	margin: 0;
 }
 
@@ -33,16 +40,16 @@ main {
 
 #header,
 #footer {
-	background-color: $galleri-header-background-color;
-	color: $galleri-header-text-color;
+	background-color: var(--galleri-header-background-color);
+	color: var(--galleri-header-text-color);
 }
 
 #header-inner,
 #footer-inner {
-	padding: $galleri-padding-mobile;
+	padding: variables.$galleri-padding-mobile;
 
-	@media (width >= $galleri-breakpoint) {
-		padding: $galleri-padding-desktop;
+	@media (width >= variables.$galleri-breakpoint) {
+		padding: variables.$galleri-padding-desktop;
 	}
 }
 
@@ -50,10 +57,10 @@ main {
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
-	min-height: #{$galleri-button-height + ($galleri-padding-mobile * 2)};
+	min-height: calc(var(--galleri-button-height) + (variables.$galleri-padding-mobile * 2));
 
-	@media (width >= $galleri-breakpoint) {
-		min-height: #{$galleri-button-height + ($galleri-padding-desktop * 2)};
+	@media (width >= variables.$galleri-breakpoint) {
+		min-height: calc(var(--galleri-button-height) + (variables.$galleri-padding-desktop * 2));
 	}
 }
 
@@ -63,7 +70,7 @@ main {
 	margin: 0;
 	text-decoration: none;
 
-	@media (width >= $galleri-breakpoint) {
+	@media (width >= variables.$galleri-breakpoint) {
 		font-size: 44px;
 	}
 }
@@ -71,11 +78,11 @@ main {
 #galleri-folder-title {
 	font-size: 24px;
 	font-weight: normal;
-	margin: $galleri-padding-mobile $galleri-padding-mobile 0;
+	margin: variables.$galleri-padding-mobile variables.$galleri-padding-mobile 0;
 
-	@media (width >= $galleri-breakpoint) {
+	@media (width >= variables.$galleri-breakpoint) {
 		font-size: 36px;
-		margin: $galleri-padding-desktop $galleri-padding-desktop 0;
+		margin: variables.$galleri-padding-desktop variables.$galleri-padding-desktop 0;
 	}
 }
 
@@ -85,17 +92,17 @@ main {
 }
 
 #content-inner {
-	margin: $galleri-padding-mobile auto;
-	padding: 0 $galleri-padding-mobile;
+	margin: variables.$galleri-padding-mobile auto;
+	padding: 0 variables.$galleri-padding-mobile;
 
 	h2,
 	p {
-		margin: $galleri-paragraph-margin 0 0;
+		margin: var(--galleri-paragraph-margin) 0 0;
 	}
 
-	@media (width >= $galleri-breakpoint) {
-		margin: $galleri-padding-desktop auto;
-		padding: 0 $galleri-padding-desktop;
+	@media (width >= variables.$galleri-breakpoint) {
+		margin: variables.$galleri-padding-desktop auto;
+		padding: 0 variables.$galleri-padding-desktop;
 	}
 }
 

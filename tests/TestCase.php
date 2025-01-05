@@ -105,6 +105,7 @@ abstract class TestCase extends BaseTestCase
 					return strpos($path, 'does-not-exist') === false;
 				},
 				'copy' => true,
+				'exif_read_data' => false,
 				'file_put_contents' => 1,
 				'mkdir' => true,
 				'move_uploaded_file' => true,

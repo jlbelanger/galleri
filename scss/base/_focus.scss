@@ -4,13 +4,13 @@
 .galleri-modal,
 .galleri-select {
 	&:focus {
-		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
+		box-shadow: 0 0 0 var(--galleri-focus-border-width) var(--galleri-focus-border-color);
 		outline: none;
 	}
 }
 
 .galleri-file-container {
 	&:focus-within {
-		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
+		box-shadow: 0 0 0 var(--galleri-focus-border-width) var(--galleri-focus-border-color);
 	}
 }

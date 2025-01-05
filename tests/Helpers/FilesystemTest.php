@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use Jlbelanger\Galleri\Exceptions\ApiException;
 use Jlbelanger\Galleri\Helpers\Filesystem;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class FilesystemTest extends TestCase
@@ -38,9 +39,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider copyFileProvider
-	 */
+	#[DataProvider('copyFileProvider')]
 	public function testCopyFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -95,9 +94,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider createFolderProvider
-	 */
+	#[DataProvider('createFolderProvider')]
 	public function testCreateFolder(array $args) : void
 	{
 		self::setupTest($args);
@@ -151,9 +148,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider deleteFileProvider
-	 */
+	#[DataProvider('deleteFileProvider')]
 	public function testDeleteFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -222,9 +217,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider deleteFolderProvider
-	 */
+	#[DataProvider('deleteFolderProvider')]
 	public function testDeleteFolder(array $args) : void
 	{
 		self::setupTest($args);
@@ -267,9 +260,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider fileExistsProvider
-	 */
+	#[DataProvider('fileExistsProvider')]
 	public function testFileExists(array $args) : void
 	{
 		self::setupTest($args);
@@ -305,9 +296,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider folderExistsProvider
-	 */
+	#[DataProvider('folderExistsProvider')]
 	public function testFolderExists(array $args) : void
 	{
 		self::setupTest($args);
@@ -385,9 +374,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider moveFileProvider
-	 */
+	#[DataProvider('moveFileProvider')]
 	public function testMoveFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -415,9 +402,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider readFileProvider
-	 */
+	#[DataProvider('readFileProvider')]
 	public function testReadFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -468,9 +453,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider renameFileProvider
-	 */
+	#[DataProvider('renameFileProvider')]
 	public function testRenameFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -528,9 +511,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider renameFolderProvider
-	 */
+	#[DataProvider('renameFolderProvider')]
 	public function testRenameFolder(array $args) : void
 	{
 		self::setupTest($args);
@@ -575,9 +556,7 @@ class FilesystemTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider writeFileProvider
-	 */
+	#[DataProvider('writeFileProvider')]
 	public function testWriteFile(array $args) : void
 	{
 		self::setupTest($args);

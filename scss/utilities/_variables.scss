@@ -1,107 +1,122 @@
-$galleri-dark-mode: false !default;
-$galleri-multiply: if($galleri-dark-mode, 1, -1) !default;
+/* Sizes. */
+$galleri-image-width: 300px !default;
+$galleri-image-border-width: 0px !default;
+$galleri-folder-image-width: $galleri-image-width !default;
 
-$galleri-primary: #00bfff !default;
-$galleri-red: if($galleri-dark-mode, #900, #c00) !default;
-$galleri-green: #006800;
-$galleri-black: #000 !default;
-$galleri-darkest: scale-color($galleri-primary, $lightness: -90% * $galleri-multiply) !default;
-$galleri-darker: scale-color($galleri-primary, $lightness: -80% * $galleri-multiply) !default;
-$galleri-dark: scale-color($galleri-primary, $lightness: -50% * $galleri-multiply) !default;
-$galleri-light: scale-color($galleri-primary, $lightness: 30% * $galleri-multiply) !default;
-$galleri-lightest: scale-color($galleri-primary, $lightness: 90% * $galleri-multiply) !default;
-$galleri-white: #fff !default;
-
-$galleri-padding-desktop: 32px !default;
+/* Padding. */
 $galleri-padding-mobile: 16px !default;
+$galleri-padding-desktop: 32px !default;
 
-$galleri-admin-zindex: 996 !default;
-
-$galleri-breadcrumb-icon: '\203a' !default; // &rsaquo;
-$galleri-breadcrumb-item-arrow-color: $galleri-dark !default;
-$galleri-breadcrumb-padding: 8px !default;
-$galleri-breadcrumb-item-margin: 12px !default;
-
+/* Breakpoints. */
 $galleri-breakpoint: 1025px !default;
 
-$galleri-button-background-color: $galleri-primary !default;
-$galleri-button-background-color-hover: scale-color($galleri-button-background-color, $lightness: 20% * $galleri-multiply) !default;
-$galleri-button-font-size: 16px !default;
-$galleri-button-padding: 16px !default;
-$galleri-button-text-color: if($galleri-dark-mode, $galleri-darkest, $galleri-lightest) !default;
-$galleri-button-height: ($galleri-button-padding * 2) + $galleri-button-font-size !default;
+:root {
+	/* Colors. */
+	--galleri-primary: #00bfff;
+	--galleri-red: hsl(from var(--galleri-primary) 0 s calc(l * .6));
+	--galleri-green: #006800;
+	--galleri-black: #000;
+	--galleri-darkest: hsl(from var(--galleri-primary) h s calc(l * .1));
+	--galleri-darker: hsl(from var(--galleri-primary) h s calc(l * .2));
+	--galleri-dark: hsl(from var(--galleri-primary) h s calc(l * .5));
+	--galleri-lightest: hsl(from var(--galleri-primary) h s 95%);
+	--galleri-white: #fff;
 
-$galleri-button-danger-background-color: $galleri-red !default;
-$galleri-button-danger-background-color-hover: scale-color($galleri-button-danger-background-color, $lightness: 5% * $galleri-multiply) !default;
-$galleri-button-danger-text-color: $galleri-white !default;
+	/* Admin. */
+	--galleri-admin-zindex: 996;
 
-$galleri-button-secondary-background-color: $galleri-darker !default;
-// stylelint-disable-next-line stylistic/max-line-length
-$galleri-button-secondary-background-color-hover: scale-color($galleri-button-secondary-background-color, $lightness: 5% * $galleri-multiply) !default;
-$galleri-button-secondary-text-color: $galleri-lightest !default;
+	/* Breadcrumbs. */
+	--galleri-breadcrumb-icon: '\203a'; /* &rsaquo; */
+	--galleri-breadcrumb-item-arrow-color: var(--galleri-dark);
+	--galleri-breadcrumb-padding: 8px;
+	--galleri-breadcrumb-item-margin: 12px;
 
-$galleri-button-container-gap: 1px !default;
+	/* Buttons. */
+	--galleri-button-background-color: var(--galleri-primary);
+	--galleri-button-background-color-hover: hsl(from var(--galleri-button-background-color) h s calc(l * 1.2));
+	--galleri-button-container-gap: 1px;
+	--galleri-button-font-size: 16px;
+	--galleri-button-padding: 16px;
+	--galleri-button-text-color: var(--galleri-darkest);
+	--galleri-button-height: calc((var(--galleri-button-padding) * 2) + var(--galleri-button-font-size));
 
-$galleri-error-border-color: $galleri-red !default;
-$galleri-error-border-width: 2px !default;
-$galleri-error-font-size: 16px !default;
-$galleri-error-margin-top: 8px !default;
-$galleri-error-text-color: $galleri-red !default;
+	/* Buttons - danger. */
+	--galleri-button-danger-background-color: var(--galleri-red);
+	--galleri-button-danger-background-color-hover: hsl(from var(--galleri-button-danger-background-color) h s calc(l * 1.05));
+	--galleri-button-danger-text-color: var(--galleri-white);
 
-$galleri-focus-border-color: $galleri-lightest !default;
-$galleri-focus-border-width: 4px !default;
+	/* Buttons - secondary. */
+	--galleri-button-secondary-background-color: var(--galleri-darker);
+	--galleri-button-secondary-background-color-hover: hsl(from var(--galleri-button-secondary-background-color) h s calc(l * 1.45));
+	--galleri-button-secondary-text-color: var(--galleri-lightest);
 
-$galleri-image-border-color: $galleri-white !default;
-$galleri-image-border-width: 0 !default;
-$galleri-image-width: 300px !default;
+	/* Errors. */
+	--galleri-error-border-color: var(--galleri-red);
+	--galleri-error-border-width: 2px;
+	--galleri-error-font-size: 16px;
+	--galleri-error-margin-top: 8px;
+	--galleri-error-text-color: var(--galleri-red);
 
-$galleri-folder-image-width: $galleri-image-width !default;
-$galleri-folder-item-margin: 12px !default;
-$galleri-folder-name-margin: 8px !default;
+	/* Focus. */
+	--galleri-focus-border-color: var(--galleri-lightest);
+	--galleri-focus-border-width: 4px;
 
-$galleri-field-margin-top: $galleri-padding-desktop !default;
+	/* Images. */
+	--galleri-image-border-color: var(--galleri-white);
 
-$galleri-figure-background-color: $galleri-darker !default;
+	/* Folders. */
+	--galleri-folder-item-margin: 12px;
+	--galleri-folder-name-margin: 8px;
 
-$galleri-input-background-color: $galleri-darker !default;
-$galleri-input-margin-top: 4px !default;
-$galleri-input-padding: 12px !default;
-$galleri-input-text-color: $galleri-lightest !default;
+	/* Fields. */
+	--galleri-field-margin-top: $galleri-padding-desktop;
 
-$galleri-file-input-background-color: $galleri-input-background-color !default;
-$galleri-file-input-background-color-hover: scale-color($galleri-file-input-background-color, $lightness: -10% * $galleri-multiply) !default;
-$galleri-file-input-text-color: $galleri-lightest !default;
-$galleri-file-input-height: 100px !default;
-$galleri-file-input-padding: 16px !default;
+	/* Figures. */
+	--galleri-figure-background-color: var(--galleri-darker);
 
-$galleri-modal-background-color: $galleri-darker !default;
-$galleri-modal-button-margin-side: 8px !default;
-$galleri-modal-button-margin-top: 20px !default;
-$galleri-modal-container-background-color: rgba($galleri-black, .4) !default;
-$galleri-modal-input-background-color: $galleri-darkest !default;
-$galleri-modal-max-width: 800px !default;
-$galleri-modal-padding: 32px !default;
-$galleri-modal-text-color: $galleri-lightest !default;
-$galleri-modal-zindex: 997 !default;
+	/* Inputs. */
+	--galleri-input-background-color: var(--galleri-darker);
+	--galleri-input-margin-top: 4px;
+	--galleri-input-padding: 12px;
+	--galleri-input-text-color: var(--galleri-lightest);
 
-$galleri-spinner-color-alternate: $galleri-primary !default;
-$galleri-spinner-color: $galleri-darker !default;
-$galleri-spinner-size: 60px !default;
-$galleri-spinner-thickness: 12px !default;
-$galleri-spinner-zindex: 998 !default;
+	/* Files. */
+	--galleri-file-input-background-color: var(--galleri-input-background-color);
+	--galleri-file-input-background-color-hover: hsl(from var(--galleri-file-input-background-color) h s calc(l * .9));
+	--galleri-file-input-text-color: var(--galleri-lightest);
+	--galleri-file-input-height: 100px;
+	--galleri-file-input-padding: 16px;
 
-$galleri-toast-background-color: $galleri-dark !default;
-$galleri-toast-close-font-size: 18px !default;
-$galleri-toast-close-icon: '\00d7' !default; // &times;
-$galleri-toast-close-margin-left: 8px !default;
-$galleri-toast-close-size: 32px !default;
-$galleri-toast-margin: 16px !default;
-$galleri-toast-padding: 16px !default;
-$galleri-toast-text-color: $galleri-lightest !default;
-$galleri-toast-zindex: 999 !default;
+	/* Modals. */
+	--galleri-modal-background-color: var(--galleri-darker);
+	--galleri-modal-button-margin-side: 8px;
+	--galleri-modal-button-margin-top: 20px;
+	--galleri-modal-container-background-color: hsl(from var(--galleri-black) h s l / 40%);
+	--galleri-modal-input-background-color: var(--galleri-darkest);
+	--galleri-modal-max-width: 800px;
+	--galleri-modal-padding: 32px;
+	--galleri-modal-text-color: var(--galleri-lightest);
+	--galleri-modal-zindex: 997;
 
-$galleri-toast-success-background-color: $galleri-green !default;
-$galleri-toast-success-text-color: $galleri-white !default;
+	/* Spinners. */
+	--galleri-spinner-color-alternate: var(--galleri-primary);
+	--galleri-spinner-color: var(--galleri-darker);
+	--galleri-spinner-size: 60px;
+	--galleri-spinner-thickness: 12px;
+	--galleri-spinner-zindex: 998;
 
-$galleri-toast-error-background-color: $galleri-red !default;
-$galleri-toast-error-text-color: $galleri-white !default;
+	/* Toasts. */
+	--galleri-toast-background-color: var(--galleri-dark);
+	--galleri-toast-close-font-size: 18px;
+	--galleri-toast-close-icon: '\00d7'; /* &times; */
+	--galleri-toast-close-margin-left: 8px;
+	--galleri-toast-close-size: 32px;
+	--galleri-toast-margin: 16px;
+	--galleri-toast-padding: 16px;
+	--galleri-toast-text-color: var(--galleri-lightest);
+	--galleri-toast-zindex: 999;
+	--galleri-toast-success-background-color: var(--galleri-green);
+	--galleri-toast-success-text-color: var(--galleri-white);
+	--galleri-toast-error-background-color: var(--galleri-red);
+	--galleri-toast-error-text-color: var(--galleri-white);
+}

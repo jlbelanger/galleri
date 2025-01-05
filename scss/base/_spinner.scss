@@ -5,7 +5,7 @@
 	inset: 0;
 	justify-content: center;
 	position: fixed;
-	z-index: $galleri-spinner-zindex;
+	z-index: var(--galleri-spinner-zindex);
 
 	.no-js &,
 	&.galleri-spinner--hide {
@@ -18,14 +18,14 @@
 
 	&::after {
 		animation: galleri-spin 2s infinite linear;
-		border-color: $galleri-spinner-color $galleri-spinner-color $galleri-spinner-color $galleri-spinner-color-alternate;
+		border-color: var(--galleri-spinner-color) var(--galleri-spinner-color) var(--galleri-spinner-color) var(--galleri-spinner-color-alternate);
 		border-radius: 1000px;
 		border-style: solid;
-		border-width: $galleri-spinner-thickness;
+		border-width: var(--galleri-spinner-thickness);
 		content: '';
 		display: block;
-		height: $galleri-spinner-size;
-		width: $galleri-spinner-size;
+		height: var(--galleri-spinner-size);
+		width: var(--galleri-spinner-size);
 	}
 }
 

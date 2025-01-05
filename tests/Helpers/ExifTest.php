@@ -3,6 +3,7 @@
 namespace Tests\Helpers;
 
 use Jlbelanger\Galleri\Helpers\Exif;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ExifTest extends TestCase
@@ -36,9 +37,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider existsProvider
-	 */
+	#[DataProvider('existsProvider')]
 	public function testExists(array $args) : void
 	{
 		$output = Exif::exists(...array_values($args['args']));
@@ -67,9 +66,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider apertureProvider
-	 */
+	#[DataProvider('apertureProvider')]
 	public function testAperture(array $args) : void
 	{
 		$output = Exif::aperture(...array_values($args['args']));
@@ -96,9 +93,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider cameraProvider
-	 */
+	#[DataProvider('cameraProvider')]
 	public function testCamera(array $args) : void
 	{
 		$output = Exif::camera(...array_values($args['args']));
@@ -125,9 +120,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider dateProvider
-	 */
+	#[DataProvider('dateProvider')]
 	public function testDate(array $args) : void
 	{
 		$output = Exif::date(...array_values($args['args']));
@@ -162,9 +155,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider exposureProvider
-	 */
+	#[DataProvider('exposureProvider')]
 	public function testExposure(array $args) : void
 	{
 		$output = Exif::exposure(...array_values($args['args']));
@@ -199,9 +190,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider flashProvider
-	 */
+	#[DataProvider('flashProvider')]
 	public function testFlash(array $args) : void
 	{
 		$output = Exif::flash(...array_values($args['args']));
@@ -228,9 +217,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider focalLengthProvider
-	 */
+	#[DataProvider('focalLengthProvider')]
 	public function testFocalLength(array $args) : void
 	{
 		$output = Exif::focalLength(...array_values($args['args']));
@@ -277,9 +264,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider isoProvider
-	 */
+	#[DataProvider('isoProvider')]
 	public function testIso(array $args) : void
 	{
 		$output = Exif::iso(...array_values($args['args']));
@@ -314,9 +299,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider lightSourceProvider
-	 */
+	#[DataProvider('lightSourceProvider')]
 	public function testLightSource(array $args) : void
 	{
 		$output = Exif::lightSource(...array_values($args['args']));
@@ -343,9 +326,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider modeProvider
-	 */
+	#[DataProvider('modeProvider')]
 	public function testMode(array $args) : void
 	{
 		$output = Exif::mode(...array_values($args['args']));
@@ -407,9 +388,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider orientationProvider
-	 */
+	#[DataProvider('orientationProvider')]
 	public function testOrientation(array $args) : void
 	{
 		$output = Exif::orientation(...array_values($args['args']));
@@ -449,9 +428,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider shutterSpeedProvider
-	 */
+	#[DataProvider('shutterSpeedProvider')]
 	public function testShutterSpeed(array $args) : void
 	{
 		$output = Exif::shutterSpeed(...array_values($args['args']));
@@ -486,9 +463,7 @@ class ExifTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider whiteBalanceProvider
-	 */
+	#[DataProvider('whiteBalanceProvider')]
 	public function testWhiteBalance(array $args) : void
 	{
 		$output = Exif::whiteBalance(...array_values($args['args']));

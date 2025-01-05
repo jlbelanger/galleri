@@ -1,6 +1,6 @@
 .galleri-error {
-	color: $galleri-error-text-color;
+	color: var(--galleri-error-text-color);
 	display: block;
-	font-size: $galleri-error-font-size;
-	margin-top: $galleri-error-margin-top;
+	font-size: var(--galleri-error-font-size);
+	margin-top: var(--galleri-error-margin-top);
 }

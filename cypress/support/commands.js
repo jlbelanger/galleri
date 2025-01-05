@@ -1,8 +1,8 @@
 import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
 
 Cypress.Commands.add('build', () => {
-	const cssFolder = `${Cypress.env('project_path')}/assets/css`;
-	cy.exec(`if [! -f ${cssFolder}/style.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi`);
+	const cssFolder = `${Cypress.env('project_path')}/build/css`;
+	cy.exec(`(if [! -f ${cssFolder}/style.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi) || true`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {

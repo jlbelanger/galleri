@@ -5,18 +5,18 @@
 .galleri-modal {
 	border: 0;
 	padding: 0;
-	z-index: $galleri-modal-zindex;
+	z-index: var(--galleri-modal-zindex);
 }
 
 .galleri-modal::backdrop {
-	background-color: $galleri-modal-container-background-color;
+	background-color: var(--galleri-modal-container-background-color);
 }
 
 .galleri-modal-box {
-	background-color: $galleri-modal-background-color;
-	color: $galleri-modal-text-color;
-	max-width: $galleri-modal-max-width;
-	padding: $galleri-modal-padding;
+	background-color: var(--galleri-modal-background-color);
+	color: var(--galleri-modal-text-color);
+	max-width: var(--galleri-modal-max-width);
+	padding: var(--galleri-modal-padding);
 	width: 100%;
 }
 
@@ -28,13 +28,13 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin: $galleri-modal-button-margin-top auto 0;
+	margin: var(--galleri-modal-button-margin-top) auto 0;
 
 	button + button {
-		margin-left: $galleri-modal-button-margin-side;
+		margin-left: var(--galleri-modal-button-margin-side);
 	}
 
 	form + & {
-		margin-top: $galleri-field-margin-top;
+		margin-top: var(--galleri-field-margin-top);
 	}
 }

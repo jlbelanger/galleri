@@ -3,6 +3,7 @@
 namespace Tests\Helpers;
 
 use Jlbelanger\Galleri\Helpers\Input;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class InputTest extends TestCase
@@ -43,9 +44,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider envProvider
-	 */
+	#[DataProvider('envProvider')]
 	public function testEnv(array $args) : void
 	{
 		self::setupTest($args);
@@ -89,9 +88,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider hasEnvProvider
-	 */
+	#[DataProvider('hasEnvProvider')]
 	public function testHasEnv(array $args) : void
 	{
 		self::setupTest($args);
@@ -135,9 +132,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider fileProvider
-	 */
+	#[DataProvider('fileProvider')]
 	public function testFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -181,9 +176,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider hasFileProvider
-	 */
+	#[DataProvider('hasFileProvider')]
 	public function testHasFile(array $args) : void
 	{
 		self::setupTest($args);
@@ -227,9 +220,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getProvider
-	 */
+	#[DataProvider('getProvider')]
 	public function testGet(array $args) : void
 	{
 		self::setupTest($args);
@@ -273,9 +264,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider hasGetProvider
-	 */
+	#[DataProvider('hasGetProvider')]
 	public function testHasGet(array $args) : void
 	{
 		self::setupTest($args);
@@ -302,9 +291,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider jsonProvider
-	 */
+	#[DataProvider('jsonProvider')]
 	public function testJson(array $args) : void
 	{
 		self::setupTest($args);
@@ -348,9 +335,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider postProvider
-	 */
+	#[DataProvider('postProvider')]
 	public function testPost(array $args) : void
 	{
 		self::setupTest($args);
@@ -394,9 +379,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider hasPostProvider
-	 */
+	#[DataProvider('hasPostProvider')]
 	public function testHasPost(array $args) : void
 	{
 		self::setupTest($args);
@@ -440,9 +423,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider serverProvider
-	 */
+	#[DataProvider('serverProvider')]
 	public function testServer(array $args) : void
 	{
 		self::setupTest($args);
@@ -486,9 +467,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider hasServerProvider
-	 */
+	#[DataProvider('hasServerProvider')]
 	public function testHasServer(array $args) : void
 	{
 		self::setupTest($args);
@@ -538,9 +517,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider valueProvider
-	 */
+	#[DataProvider('valueProvider')]
 	public function testValue(array $args) : void
 	{
 		$output = $this->callPrivate(new Input, 'value', array_values($args['args']));
@@ -598,9 +575,7 @@ class InputTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider filterProvider
-	 */
+	#[DataProvider('filterProvider')]
 	public function testFilter(array $args) : void
 	{
 		$output = $this->callPrivate(new Input, 'filter', array_values($args['args']));

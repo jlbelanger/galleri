@@ -2,7 +2,7 @@
 	align-items: flex-end;
 	display: flex;
 	flex-direction: column;
-	z-index: $galleri-toast-zindex;
+	z-index: var(--galleri-toast-zindex);
 }
 
 #galleri-toast-container {
@@ -21,26 +21,26 @@
 	align-items: center;
 	animation-fill-mode: forwards;
 	animation-name: galleri-slide-in-out;
-	background-color: $galleri-toast-background-color;
-	color: $galleri-toast-text-color;
+	background-color: var(--galleri-toast-background-color);
+	color: var(--galleri-toast-text-color);
 	display: flex;
-	margin: $galleri-toast-margin;
+	margin: var(--galleri-toast-margin);
 	max-width: 90vw;
 }
 
 .galleri-toast--success {
-	background-color: $galleri-toast-success-background-color;
-	color: $galleri-toast-success-text-color;
+	background-color: var(--galleri-toast-success-background-color);
+	color: var(--galleri-toast-success-text-color);
 }
 
 .galleri-toast--danger {
-	background-color: $galleri-toast-error-background-color;
-	color: $galleri-toast-error-text-color;
+	background-color: var(--galleri-toast-error-background-color);
+	color: var(--galleri-toast-error-text-color);
 }
 
 .galleri-toast-text {
 	margin: 0;
-	padding: $galleri-toast-padding;
+	padding: var(--galleri-toast-padding);
 }
 
 .galleri-toast-close {
@@ -48,16 +48,16 @@
 	border: 0;
 	cursor: pointer;
 	font-size: 0;
-	height: $galleri-toast-close-size;
-	margin: 0 $galleri-toast-close-margin-left 0 0;
+	height: var(--galleri-toast-close-size);
+	margin: 0 var(--galleri-toast-close-margin-left) 0 0;
 	padding: 0;
-	width: $galleri-toast-close-size;
+	width: var(--galleri-toast-close-size);
 
 	&::after {
-		color: $galleri-toast-text-color;
-		content: $galleri-toast-close-icon;
+		color: var(--galleri-toast-text-color);
+		content: var(--galleri-toast-close-icon);
 		display: inline-block;
-		font-size: $galleri-toast-close-font-size;
+		font-size: var(--galleri-toast-close-font-size);
 	}
 
 	&:hover,

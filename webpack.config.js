@@ -7,8 +7,7 @@ module.exports = {
 	devtool: false,
 	entry: {
 		galleri: './index.js',
-		dark: './scss/dark.scss',
-		light: './scss/light.scss',
+		theme: './scss/theme.scss',
 		minimal: './scss/galleri.scss',
 	},
 	output: {
@@ -43,7 +42,13 @@ module.exports = {
 							postcssOptions: {
 								plugins: [
 									'autoprefixer',
-									'cssnano',
+									{
+										cssnano: {
+											// Disable postcss-calc to avoid warnings about calc() inside hsl().
+											// https://github.com/postcss/postcss-calc/issues/216
+											preset: ['default', { calc: false }],
+										},
+									},
 									'postcss-preset-env',
 								],
 							},
@@ -62,16 +67,10 @@ module.exports = {
 		],
 		splitChunks: {
 			cacheGroups: {
-				dark: {
-					name: 'dark',
+				theme: {
+					name: 'theme',
 					type: 'css/mini-extract',
-					chunks: (chunk) => (chunk.name === 'dark'),
-					enforce: true,
-				},
-				light: {
-					name: 'light',
-					type: 'css/mini-extract',
-					chunks: (chunk) => (chunk.name === 'light'),
+					chunks: (chunk) => (chunk.name === 'theme'),
 					enforce: true,
 				},
 				minimal: {

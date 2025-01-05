@@ -4,6 +4,7 @@ namespace Tests\Controllers;
 
 use Jlbelanger\Galleri\Controllers\Images;
 use Jlbelanger\Galleri\Exceptions\ApiException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ImagesTest extends TestCase
@@ -32,9 +33,7 @@ class ImagesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getProvider
-	 */
+	#[DataProvider('getProvider')]
 	public function testGet(array $args) : void
 	{
 		self::setupTest($args);
@@ -398,9 +397,7 @@ class ImagesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider putProvider
-	 */
+	#[DataProvider('putProvider')]
 	public function testPut(array $args) : void
 	{
 		self::setupTest($args);
@@ -489,9 +486,7 @@ class ImagesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider deleteProvider
-	 */
+	#[DataProvider('deleteProvider')]
 	public function testDelete(array $args) : void
 	{
 		self::setupTest($args);

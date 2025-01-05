@@ -1,22 +1,22 @@
 .galleri-file-container {
 	align-items: center;
-	color: $galleri-file-input-text-color;
+	color: var(--galleri-file-input-text-color);
 	display: flex;
 	flex: 1 1 auto;
-	height: $galleri-file-input-height;
+	height: var(--galleri-file-input-height);
 	justify-content: center;
-	margin-top: $galleri-input-margin-top;
+	margin-top: var(--galleri-input-margin-top);
 	overflow: hidden;
-	padding: 0 $galleri-file-input-padding;
+	padding: 0 var(--galleri-file-input-padding);
 	position: relative;
 
 	.galleri-has-error & {
-		box-shadow: 0 0 0 $galleri-error-border-width $galleri-error-border-color;
+		box-shadow: 0 0 0 var(--galleri-error-border-width) var(--galleri-error-border-color);
 	}
 }
 
 .galleri-file-input {
-	background-color: $galleri-file-input-background-color;
+	background-color: var(--galleri-file-input-background-color);
 	border: 0;
 	cursor: pointer;
 	font-size: 0;
@@ -31,11 +31,11 @@
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $galleri-file-input-background-color-hover;
+		background-color: var(--galleri-file-input-background-color-hover);
 	}
 
 	.galleri-modal & {
-		background-color: $galleri-modal-input-background-color;
+		background-color: var(--galleri-modal-input-background-color);
 	}
 }
 

@@ -3,6 +3,7 @@
 namespace Tests\Helpers;
 
 use Jlbelanger\Galleri\Helpers\Utilities;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class UtilitiesTest extends TestCase
@@ -35,9 +36,7 @@ class UtilitiesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider combineArgsProvider
-	 */
+	#[DataProvider('combineArgsProvider')]
 	public function testCombineArgs(array $args) : void
 	{
 		$output = Utilities::combineArgs(...array_values($args['args']));
@@ -56,9 +55,7 @@ class UtilitiesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider nameToSlugProvider
-	 */
+	#[DataProvider('nameToSlugProvider')]
 	public function testNameToSlug(array $args) : void
 	{
 		$output = Utilities::nameToSlug(...array_values($args['args']));
@@ -83,9 +80,7 @@ class UtilitiesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider normalizeFilenameProvider
-	 */
+	#[DataProvider('normalizeFilenameProvider')]
 	public function testNormalizeFilename(array $args) : void
 	{
 		$output = Utilities::normalizeFilename(...array_values($args['args']));
@@ -104,9 +99,7 @@ class UtilitiesTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider pathToNameProvider
-	 */
+	#[DataProvider('pathToNameProvider')]
 	public function testPathToName(array $args) : void
 	{
 		$output = Utilities::pathToName(...array_values($args['args']));

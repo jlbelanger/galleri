@@ -4,6 +4,7 @@ namespace Tests\Controllers;
 
 use Jlbelanger\Galleri\Controllers\Folders;
 use Jlbelanger\Galleri\Exceptions\ApiException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class FoldersTest extends TestCase
@@ -32,9 +33,7 @@ class FoldersTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getProvider
-	 */
+	#[DataProvider('getProvider')]
 	public function testGet(array $args) : void
 	{
 		self::setupTest($args);
@@ -110,9 +109,7 @@ class FoldersTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider postProvider
-	 */
+	#[DataProvider('postProvider')]
 	public function testPost(array $args) : void
 	{
 		self::setupTest($args);
@@ -329,9 +326,7 @@ class FoldersTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider putProvider
-	 */
+	#[DataProvider('putProvider')]
 	public function testPut(array $args) : void
 	{
 		self::setupTest($args);
@@ -406,9 +401,7 @@ class FoldersTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider deleteProvider
-	 */
+	#[DataProvider('deleteProvider')]
 	public function testDelete(array $args) : void
 	{
 		self::setupTest($args);

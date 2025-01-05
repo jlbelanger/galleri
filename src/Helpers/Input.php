@@ -17,7 +17,7 @@ class Input
 	{
 		$defaults = [
 			'default' => '',
-			'filter' => FILTER_SANITIZE_STRING,
+			'filter' => FILTER_UNSAFE_RAW,
 		];
 		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasEnv($key)) {
@@ -50,7 +50,7 @@ class Input
 	{
 		$defaults = [
 			'default' => '',
-			'filter' => FILTER_SANITIZE_STRING,
+			'filter' => FILTER_UNSAFE_RAW,
 		];
 		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasFile($key)) {
@@ -83,7 +83,7 @@ class Input
 	{
 		$defaults = [
 			'default' => '',
-			'filter' => FILTER_SANITIZE_STRING,
+			'filter' => FILTER_UNSAFE_RAW,
 		];
 		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasGet($key)) {
@@ -120,7 +120,7 @@ class Input
 		$values = self::flatten($values);
 		$output = [];
 		foreach ($values as $key => $value) {
-			$filter = isset($args['filter'][$key]) ? $args['filter'][$key] : FILTER_SANITIZE_STRING;
+			$filter = isset($args['filter'][$key]) ? $args['filter'][$key] : FILTER_UNSAFE_RAW;
 			$value = self::filter(self::value($key, $values), $filter);
 
 			if (strpos($key, 'attributes.') === 0) {
@@ -162,7 +162,7 @@ class Input
 	{
 		$defaults = [
 			'default' => '',
-			'filter' => FILTER_SANITIZE_STRING,
+			'filter' => FILTER_UNSAFE_RAW,
 		];
 		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasPost($key)) {
@@ -195,7 +195,7 @@ class Input
 	{
 		$defaults = [
 			'default' => '',
-			'filter' => FILTER_SANITIZE_STRING,
+			'filter' => FILTER_UNSAFE_RAW,
 		];
 		$args = Utilities::combineArgs($defaults, $args);
 		if (!self::hasServer($key)) {
@@ -237,7 +237,7 @@ class Input
 	 * @param  integer $filter
 	 * @return mixed
 	 */
-	protected static function filter(mixed $s, int $filter = FILTER_SANITIZE_STRING)
+	protected static function filter(mixed $s, int $filter = FILTER_UNSAFE_RAW)
 	{
 		if (is_array($s)) {
 			$output = [];
@@ -248,7 +248,7 @@ class Input
 			}
 			return $output;
 		}
-		if ($filter === FILTER_SANITIZE_STRING) {
+		if ($filter === FILTER_UNSAFE_RAW) {
 			$s = trim(htmlspecialchars($s, ENT_COMPAT));
 		} elseif ($filter) {
 			$s = filter_var($s, $filter);

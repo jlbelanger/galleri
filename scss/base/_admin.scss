@@ -1,7 +1,9 @@
+@use '../utilities/variables';
+
 .galleri-button-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: $galleri-button-container-gap;
+	gap: var(--galleri-button-container-gap);
 
 	.galleri-button {
 		flex: 1 1 auto;
@@ -18,20 +20,20 @@
 }
 
 .galleri-is-admin {
-	margin-bottom: #{$galleri-button-height + ($galleri-padding-mobile * 2)};
+	margin-bottom: calc(var(--galleri-button-height) + (variables.$galleri-padding-mobile * 2));
 }
 
 #galleri-admin {
-	background: $galleri-darkest;
+	background: var(--galleri-darkest);
 	bottom: 0;
 	left: 0;
 	position: fixed;
 	right: 0;
-	z-index: $galleri-admin-zindex;
+	z-index: var(--galleri-admin-zindex);
 }
 
 #galleri-admin-buttons {
-	padding: $galleri-padding-mobile;
+	padding: variables.$galleri-padding-mobile;
 }
 
 .galleri-button-authenticate {

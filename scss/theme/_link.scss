@@ -1,7 +1,9 @@
-$galleri-link-text-color: $galleri-lightest !default;
+:root {
+	--galleri-link-text-color: var(--galleri-lightest);
+}
 
 a {
-	color: $galleri-link-text-color;
+	color: var(--galleri-link-text-color);
 
 	&:hover,
 	&:active,
@@ -10,7 +12,7 @@ a {
 	}
 
 	&:focus {
-		box-shadow: 0 0 0 $galleri-focus-border-width $galleri-focus-border-color;
+		box-shadow: 0 0 0 var(--galleri-focus-border-width) var(--galleri-focus-border-color);
 		outline: none;
 	}
 }

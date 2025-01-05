@@ -1,7 +1,9 @@
+@use '../utilities/variables';
+
 #galleri-folders {
 	display: flex;
 	flex-wrap: wrap;
-	grid-gap: $galleri-padding-mobile;
+	grid-gap: variables.$galleri-padding-mobile;
 	justify-content: space-between;
 	line-height: 1;
 	list-style: none;
@@ -12,13 +14,13 @@
 		display: none;
 	}
 
-	@media (width >= $galleri-breakpoint) {
-		grid-gap: $galleri-padding-desktop;
+	@media (width >= variables.$galleri-breakpoint) {
+		grid-gap: variables.$galleri-padding-desktop;
 	}
 }
 
 .galleri-folder {
-	margin: $galleri-folder-item-margin 0;
+	margin: var(--galleri-folder-item-margin) 0;
 }
 
 .galleri-folder-link {
@@ -27,15 +29,15 @@
 	background-size: cover;
 	box-sizing: content-box;
 	display: block;
-	width: $galleri-folder-image-width;
+	width: variables.$galleri-folder-image-width;
 }
 
 .galleri-folder-img {
 	height: auto;
-	width: $galleri-folder-image-width;
+	width: variables.$galleri-folder-image-width;
 
 	& + .galleri-folder-name {
-		margin-top: $galleri-folder-name-margin;
+		margin-top: var(--galleri-folder-name-margin);
 	}
 }
 
