@@ -1,15 +1,3 @@
-/* Sizes. */
-$galleri-image-width: 300px !default;
-$galleri-image-border-width: 0px !default;
-$galleri-folder-image-width: $galleri-image-width !default;
-
-/* Padding. */
-$galleri-padding-mobile: 16px !default;
-$galleri-padding-desktop: 32px !default;
-
-/* Breakpoints. */
-$galleri-breakpoint: 1025px !default;
-
 :root {
 	/* Colors. */
 	--galleri-primary: #00bfff;
@@ -21,6 +9,10 @@ $galleri-breakpoint: 1025px !default;
 	--galleri-dark: hsl(from var(--galleri-primary) h s calc(l * .5));
 	--galleri-lightest: hsl(from var(--galleri-primary) h s 95%);
 	--galleri-white: #fff;
+
+	/* Padding. */
+	--galleri-padding-mobile: 16px;
+	--galleri-padding-desktop: 32px;
 
 	/* Admin. */
 	--galleri-admin-zindex: 996;
@@ -69,7 +61,7 @@ $galleri-breakpoint: 1025px !default;
 	--galleri-folder-name-margin: 8px;
 
 	/* Fields. */
-	--galleri-field-margin-top: $galleri-padding-desktop;
+	--galleri-field-margin-top: var(--galleri-padding-desktop);
 
 	/* Figures. */
 	--galleri-figure-background-color: var(--galleri-darker);
@@ -119,4 +111,9 @@ $galleri-breakpoint: 1025px !default;
 	--galleri-toast-success-text-color: var(--galleri-white);
 	--galleri-toast-error-background-color: var(--galleri-red);
 	--galleri-toast-error-text-color: var(--galleri-white);
+
+	/* Sizes. */
+	--galleri-image-width: 300px;
+	--galleri-image-border-width: 0px;
+	--galleri-folder-image-width: var(--galleri-image-width);
 }

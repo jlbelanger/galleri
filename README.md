@@ -51,9 +51,9 @@ PHP configuration options are defined in [`.env.example`](https://github.com/jlb
 
 JS configuration options are defined in [`js/main.php`](https://github.com/jlbelanger/galleri-project/blob/main/js/main.js). Make your changes in the `js/main.js` file created by the setup script.
 
-### SCSS
+### CSS
 
-SCSS configuration options are defined in [`scss/utilities/_variables.scss`](https://github.com/jlbelanger/galleri/blob/main/scss/utilities/_variables.scss). To override these settings, re-define the variables in `scss/style.css`, then follow the instructions below to compile the SCSS changes.
+CSS variables are defined in [`css/utilities/variables.css`](https://github.com/jlbelanger/galleri/blob/main/css/utilities/variables.css). To override these settings, re-define the variables in `css/style.css`, then follow the instructions below to compile the CSS changes.
 
 ## Development
 

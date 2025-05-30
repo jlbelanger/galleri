@@ -1,3 +1,4 @@
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -7,8 +8,8 @@ module.exports = {
 	devtool: false,
 	entry: {
 		galleri: './index.js',
-		theme: './scss/theme.scss',
-		minimal: './scss/galleri.scss',
+		theme: './css/theme.css',
+		minimal: './css/galleri.css',
 	},
 	output: {
 		filename: 'js/[name].min.js',
@@ -27,12 +28,13 @@ module.exports = {
 				use: ['babel-loader'],
 			},
 			{
-				test: /\.scss$/,
+				test: /\.css$/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					{
 						loader: 'css-loader',
 						options: {
+							importLoaders: 1,
 							url: false,
 						},
 					},
@@ -41,20 +43,19 @@ module.exports = {
 						options: {
 							postcssOptions: {
 								plugins: [
-									'autoprefixer',
-									{
-										cssnano: {
-											// Disable postcss-calc to avoid warnings about calc() inside hsl().
-											// https://github.com/postcss/postcss-calc/issues/216
-											preset: ['default', { calc: false }],
+									[
+										'@csstools/postcss-global-data',
+										{
+											files: [
+												'./css/utilities/breakpoints.css',
+											],
 										},
-									},
+									],
 									'postcss-preset-env',
 								],
 							},
 						},
 					},
-					'sass-loader',
 				],
 			},
 		],
@@ -63,6 +64,13 @@ module.exports = {
 		minimizer: [
 			new TerserPlugin({
 				extractComments: false,
+			}),
+			new CssMinimizerPlugin({
+				minimizerOptions: {
+					// Disable postcss-calc to avoid warnings about calc() inside hsl().
+					// https://github.com/postcss/postcss-calc/issues/216
+					preset: ['default', { calc: false }],
+				},
 			}),
 		],
 		splitChunks: {

@@ -1,9 +1,7 @@
-@use '../utilities/variables';
-
 #galleri-folders {
 	display: flex;
 	flex-wrap: wrap;
-	grid-gap: variables.$galleri-padding-mobile;
+	grid-gap: var(--galleri-padding-mobile);
 	justify-content: space-between;
 	line-height: 1;
 	list-style: none;
@@ -14,8 +12,8 @@
 		display: none;
 	}
 
-	@media (width >= variables.$galleri-breakpoint) {
-		grid-gap: variables.$galleri-padding-desktop;
+	@media (--galleri-breakpoint) {
+		grid-gap: var(--galleri-padding-desktop);
 	}
 }
 
@@ -29,12 +27,12 @@
 	background-size: cover;
 	box-sizing: content-box;
 	display: block;
-	width: variables.$galleri-folder-image-width;
+	width: var(--galleri-folder-image-width);
 }
 
 .galleri-folder-img {
 	height: auto;
-	width: variables.$galleri-folder-image-width;
+	width: var(--galleri-folder-image-width);
 
 	& + .galleri-folder-name {
 		margin-top: var(--galleri-folder-name-margin);

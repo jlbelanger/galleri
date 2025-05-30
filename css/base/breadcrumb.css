@@ -1,15 +1,13 @@
-@use '../utilities/variables';
-
 .galleri-breadcrumb {
 	display: flex;
 	flex-wrap: wrap;
 	line-height: 1;
 	list-style: none;
-	margin: 0 variables.$galleri-padding-mobile;
+	margin: 0 var(--galleri-padding-mobile);
 	padding: 0;
 
-	@media (width >= variables.$galleri-breakpoint) {
-		margin: 0 variables.$galleri-padding-desktop;
+	@media (--galleri-breakpoint) {
+		margin: 0 var(--galleri-padding-desktop);
 	}
 }
 

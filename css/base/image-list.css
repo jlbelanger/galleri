@@ -1,13 +1,9 @@
-@use '../utilities/variables';
-
-$breakpoint: (variables.$galleri-image-width * 2) + (variables.$galleri-image-border-width * 2) + (variables.$galleri-padding-mobile * 3);
-
 #galleri-images {
 	display: grid;
-	grid-gap: variables.$galleri-padding-mobile;
-	grid-template-columns: repeat(auto-fill, calc(variables.$galleri-image-width + (variables.$galleri-image-border-width * 2)));
+	grid-gap: var(--galleri-padding-mobile);
+	grid-template-columns: repeat(auto-fill, calc(var(--galleri-image-width) + (var(--galleri-image-border-width) * 2)));
 	justify-content: space-between;
-	margin: variables.$galleri-padding-mobile;
+	margin: var(--galleri-padding-mobile);
 
 	&.galleri-grid {
 		grid-auto-rows: 1px;
@@ -17,13 +13,13 @@ $breakpoint: (variables.$galleri-image-width * 2) + (variables.$galleri-image-bo
 		display: none;
 	}
 
-	@media (width <= $breakpoint) {
+	@media (--galleri-image-list-breakpoint) {
 		justify-content: center;
 	}
 
-	@media (width >= variables.$galleri-breakpoint) {
-		grid-gap: variables.$galleri-padding-desktop;
-		margin: variables.$galleri-padding-desktop;
+	@media (--galleri-breakpoint) {
+		grid-gap: var(--galleri-padding-desktop);
+		margin: var(--galleri-padding-desktop);
 	}
 }
 
@@ -36,7 +32,7 @@ $breakpoint: (variables.$galleri-image-width * 2) + (variables.$galleri-image-bo
 .galleri-link {
 	border-color: var(--galleri-image-border-color);
 	border-style: solid;
-	border-width: variables.$galleri-image-border-width;
+	border-width: var(--galleri-image-border-width);
 	display: block;
 	font-size: 0;
 

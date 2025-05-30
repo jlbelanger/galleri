@@ -1,0 +1,28 @@
+@import url('~normalize.css/normalize');
+@import url('utilities/variables');
+@import url('base/admin');
+@import url('base/breadcrumb');
+@import url('base/button');
+@import url('base/error');
+@import url('base/file');
+@import url('base/focus');
+@import url('base/folder-list');
+@import url('base/heading');
+@import url('base/image-list');
+@import url('base/input');
+@import url('base/label');
+@import url('base/modal');
+@import url('base/spinner');
+@import url('base/toast');
+
+/* TODO: Clean up. */
+
+#galleri-folders {
+	margin: calc(var(--galleri-padding-mobile) - var(--galleri-folder-item-margin)) var(--galleri-padding-mobile);
+
+	@media (--galleri-breakpoint) {
+		margin:
+			calc(var(--galleri-padding-desktop) - var(--galleri-folder-item-margin)) var(--galleri-padding-desktop)
+			calc(var(--galleri-folder-item-margin) * -1);
+	}
+}
