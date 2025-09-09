@@ -2,7 +2,7 @@
 	display: grid;
 	grid-gap: var(--galleri-padding-mobile);
 	grid-template-columns: repeat(auto-fill, calc(var(--galleri-image-width) + (var(--galleri-image-border-width) * 2)));
-	justify-content: space-between;
+	justify-content: center;
 	margin: var(--galleri-padding-mobile);
 
 	&.galleri-grid {
@@ -11,10 +11,6 @@
 
 	&:empty {
 		display: none;
-	}
-
-	@media (--galleri-image-list-breakpoint) {
-		justify-content: center;
 	}
 
 	@media (--galleri-breakpoint) {
