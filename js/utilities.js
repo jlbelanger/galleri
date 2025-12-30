@@ -34,21 +34,21 @@ export default class GalleriUtilities {
 		window.GALLERI.args.callbacks[name](args);
 	}
 
+	// https://davidwalsh.name/javascript-debounce-function
 	static debounce(func, wait, immediate) {
 		let timeout;
-		return function (...args) { // eslint-disable-line func-names
-			const context = this;
+		return (...args) => {
 			const later = () => {
 				timeout = null;
 				if (!immediate) {
-					func.apply(context, args);
+					func(...args);
 				}
 			};
 			const callNow = immediate && !timeout;
 			clearTimeout(timeout);
 			timeout = setTimeout(later, wait);
 			if (callNow) {
-				func.apply(context, args);
+				func(...args);
 			}
 		};
 	}
@@ -71,7 +71,7 @@ export default class GalleriUtilities {
 	}
 
 	static propertyExists(object, property) {
-		return Object.prototype.hasOwnProperty.call(object, property);
+		return Object.hasOwn(object, property);
 	}
 
 	static setMetaTitle(title) {

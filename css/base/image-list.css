@@ -1,6 +1,6 @@
 #galleri-images {
 	display: grid;
-	grid-gap: var(--galleri-padding-mobile);
+	gap: var(--galleri-padding-mobile);
 	grid-template-columns: repeat(auto-fill, calc(var(--galleri-image-width) + (var(--galleri-image-border-width) * 2)));
 	justify-content: center;
 	margin: var(--galleri-padding-mobile);
@@ -14,7 +14,7 @@
 	}
 
 	@media (--galleri-breakpoint) {
-		grid-gap: var(--galleri-padding-desktop);
+		gap: var(--galleri-padding-desktop);
 		margin: var(--galleri-padding-desktop);
 	}
 }

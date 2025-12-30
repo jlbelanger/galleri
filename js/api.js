@@ -1,10 +1,9 @@
-import GalleriModal from './modal';
-import GalleriSpinner from './spinner';
-import GalleriUtilities from './utilities';
+import GalleriModal from './modal.js';
+import GalleriSpinner from './spinner.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriApi {
-	static request(args) {
-		args = args || {};
+	static request(args = {}) {
 		args.method = args.method || 'GET';
 
 		const $spinner = GalleriSpinner.show();
@@ -30,7 +29,7 @@ export default class GalleriApi {
 			if (response && !args.noParse) {
 				try {
 					response = JSON.parse(response);
-				} catch (e) {
+				} catch {
 					GalleriApi.error(args, response, req);
 					return;
 				}

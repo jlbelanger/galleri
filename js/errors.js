@@ -1,5 +1,5 @@
-import GalleriModal from './modal';
-import GalleriUtilities from './utilities';
+import GalleriModal from './modal.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriErrors {
 	static add($input, message) {

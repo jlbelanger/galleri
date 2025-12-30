@@ -34,6 +34,7 @@
 		<exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
 		<exclude name="Generic.PHP.RequireStrictTypes.MissingDeclaration" />
 		<exclude name="Generic.PHP.UpperCaseConstant.Found" />
+		<exclude name="Generic.Strings.UnnecessaryHeredoc.Found" />
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsedHeredocCloser" />
 	</rule>
 
@@ -61,7 +62,7 @@
 		<exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedComparison" />
 		<exclude name="Squiz.PHP.DisallowInlineIf.Found" />
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
-		<exclude name="Squiz.PHP.Heredoc.NotAllowed" />
+		<exclude name="Squiz.PHP.Heredoc.HeredocNotAllowed" />
 		<exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace.SpacingBeforeClose" />
 		<exclude name="Squiz.WhiteSpace.MemberVarSpacing.Incorrect" />
 	</rule>

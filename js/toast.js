@@ -1,4 +1,4 @@
-import GalleriUtilities from './utilities';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriToast {
 	static show(message, args = {}) {

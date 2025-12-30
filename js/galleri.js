@@ -1,12 +1,12 @@
-import GalleriAuth from './auth';
-import GalleriFolder from './folder';
-import GalleriGrid from './grid';
-import GalleriImage from './image';
-import GalleriSpinner from './spinner';
-import GalleriUtilities from './utilities';
+import GalleriAuth from './auth.js';
+import GalleriFolder from './folder.js';
+import GalleriGrid from './grid.js';
+import GalleriImage from './image.js';
+import GalleriSpinner from './spinner.js';
+import GalleriUtilities from './utilities.js';
 
 export default class Galleri {
-	constructor(args) {
+	constructor(args) { // eslint-disable-line complexity
 		args = args || {};
 		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';
@@ -23,7 +23,8 @@ export default class Galleri {
 		args.modifiers = args.modifiers || {};
 		args.pageSize = args.pageSize || 8;
 		args.removePointerEventsOnLogin = GalleriUtilities.propertyExists(args, 'removePointerEventsOnLogin')
-			? args.removePointerEventsOnLogin : true;
+			? args.removePointerEventsOnLogin
+			: true;
 		args.selector = args.selector || '#galleri';
 		args.showAllImages = GalleriUtilities.propertyExists(args, 'showAllImages') ? args.showAllImages : false;
 		this.args = args;

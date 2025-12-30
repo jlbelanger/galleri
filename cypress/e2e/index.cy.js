@@ -1,4 +1,4 @@
-import { galleriUrl } from '../support/functions';
+import { galleriUrl } from '../support/functions.js';
 
 describe('index', () => {
 	before(() => {

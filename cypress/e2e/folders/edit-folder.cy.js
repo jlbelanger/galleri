@@ -1,4 +1,4 @@
-import { galleriAbsoluteUrl, galleriUrl } from '../../support/functions';
+import { galleriAbsoluteUrl, galleriUrl } from '../../support/functions.js';
 
 describe('edit folder', () => {
 	before(() => {

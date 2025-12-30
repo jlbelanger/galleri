@@ -1,4 +1,4 @@
-import 'cypress-file-upload'; // eslint-disable-line import/no-extraneous-dependencies
+import 'cypress-file-upload';
 
 Cypress.Commands.add('build', () => {
 	const cssFolder = `${Cypress.env('project_path')}/build/css`;

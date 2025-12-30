@@ -1,9 +1,9 @@
-import GalleriApi from './api';
-import GalleriErrors from './errors';
-import GalleriFolder from './folder';
-import GalleriModal from './modal';
-import GalleriToast from './toast';
-import GalleriUtilities from './utilities';
+import GalleriApi from './api.js';
+import GalleriErrors from './errors.js';
+import GalleriFolder from './folder.js';
+import GalleriModal from './modal.js';
+import GalleriToast from './toast.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriImage {
 	static load() {
@@ -74,7 +74,9 @@ export default class GalleriImage {
 		window.GALLERI.state.isLoadingImages = false;
 
 		GalleriImage.onScroll();
-		window.addEventListener('scroll', GalleriUtilities.debounce(() => { GalleriImage.onScroll(); }, 100));
+		window.addEventListener('scroll', GalleriUtilities.debounce(() => {
+			GalleriImage.onScroll();
+		}, 100));
 
 		GalleriUtilities.callback('afterLoadImages', { images });
 	}
@@ -207,7 +209,7 @@ export default class GalleriImage {
 
 		Object.keys(window.GALLERI.currentImage.attributes).forEach((key) => {
 			const $input = $form.querySelector(`#galleri-input-${key}`);
-			if ($input && Object.prototype.hasOwnProperty.call(window.GALLERI.currentImage.attributes, key)) {
+			if ($input && Object.hasOwn(window.GALLERI.currentImage.attributes, key)) {
 				$input.setAttribute('value', window.GALLERI.currentImage.attributes[key]);
 			}
 		});
@@ -398,7 +400,7 @@ export default class GalleriImage {
 		let oldJson = {};
 		formData.forEach((value, key) => {
 			json[key] = value;
-			if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentImage.attributes, key)) {
+			if (Object.hasOwn(window.GALLERI.currentImage.attributes, key)) {
 				oldJson[key] = window.GALLERI.currentImage.attributes[key];
 			} else {
 				oldJson[key] = '';
@@ -525,7 +527,10 @@ export default class GalleriImage {
 	}
 
 	static view(e) {
-		e.target.closest('[data-path]').querySelector('.galleri-link').click();
+		e.target
+			.closest('[data-path]')
+			.querySelector('.galleri-link')
+			.click();
 	}
 
 	static getImages() {

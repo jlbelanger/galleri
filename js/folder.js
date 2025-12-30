@@ -1,8 +1,8 @@
-import GalleriApi from './api';
-import GalleriErrors from './errors';
-import GalleriModal from './modal';
-import GalleriToast from './toast';
-import GalleriUtilities from './utilities';
+import GalleriApi from './api.js';
+import GalleriErrors from './errors.js';
+import GalleriModal from './modal.js';
+import GalleriToast from './toast.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriFolder {
 	static load() {
@@ -383,7 +383,7 @@ export default class GalleriFolder {
 			if (key === 'id') {
 				json[key] = value;
 
-				if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentFolder, key)) {
+				if (Object.hasOwn(window.GALLERI.currentFolder, key)) {
 					oldJson[key] = window.GALLERI.currentFolder[key].replace(/^.+\/([^/]+)$/, '$1');
 				} else {
 					oldJson[key] = '';
@@ -391,7 +391,7 @@ export default class GalleriFolder {
 			} else {
 				json.attributes[key] = value;
 
-				if (Object.prototype.hasOwnProperty.call(window.GALLERI.currentFolder.attributes, key)) {
+				if (Object.hasOwn(window.GALLERI.currentFolder.attributes, key)) {
 					oldJson.attributes[key] = window.GALLERI.currentFolder.attributes[key];
 				} else {
 					oldJson.attributes[key] = '';

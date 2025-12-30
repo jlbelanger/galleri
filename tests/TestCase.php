@@ -47,7 +47,6 @@ abstract class TestCase extends BaseTestCase
 	{
 		$class = new \ReflectionClass($obj);
 		$method = $class->getMethod($name);
-		$method->setAccessible(true);
 		return $method->invokeArgs($obj, $args);
 	}
 

@@ -1,4 +1,4 @@
-import GalleriUtilities from './utilities';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriGrid {
 	constructor() {
@@ -35,7 +35,9 @@ export default class GalleriGrid {
 	}
 
 	resizeAllItems() {
-		const $figures = document.getElementsByClassName('galleri-figure');
-		[...$figures].forEach(($figure) => { this.checkResizeItem($figure); });
+		const $figures = Array.from(document.getElementsByClassName('galleri-figure'));
+		$figures.forEach(($figure) => {
+			this.checkResizeItem($figure);
+		});
 	}
 }

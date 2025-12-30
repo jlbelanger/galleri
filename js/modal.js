@@ -1,5 +1,5 @@
-import GalleriSpinner from './spinner';
-import GalleriUtilities from './utilities';
+import GalleriSpinner from './spinner.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriModal {
 	static show(message, args = {}) {

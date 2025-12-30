@@ -1,9 +1,9 @@
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
 
-module.exports = {
+export default {
 	mode: 'production',
 	devtool: false,
 	entry: {
@@ -13,7 +13,7 @@ module.exports = {
 	},
 	output: {
 		filename: 'js/[name].min.js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(process.cwd(), 'dist'),
 	},
 	plugins: [
 		new MiniCssExtractPlugin({

@@ -1,2 +1,2 @@
-import './commands';
-import './functions';
+import './commands.js';
+import './functions.js';

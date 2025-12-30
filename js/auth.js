@@ -1,15 +1,17 @@
-import GalleriApi from './api';
-import GalleriFolder from './folder';
-import GalleriImage from './image';
-import GalleriModal from './modal';
-import GalleriUtilities from './utilities';
+import GalleriApi from './api.js';
+import GalleriFolder from './folder.js';
+import GalleriImage from './image.js';
+import GalleriModal from './modal.js';
+import GalleriUtilities from './utilities.js';
 
 export default class GalleriAuth {
 	static init() {
 		if (!window.GALLERI.elements.$authenticateButton) {
 			return;
 		}
-		window.GALLERI.elements.$authenticateButton.addEventListener('click', () => { GalleriAuth.authenticate(); });
+		window.GALLERI.elements.$authenticateButton.addEventListener('click', () => {
+			GalleriAuth.authenticate();
+		});
 		GalleriAuth.handleAuthentication();
 	}
 

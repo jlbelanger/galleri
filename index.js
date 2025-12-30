@@ -1,4 +1,4 @@
-import Galleri from './js/galleri';
+import Galleri from './js/galleri.js';
 
 window.galleri = Galleri;
 

@@ -193,8 +193,5 @@ class ImageFile
 		} else {
 			imagejpeg($dst, $dstPath, Constant::get('JPEG_COMPRESSION'));
 		}
-
-		imagedestroy($src);
-		imagedestroy($dst);
 	}
 }

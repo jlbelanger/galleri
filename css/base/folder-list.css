@@ -1,7 +1,7 @@
 #galleri-folders {
 	display: flex;
 	flex-wrap: wrap;
-	grid-gap: var(--galleri-padding-mobile);
+	gap: var(--galleri-padding-mobile);
 	justify-content: space-between;
 	line-height: 1;
 	list-style: none;
@@ -13,7 +13,7 @@
 	}
 
 	@media (--galleri-breakpoint) {
-		grid-gap: var(--galleri-padding-desktop);
+		gap: var(--galleri-padding-desktop);
 	}
 }
 
