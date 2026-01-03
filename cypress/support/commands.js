@@ -2,7 +2,7 @@ import 'cypress-file-upload';
 
 Cypress.Commands.add('build', () => {
 	const cssFolder = `${Cypress.env('project_path')}/build/css`;
-	cy.exec(`(if [! -f ${cssFolder}/style.min.css]; then (cd ${Cypress.env('project_path')} && yarn install && yarn build); fi) || true`);
+	cy.exec(`(if [! -f ${cssFolder}/style.min.css]; then (cd ${Cypress.env('project_path')} && npm install && npm run build); fi) || true`);
 });
 
 Cypress.Commands.add('setUploads', (uploadsFolder = 'cypress/fixtures/original') => {

@@ -63,7 +63,7 @@ If you want to make changes to the base Galleri package (rather than just changi
 
 - [Composer](https://getcomposer.org/)
 - [Git](https://git-scm.com/)
-- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- [Node](https://nodejs.org/)
 - Web server with PHP
 
 ### Development setup
@@ -78,7 +78,7 @@ cp cypress.config.example.js cypress.config.js
 cp cypress.env.example.json cypress.env.json
 
 # Install dependencies
-yarn install
+npm install
 composer install
 ```
 
@@ -108,7 +108,7 @@ In the project folder, run:
 
 ``` bash
 composer update jlbelanger/galleri
-yarn install
+npm install
 ```
 
 ### Run
@@ -116,13 +116,13 @@ yarn install
 In the `galleri` folder, run:
 
 ``` bash
-yarn start
+npm start
 ```
 
 In another window, in the project folder, run:
 
 ``` bash
-yarn start
+npm start
 ```
 
 Your browser should automatically open https://localhost:3000/
@@ -133,7 +133,7 @@ In the `galleri` folder, run:
 
 ``` bash
 ./vendor/bin/phpcs
-yarn lint
+npm run lint
 ```
 
 ### Test
@@ -142,7 +142,7 @@ In the `galleri` folder, run:
 
 ``` bash
 ./vendor/bin/phpunit
-yarn test:cypress
+npm run test:cypress
 ```
 
 ### Package
@@ -150,7 +150,7 @@ yarn test:cypress
 In the `galleri` folder, run:
 
 ``` bash
-yarn build
+npm run build
 ```
 
 ## Minimal setup

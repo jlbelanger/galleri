@@ -9,5 +9,5 @@ jobs:
       with:
         node-version: '24'
     - uses: actions/checkout@v3
-    - run: yarn install
-    - run: yarn run lint
+    - run: npm install
+    - run: npm run lint

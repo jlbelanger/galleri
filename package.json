@@ -14,14 +14,14 @@
 		"url": "https://github.com/jlbelanger/galleri.git"
 	},
 	"scripts": {
-		"build": "rm -rf dist/ && node_modules/.bin/webpack --mode=production && mv dist/css/minimal.min.css dist/css/galleri.min.css && rm dist/js/theme.min.js dist/js/minimal.min.js",
-		"lint": "yarn lint:css && yarn lint:js",
-		"lint:css": "node_modules/.bin/stylelint 'css/**/*.css'",
-		"lint:js": "node_modules/.bin/eslint .",
+		"build": "rm -rf dist/ && npx webpack --mode=production && mv dist/css/minimal.min.css dist/css/galleri.min.css && rm dist/js/theme.min.js dist/js/minimal.min.js",
+		"lint": "npm run lint:css && npm run lint:js",
+		"lint:css": "npx stylelint 'css/**/*.css'",
+		"lint:js": "npx eslint .",
 		"lint:php": "./vendor/bin/phpcs",
 		"test:php": "./vendor/bin/phpunit",
-		"test:cypress": "node_modules/.bin/cypress open",
-		"start": "node_modules/.bin/update-browserslist-db && node_modules/.bin/webpack --watch"
+		"test:cypress": "npx cypress open",
+		"start": "npx update-browserslist-db && npx webpack --watch"
 	},
 	"dependencies": {
 		"normalize.css": "^8.0.1"
