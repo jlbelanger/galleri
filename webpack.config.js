@@ -46,9 +46,7 @@ export default {
 									[
 										'@csstools/postcss-global-data',
 										{
-											files: [
-												'./css/utilities/breakpoints.css',
-											],
+											files: ['./css/utilities/breakpoints.css'],
 										},
 									],
 									'postcss-preset-env',
@@ -78,13 +76,13 @@ export default {
 				theme: {
 					name: 'theme',
 					type: 'css/mini-extract',
-					chunks: (chunk) => (chunk.name === 'theme'),
+					chunks: (chunk) => chunk.name === 'theme',
 					enforce: true,
 				},
 				minimal: {
 					name: 'minimal',
 					type: 'css/mini-extract',
-					chunks: (chunk) => (chunk.name === 'minimal'),
+					chunks: (chunk) => chunk.name === 'minimal',
 					enforce: true,
 				},
 			},

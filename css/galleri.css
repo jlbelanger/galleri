@@ -21,8 +21,10 @@
 	margin: calc(var(--galleri-padding-mobile) - var(--galleri-folder-item-margin)) var(--galleri-padding-mobile);
 
 	@media (--galleri-breakpoint) {
+		/* prettier-ignore */
 		margin:
-			calc(var(--galleri-padding-desktop) - var(--galleri-folder-item-margin)) var(--galleri-padding-desktop)
+			calc(var(--galleri-padding-desktop) - var(--galleri-folder-item-margin))
+			var(--galleri-padding-desktop)
 			calc(var(--galleri-folder-item-margin) * -1);
 	}
 }

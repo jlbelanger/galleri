@@ -6,10 +6,13 @@ export default class GalleriGrid {
 
 		this.calculate();
 
-		window.addEventListener('resize', GalleriUtilities.debounce(() => {
-			this.calculate();
-			this.resizeAllItems();
-		}, 100));
+		window.addEventListener(
+			'resize',
+			GalleriUtilities.debounce(() => {
+				this.calculate();
+				this.resizeAllItems();
+			}, 100),
+		);
 	}
 
 	calculate() {

@@ -1,12 +1,12 @@
 :root {
 	/* Colors. */
 	--galleri-primary: #00bfff;
-	--galleri-red: hsl(from var(--galleri-primary) 0 s calc(l * .6));
+	--galleri-red: hsl(from var(--galleri-primary) 0 s calc(l * 0.6));
 	--galleri-green: #006800;
 	--galleri-black: #000;
-	--galleri-darkest: hsl(from var(--galleri-primary) h s calc(l * .1));
-	--galleri-darker: hsl(from var(--galleri-primary) h s calc(l * .2));
-	--galleri-dark: hsl(from var(--galleri-primary) h s calc(l * .5));
+	--galleri-darkest: hsl(from var(--galleri-primary) h s calc(l * 0.1));
+	--galleri-darker: hsl(from var(--galleri-primary) h s calc(l * 0.2));
+	--galleri-dark: hsl(from var(--galleri-primary) h s calc(l * 0.5));
 	--galleri-lightest: hsl(from var(--galleri-primary) h s 95%);
 	--galleri-white: #fff;
 
@@ -74,7 +74,7 @@
 
 	/* Files. */
 	--galleri-file-input-background-color: var(--galleri-input-background-color);
-	--galleri-file-input-background-color-hover: hsl(from var(--galleri-file-input-background-color) h s calc(l * .9));
+	--galleri-file-input-background-color-hover: hsl(from var(--galleri-file-input-background-color) h s calc(l * 0.9));
 	--galleri-file-input-text-color: var(--galleri-lightest);
 	--galleri-file-input-height: 100px;
 	--galleri-file-input-padding: 16px;

@@ -6,7 +6,8 @@ import GalleriSpinner from './spinner.js';
 import GalleriUtilities from './utilities.js';
 
 export default class Galleri {
-	constructor(args) { // eslint-disable-line complexity
+	// eslint-disable-next-line complexity
+	constructor(args) {
 		args = args || {};
 		args.apiFoldersPath = args.apiFoldersPath || '/json/folders.json';
 		args.apiImagesPath = args.apiImagesPath || '/json/images.json';

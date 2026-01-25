@@ -22,10 +22,7 @@ export default defineConfig([
 	},
 	{
 		files: ['**/*.js'],
-		extends: [
-			js.configs.recommended,
-			importPlugin.flatConfigs.recommended,
-		],
+		extends: [js.configs.recommended, importPlugin.flatConfigs.recommended],
 		languageOptions: {
 			ecmaVersion: 'latest',
 			globals: globals.browser,
@@ -41,13 +38,7 @@ export default defineConfig([
 			'@stylistic/array-bracket-newline': ['error', 'consistent'],
 			'@stylistic/arrow-parens': ['error', 'always'],
 			'@stylistic/brace-style': ['error', '1tbs'],
-			'@stylistic/comma-dangle': ['error', {
-				arrays: 'always-multiline',
-				objects: 'always-multiline',
-				imports: 'always-multiline',
-				exports: 'always-multiline',
-				functions: 'never',
-			}],
+			'@stylistic/comma-dangle': ['error', 'always-multiline'],
 			'@stylistic/curly-newline': ['error', { minElements: 1 }],
 			'@stylistic/function-call-argument-newline': ['error', 'consistent'],
 			'@stylistic/function-call-spacing': ['error', 'never'],
@@ -61,7 +52,10 @@ export default defineConfig([
 			'@stylistic/multiline-ternary': 0,
 			'@stylistic/newline-per-chained-call': 0, // TODO.
 			'@stylistic/no-confusing-arrow': ['error'],
+			'@stylistic/no-extra-parens': ['error', 'all', { ignoreJSX: 'multi-line', nestedBinaryExpressions: false }],
 			'@stylistic/no-extra-semi': ['error'],
+			'@stylistic/no-mixed-operators': ['error'],
+			'@stylistic/no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
 			'@stylistic/no-multi-spaces': ['error'],
 			'@stylistic/object-curly-newline': [
 				'error',
@@ -91,7 +85,7 @@ export default defineConfig([
 			'arrow-body-style': ['error'],
 			'block-scoped-var': ['error'],
 			camelcase: ['error', { properties: 'never' }],
-			'capitalized-comments': ['error', 'always', { ignoreConsecutiveComments: true }],
+			'capitalized-comments': ['error', 'always', { ignoreConsecutiveComments: true, ignorePattern: 'prettier' }],
 			complexity: ['error'],
 			'consistent-return': ['error'],
 			'consistent-this': ['error'],

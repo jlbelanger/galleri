@@ -26,7 +26,7 @@ Galleri is a databaseless vanilla JavaScript and vanilla PHP photo gallery. Imag
 
 Run:
 
-``` bash
+```bash
 composer create-project jlbelanger/galleri-project my-gallery --repository '{"type":"vcs","url":"git@github.com:jlbelanger/galleri-project.git"}' --stability dev
 ```
 
@@ -36,7 +36,7 @@ If you are using a server other than Apache (eg. nginx), delete `public/.htacces
 
 Ensure the following folder permissions are set:
 
-``` bash
+```bash
 chown -R www-data:www-data build/images
 chown -R www-data:www-data build/json
 ```
@@ -68,7 +68,7 @@ If you want to make changes to the base Galleri package (rather than just changi
 
 ### Development setup
 
-``` bash
+```bash
 # Clone the repo
 git clone https://github.com/jlbelanger/galleri.git
 cd galleri
@@ -84,7 +84,7 @@ composer install
 
 Create a Galleri project using the regular [setup](#setup). Then, in the project folder's `composer.json` file, change `repositories`:
 
-``` json
+```json
 "repositories": [
 	{
 		"type": "path",
@@ -98,7 +98,7 @@ Create a Galleri project using the regular [setup](#setup). Then, in the project
 
 In the project folder's `package.json` file, change the galleri line in `dependencies`:
 
-``` json
+```json
 "dependencies": {
 	"@jlbelanger/galleri": "link:../galleri"
 }
@@ -106,7 +106,7 @@ In the project folder's `package.json` file, change the galleri line in `depende
 
 In the project folder, run:
 
-``` bash
+```bash
 composer update jlbelanger/galleri
 npm install
 ```
@@ -115,13 +115,13 @@ npm install
 
 In the `galleri` folder, run:
 
-``` bash
+```bash
 npm start
 ```
 
 In another window, in the project folder, run:
 
-``` bash
+```bash
 npm start
 ```
 
@@ -131,7 +131,7 @@ Your browser should automatically open https://localhost:3000/
 
 In the `galleri` folder, run:
 
-``` bash
+```bash
 ./vendor/bin/phpcs
 npm run lint
 ```
@@ -140,7 +140,7 @@ npm run lint
 
 In the `galleri` folder, run:
 
-``` bash
+```bash
 ./vendor/bin/phpunit
 npm run test:cypress
 ```
@@ -149,7 +149,7 @@ npm run test:cypress
 
 In the `galleri` folder, run:
 
-``` bash
+```bash
 npm run build
 ```
 
@@ -157,16 +157,18 @@ npm run build
 
 Create an HTML file. Include the `galleri.min.css` and `galleri.min.js` files from the `dist` folder, an empty element, and a JS call to `Galleri.init()`, passing in a CSS selector for the empty element in which the gallery should be displayed.
 
-``` html
-<link rel="stylesheet" href="galleri.min.css">
+```html
+<link rel="stylesheet" href="galleri.min.css" />
 <div id="galleri"></div>
 <script src="galleri.min.js"></script>
-<script>Galleri.init({ selector: '#galleri' });</script>
+<script>
+	Galleri.init({ selector: '#galleri' });
+</script>
 ```
 
 To enable authentication and allow images to be managed from the frontend, also include a `<button>` with the attribute `data-action="authenticate"`.
 
-``` html
+```html
 <button data-action="authenticate" type="button"></button>
 ```
 
@@ -174,7 +176,7 @@ Create a `composer.json` file and add `jlbelanger/galleri` as a dependency.
 
 Create a PHP file that calls `Jlbelanger\Galleri\Router::load()`.
 
-``` php
+```php
 <?php
 
 require_once realpath(__DIR__ . '/../vendor/autoload.php');

@@ -100,7 +100,12 @@ export default class GalleriUtilities {
 	}
 
 	static setNumImages() {
-		const label = window.GALLERI.currentNumImages === 1 ? window.GALLERI.lang.singularImageText : window.GALLERI.lang.pluralImageText;
+		let label;
+		if (window.GALLERI.currentNumImages === 1) {
+			label = window.GALLERI.lang.singularImageText;
+		} else {
+			label = window.GALLERI.lang.pluralImageText;
+		}
 		window.GALLERI.elements.$numImages.innerText = `(${window.GALLERI.currentNumImages.toLocaleString()} ${label})`;
 	}
 

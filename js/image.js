@@ -39,7 +39,7 @@ export default class GalleriImage {
 		let images = Object.values(response.data);
 
 		if (!window.GALLERI.args.showAllImages) {
-			images = images.filter((image) => (image.attributes.folder === currentFolderId));
+			images = images.filter((image) => image.attributes.folder === currentFolderId);
 		}
 
 		GalleriUtilities.modifier('images', { images });
@@ -74,9 +74,12 @@ export default class GalleriImage {
 		window.GALLERI.state.isLoadingImages = false;
 
 		GalleriImage.onScroll();
-		window.addEventListener('scroll', GalleriUtilities.debounce(() => {
-			GalleriImage.onScroll();
-		}, 100));
+		window.addEventListener(
+			'scroll',
+			GalleriUtilities.debounce(() => {
+				GalleriImage.onScroll();
+			}, 100),
+		);
 
 		GalleriUtilities.callback('afterLoadImages', { images });
 	}
@@ -166,19 +169,16 @@ export default class GalleriImage {
 
 		GalleriUtilities.modifier('imageCreateForm', { addField: GalleriUtilities.addField, form: $form });
 
-		GalleriModal.show(
-			$form,
-			{
-				append: true,
-				callback: GalleriImage.submitCreateFormCallback,
-				closeButtonAttributes: {
-					form: 'galleri-image-form',
-					type: 'submit',
-				},
-				closeButtonText: window.GALLERI.lang.upload,
-				showCancel: true,
-			}
-		);
+		GalleriModal.show($form, {
+			append: true,
+			callback: GalleriImage.submitCreateFormCallback,
+			closeButtonAttributes: {
+				form: 'galleri-image-form',
+				type: 'submit',
+			},
+			closeButtonText: window.GALLERI.lang.upload,
+			showCancel: true,
+		});
 	}
 
 	static showEditForm(e) {
@@ -216,35 +216,29 @@ export default class GalleriImage {
 
 		GalleriUtilities.modifier('imageEditForm', { addField: GalleriUtilities.addField, container: $container, form: $form });
 
-		GalleriModal.show(
-			$form,
-			{
-				append: true,
-				callback: GalleriImage.submitEditFormCallback,
-				closeButtonAttributes: {
-					form: 'galleri-image-form',
-					type: 'submit',
-				},
-				closeButtonText: window.GALLERI.lang.save,
-				showCancel: true,
-			}
-		);
+		GalleriModal.show($form, {
+			append: true,
+			callback: GalleriImage.submitEditFormCallback,
+			closeButtonAttributes: {
+				form: 'galleri-image-form',
+				type: 'submit',
+			},
+			closeButtonText: window.GALLERI.lang.save,
+			showCancel: true,
+		});
 	}
 
 	static delete(e) {
 		const id = e.target.closest('[data-path]').getAttribute('data-path');
-		GalleriModal.show(
-			GalleriUtilities.sprintf(window.GALLERI.lang.confirmDeleteImage, id),
-			{
-				closeButtonText: window.GALLERI.lang.delete,
-				closeButtonClass: 'galleri-button--danger',
-				showCancel: true,
-				callback: () => {
-					GalleriImage.deleteCallback(id);
-					GalleriModal.hide();
-				},
-			}
-		);
+		GalleriModal.show(GalleriUtilities.sprintf(window.GALLERI.lang.confirmDeleteImage, id), {
+			closeButtonText: window.GALLERI.lang.delete,
+			closeButtonClass: 'galleri-button--danger',
+			showCancel: true,
+			callback: () => {
+				GalleriImage.deleteCallback(id);
+				GalleriModal.hide();
+			},
+		});
 	}
 
 	static deleteCallback(id) {
@@ -493,7 +487,7 @@ export default class GalleriImage {
 		const files = [...e.target.files];
 		const maxSizeMegabytes = window.GALLERI.args.maxFileSizeMegabytes;
 		const maxSizeBytes = maxSizeMegabytes ? maxSizeMegabytes * 1000000 : 0;
-		const largeFiles = maxSizeBytes ? files.filter((file) => (file.size > maxSizeBytes)) : [];
+		const largeFiles = maxSizeBytes ? files.filter((file) => file.size > maxSizeBytes) : [];
 
 		if (largeFiles.length > 0) {
 			const $uploadInput = document.getElementById('galleri-input-upload');
@@ -527,10 +521,7 @@ export default class GalleriImage {
 	}
 
 	static view(e) {
-		e.target
-			.closest('[data-path]')
-			.querySelector('.galleri-link')
-			.click();
+		e.target.closest('[data-path]').querySelector('.galleri-link').click();
 	}
 
 	static getImages() {

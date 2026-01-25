@@ -15,10 +15,11 @@
 	},
 	"scripts": {
 		"build": "rm -rf dist/ && npx webpack --mode=production && mv dist/css/minimal.min.css dist/css/galleri.min.css && rm dist/js/theme.min.js dist/js/minimal.min.js",
-		"lint": "npm run lint:css && npm run lint:js",
+		"lint": "npm run lint:css && npm run lint:js && npm run lint:prettier",
 		"lint:css": "npx stylelint 'css/**/*.css'",
 		"lint:js": "npx eslint .",
 		"lint:php": "./vendor/bin/phpcs",
+		"lint:prettier": "npx prettier . --check",
 		"test:php": "./vendor/bin/phpunit",
 		"test:cypress": "npx cypress open",
 		"start": "npx update-browserslist-db && npx webpack --watch"
@@ -44,6 +45,7 @@
 		"postcss": "^8.5.6",
 		"postcss-loader": "^8.2.0",
 		"postcss-preset-env": "^10.5.0",
+		"prettier": "^3.7.4",
 		"stylelint": "^16.26.1",
 		"stylelint-config-standard": "^39.0.1",
 		"stylelint-order": "^7.0.0",

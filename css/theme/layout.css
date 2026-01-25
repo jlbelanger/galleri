@@ -14,8 +14,8 @@
 	/* Paragraphs. */
 	--galleri-paragraph-margin: 20px;
 
-	/* stylelint-disable-next-line @stylistic/max-line-length */
-	--galleri-max-width: calc(((var(--galleri-image-width) + var(--galleri-padding-desktop)) * 3) + var(--galleri-image-width) + ((var(--galleri-image-border-width) + var(--galleri-padding-desktop)) * 2));
+	/* prettier-ignore */
+	--galleri-max-width: calc(((var(--galleri-image-width) + var(--galleri-padding-desktop)) * 3) + var(--galleri-image-width) + ((var(--galleri-image-border-width) + var(--galleri-padding-desktop)) * 2)); /* stylelint-disable-line @stylistic/max-line-length */
 }
 
 * {

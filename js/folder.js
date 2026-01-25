@@ -78,7 +78,7 @@ export default class GalleriFolder {
 
 		let childFolders;
 		if (window.GALLERI.currentFolder.id === '') {
-			childFolders = Object.values(window.GALLERI.folders).filter((f) => (!f.id.includes('/')));
+			childFolders = Object.values(window.GALLERI.folders).filter((f) => !f.id.includes('/'));
 		} else {
 			const numSlashes = window.GALLERI.currentFolder.id.split('/').length + 1;
 			childFolders = Object.values(window.GALLERI.folders).filter((f) => {
@@ -148,19 +148,16 @@ export default class GalleriFolder {
 
 		GalleriUtilities.modifier('folderCreateForm', { addField: GalleriUtilities.addField, form: $form });
 
-		GalleriModal.show(
-			$form,
-			{
-				append: true,
-				callback: GalleriFolder.submitCreateFormCallback,
-				closeButtonAttributes: {
-					form: 'galleri-folder-form',
-					type: 'submit',
-				},
-				closeButtonText: window.GALLERI.lang.save,
-				showCancel: true,
-			}
-		);
+		GalleriModal.show($form, {
+			append: true,
+			callback: GalleriFolder.submitCreateFormCallback,
+			closeButtonAttributes: {
+				form: 'galleri-folder-form',
+				type: 'submit',
+			},
+			closeButtonText: window.GALLERI.lang.save,
+			showCancel: true,
+		});
 	}
 
 	static showEditForm() {
@@ -168,7 +165,7 @@ export default class GalleriFolder {
 			window.GALLERI.lang.titleEditFolder,
 			'put',
 			GalleriFolder.submitEditFormCallback,
-			window.GALLERI.currentFolder.id
+			window.GALLERI.currentFolder.id,
 		);
 
 		const $parentInput = $form.querySelector('#galleri-input-parent');
@@ -197,19 +194,16 @@ export default class GalleriFolder {
 
 		GalleriUtilities.modifier('folderEditForm', { addField: GalleriUtilities.addField, form: $form });
 
-		GalleriModal.show(
-			$form,
-			{
-				append: true,
-				callback: GalleriFolder.submitEditFormCallback,
-				closeButtonAttributes: {
-					form: 'galleri-folder-form',
-					type: 'submit',
-				},
-				closeButtonText: window.GALLERI.lang.save,
-				showCancel: true,
-			}
-		);
+		GalleriModal.show($form, {
+			append: true,
+			callback: GalleriFolder.submitEditFormCallback,
+			closeButtonAttributes: {
+				form: 'galleri-folder-form',
+				type: 'submit',
+			},
+			closeButtonText: window.GALLERI.lang.save,
+			showCancel: true,
+		});
 	}
 
 	static form(title, method, callback, id = '') {
@@ -262,7 +256,7 @@ export default class GalleriFolder {
 					GalleriFolder.deleteCallback(id);
 					GalleriModal.hide();
 				},
-			}
+			},
 		);
 	}
 
@@ -276,7 +270,7 @@ export default class GalleriFolder {
 				const parentId = GalleriFolder.getParentId(window.GALLERI.currentFolder.id);
 				window.location = window.location.href.replace(
 					GalleriFolder.url(window.GALLERI.currentFolder),
-					parentId ? GalleriFolder.url(window.GALLERI.folders[parentId]) : ''
+					parentId ? GalleriFolder.url(window.GALLERI.folders[parentId]) : '',
 				);
 			},
 		});
@@ -425,7 +419,7 @@ export default class GalleriFolder {
 
 		window.location = window.location.href.replace(
 			GalleriFolder.url(window.GALLERI.currentFolder),
-			GalleriFolder.url(response.data)
+			GalleriFolder.url(response.data),
 		);
 	}
 
