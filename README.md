@@ -96,19 +96,17 @@ Create a Galleri project using the regular [setup](#setup). Then, in the project
 ]
 ```
 
-In the project folder's `package.json` file, change the galleri line in `dependencies`:
+In the `galleri` folder, run:
 
-```json
-"dependencies": {
-	"@jlbelanger/galleri": "link:../galleri"
-}
+```bash
+npm link
 ```
 
 In the project folder, run:
 
 ```bash
 composer update jlbelanger/galleri
-npm install
+npm link @jlbelanger/galleri
 ```
 
 ### Run
